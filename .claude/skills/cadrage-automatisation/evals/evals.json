@@ -1,0 +1,26 @@
+{
+  "skill_name": "cadrage-automatisation",
+  "evals": [
+    {
+      "id": 1,
+      "name": "app-creation-posts",
+      "prompt": "Je veux cadrer l'automatisation de création de posts pour mon équipe marketing. Le principe : dans une petite app, je choisis un jour dans un calendrier de publication et je clique sur 'Créer'. Ça doit me générer 3 variantes de visuels et 3 variantes de description pour un post LinkedIn, à partir d'un thème que je saisis. Les visuels sont générés par IA, les textes aussi. Je veux pouvoir valider ou régénérer avant publication. Sors-moi le cahier des charges directement.",
+      "expected_output": "Un cahier des charges markdown complet avec les 10 sections, une reco d'outil (n8n ou Make) justifiée, un design des étapes/nodes, et les points ouverts identifiés (modèle IA visuels/textes, canal de publication, stockage du calendrier).",
+      "files": []
+    },
+    {
+      "id": 2,
+      "name": "reporting-mensuel-flou",
+      "prompt": "Chaque début de mois on perd quasiment une journée à compiler le reporting marketing à la main. Les chiffres viennent de plusieurs endroits et on les met dans un Google Sheet puis une presentation. J'aimerais automatiser tout ca. Cadre-moi le besoin.",
+      "expected_output": "Un cahier des charges qui assume honnêtement les nombreuses inconnues (quelles sources exactes, quelles métriques, format de la présentation) en les listant dans Points ouverts, tout en posant une structure exploitable. Reco d'outil et design malgré le flou, ou clairement marqués comme dépendant des réponses manquantes.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "name": "notif-slack-lead-crm",
+      "prompt": "Quand un nouveau lead arrive dans notre CRM développé en interne, je veux qu'un message parte automatiquement dans le canal Slack #leads de l'équipe, avec le nom, l'email, la source et le score du lead. Si le score est supérieur à 80, il faut aussi taguer le directeur marketing. Fais-moi le brief d'automatisation.",
+      "expected_output": "Un cahier des charges avec un déclencheur événementiel bien identifié (nouveau lead CRM, via webhook ou polling API), la règle conditionnelle score > 80 correctement reflétée dans le traitement et le design des nodes (un Router/IF), Slack en sortie, et la question de l'accès au CRM interne (API/webhook) marquée comme point à clarifier.",
+      "files": []
+    }
+  ]
+}
