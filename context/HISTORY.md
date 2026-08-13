@@ -7,22 +7,48 @@
 
 ---
 
-## 2026-06-17
+## 2026-08-13
 
-### Création de la skill "cadrage-automatisation"
-- Nouvelle skill personnalisée dans `.claude/skills/cadrage-automatisation/`
-- Rôle : mener un entretien adaptatif puis produire un cahier des charges d'automatisation (objectif, déclencheur, entrées, sorties, règles, cas limites, reco n8n vs Make, design des nodes, critères de succès)
-- Sortie : fichier markdown dans `briefs/` + affichage dans le chat
-- Validée sur 3 cas de test réels (app de création de posts, reporting mensuel, notification Slack sur nouveau lead CRM), comparaison avec/sans skill concluante
-- Se déclenche automatiquement quand Edgar veut cadrer ou scoper une automatisation
+### Pivot complet du workspace vers l'ecommerce
 
-### Installation initiale du Jarvis
-- Workspace personnalisé pour Edgar, basé à Cergy
-- Profil principal : Employé chez Treenity Group
-- Activité : Head of Automatisation Marketing, implante des systèmes d'IA et d'automatisation pour l'équipe marketing (5 personnes, rattaché au directeur marketing)
-- Objectifs court terme identifiés : livrer la v1 de l'app de création de posts, automatiser le reporting marketing mensuel, faire gagner du temps à l'équipe sur la production de contenu
-- Vision long terme : devenir la référence IA et automatisation du groupe Treenity
-- Projets actifs au démarrage : app de création de posts automatisée (prioritaire), création des apps internes, montée en compétence en cours
-- Domaine d'aide prioritaire : productivité et organisation au quotidien
-- Style de communication choisi : mélange selon le contexte, direct par défaut
-- Note technique : contenu du kit remonté du sous-dossier `jarvis-starter-kit/` vers la racine du workspace pour un chargement automatique correct
+**Décision :** abandon total de l'activité Treenity Group et de l'automatisation marketing. Le workspace devient dédié à un projet unique, la création d'une boutique ecommerce en dropshipping.
+
+**Nouveau cadre :**
+- Modèle : dropshipping sur Shopify, boutique en propre
+- Objectif : 10 000 € de profit net par mois d'ici mi-novembre 2026
+- Acquisition : Google Ads, Meta Ads, TikTok organique
+- Point de départ : zéro. Pas de boutique, pas de niche, pas de produit
+- Rôle attendu de Claude : assistant personnel spécialisé ecommerce, de A à Z
+
+**Refonte technique du workspace :**
+- `CLAUDE.md` réécrit intégralement, avec une section de règles spécifiques ecommerce (raisonner en chiffres, profit et non CA, pas de données inventées, conformité UE, pas de claims non tenables)
+- `CONTEXT.md` réécrit : profil entrepreneur ecommerce, tableau de statut des chantiers, points à clarifier
+- Arborescence `livrables/` refondue autour de la chaîne ecommerce : `produits/`, `boutique/`, `creas/`, `campagnes/`, `pilotage/`, `fournisseurs/`
+- Skill `cadrage-automatisation` supprimée (obsolète, ancrée n8n/Make/CRM Treenity)
+- Trois nouvelles skills créées : `validation-produit`, `angles-creas`, `pilotage-chiffres`
+- Skill `recherche-actualites` réorientée vers la veille ecommerce
+- Commandes `/prime` et `/morning` adaptées au nouveau contexte
+- Anciens livrables du site Prodvocation supprimés
+
+**Réserve posée par Claude et assumée par Edgar :** 10 000 € de profit net mensuel en 3 mois, en dropshipping depuis zéro, se situe dans le très haut du panier de ce qui se fait. L'objectif est conservé tel quel et sera piloté avec des chiffres réels plutôt qu'avec de l'optimisme.
+
+**Prochain chantier :** choix de la niche et recherche produit.
+
+---
+
+## Avant le pivot (archive)
+
+> Contexte historique conservé pour mémoire. Plus actif depuis le 13 août 2026.
+
+### 2026-06-17
+
+**Création de la skill "cadrage-automatisation"** (depuis supprimée)
+- Skill de cadrage d'automatisation produisant un cahier des charges (objectif, déclencheur, entrées, sorties, règles, cas limites, reco n8n vs Make)
+- Validée sur 3 cas de test réels
+
+**Installation initiale du Jarvis**
+- Workspace créé pour Edgar, basé à Cergy
+- Profil : Head of Automatisation Marketing chez Treenity Group, équipe marketing de 5 personnes
+- Objectifs de l'époque : v1 d'une app de création de posts, automatisation du reporting marketing mensuel, gain de temps sur la production de contenu
+- Vision : devenir la référence IA et automatisation du groupe Treenity
+- Note technique : contenu du kit remonté du sous-dossier `jarvis-starter-kit/` vers la racine du workspace

@@ -1,12 +1,12 @@
 # /morning
 
-> Commande raccourci pour démarrer votre journée en 30 secondes avec une veille personnalisée.
+> Commande raccourci pour démarrer ma journée en 30 secondes.
 
 ---
 
 ## Mission
 
-Quand je lance `/morning`, exécute la séquence complète suivante en utilisant la skill **recherche-actualites-contextualisees**.
+Quand je lance `/morning`, exécute la séquence complète suivante.
 
 ### Étape 1 : Charger mon contexte
 
@@ -15,48 +15,50 @@ Lis silencieusement :
 2. `context/CONTEXT.md`
 3. `context/HISTORY.md`
 
-Pas besoin de me résumer le contexte, je le connais. Charge juste pour bien filtrer la veille.
+Pas besoin de me résumer le contexte, je le connais. Charge juste pour bien filtrer
+la veille et calibrer le focus.
 
 ### Étape 2 : Effectuer la veille du jour
 
-Lance la skill `recherche-actualites-contextualisees` avec ces paramètres par défaut :
-- Périmètre : actualités IA + actualités de mon secteur d'activité
-- Filtre : selon mon contexte chargé
-- Format : présentation matinale claire
+Lance la skill `recherche-actualites` avec le périmètre par défaut :
+plateformes publicitaires, Shopify et outils, tendances produits, réglementation.
 
-### Étape 3 : Ajouter le résumé de mon agenda (si possible)
+### Étape 3 : Ajouter l'agenda (si possible)
 
-Si un connecteur calendrier (Google Calendar, etc.) est actif :
-- Récupère mes événements de la journée
-- Présente-les brièvement après la veille
+Si un connecteur calendrier est actif, récupère mes événements de la journée et
+présente-les brièvement. Sinon, ne mentionne rien sur l'agenda.
 
-Si aucun connecteur calendrier actif, ne mentionne rien sur l'agenda.
-
-### Étape 4 : Présenter le tout dans un format unique
+### Étape 4 : Présenter le tout
 
 Format de sortie attendu :
 
 ```
-☀️ Bonjour. Voici votre matinée.
+☀️ Bonjour Edgar. J-[X] avant l'échéance.
 
-📰 Votre veille du jour
-[Résultat de la skill recherche-actualites-contextualisees]
+📰 Ta veille du jour
+[Résultat de la skill recherche-actualites]
 
-📅 Votre agenda du jour (si connecteur disponible)
-[Liste des événements de la journée]
+📅 Ton agenda (si connecteur disponible)
+[Événements de la journée]
 
-🎯 Votre focus suggéré
-[1 phrase qui propose le focus principal de la journée basé sur la veille + agenda + projets en cours]
+🎯 Ton focus du jour
+[1 à 2 phrases : le chantier prioritaire du moment, la première action concrète à
+faire aujourd'hui pour le faire avancer]
 
-Bonne journée. Je suis prêt à vous aider.
+Bonne journée. Prêt quand tu veux.
 ```
 
 ---
 
 ## Règles importantes
 
-- L'objectif de cette commande, c'est de remplacer 15 minutes de scroll matinal par 30 secondes de lecture utile
-- Ne jamais dépasser 1 page de sortie, sinon c'est trop long pour une routine matinale
-- Si quelque chose n'est pas disponible (pas de connecteur calendrier par exemple), ne pas le mentionner, juste passer à la section suivante
-- Communication en français
-- Pas de tirets longs (em dashes)
+- Affiche le nombre de jours restants avant l'échéance de l'objectif dans l'en-tête
+- Le focus du jour doit être une action précise et faisable aujourd'hui, tirée du
+  chantier prioritaire de `CONTEXT.md`. Pas "avancer sur le produit", mais
+  "analyser trois produits candidats de la niche X"
+- L'objectif de cette commande, c'est de remplacer 15 minutes de scroll par 30
+  secondes de lecture utile
+- Ne jamais dépasser une page de sortie
+- Si quelque chose n'est pas disponible, ne pas le mentionner, passer à la section
+  suivante
+- Français, tutoiement, pas de tirets longs (em dashes)

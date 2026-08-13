@@ -1,7 +1,7 @@
 # CONTEXT.md
 
 > Mon contexte personnel et professionnel pour mon Jarvis.
-> Ce fichier sera rempli automatiquement lors de l'installation initiale puis mis à jour au fil du temps par Claude.
+> Mis à jour au fil du temps par Claude, via `/update` ou quand un changement important est détecté.
 
 ---
 
@@ -9,8 +9,8 @@
 
 - **Prénom :** Edgar
 - **Ville / Pays :** Cergy, France
-- **Situation actuelle :** Employé chez Treenity Group
-- **Profil dominant :** Employé
+- **Situation actuelle :** Entrepreneur ecommerce, en phase de lancement
+- **Profil dominant :** Entrepreneur
 
 ---
 
@@ -18,58 +18,95 @@
 
 ### Activité principale
 
-Head of Automatisation Marketing chez Treenity Group. Je conçois et implante des systèmes d'IA et d'automatisation au service du marketing, avec un objectif clair : faire gagner du temps à l'équipe marketing. Je démarre, rien n'est encore déployé.
+Je lance ma propre boutique ecommerce en dropshipping sur Shopify. Je pars de zéro : la boutique n'existe pas, la niche n'est pas choisie, le produit n'est pas identifié. Tout est à construire.
 
-### Détails selon le profil
+### Modèle
 
-**Employé :**
-- Poste : Head of Automatisation Marketing
-- Entreprise / Secteur : Treenity Group
-- Rattachement : directeur marketing
-- Équipe : 5 personnes au marketing
-- Missions principales : identifier les tâches à automatiser, concevoir et construire des apps et automatisations internes (n8n, Make), industrialiser la production de contenu
+- **Plateforme :** Shopify
+- **Modèle :** Dropshipping
+- **Marché visé :** à définir (France en priorité, à confirmer)
+- **Niche :** à définir
+- **Produit principal :** à définir
 
 ---
 
 ## Mes objectifs
 
-### Objectifs court terme (3 à 6 mois)
+### Objectif court terme (3 mois, échéance mi-novembre 2026)
 
-- Livrer la v1 de l'app de création de posts, utilisable par l'équipe
-- Automatiser le reporting marketing mensuel
-- Faire gagner du temps à l'équipe sur la production de contenu (volume horaire cible à définir)
+- **10 000 € de profit net par mois sur une boutique**
 
-### Objectifs long terme (1 à 3 ans)
+Étapes intermédiaires pour y arriver :
+1. Choisir une niche et identifier un produit validé
+2. Sourcer un fournisseur fiable (prix, délais, qualité)
+3. Créer la boutique Shopify et son tunnel de conversion
+4. Produire les créas et lancer les premières campagnes de test
+5. Trouver une combinaison produit + angle + canal rentable, puis scaler
 
-- Devenir la référence IA et automatisation du groupe Treenity
+### Objectif long terme (1 à 3 ans)
+
+- À définir. Se précisera une fois la première boutique rentable.
 
 ---
 
-## Mes projets en cours
+## Où j'en suis
 
-- **App de création de posts automatisée** : on choisit un jour, on clique sur "Créer", l'app génère des variantes de visuels et de descriptions, le tout avec un calendrier de publication. Projet prioritaire.
-- Création des différentes apps internes pour le marketing
-- Montée en compétence / formation en cours
+**Statut : phase 0, rien n'est lancé.**
+
+| Chantier | Statut |
+|----------|--------|
+| Niche | Non définie |
+| Produit | Non identifié |
+| Fournisseur | Non sourcé |
+| Boutique Shopify | Non créée |
+| Créas | Aucune |
+| Campagnes | Aucune |
+| Chiffre d'affaires | 0 € |
+
+**Prochain chantier :** choix de la niche et recherche produit.
+
+---
+
+## Acquisition
+
+Canaux prévus :
+
+- **Google Ads** : capter la demande existante (intention d'achat)
+- **Meta Ads** : créer la demande, tester les angles à grande échelle
+- **TikTok organique** : générer du volume sans budget média, tester les hooks à moindre coût
+
+Budget publicitaire : à définir.
 
 ---
 
 ## Mes outils et préférences
 
-### Outils que j'utilise au quotidien
+### Outils
 
-- Slack
-- Claude
-- n8n
-- Make
-- CRM développé en interne
+- Shopify (boutique)
+- Meta Ads Manager, Google Ads, TikTok
+- Claude / Claude Code (ce workspace)
 
 ### Style de communication préféré
 
-Un mélange selon le contexte : direct et efficace par défaut, avec des explications détaillées quand c'est utile.
+Direct et efficace par défaut, avec des explications détaillées quand c'est utile. Honnêteté brute sur les chiffres et la viabilité des idées.
 
-### Domaine où j'ai besoin du plus d'aide
+### Ce que j'attends de mon Jarvis
 
-Productivité et organisation au quotidien.
+Un assistant personnel spécialisé en ecommerce, capable de m'accompagner sur toute la chaîne, de A à Z : recherche produit, sourcing, création de boutique, copywriting, créas, campagnes, pilotage des chiffres.
+
+---
+
+## Points à clarifier
+
+Ces éléments manquent encore et devront être renseignés :
+
+- Nom de la boutique et de la marque
+- Niche et produit
+- Budget publicitaire disponible pour les tests
+- Temps hebdomadaire consacré au projet
+- Marché géographique cible (France seule ou UE élargie)
+- Structure juridique (auto-entrepreneur, société, existante ou à créer)
 
 ---
 

@@ -1,156 +1,160 @@
 ---
-name: recherche-actualites-contextualisees
-description: Skill pour effectuer une veille personnalisée des actualités. Quand l'utilisateur demande "fais-moi un point sur les actualités", "donne-moi les news du jour", "qu'est-ce que je dois savoir aujourd'hui", "fais-moi une veille", ou utilise la commande /morning, cette skill prend le relais pour effectuer une recherche d'actualités, les filtrer selon le contexte personnel de l'utilisateur (CONTEXT.md), et ne garder que celles qui sont pertinentes pour ses objectifs et projets actifs.
+name: recherche-actualites
+description: >
+  Veille ecommerce personnalisée, filtrée selon le contexte d'Edgar (boutique
+  dropshipping Shopify, acquisition Google Ads / Meta Ads / TikTok, objectif de
+  profit). Couvre les tendances produits, les changements de plateformes
+  publicitaires, les évolutions Shopify, la réglementation, et les signaux de
+  marché. Déclenche cette skill quand Edgar demande une veille, "les news du
+  jour", "un point sur les actualités", "ce que je dois savoir aujourd'hui", ou
+  utilise la commande /morning.
 ---
 
-# Skill : Recherche d'Actualités Contextualisées
+# Veille ecommerce contextualisée
 
 ## Mission
 
-Effectuer une veille intelligente des actualités, **filtrée selon le contexte personnel de l'utilisateur**. L'objectif n'est pas de tout dire, mais de ne garder que ce qui concerne vraiment l'utilisateur dans sa situation actuelle.
+Faire une veille filtrée, pas un revue de presse. L'objectif n'est pas de tout
+dire, mais de ne garder que ce qui peut changer une décision d'Edgar cette
+semaine.
+
+Trois actualités qui comptent valent mieux que dix qui remplissent.
 
 ---
 
-## Phase 1 : Charger le contexte de l'utilisateur
+## Phase 1 : charger le contexte
 
-Avant toute recherche, lire ces fichiers pour comprendre qui est l'utilisateur :
+Avant toute recherche, lire :
 
-1. `context/CONTEXT.md` (qui il est, ce qu'il fait, ses objectifs, ses projets)
-2. `context/HISTORY.md` (les sessions récentes pour comprendre les sujets actifs)
+1. `context/CONTEXT.md` (où en est la boutique, quels chantiers sont ouverts)
+2. `context/HISTORY.md` (les sessions récentes, les sujets actifs)
 
 Identifie en interne :
-- Le **profil dominant** (étudiant, employé, entrepreneur, indépendant)
-- L'**activité principale** et le secteur
-- Les **objectifs court terme** (3-6 mois)
-- Les **projets en cours**
-- Le **domaine d'aide prioritaire**
 
-Ces 5 éléments forment le **filtre de pertinence**.
+- Le **stade du projet** (pas de produit / produit choisi / boutique en ligne /
+  campagnes actives)
+- La **niche et le produit** s'ils sont définis
+- Les **canaux d'acquisition** en cours d'utilisation
+- Le **chantier prioritaire** du moment
 
----
-
-## Phase 2 : Demander le périmètre de la veille
-
-Si l'utilisateur n'a pas précisé le sujet, demande-lui :
-
-```
-Sur quel domaine voulez-vous votre veille du jour ?
-
-1. Actualités IA et nouvelles technologies (recommandé par défaut)
-2. Actualités de votre secteur d'activité
-3. Actualités économiques et business
-4. Un sujet spécifique (à préciser)
-```
-
-Si l'utilisateur tape directement `/morning` ou demande une routine matinale, lance directement la veille IA + secteur d'activité par défaut, sans poser la question.
+Ces éléments forment le filtre de pertinence. Une actu sur l'optimisation du
+scaling Meta n'a aucun intérêt tant qu'aucune campagne ne tourne.
 
 ---
 
-## Phase 3 : Effectuer la recherche
+## Phase 2 : périmètre de la veille
 
-Utilise les outils de recherche web disponibles (web_search ou un MCP comme Perplexity si connecté) pour récupérer les actualités du jour ou des derniers jours sur le périmètre demandé.
+Par défaut, couvre ces quatre axes :
 
-**Stratégie de recherche :**
+1. **Plateformes publicitaires** : changements d'algorithme, nouveaux formats,
+   règles de compte, politiques de contenu sur Meta, Google Ads et TikTok
+2. **Shopify et outils ecommerce** : nouveautés, applications, changements de
+   tarification
+3. **Tendances produits et consommation** : ce qui monte, saisonnalité à venir,
+   signaux de demande
+4. **Réglementation et conformité** : TVA, import, droit de la consommation,
+   obligations d'affichage pour la vente en ligne en France et dans l'UE
+
+Si Edgar précise un sujet, concentre-toi dessus. S'il tape `/morning`, lance
+directement le périmètre par défaut sans poser de question.
+
+---
+
+## Phase 3 : la recherche
+
+Utilise les outils de recherche web disponibles.
+
 - 3 à 5 recherches ciblées maximum
-- Privilégier les sources récentes (moins de 48 heures idéalement)
-- Couvrir 3 angles : annonces majeures, tendances émergentes, signaux faibles intéressants
-- Sources francophones en priorité, internationales si nécessaire
+- Privilégie les sources de moins de 7 jours
+- Sources francophones en priorité pour la réglementation et le marché français,
+  internationales pour les plateformes publicitaires et les tendances produits
 
-**Exemples de queries selon le profil :**
+Adapte les requêtes au stade du projet :
 
-Si profil = étudiant en marketing digital :
-- "actualités IA marketing digital cette semaine"
-- "outils IA gratuits étudiants 2026"
-- "tendances marketing automation"
+**Stade recherche produit :** tendances produits, produits qui percent sur TikTok,
+saisonnalité des prochains mois, nouveautés sur les plateformes de sourcing.
 
-Si profil = entrepreneur SaaS :
-- "actualités IA business SaaS"
-- "nouvelles fonctionnalités Claude OpenAI"
-- "outils productivité entrepreneur"
+**Stade création de boutique :** nouveautés Shopify, taux de conversion, standards
+de tunnel d'achat, obligations légales de la vente en ligne.
 
-Si profil = employé en santé :
-- "IA secteur santé actualités"
-- "régulation IA Europe santé"
-- "nouveaux outils professionnels santé"
-
-Adapte intelligemment selon le contexte chargé en Phase 1.
+**Stade campagnes actives :** changements sur Meta et Google Ads, évolution des
+CPM, politiques de compte publicitaire, nouveaux formats et placements.
 
 ---
 
-## Phase 4 : Filtrer selon le contexte
+## Phase 4 : filtrer
 
-C'est l'étape clé qui différencie cette skill d'une simple recherche Google.
+Pour chaque actualité trouvée, trois questions :
 
-Pour chaque actualité trouvée, pose-toi 3 questions :
+1. Est-ce que ça change quelque chose au chantier prioritaire d'Edgar ?
+2. Est-ce que ça impacte sa rentabilité, ses coûts, ou son accès à un canal ?
+3. Est-ce que ça crée une opportunité ou un risque sur son produit ou sa niche ?
 
-1. **Est-ce que cette actualité concerne directement les objectifs de l'utilisateur ?**
-2. **Est-ce que cette actualité a un impact sur ses projets en cours ?**
-3. **Est-ce que cette actualité change quelque chose dans son secteur ou son domaine prioritaire ?**
+Non aux trois questions, on écarte. Oui à au moins une, on garde.
 
-Si la réponse est "non" aux 3 questions → écarter l'actualité.
-Si la réponse est "oui" à au moins 1 question → garder l'actualité.
-
-Note pour toi-même : il vaut mieux présenter 3 actualités vraiment pertinentes que 10 actualités génériques. La valeur de cette skill, c'est le filtre.
+Écarte systématiquement : les levées de fonds, les annonces corporate sans effet
+opérationnel, les articles génériques du type "10 astuces pour vendre plus", et
+tout ce qui concerne un stade du projet qu'Edgar n'a pas encore atteint.
 
 ---
 
-## Phase 5 : Présenter le résultat
+## Phase 5 : présenter
 
-Présente la veille sous ce format exact :
+Format attendu :
 
 ```
-📰 Votre veille du [date du jour]
+📰 Ta veille du [date]
 
-Filtrée selon votre contexte : [résumé en 1 ligne du profil et du focus actuel]
+Filtrée selon ton contexte : [1 ligne, stade du projet et chantier en cours]
 
 ---
 
-🔥 Ce que vous devez absolument savoir
+🔥 À savoir absolument
 
 [Actualité 1]
-- Pourquoi c'est important pour vous : [explication personnalisée en 1-2 lignes]
+- Ce que ça change pour toi : [1 à 2 lignes, concret]
 - Source : [lien]
 
 [Actualité 2]
-- Pourquoi c'est important pour vous : [explication personnalisée]
+- Ce que ça change pour toi : [1 à 2 lignes]
 - Source : [lien]
 
 ---
 
-💡 Bon à savoir aussi
+💡 Bon à savoir
 
-[Actualité 3 ou 4 - bullet points courts]
+[1 ou 2 bullets courts]
 
 ---
 
-🎯 Action recommandée
+🎯 Action du jour
 
-[1 action concrète que l'utilisateur peut prendre aujourd'hui basée sur la veille]
+[1 action concrète, faisable aujourd'hui, liée au chantier prioritaire]
+```
+
+---
+
+## Si rien de pertinent
+
+Sois honnête plutôt que de remplir :
+
+```
+📰 Ta veille du [date]
+
+J'ai cherché sur [domaines couverts], rien qui impacte réellement ton chantier en
+cours aujourd'hui.
+
+Pas de bruit. Tu veux que j'élargisse à un autre domaine ?
 ```
 
 ---
 
 ## Règles importantes
 
-- **Toujours expliquer pourquoi c'est pertinent pour CET utilisateur**, pas juste "voici les news"
-- **Maximum 3-4 actualités**, pas plus, sinon c'est du bruit
-- **Action recommandée à la fin** : c'est ce qui transforme la veille en valeur concrète
-- **Ne jamais inventer** d'actualité ou de source. Si la recherche ne donne rien d'intéressant, le dire honnêtement
-- **Pas de tirets longs** (em dashes) dans les réponses
-- **Communication en français systématique**
-
----
-
-## Si aucune actualité pertinente trouvée
-
-Si après recherche, aucune actualité ne passe le filtre de pertinence, sois honnête :
-
-```
-📰 Votre veille du [date]
-
-J'ai effectué une recherche sur [domaines couverts] mais je n'ai pas trouvé d'actualité majeure qui impacte directement vos objectifs ou projets en cours aujourd'hui.
-
-Pas de bruit pour vous aujourd'hui. Voulez-vous que j'élargisse la recherche à un autre domaine ?
-```
-
-C'est mieux que de remplir avec du contenu générique qui ne sert à rien.
+- **Toujours expliquer pourquoi c'est pertinent pour Edgar spécifiquement**, pas
+  juste "voici les news"
+- **Maximum 3 à 4 actualités**, au delà c'est du bruit
+- **Ne jamais inventer** une actualité, une source ou un chiffre
+- **Toujours terminer par une action concrète**, c'est ce qui transforme la veille
+  en valeur
+- Français, tutoiement, pas de tirets longs (em dashes)

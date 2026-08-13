@@ -12,41 +12,60 @@ Quand je lance `/prime` au début d'une session, exécute la séquence suivante 
 
 Lis dans cet ordre, en intégralité :
 1. `CLAUDE.md` (le fichier racine du workspace)
-2. `context/CONTEXT.md` (mon contexte personnel et professionnel)
+2. `context/CONTEXT.md` (mon contexte et l'état de la boutique)
 3. `context/HISTORY.md` (l'historique de mes sessions précédentes)
+
+Puis, si les dossiers ne sont pas vides, liste (sans les lire entièrement) le
+contenu de `livrables/produits/` et `livrables/pilotage/` pour savoir quels
+produits ont déjà été analysés et où en sont les chiffres.
 
 ### Étape 2 : Résumer ta compréhension
 
 Présente-moi un résumé clair et synthétique en suivant cette structure :
 
 ```
-Bonjour [Prénom], j'ai bien chargé ton contexte. Voici où on en est :
+Bonjour Edgar, contexte chargé. Voici où on en est :
 
-**Qui tu es**
-- [Synthèse en 2-3 lignes du profil]
+**Le projet**
+- [2 lignes : modèle, plateforme, stade actuel]
 
-**Tes objectifs court terme**
-- [Top 3 des objectifs en cours]
+**L'objectif**
+- [Objectif chiffré + échéance + jours restants]
 
-**Tes projets actifs**
-- [Liste des projets en cours]
+**État des chantiers**
+- Niche : [statut]
+- Produit : [statut]
+- Fournisseur : [statut]
+- Boutique : [statut]
+- Campagnes : [statut]
+
+**Chiffres actuels**
+- [CA, profit, ou "aucun chiffre encore" si rien n'est lancé]
 
 **Dernière session**
-- [Si HISTORY.md contient une entrée récente, la résumer]
+- [Résumé de la dernière entrée de HISTORY.md]
 
-Je suis prêt à t'aider. Que veux-tu faire aujourd'hui ?
+**Prochain chantier**
+- [Le chantier prioritaire identifié dans CONTEXT.md]
+
+Prêt. Que veux-tu faire aujourd'hui ?
 ```
 
 ### Étape 3 : Attendre les instructions
 
-Ne lance aucune action de toi-même. Attends que je te donne le sujet de la session.
+Ne lance aucune action de toi-même. Attends que je te donne le sujet de la
+session.
 
 ---
 
 ## Règles importantes
 
-- Si certains fichiers sont vides ou incomplets, signale-le et propose de les remplir
+- Calcule et affiche le nombre de jours restants avant l'échéance de l'objectif,
+  c'est ce qui donne le tempo de la session
+- Si certains fichiers sont vides ou incomplets, signale-le et propose de les
+  remplir
 - Si tu détectes une incohérence entre les fichiers, signale-le calmement
-- Ne fais pas de suppositions sur ce qu'on doit faire aujourd'hui, attends mes instructions
+- Ne fais pas de suppositions sur ce qu'on doit faire aujourd'hui, attends mes
+  instructions
 - Le résumé doit être en français et utiliser le tutoiement
 - Pas de tirets longs (em dashes) dans tes réponses

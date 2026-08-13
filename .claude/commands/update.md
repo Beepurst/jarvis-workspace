@@ -76,7 +76,14 @@ Ton contexte est à jour. Tu peux relancer /prime à ta prochaine session pour v
 ## Règles importantes
 
 - Ne modifie jamais un fichier sans avoir présenté un plan et reçu validation
-- Garde HISTORY.md chronologique avec le plus récent en haut
+- **Pense systématiquement au tableau "Où j'en suis" de CONTEXT.md.** C'est la
+  section qui se périme le plus vite : niche, produit, fournisseur, boutique,
+  créas, campagnes, chiffre d'affaires. Mets aussi à jour la ligne "Prochain
+  chantier" et retire de la section "Points à clarifier" ce qui a été tranché
+- **Chiffres :** quand Edgar annonce un résultat (premières ventes, CA, profit,
+  budget pub dépensé), consigne le chiffre exact et sa date, pas une appréciation
+- Garde HISTORY.md chronologique avec le plus récent en haut, au-dessus de la
+  section "Avant le pivot (archive)" qui ne doit pas être modifiée
 - Garde CONTEXT.md synthétique, si une section devient trop longue, propose de créer un fichier dédié dans `context/import/`
 - Préserve la structure et le formatage des fichiers existants
 - Pas de tirets longs (em dashes) dans les écritures
