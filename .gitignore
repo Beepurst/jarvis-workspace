@@ -58,3 +58,11 @@ yarn-error.log*
 tmp/
 temp/
 .tmp/
+
+# ============================================================
+# Hub Ecom : depot git INDEPENDANT
+# ============================================================
+# Le cockpit vit dans livrables/hub/ mais il a son propre depot et son propre projet
+# Vercel. Il est ignore ici pour qu'un depot imbrique ne soit pas commite a moitie,
+# et pour qu'un push du workspace ne declenche aucun deploiement.
+livrables/hub/

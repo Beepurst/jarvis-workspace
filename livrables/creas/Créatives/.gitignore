@@ -1,0 +1,8 @@
+# Dépendances et rendus : reconstructibles, jamais versionnés.
+node_modules/
+html/
+_planches/
+Ready/
+sourcing/_candidats/
+# Les PNG finaux restent sur le disque, la source de vérité est le build.mjs.
+créatives ads/

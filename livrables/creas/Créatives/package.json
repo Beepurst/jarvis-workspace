@@ -1,0 +1,9 @@
+{
+  "name": "creatives",
+  "private": true,
+  "type": "module",
+  "description": "Chaine de production des creatives : HTML -> PNG via Playwright.",
+  "dependencies": {
+    "playwright": "^1.62.1"
+  }
+}
