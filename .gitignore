@@ -72,3 +72,6 @@ livrables/hub/
 # ============================================================
 .claude/worktrees/
 .superpowers/
+
+# Hub Agence : depot git independant (Beepurst/hub-agence), ne jamais commiter depuis la racine
+livrables/hub-agence/

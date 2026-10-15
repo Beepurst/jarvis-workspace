@@ -86,6 +86,7 @@ Une fois que je confirme, Claude met à jour le fichier en question et ajoute un
 │   ├── HISTORY.md               # Journal évolutif de mes sessions
 │   └── import/                  # Documents externes à analyser
 ├── livrables/                   # Livrables produits par Claude, un sous-dossier par sujet
+│   ├── hub-agence/              # Hub Agence, dépôt git indépendant, outil interne de l'agence
 │   └── hub/                     # Hub Ecom, dépôt git indépendant, inutilisé
 ├── archive/
 │   └── ecom/                    # Projet ecommerce arrêté (contexte, agents, skills, livrables)
@@ -108,6 +109,15 @@ Les sous-dossiers de `livrables/` se créent au besoin (par exemple `offre/`, `p
 - **C'est un dépôt git indépendant** (`github.com/Beepurst/hub-ecom`), exclu du `.gitignore` du workspace. Ne jamais le commiter depuis la racine.
 - **Ne jamais lancer `npm run build` pendant qu'un serveur dev tourne**, ils partagent le même `.next`.
 - Les pièges connus sont dans `livrables/hub/docs-reprise/05-pieges.md`.
+
+---
+
+## Hub Agence
+
+`livrables/hub-agence/` est l'outil interne de l'agence (briefs, bibliothèque de références, puis comptes, devis, factures). Copié de l'Orbikal Hub le 15/10/2026. Spec : `docs/superpowers/specs/2026-10-15-hub-agence-design.md`. Lots 0 et 1 codés et testés en local, **pas encore en ligne** (dépôt GitHub et projet Vercel à créer).
+
+- **Dépôt git indépendant**, exclu du `.gitignore` du workspace. Ne jamais le commiter depuis la racine.
+- **Ne jamais lancer `npm run build` pendant qu'un serveur dev tourne.**
 
 ---
 
