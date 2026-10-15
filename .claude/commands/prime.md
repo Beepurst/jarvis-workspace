@@ -12,12 +12,11 @@ Quand je lance `/prime` au début d'une session, exécute la séquence suivante 
 
 Lis dans cet ordre, en intégralité :
 1. `CLAUDE.md` (le fichier racine du workspace)
-2. `context/CONTEXT.md` (mon contexte et l'état de la boutique)
+2. `context/CONTEXT.md` (mon contexte et l'état de l'agence)
 3. `context/HISTORY.md` (l'historique de mes sessions précédentes)
 
-Puis, si les dossiers ne sont pas vides, liste (sans les lire entièrement) le
-contenu de `livrables/produits/` et `livrables/pilotage/` pour savoir quels
-produits ont déjà été analysés et où en sont les chiffres.
+Puis liste (sans les lire entièrement) les sous-dossiers de `livrables/`, hors
+`hub/`, pour savoir quels livrables existent déjà. Ne lis pas `archive/`.
 
 ### Étape 2 : Résumer ta compréhension
 
@@ -27,20 +26,20 @@ Présente-moi un résumé clair et synthétique en suivant cette structure :
 Bonjour Edgar, contexte chargé. Voici où on en est :
 
 **Le projet**
-- [2 lignes : modèle, plateforme, stade actuel]
+- [2 lignes : activité, outil, stade actuel]
 
 **L'objectif**
 - [Objectif chiffré + échéance + jours restants]
 
 **État des chantiers**
-- Niche : [statut]
-- Produit : [statut]
-- Fournisseur : [statut]
-- Boutique : [statut]
-- Campagnes : [statut]
+- Outil : [statut]
+- Offre et prix : [statut]
+- Prospection : [statut]
+- Clients : [statut]
+- Orbikal : [statut]
 
 **Chiffres actuels**
-- [CA, profit, ou "aucun chiffre encore" si rien n'est lancé]
+- [CA encaissé, devis en cours, ou "aucun chiffre encore"]
 
 **Dernière session**
 - [Résumé de la dernière entrée de HISTORY.md]

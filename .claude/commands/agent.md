@@ -13,20 +13,20 @@ contexte.
 
 ### Étape 0 : Comprendre la demande
 
-Si j'ai déjà précisé ce que je veux (`/agent un agent qui source des
-fournisseurs`), pars de là et n'entame pas l'entretien depuis zéro.
+Si j'ai déjà précisé ce que je veux (`/agent un agent qui rédige mes
+propositions commerciales`), pars de là et n'entame pas l'entretien depuis zéro.
 
 Si je lance `/agent` tout seul, propose-moi d'abord ce catalogue, en précisant que
 je peux aussi décrire mon propre besoin :
 
 ```
-Quel agent veux-tu créer ? Voici des pistes utiles pour la boutique :
+Quel agent veux-tu créer ? Voici des pistes utiles pour l'agence :
 
-1. sourceur-fournisseurs   → trouve et compare des fournisseurs pour un produit donné
-2. espion-concurrence      → analyse une boutique ou un annonceur concurrent de fond en comble
-3. chasseur-produits       → ratisse les sources de tendances et remonte des produits candidats
-4. copywriter-fiches       → rédige des fiches produit Shopify complètes et optimisées
-5. auditeur-boutique       → passe la boutique au crible (tunnel, conformité, conversion)
+1. prospecteur             → identifie des PME cibles et rédige les messages d'approche
+2. redacteur-propositions  → transforme un besoin client en proposition commerciale et devis
+3. auditeur-site           → passe le site actuel d'un prospect au crible (design, SEO, conversion)
+4. copywriter-site         → rédige les textes d'un site vitrine à partir d'un brief
+5. juriste-conformite      → mentions légales, RGPD, CGV de prestation
 6. Autre chose, je t'explique
 ```
 
@@ -96,8 +96,8 @@ tools: [liste des outils, séparés par des virgules]
 
 ## Contexte
 
-Tu travailles pour Edgar, qui lance une boutique ecommerce en dropshipping sur
-Shopify. Son objectif est un profit net, pas un chiffre d'affaires. Lis
+Tu travailles pour Edgar, qui relance son agence de création de sites internet
+pour PME. Son objectif est de faire rentrer du cash rapidement. Lis
 `context/CONTEXT.md` si tu as besoin de l'état actuel du projet.
 
 [Puis le contexte spécifique à cet agent.]
@@ -149,12 +149,12 @@ uniquement"]
   avec une description vague ne sera jamais déclenché. Sois exhaustif sur les
   situations et les formulations.
 - **Nomme les agents en minuscules avec des tirets**, sur le métier plutôt que sur
-  l'outil : `sourceur-fournisseurs`, pas `agent-recherche-web`.
+  l'outil : `redacteur-propositions`, pas `agent-recherche-web`.
 - **Donne le minimum d'outils nécessaire.** Un agent qui n'a pas besoin d'écrire
   ne reçoit pas les outils d'écriture.
 - **Ne crée jamais un agent qui double une skill existante.** Si `/agent` recoupe
-  `validation-produit`, `angles-creas` ou `pilotage-chiffres`, dis-le moi et
-  propose plutôt d'enrichir la skill.
+  une skill de `.claude/skills/`, dis-le moi et propose plutôt d'enrichir la
+  skill.
 - **Vérifie avant d'écrire** qu'un agent du même nom n'existe pas déjà dans
   `.claude/agents/`. Si oui, propose de le modifier plutôt que de l'écraser.
 - Ne modifie jamais un fichier sans avoir présenté le récapitulatif et reçu

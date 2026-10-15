@@ -77,8 +77,8 @@ Ton contexte est à jour. Tu peux relancer /prime à ta prochaine session pour v
 
 - Ne modifie jamais un fichier sans avoir présenté un plan et reçu validation
 - **Pense systématiquement au tableau "Où j'en suis" de CONTEXT.md.** C'est la
-  section qui se périme le plus vite : niche, produit, fournisseur, boutique,
-  créas, campagnes, chiffre d'affaires. Mets aussi à jour la ligne "Prochain
+  section qui se périme le plus vite : outil, offre et prix, prospection,
+  clients, Orbikal, chiffre d'affaires. Mets aussi à jour la ligne "Prochain
   chantier" et retire de la section "Points à clarifier" ce qui a été tranché
 - **Chiffres :** quand Edgar annonce un résultat (premières ventes, CA, profit,
   budget pub dépensé), consigne le chiffre exact et sa date, pas une appréciation

@@ -20,8 +20,10 @@ la veille et calibrer le focus.
 
 ### Étape 2 : Effectuer la veille du jour
 
-Lance la skill `recherche-actualites` avec le périmètre par défaut :
-plateformes publicitaires, Shopify et outils, tendances produits, réglementation.
+Fais une veille courte par recherche web, filtrée sur l'agence : nouveautés
+Framer et Webflow (fonctionnalités, prix), outils d'automatisation (n8n, Make),
+tendances de la création de sites pour PME, réglementation utile (RGPD,
+facturation électronique, accessibilité). Trois à cinq points au maximum.
 
 ### Étape 3 : Ajouter l'agenda (si possible)
 
@@ -36,7 +38,7 @@ Format de sortie attendu :
 ☀️ Bonjour Edgar. J-[X] avant l'échéance.
 
 📰 Ta veille du jour
-[Résultat de la skill recherche-actualites]
+[Résultat de la veille]
 
 📅 Ton agenda (si connecteur disponible)
 [Événements de la journée]
@@ -54,8 +56,8 @@ Bonne journée. Prêt quand tu veux.
 
 - Affiche le nombre de jours restants avant l'échéance de l'objectif dans l'en-tête
 - Le focus du jour doit être une action précise et faisable aujourd'hui, tirée du
-  chantier prioritaire de `CONTEXT.md`. Pas "avancer sur le produit", mais
-  "analyser trois produits candidats de la niche X"
+  chantier prioritaire de `CONTEXT.md`. Pas "avancer sur la prospection", mais
+  "relancer trois anciens clients avec l'offre X"
 - L'objectif de cette commande, c'est de remplacer 15 minutes de scroll par 30
   secondes de lecture utile
 - Ne jamais dépasser une page de sortie
