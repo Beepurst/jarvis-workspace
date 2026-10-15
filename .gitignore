@@ -66,3 +66,9 @@ temp/
 # Vercel. Il est ignore ici pour qu'un depot imbrique ne soit pas commite a moitie,
 # et pour qu'un push du workspace ne declenche aucun deploiement.
 livrables/hub/
+
+# ============================================================
+# Espaces de travail Claude (worktrees, suivi des plans)
+# ============================================================
+.claude/worktrees/
+.superpowers/
