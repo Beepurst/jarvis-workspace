@@ -18,10 +18,12 @@ Le workspace a servi d'août à septembre 2026 à un projet ecommerce, aujourd'h
 
 Je m'appelle Edgar et je vis à Cergy. Mon profil : marketing, automatisation (n8n, Make) et données.
 
-**La situation au 15 octobre 2026 :**
+**La situation au 18 octobre 2026 :**
 
-- **Je relance mon agence de création de sites internet**, auparavant spécialisée Framer. Objectif : faire rentrer du cash rapidement.
-- **Framer ou Webflow n'est pas encore tranché.** Le connecteur Webflow est branché pour tester l'outil sur un site de démonstration.
+- **Je relance mon agence de création de sites internet, Kleak Agency**, auparavant spécialisée Framer. Objectif : faire rentrer du cash rapidement.
+- **Kleak reste une agence Framer** (décision finale du 18/10, après un test où Claude Code a construit des sites Framer complets via `@framer/agent`). Webflow est abandonné.
+- **Exigence qualité :** un site doit sortir parfait en 2 ou 3 allers-retours maximum. On valide la direction ensemble en amont (structure, ambiance, photos, textes) avant de construire, et chaque site passe `livrables/process/checklist-qualite-site.md`, performance comprise.
+- **Acquisition par Meta Ads uniquement**, aucun ancien client ni réseau à relancer.
 - **Orbikal**, mon SaaS de dashboard marketing, est **en pause** : plus de développement, l'existant reste en ligne. Il peut servir l'agence comme reporting mensuel inclus dans la maintenance.
 - **Le projet ecommerce avec Forqan est arrêté.**
 

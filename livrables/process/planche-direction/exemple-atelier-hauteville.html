@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Planche de direction</title>
+<!--
+  MODÈLE DE PLANCHE DE DIRECTION · Kleak Agency
+  1. Dupliquer ce fichier sous le nom du client (ex. planche-dupont-plomberie.html).
+  2. Remplir uniquement l'objet PLANCHE ci-dessous (à partir des réponses au questionnaire de cadrage).
+  3. Exporter : voir README.md (PDF A4 paysage + image PNG).
+  Les polices sont chargées depuis Google Fonts d'après les noms indiqués dans PLANCHE.polices.
+-->
+<script>
+const PLANCHE = {
+  client: "Atelier Hauteville",
+  secteur: "Cuisiniste sur mesure · Cergy",
+  formule: "Pro",
+  date: "18 octobre 2026",
+  version: "V1",
+  intention: "Un site sobre et précis, comme un cabinet d'architecte, où la matière (bois, pierre, laiton) fait tout le travail.",
+  mots: ["Minimal", "Artisanal", "Premium"],
+  luminosite: "Clair, avec deux sections sombres pour le rythme",
+  couleurs: [
+    { nom: "Crème", hex: "#F5EFE6", role: "Fond" },
+    { nom: "Noir chaud", hex: "#1E1A17", role: "Texte, boutons" },
+    { nom: "Noyer", hex: "#5C4033", role: "Accent" },
+    { nom: "Laiton", hex: "#B08D57", role: "Détails, avec parcimonie" },
+    { nom: "Gris taupe", hex: "#625850", role: "Texte secondaire" },
+  ],
+  polices: {
+    titre: { nom: "Instrument Serif", poids: 400, exemple: "La cuisine qui vous ressemble." , italique: "ressemble." },
+    texte: { nom: "Inter", poids: 400, exemple: "Dessinée, fabriquée et posée par nos artisans, pour les maisons et grands appartements de l'ouest parisien." },
+  },
+  photos: [
+    { url: "https://images.unsplash.com/photo-1758565811438-23e44c7c65fa?crop=entropy&cs=srgb&fm=jpg&ixlib=rb-4.1.0&q=80&w=900", legende: "Accroche : îlot en bois" },
+    { url: "https://images.unsplash.com/photo-1659930087003-2d64e33181f7?crop=entropy&cs=srgb&fm=jpg&ixlib=rb-4.1.0&q=85&w=700", legende: "Savoir-faire : la main de l'artisan" },
+    { url: "https://images.unsplash.com/photo-1576092762791-dd9e2220abd1?crop=entropy&cs=srgb&fm=jpg&ixlib=rb-4.1.0&q=85&w=700", legende: "Matière : le bois" },
+    { url: "https://images.unsplash.com/photo-1786673211400-90f79d15b1ff?crop=entropy&cs=srgb&fm=jpg&ixlib=rb-4.1.0&q=85&w=700", legende: "Matière : la pierre" },
+    { url: "https://images.unsplash.com/photo-1771926343582-225257874d19?crop=entropy&cs=srgb&fm=jpg&ixlib=rb-4.1.0&q=85&w=700", legende: "Showroom" },
+  ],
+  photosSource: "Photos libres de droits en attendant les vôtres",
+  accroche: {
+    titre: "La cuisine qui vous ressemble.",
+    sousTitre: "Dessinée, fabriquée et posée par nos artisans.",
+    bouton: "Prendre rendez-vous",
+  },
+  pages: ["Accueil", "Réalisations", "Savoir-faire", "À propos", "Contact"],
+  sections: [
+    "Accroche : grand titre et photo",
+    "Bandeau de mots qui défile",
+    "Chiffres clés",
+    "Savoir-faire en 3 étapes",
+    "Réalisations (défilement horizontal)",
+    "Démarche en 4 étapes",
+    "Matériaux : bois, pierre, laiton",
+    "Témoignages",
+    "Showroom : adresse et horaires",
+    "Formulaire de rendez-vous",
+  ],
+  animations: "Discrètes : bandeau défilant, légère profondeur sur les photos, survols. Priorité à la vitesse d'affichage.",
+  questions: [
+    "L'ambiance générale vous correspond-elle ?",
+    "Les couleurs et les polices vous conviennent-elles ?",
+    "Une photo ou une section à retirer, à ajouter ou à déplacer ?",
+  ],
+  agence: "Kleak Agency",
+  contact: "contact@kleakagency.fr",
+};
+</script>
+<style>
+  :root { --bg: #FAF8F4; --ink: #1E1A17; --mute: #6B625A; --line: rgba(30,26,23,.14); --accent: #8A6A3A; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  @page { size: 1600px 1000px; margin: 0; }
+  html, body { background: var(--bg); color: var(--ink); font-family: Inter, system-ui, sans-serif; }
+  .page { width: 1600px; height: 1000px; padding: 44px 56px 36px; display: grid; grid-template-rows: auto 1fr auto; gap: 26px; overflow: hidden; }
+  header { display: flex; justify-content: space-between; align-items: flex-end; padding-bottom: 16px; border-bottom: 1px solid var(--line); }
+  .eyebrow { font: 500 11px/1.4 Inter; letter-spacing: .14em; text-transform: uppercase; color: var(--accent); }
+  .client { font-size: 34px; margin-top: 6px; }
+  .meta { text-align: right; font: 400 13px/1.6 Inter; color: var(--mute); }
+  .grid { display: grid; grid-template-columns: 1.05fr 1.25fr 0.9fr; gap: 36px; min-height: 0; }
+  .col { display: flex; flex-direction: column; gap: 22px; min-height: 0; }
+  .block h3 { font: 500 11px/1.4 Inter; letter-spacing: .14em; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+  .intention { font-size: 24px; line-height: 1.25; }
+  .tags { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+  .tag { font: 500 12px Inter; padding: 6px 12px; border: 1px solid var(--line); border-radius: 999px; }
+  .small { font: 400 13px/1.55 Inter; color: var(--mute); }
+  .swatches { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+  .sw div { height: 64px; border: 1px solid var(--line); }
+  .sw b { display: block; font: 600 12px Inter; margin-top: 6px; }
+  .sw span { display: block; font: 400 11px/1.4 Inter; color: var(--mute); }
+  .typo .t { font-size: 46px; line-height: 1; letter-spacing: -.01em; }
+  .typo .b { font-size: 15px; line-height: 1.6; color: var(--mute); margin-top: 10px; }
+  .typo .names { display: flex; justify-content: space-between; margin-top: 10px; font: 400 12px Inter; color: var(--mute); }
+  .photos { display: grid; grid-template-columns: 1.4fr 1fr 1fr; grid-template-rows: 1fr 1fr; gap: 8px; height: 330px; }
+  .photos figure { position: relative; overflow: hidden; background: #ddd; }
+  .photos figure:first-child { grid-row: span 2; }
+  .photos img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .photos figcaption { position: absolute; left: 8px; bottom: 8px; font: 500 11px Inter; color: #fff; background: rgba(0,0,0,.45); padding: 3px 7px; }
+  .hero { padding: 22px; border: 1px solid var(--line); background: #fff; }
+  .hero .h { font-size: 36px; line-height: 1.02; }
+  .hero .s { font-size: 14px; color: var(--mute); margin-top: 8px; }
+  .hero .btn { display: inline-block; margin-top: 14px; background: var(--ink); color: #F5EFE6; font: 500 13px Inter; padding: 10px 16px; }
+  ol { list-style: none; counter-reset: s; }
+  ol li { counter-increment: s; display: flex; gap: 10px; font: 400 13px/1.35 Inter; padding: 6px 0; border-bottom: 1px solid var(--line); }
+  ol li::before { content: counter(s, decimal-leading-zero); color: var(--accent); font-weight: 500; width: 22px; }
+  .pages { font: 500 13px/1.6 Inter; }
+  footer { display: grid; grid-template-columns: 1.6fr 1fr; gap: 36px; padding-top: 16px; border-top: 1px solid var(--line); align-items: start; }
+  .ask { display: flex; gap: 26px; }
+  .ask div { font: 400 13px/1.45 Inter; display: flex; gap: 8px; }
+  .ask div::before { content: ""; flex: none; width: 14px; height: 14px; border: 1px solid var(--ink); margin-top: 2px; }
+  .sign { text-align: right; font: 400 12px/1.6 Inter; color: var(--mute); }
+</style>
+</head>
+<body>
+<div class="page" id="page"></div>
+<script>
+const P = PLANCHE;
+const fam = [P.polices.titre, P.polices.texte].map((f) => f.nom.replace(/ /g, "+") + ":ital,wght@0," + f.poids + ";1," + f.poids).join("&family=");
+const link = document.createElement("link");
+link.rel = "stylesheet"; link.href = "https://fonts.googleapis.com/css2?family=" + fam + "&display=block";
+document.head.appendChild(link);
+const esc = (s) => String(s).replace(/[&<>]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" })[c]);
+const titleFont = `font-family:'${P.polices.titre.nom}';font-weight:${P.polices.titre.poids}`;
+const withItalic = (t, it) => it && t.includes(it) ? esc(t).replace(esc(it), `<em>${esc(it)}</em>`) : esc(t);
+document.getElementById("page").innerHTML = `
+<header>
+  <div><div class="eyebrow">Planche de direction · ${esc(P.version)}</div><div class="client" style="${titleFont}">${esc(P.client)}</div><div class="small">${esc(P.secteur)}</div></div>
+  <div class="meta">Formule ${esc(P.formule)}<br>${esc(P.date)}<br>${esc(P.agence)}</div>
+</header>
+<div class="grid">
+  <div class="col">
+    <div class="block"><h3>L'intention</h3><p class="intention" style="${titleFont}">${esc(P.intention)}</p>
+      <div class="tags">${P.mots.map((m) => `<span class="tag">${esc(m)}</span>`).join("")}<span class="tag">${esc(P.luminosite)}</span></div></div>
+    <div class="block"><h3>Couleurs</h3><div class="swatches">${P.couleurs.map((c) => `<div class="sw"><div style="background:${c.hex}"></div><b>${esc(c.nom)}</b><span>${esc(c.role)}</span></div>`).join("")}</div></div>
+    <div class="block typo"><h3>Polices</h3><div class="t" style="${titleFont}">${withItalic(P.polices.titre.exemple, P.polices.titre.italique)}</div>
+      <div class="b" style="font-family:'${P.polices.texte.nom}'">${esc(P.polices.texte.exemple)}</div>
+      <div class="names"><span>Titres : ${esc(P.polices.titre.nom)}</span><span>Texte : ${esc(P.polices.texte.nom)}</span></div></div>
+  </div>
+  <div class="col">
+    <div class="block"><h3>Photos retenues</h3><div class="photos">${P.photos.slice(0, 5).map((p) => `<figure><img src="${p.url}" alt=""><figcaption>${esc(p.legende)}</figcaption></figure>`).join("")}</div>
+      <p class="small" style="margin-top:8px">${esc(P.photosSource)}</p></div>
+    <div class="block"><h3>Accroche proposée</h3><div class="hero" style="background:${P.couleurs[0].hex}">
+      <div class="h" style="${titleFont};color:${P.couleurs[1].hex}">${withItalic(P.accroche.titre, P.polices.titre.italique)}</div>
+      <div class="s">${esc(P.accroche.sousTitre)}</div><span class="btn" style="background:${P.couleurs[1].hex};color:${P.couleurs[0].hex}">${esc(P.accroche.bouton)} ↗</span></div></div>
+  </div>
+  <div class="col">
+    <div class="block"><h3>Pages</h3><p class="pages">${P.pages.map(esc).join(" · ")}</p></div>
+    <div class="block"><h3>Page d'accueil, dans l'ordre</h3><ol>${P.sections.map((s) => `<li>${esc(s)}</li>`).join("")}</ol></div>
+    <div class="block"><h3>Animations</h3><p class="small">${esc(P.animations)}</p></div>
+  </div>
+</div>
+<footer>
+  <div><div class="eyebrow" style="margin-bottom:10px">Votre retour, en un seul message</div><div class="ask">${P.questions.map((q) => `<div>${esc(q)}</div>`).join("")}</div></div>
+  <div class="sign">Dès votre validation, nous construisons votre site.<br>${esc(P.contact)}</div>
+</footer>`;
+document.querySelectorAll("em").forEach((e) => (e.style.fontStyle = "italic"));
+</script>
+</body>
+</html>

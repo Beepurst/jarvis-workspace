@@ -3,7 +3,7 @@
 > Mon contexte personnel et professionnel pour mon Jarvis.
 > Mis à jour au fil du temps par Claude, via `/update` ou quand un changement important est détecté.
 >
-> Dernière mise à jour : 15 octobre 2026
+> Dernière mise à jour : 18 octobre 2026
 
 ---
 
@@ -20,17 +20,27 @@
 
 ### Activité principale : l'agence de création de sites
 
-Je reprends mon agence de création de sites internet, auparavant spécialisée Framer. Le but est simple : **générer des revenus rapidement**, la prestation de service étant le chemin le plus court (une mission peut payer dans le mois, là où un SaaS met souvent 12 à 24 mois à remplacer un salaire).
+Je reprends mon agence de création de sites internet, Kleak Agency, **et elle reste une agence Framer** (décision finale du 18/10, après un test comparatif). Le but est simple : **générer des revenus rapidement**, la prestation de service étant le chemin le plus court (une mission peut payer dans le mois, là où un SaaS met souvent 12 à 24 mois à remplacer un salaire).
 
 | | |
 |---|---|
+| Nom | **Kleak Agency** (nom de l'ancienne agence Framer, repris). Domaine `kleakagency.fr`, page Facebook et compte publicitaire Meta toujours actifs |
 | Activité | Création de sites internet, en prestation |
-| Outil de production | **Framer ou Webflow, pas encore tranché.** Test en cours, voir plus bas |
-| Cible pressentie | PME françaises, sites vitrines |
+| Outil de production | **Framer**, piloté par Claude Code via l'outil `@framer/agent` (décision finale du 18/10) |
+| Cible | **PME françaises de tous secteurs**, sites vitrines. Pas de spécialisation sectorielle (décision du 18/10, comme l'ancienne agence) |
 | Objectif | Cash rapide |
-| Statut juridique | À préciser |
+| Statut juridique | Micro-entreprise, BIC prestations de services |
 
-### Framer ou Webflow : la décision en cours
+### Framer : décision finale du 18 octobre
+
+Le matin du 18/10, Webflow a été choisi, puis abandonné le jour même après un test réel : **Kleak reste une agence Framer.**
+
+- **Le test :** Claude Code construit des sites Framer complets via l'outil `@framer/agent` (projet `TEST-CLAUDE`). La home de `kleakagency.fr` a été recréée avec ses animations en environ 16 min. Atelier Hauteville a été construit d'après le brief complet (11 sections, CMS des réalisations, menu burger, formulaire, 3 tailles d'écran) en environ 11 min de construction, sans retouche d'Edgar. La V1 Webflow du même brief était inmontrable.
+- **Pourquoi Framer :** la contrainte est la capacité de production, pas l'acquisition (Meta Ads). Un prospect à 999 € achète un site, un délai et un prix, pas un outil. Les prix actuels sont calés sur Framer, le site de Kleak y est déjà, et Edgar connaît l'outil.
+- **Exigence d'Edgar :** les sites doivent sortir parfaits en **2 ou 3 allers-retours maximum**. Pour ça, on travaille ensemble **en amont** : la direction (structure, ambiance, photos, textes) est validée avant de construire, puis chaque site passe la checklist qualité (`livrables/process/checklist-qualite-site.md`), performance comprise.
+- **Point faible révélé par le test : la performance.** Atelier Hauteville a obtenu 33 sur mobile et 68 sur bureau au premier passage PageSpeed (animations sur l'accroche, images trop lourdes, trop de graisses de police). Les règles qui en découlent sont dans la checklist, section 9.
+
+Comparatif fait le matin du 18/10, avant le test :
 
 | | Framer | Webflow |
 |---|---|---|
@@ -38,11 +48,15 @@ Je reprends mon agence de création de sites internet, auparavant spécialisée 
 | Contre | Marché saturé de freelances et de templates à 50 €, "je fais du Framer" ne distingue pas | Courbe d'apprentissage forte, plus lent à produire, cycles de vente plus longs, tarifs en hausse depuis 2024-2025 |
 | Logique de marge | La marge vient de la vitesse (livraison en 1 à 3 semaines) | La marge vient du ticket et de la maintenance récurrente |
 
-**Le test en cours :** le connecteur Webflow est branché. Un site de démonstration est prévu pour juger l'outil en conditions réelles : **"Atelier Hauteville"**, cuisiniste haut de gamme fictif à Cergy, affiché comme entreprise fictive. Direction artistique crème et noyer, titres à empattements, page d'accueil en 11 sections jusqu'au formulaire de rendez-vous, SEO local de base. Grille de jugement : rendu, mobile, temps passé, nombre de retouches manuelles, facilité de modification pour le client.
+### Le site de démo Atelier Hauteville
 
-Blocage au 15 octobre : aucun site du compte Webflow n'est accessible au connecteur, qui ne sait pas en créer un. Il faut créer un site vierge dans Webflow, puis reconnecter le connecteur en cochant ce site.
+Cuisiniste haut de gamme fictif à Cergy, affiché comme entreprise fictive. Direction artistique crème et noyer, titres à empattements, page d'accueil en 11 sections jusqu'au formulaire de rendez-vous, SEO local de base. Briefs desktop et mobile dans `context/import/`.
 
-Le brief du site de démo a été rédigé dans un autre workspace (`livrables/agence/demo-cuisiniste/brief.md`), il n'est pas présent dans celui-ci.
+- **V1 publiée le 15/10** sur https://demo-cuisine.webflow.io/ via le connecteur, puis auditée (`livrables/demos/atelier-hauteville/2026-10-15-audit-v1.md`). Structure saine, mais **pas présentable** : polices non chargées, la moitié des images hors sujet, formulaire avec "Example Text".
+- Checklist qualité tirée de l'audit : `livrables/process/checklist-qualite-site.md`.
+- **Version Framer construite le 18/10** sur la page `/atelier-hauteville` du projet Framer `TEST-CLAUDE`, publiée en test sur `massive-account-916652.framer.app/atelier-hauteville`. Correctifs de performance appliqués le jour même, nouveau passage PageSpeed à faire après republication.
+- La version Webflow et les skills Webflow (`livrables/skills-webflow/`) sont abandonnées.
+- La démo sert de réalisation pour les pubs Meta et de socle aux sections réutilisables.
 
 ### Le positionnement à construire
 
@@ -50,7 +64,7 @@ Recommandations posées, pas encore validées :
 
 - **Le différenciateur n'est pas l'outil**, c'est mon profil marketing, automatisation et données. Une offre "site + tracking + automatisations + reporting" se vend plus cher qu'un site seul.
 - **Une offre packagée plutôt que du sur-mesure.** Par exemple "site vitrine livré en 10 jours, X €" : prix fixe et périmètre clair se vendent plus vite.
-- **Le premier contrat viendra du réseau et des anciens clients**, en 2 à 4 semaines, pas d'une nouvelle marque ni de publicité.
+- **Le premier contrat viendra de Meta Ads** (aucun ancien client ni réseau à relancer, voir « Acquisition »).
 - **Orbikal recyclé en reporting mensuel** inclus dans un forfait de maintenance : revenus récurrents pour l'agence, différence nette face aux freelances, et un SaaS qui reste vivant avec de vrais utilisateurs.
 
 ---
@@ -76,37 +90,59 @@ SaaS de dashboard marketing multi-connecteurs, jusqu'ici mon activité principal
 
 ## Mes objectifs
 
-- **Faire rentrer du cash rapidement avec l'agence.**
-- Montant visé et délai : **à définir.**
+- **2 000 € nets par mois minimum, à partir de décembre 2026.**
+- Soit environ **2 550 € de chiffre d'affaires par mois** (cotisations micro BIC prestations de services d'environ 21,2 % + formation professionnelle, taux exact à confirmer sur l'espace URSSAF ; impôt sur le revenu en plus).
+- Traduction : environ 2 sites à 1 500 € signés d'ici mi-novembre (acomptes de 50 % en novembre, soldes en décembre), puis environ 1,5 site par mois à 1 800 €, moins à mesure que la maintenance récurrente s'accumule.
+- Jugement posé le 15/10 : faisable mais serré, uniquement par le réseau et les anciens clients. Offre prête cette semaine, relances la semaine suivante, sinon l'objectif glisse vers janvier.
+- **Recalé le 16/10 sur les vrais temps** (4 à 5 journées de 8 h par site, soit 31 à 37 €/h aux nouveaux prix) : l'objectif n'est tenable qu'avec deux leviers, retenus :
+  1. **Production plafonnée** grâce aux sections réutilisables : 14 h pour un Essentiel, 24 h pour un Pro (45 à 50 €/h).
+  2. **6 h par jour jusqu'à fin décembre**, puis retour à 4 h.
+- Avec ces leviers, **1 Pro + 1 Essentiel signés d'ici mi-novembre** suffisent pour décembre.
 
 ---
 
 ## Où j'en suis
 
-**Statut au 15 octobre 2026 : relance de l'agence décidée, aucun client, aucun encaissement.**
+**Statut au 18 octobre 2026 : Kleak Agency relancée en agence Framer, aucun client, aucun encaissement.**
 
 | Chantier | Statut |
 |----------|--------|
-| Outil | Framer ou Webflow, non tranché. Test Webflow prévu sur le site de démo |
-| Offre et prix | À définir. Piste : offre packagée "site + tracking + automatisations + reporting" |
-| Prospection | Pas commencée. Réseau et anciens clients en premier |
+| Outil | **Framer**, décidé le 18/10 après test. Production pilotée par Claude Code |
+| Offre et prix | Définie le 16/10 : **Essentiel 999 €** (3 pages, 7 jours), **Pro 1 800 €** (5 pages, 10 jours), option automatisation 400 €, maintenance + reporting 90 €/mois sur 12 mois. Acompte 50 %. Fiche client et note interne dans `livrables/offre/`. Déroulé client ajouté (questionnaire, planche de direction). Reste : téléphone, CGV |
+| Prospection | **Meta Ads uniquement** (décision du 18/10), voir « Acquisition » plus bas. Aucun ancien client ni réseau à relancer |
 | Clients | Aucun |
-| Site de démo | Brief prêt (autre workspace), bloqué tant qu'aucun site Webflow vierge n'est accessible au connecteur |
+| Site de démo | V1 et V2 Framer publiées en test le 18/10. V2 : 77 à 85 sur mobile, 95 sur bureau, accessibilité 100 |
+| Site Kleak | `kleakagency.fr` sur Framer, on le garde |
 | Orbikal | En pause, mise en sommeil à organiser (abonnés, facturation Stripe) |
-| Chiffre d'affaires | 0 € |
+| Outil interne | Hub Agence (`livrables/hub-agence/`) : Bibliothèque et Briefs codés et testés en local, pas encore en ligne |
+| Chiffre d'affaires | 0 € (objectif : 2 550 €/mois dès décembre) |
 
 ### Prochain chantier
 
-Créer un site vierge dans Webflow et y donner accès au connecteur pour construire la démo Atelier Hauteville. En parallèle : lister les anciens clients et contacts à relancer, et fixer le revenu visé.
+Préparer la première campagne Meta, visée vers le 25 octobre : démo Atelier Hauteville en ligne comme réalisation (et socle des sections réutilisables), formulaire instantané avec filtre de budget et consentement, automatisation email/WhatsApp vers la prise de rendez-vous, 2 ou 3 visuels. En parallèle : coordonnées sur la fiche offre et CGV de prestation. La mise en ligne du Hub Agence passe après.
+
+---
+
+## Acquisition
+
+**Canal unique pour le moment : Meta Ads**, ce qui marchait le mieux pour l'ancienne agence.
+
+- Pubs statiques, formulaire instantané Meta, puis email et/ou WhatsApp automatique pour que le lead prenne rendez-vous.
+- **Historique mesuré il y a un an** : 2 € par lead, 1 rendez-vous pour 3 leads, 1 signature pour 3 à 4 rendez-vous, soit environ 10 à 12 leads par client.
+- **Budget : 200 € par mois.**
+- Projection à 5 € par lead (chiffres d'il y a un an, et novembre plus cher) : 40 leads, environ 13 rendez-vous, environ 3,5 signatures par mois, soit plus que la capacité. Le budget n'est pas le frein, la capacité de production l'est.
+- Garde-fous : test de 50 € sur 5 à 7 jours pour remesurer le coût par lead avant d'engager le reste ; question de budget dans le formulaire pour filtrer ; consentement WhatsApp explicite et mention RGPD dans le formulaire.
+- Avant la première pub : démo en ligne comme réalisation, formulaire mis à jour, automatisation, 2 ou 3 visuels.
 
 ---
 
 ## Mes outils
 
-- Framer, Webflow (connecteur Webflow branché à Claude)
+- Framer, outil de production, piloté par Claude Code via `@framer/agent`. Webflow abandonné le 18/10 (connecteur encore branché)
 - n8n, Make
 - Orbikal (mon propre dashboard marketing)
 - Claude / Claude Code (ce workspace)
+- Hub Agence, mon outil interne (briefs, bibliothèque de références, puis comptes, devis, factures), copié de l'Orbikal Hub
 
 ### Style de communication préféré
 
@@ -117,12 +153,9 @@ Direct et efficace, avec des explications détaillées quand c'est utile. Honnê
 ## Points à clarifier
 
 - **Abonnés payants sur Orbikal ?** Conditionne la façon de mettre en pause
-- **Anciens clients et contacts à relancer** pour l'agence ? Étaient-ils sur Framer ? Si oui, argument fort pour y rester
-- **Revenu mensuel visé et délai**
-- **Temps hebdomadaire** consacré à l'agence
-- **Statut juridique** de l'agence (structure existante, SIRET, régime de TVA)
-- **Framer ou Webflow**, à trancher après le test du site de démo
-- **Le prix et le contenu de l'offre packagée**
+- **Taux de cotisation exact et seuil de franchise de TVA** applicables (à vérifier sur l'espace URSSAF)
+- **Téléphone de l’agence** à faire figurer sur la fiche offre (email : contact@kleakagency.fr, boîte IONOS)
+- **Coût par lead actuel** sur Meta, à remesurer (le chiffre de 2 € date d'un an)
 - **Ce que devient la collaboration avec Forqan** après l'arrêt de l'ecom
 
 ---
