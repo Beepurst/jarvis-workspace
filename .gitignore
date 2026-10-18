@@ -76,3 +76,6 @@ livrables/hub/
 # Hub Agence : depot git independant (Beepurst/hub-agence), ne jamais commiter depuis la racine
 livrables/hub-agence/
 livrables/hub-agence-*/
+
+# Créas Meta : HTML intermédiaire, régénéré à chaque rendu
+livrables/creas-meta/html/

@@ -10,7 +10,7 @@ Ce workspace est le Jarvis personnel d'Edgar. Depuis le 15 octobre 2026, il est 
 
 **Ce fichier (CLAUDE.md) est la fondation.** Il est automatiquement chargé au début de chaque session. Gardez-le à jour, c'est la source de vérité unique sur la façon dont Claude doit comprendre et opérer dans ce workspace.
 
-Le workspace a servi d'août à septembre 2026 à un projet ecommerce, aujourd'hui arrêté et archivé dans `archive/ecom/`. Le nom du dossier (`jarvis-ecom`) en est un reste.
+Le workspace a servi d'août à septembre 2026 à un projet ecommerce, aujourd'hui arrêté et archivé dans `archive/ecom/`. Le dossier s'appelait alors `jarvis-ecom`, il a été renommé `jarvis-kleak` le 18/10/2026.
 
 ---
 
@@ -135,7 +135,9 @@ Les sous-dossiers de `livrables/` se créent au besoin (par exemple `offre/`, `p
 
 ## Agents et skills
 
-Aucun pour l'instant. Les 15 agents et 4 skills de l'ecom sont dans `archive/ecom/.claude/`. Certains pourraient être adaptés à l'agence (`juriste-conformite`, `espion-concurrence`, `auditeur-conversion`), à condition de les réécrire avant de les remettre dans `.claude/`.
+- **createur-creas** : produit les créas Meta Ads (HTML rendu en PNG dans `livrables/creas-meta/`) en deux temps, proposer 3 créas sur une planche puis finaliser post, story et textes d'annonce. Déclencheur : « fais-moi des créas », « nouvelle série de pubs », « je garde la A et la C ».
+
+Les 15 agents et 4 skills de l'ecom sont dans `archive/ecom/.claude/`. Certains pourraient être adaptés à l'agence (`juriste-conformite`, `espion-concurrence`, `auditeur-conversion`), à condition de les réécrire avant de les remettre dans `.claude/`.
 
 ---
 
