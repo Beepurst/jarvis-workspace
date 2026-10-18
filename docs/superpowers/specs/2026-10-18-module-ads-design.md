@@ -163,8 +163,9 @@ payeur et bénéficiaire DSA = **« Kleak Agency »** (décision d'Edgar), statu
 
 **Après l'envoi** : le hub affiche un lien direct vers la campagne dans le Gestionnaire, et
 garde la trace de l'envoi (date, objets Meta créés, créatives et textes utilisés). Si Meta
-refuse en cours de route, le hub dit à quelle étape et ce qui a déjà été créé (en pause),
-sans tout recréer au nouvel essai.
+refuse en cours de route, le hub dit à quelle étape, défait ce qu'il vient de créer
+(comportement du code ecom, choix de Claude au moment du plan) et liste ce qui n'a pas pu
+être supprimé. Un nouvel essai repart de zéro, sans demi-campagne laissée sur le compte.
 
 ### 3.4 Suivi des performances
 
