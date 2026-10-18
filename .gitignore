@@ -75,3 +75,4 @@ livrables/hub/
 
 # Hub Agence : depot git independant (Beepurst/hub-agence), ne jamais commiter depuis la racine
 livrables/hub-agence/
+livrables/hub-agence-*/

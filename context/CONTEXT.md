@@ -114,12 +114,12 @@ SaaS de dashboard marketing multi-connecteurs, jusqu'ici mon activité principal
 | Site de démo | V1 et V2 Framer publiées en test le 18/10. V2 : 77 à 85 sur mobile, 95 sur bureau, accessibilité 100 |
 | Site Kleak | `kleakagency.fr` sur Framer, on le garde |
 | Orbikal | En pause, mise en sommeil à organiser (abonnés, facturation Stripe) |
-| Outil interne | Hub Agence (`livrables/hub-agence/`) : Bibliothèque et Briefs codés et testés en local, pas encore en ligne |
+| Outil interne | Hub Agence (`livrables/hub-agence/`, dépôt `Beepurst/hub-agence-kleak`) : Bibliothèque, Briefs et CRM phase 1 codés et testés, mise en ligne Vercel en cours. **Module Ads** (créatives, textes par IA, campagnes envoyées en pause dans Meta, suivi CPL, coût par RDV, ROAS) conçu et planifié le 18/10, à construire après l'agent créas, dans le worktree `livrables/hub-agence-ads/` |
 | Chiffre d'affaires | 0 € (objectif : 2 550 €/mois dès décembre) |
 
 ### Prochain chantier
 
-Préparer la première campagne Meta, visée vers le 25 octobre : démo Atelier Hauteville en ligne comme réalisation (et socle des sections réutilisables), formulaire instantané avec filtre de budget et consentement, automatisation email/WhatsApp vers la prise de rendez-vous, 2 ou 3 visuels. En parallèle : coordonnées sur la fiche offre et CGV de prestation. La mise en ligne du Hub Agence passe après.
+Préparer la première campagne Meta, visée vers le 25 octobre : démo Atelier Hauteville en ligne comme réalisation (et socle des sections réutilisables), formulaire instantané avec filtre de budget et consentement, automatisation email/WhatsApp vers la prise de rendez-vous, 2 ou 3 visuels. **Les visuels viendront d'un agent de production de créas** (Claude Code, chaîne de `livrables/creas-meta/`), à concevoir maintenant ; Edgar ne passe plus par Canva. La première campagne se monte à la main dans le Gestionnaire, le module Ads du hub servira pour les suivantes. En parallèle : coordonnées sur la fiche offre et CGV de prestation. La mise en ligne du Hub Agence passe après.
 
 ---
 

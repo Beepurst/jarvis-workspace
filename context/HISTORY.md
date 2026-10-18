@@ -9,6 +9,18 @@
 
 ## 2026-10-18
 
+### Module Ads du hub conçu, agent créas en priorité
+
+- **Module Ads du Hub Agence** conçu avec Edgar et planifié (`docs/superpowers/specs/2026-10-18-module-ads-design.md`, plan `docs/superpowers/plans/2026-10-18-module-ads.md`, exécution en subagent-driven) :
+  - bibliothèque de créatives, alimentée directement par l'agent créas ;
+  - générateur de textes d'annonce : 3 versions par angle, relance d'une version avec consigne, garde-fous vérifiés dans le code (aucun tiret à la place d'une virgule, liste noire de tournures typées IA, prix conformes à l'offre, avis cités mot pour mot) ;
+  - **modèle Llama via Groq, gratuit** (Edgar ne veut pas payer pour le moment), passage à Claude possible en une ligne ;
+  - campagnes Prospects avec formulaire instantané envoyées **en pause** (l'API Meta n'a pas de brouillons), code repris du Hub Ecom ;
+  - suivi par campagne et par pub : dépenses, CPC, leads, CPL, coût par RDV, ROAS calculé avec le CRM (« pas encore de vente » tant que la phase 2 n'existe pas) ;
+  - ciblage large par défaut (France, 25 à 65 ans), DSA « Kleak Agency », jeton utilisateur système du Business Manager.
+- **Ordre décidé :** agent de production de créas d'abord (Edgar fera produire ses visuels par Claude, plus par Canva), puis le module Ads. La première campagne se monte à la main.
+- Worktree `livrables/hub-agence-ads/` (branche `module-ads`) créé pour travailler sur le hub dans deux conversations en parallèle ; `livrables/hub-agence-*/` ajouté au `.gitignore` du workspace.
+
 ### Cible, déroulé client et performance
 
 - **Cible confirmée : PME françaises de tous secteurs**, sans spécialisation, comme l'ancienne agence.
