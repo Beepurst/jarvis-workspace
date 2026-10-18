@@ -12,7 +12,7 @@
 
 **Où coder :** worktree `livrables/hub-agence-ads/`, branche `module-ads`. Serveur de dev sur le port 3001 (`npm run dev -- -p 3001`). Ne jamais lancer `npm run build` pendant qu'un serveur dev tourne. Ne jamais afficher `.env.local`.
 
-**Quand :** après l'agent créas (décision d'Edgar du 18/10). Fusion dans `main` seulement une fois le hub en ligne sur Vercel.
+**Quand :** après l'agent créas (décision d'Edgar du 18/10). **Mode d'exécution choisi par Edgar : subagent-driven** (superpowers:subagent-driven-development). Fusion dans `main` seulement une fois le hub en ligne sur Vercel.
 
 ## Global Constraints
 
