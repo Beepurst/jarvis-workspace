@@ -116,10 +116,16 @@ Les sous-dossiers de `livrables/` se créent au besoin (par exemple `offre/`, `p
 
 ## Hub Agence
 
-`livrables/hub-agence/` est l'outil interne de l'agence (briefs, bibliothèque de références, puis comptes, devis, factures). Copié de l'Orbikal Hub le 15/10/2026. Spec : `docs/superpowers/specs/2026-10-15-hub-agence-design.md`. Lots 0 et 1 codés et testés en local, **pas encore en ligne** (dépôt GitHub et projet Vercel à créer).
+`livrables/hub-agence/` est l'outil interne de l'agence : briefs, bibliothèque de références, CRM (pipeline des leads Meta, relances, rendez-vous Cal.com), puis devis et factures. Copié de l'Orbikal Hub le 15/10/2026. Spec d'origine : `docs/superpowers/specs/2026-10-15-hub-agence-design.md`.
 
-- **Dépôt git indépendant**, exclu du `.gitignore` du workspace. Ne jamais le commiter depuis la racine.
+- **En production** sur https://hub-agence-kleak.vercel.app, protégé par mot de passe. Projet Vercel `hub-agence-kleak`, chaque push sur `main` déploie en production : travailler sur une branche et fusionner après validation d'Edgar.
+- **Dépôt git indépendant** `Beepurst/hub-agence-kleak`, exclu du `.gitignore` du workspace. Ne jamais le commiter depuis la racine.
+- **Apparence** (refonte du 18-19/10) :
+  - toutes les couleurs vivent dans `src/app/theme.css`, `scripts/test-couleurs.ts` et `scripts/test-contraste.ts` le vérifient ;
+  - la navigation est décrite une seule fois dans `src/lib/navigation.ts` : une rubrique ou un sous-onglet, c'est une entrée dans ce fichier ;
+  - classes verre `.hub-halo`, `.hub-verre`, `.hub-pilules-verre`, `.hub-barre-progression`, à réserver aux chiffres et aux en-têtes, jamais aux listes.
 - **Ne jamais lancer `npm run build` pendant qu'un serveur dev tourne.**
+- Variables Vercel posées par Edgar via des scripts qui lisent `.env.local` sans rien afficher. La CLI `vercel env add` doit recevoir `--value` et `--non-interactive`.
 
 ---
 
