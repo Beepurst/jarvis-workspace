@@ -3,7 +3,7 @@
 > Mon contexte personnel et professionnel pour mon Jarvis.
 > Mis à jour au fil du temps par Claude, via `/update` ou quand un changement important est détecté.
 >
-> Dernière mise à jour : 18 octobre 2026
+> Dernière mise à jour : 19 octobre 2026
 
 ---
 
@@ -114,7 +114,7 @@ SaaS de dashboard marketing multi-connecteurs, jusqu'ici mon activité principal
 | Site de démo | V1 et V2 Framer publiées en test le 18/10. V2 : 77 à 85 sur mobile, 95 sur bureau, accessibilité 100 |
 | Site Kleak | `kleakagency.fr` sur Framer, on le garde |
 | Orbikal | En pause, mise en sommeil à organiser (abonnés, facturation Stripe) |
-| Outil interne | Hub Agence (`livrables/hub-agence/`, dépôt `Beepurst/hub-agence-kleak`) **en production** sur https://hub-agence-kleak.vercel.app, refondu le 19/10 (thème clair, Notion/Apple, touche verre). CRM : Cal.com et Google Sheet branchés, **Brevo en attente** (DMARC chez IONOS, clé API, 4 modèles, webhook). **Module Ads** (créatives, textes par IA, campagnes envoyées en pause dans Meta, suivi CPL, coût par RDV, ROAS) conçu et planifié le 18/10, à construire après l'agent créas, dans le worktree `livrables/hub-agence-ads/`. **Onglet Finance** (lot 1, Stripe seul) construit et testé le 19/10 dans `livrables/hub-agence-finance/` (branche `finance`, **pas encore fusionnée**) : brut, net après frais et cotisations estimées à 21,2 %, clients, objectif 2 000 € nets. Stripe Kleak connecté par une clé restreinte en lecture seule. Lot 2 Revolut Business à l'ouverture du compte |
+| Outil interne | Hub Agence (`livrables/hub-agence/`, dépôt `Beepurst/hub-agence-kleak`) **en production** sur https://hub-agence-kleak.vercel.app, refondu le 19/10 (thème clair, Notion/Apple, touche verre). **To-do du lendemain** en ligne le 19/10 : 6 thématiques (Prospection, Réunions, Production, Clients, Admin et finances, Outils), onglets Aujourd'hui, Demain et Historique, préparée chaque soir avec Claude par `/demain`, Notion abandonné. CRM : Cal.com et Google Sheet branchés, **Brevo en attente** (DMARC chez IONOS, clé API, 4 modèles, webhook). **Module Ads** (créatives, textes par IA, campagnes envoyées en pause dans Meta, suivi CPL, coût par RDV, ROAS) conçu et planifié le 18/10, à construire après l'agent créas, dans le worktree `livrables/hub-agence-ads/`. **Onglet Finance** (lot 1, Stripe seul) construit et testé le 19/10 dans `livrables/hub-agence-finance/` (branche `finance`, **pas encore fusionnée**) : brut, net après frais et cotisations estimées à 21,2 %, clients, objectif 2 000 € nets. Stripe Kleak connecté par une clé restreinte en lecture seule. Lot 2 Revolut Business à l'ouverture du compte |
 | Chiffre d'affaires | 0 € (objectif : 2 550 €/mois dès décembre) |
 
 ### Prochain chantier
@@ -142,7 +142,7 @@ Préparer la première campagne Meta, visée vers le 25 octobre. **Fait :** les 
 - n8n, Make
 - Orbikal (mon propre dashboard marketing)
 - Claude / Claude Code (ce workspace)
-- Hub Agence, mon outil interne (briefs, bibliothèque de références, puis comptes, devis, factures), copié de l'Orbikal Hub
+- Hub Agence, mon outil interne (pipeline CRM, to-do du lendemain, briefs, bibliothèque de références, finance, puis devis et factures), copié de l'Orbikal Hub. La to-do vit dans le hub, plus dans Notion
 
 ### Style de communication préféré
 

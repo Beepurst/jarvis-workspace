@@ -9,6 +9,14 @@
 
 ## 2026-10-19
 
+### To-do du lendemain dans le hub, Notion abandonné
+
+- **Rituel retrouvé :** chaque soir, Edgar lance `/demain`. Claude lit le hub (tâches pas faites et en retard, RDV Cal.com des 7 jours, prochaines actions, leads non contactés ou en fin de séquence, projets en cours), propose la to-do du lendemain, Edgar corrige, et Claude l'écrit d'un coup seulement après son accord.
+- **6 thématiques :** Prospection, Réunions, Production, Clients, Admin et finances, Outils. « Opérationnel » écarté, trop large ; Outils à part pour voir le temps passé hors travail payant.
+- **Page To-do :** onglets Aujourd'hui (avec les tâches en retard, jamais déplacées toutes seules), Demain et Historique ; cocher, ajouter, modifier, supprimer avec annulation, repousser à demain, copier une tâche en prompt Claude.
+- **Notion abandonné** pour la to-do : tout vit dans la base Supabase du hub (`supabase/todo.sql`).
+- Spec `docs/superpowers/specs/2026-10-19-todo-hub-design.md`, plan `docs/superpowers/plans/2026-10-19-todo-hub.md`. 141 tests, revue finale faite, **en production le 19/10**.
+
 ### Onglet Finance du hub (lot 1, Stripe)
 
 - **Conçu avec Edgar** (spec `docs/superpowers/specs/2026-10-19-finance-design.md`, plan `docs/superpowers/plans/2026-10-19-finance-lot-1.md`) :
