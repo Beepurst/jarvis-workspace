@@ -91,7 +91,7 @@ SaaS de dashboard marketing multi-connecteurs, jusqu'ici mon activité principal
 ## Mes objectifs
 
 - **2 000 € nets par mois minimum, à partir de décembre 2026.**
-- Soit environ **2 550 € de chiffre d'affaires par mois** (cotisations micro BIC prestations de services d'environ 21,2 % + formation professionnelle, taux exact à confirmer sur l'espace URSSAF ; impôt sur le revenu en plus).
+- Soit environ **2 550 € de chiffre d'affaires par mois** (cotisations micro BIC prestations de services de **21,2 %**, taux confirmé par Edgar le 19/10 ; impôt sur le revenu en plus).
 - Traduction : environ 2 sites à 1 500 € signés d'ici mi-novembre (acomptes de 50 % en novembre, soldes en décembre), puis environ 1,5 site par mois à 1 800 €, moins à mesure que la maintenance récurrente s'accumule.
 - Jugement posé le 15/10 : faisable mais serré, uniquement par le réseau et les anciens clients. Offre prête cette semaine, relances la semaine suivante, sinon l'objectif glisse vers janvier.
 - **Recalé le 16/10 sur les vrais temps** (4 à 5 journées de 8 h par site, soit 31 à 37 €/h aux nouveaux prix) : l'objectif n'est tenable qu'avec deux leviers, retenus :
@@ -114,7 +114,7 @@ SaaS de dashboard marketing multi-connecteurs, jusqu'ici mon activité principal
 | Site de démo | V1 et V2 Framer publiées en test le 18/10. V2 : 77 à 85 sur mobile, 95 sur bureau, accessibilité 100 |
 | Site Kleak | `kleakagency.fr` sur Framer, on le garde |
 | Orbikal | En pause, mise en sommeil à organiser (abonnés, facturation Stripe) |
-| Outil interne | Hub Agence (`livrables/hub-agence/`, dépôt `Beepurst/hub-agence-kleak`) **en production** sur https://hub-agence-kleak.vercel.app, refondu le 19/10 (thème clair, Notion/Apple, touche verre). **To-do du lendemain** en ligne le 19/10 : 6 thématiques (Prospection, Réunions, Production, Clients, Admin et finances, Outils), onglets Aujourd'hui, Demain et Historique, préparée chaque soir avec Claude par `/demain`, Notion abandonné. CRM : Cal.com et Google Sheet branchés, **Brevo en attente** (DMARC chez IONOS, clé API, 4 modèles, webhook). **Module Ads** (créatives, textes par IA, campagnes envoyées en pause dans Meta, suivi CPL, coût par RDV, ROAS) conçu et planifié le 18/10, à construire après l'agent créas, dans le worktree `livrables/hub-agence-ads/`. **Onglet Finance** (lot 1, Stripe seul) construit et testé le 19/10 dans `livrables/hub-agence-finance/` (branche `finance`, **pas encore fusionnée**) : brut, net après frais et cotisations estimées à 21,2 %, clients, objectif 2 000 € nets. Stripe Kleak connecté par une clé restreinte en lecture seule. Lot 2 Revolut Business à l'ouverture du compte |
+| Outil interne | Hub Agence (`livrables/hub-agence/`, dépôt `Beepurst/hub-agence-kleak`) **en production** sur https://hub-agence-kleak.vercel.app, refondu le 19/10 (thème clair, Notion/Apple, touche verre). **To-do du lendemain** en ligne le 19/10 : 6 thématiques (Prospection, Réunions, Production, Clients, Admin et finances, Outils), onglets Aujourd'hui, Demain et Historique, préparée chaque soir avec Claude par `/demain`, Notion abandonné. CRM : Cal.com et Google Sheet branchés, **Brevo en attente** (DMARC chez IONOS, clé API, 4 modèles, webhook). **Module Ads** (créatives, textes par IA, campagnes envoyées en pause dans Meta, suivi CPL, coût par RDV, ROAS) conçu et planifié le 18/10, à construire après l'agent créas, dans le worktree `livrables/hub-agence-ads/`. **Onglet Finance** (lot 1, Stripe seul) **en production** depuis le 19/10 (`/finance`) : brut, net après frais et cotisations estimées à 21,2 %, clients, objectif 2 000 € nets. Stripe Kleak connecté par une clé restreinte en lecture seule. Lot 2 Revolut Business à l'ouverture du compte |
 | Chiffre d'affaires | 0 € (objectif : 2 550 €/mois dès décembre) |
 
 ### Prochain chantier
@@ -153,7 +153,7 @@ Direct et efficace, avec des explications détaillées quand c'est utile. Honnê
 ## Points à clarifier
 
 - **Abonnés payants sur Orbikal ?** Conditionne la façon de mettre en pause
-- **Taux de cotisation exact et seuil de franchise de TVA** applicables (à vérifier sur l'espace URSSAF)
+- **Seuil de franchise de TVA** applicable (à vérifier sur l'espace URSSAF). Taux de cotisation confirmé : 21,2 %
 - **Téléphone de l’agence** à faire figurer sur la fiche offre (email : contact@kleakagency.fr, boîte IONOS)
 - **Compte Revolut Business Kleak** à ouvrir (virements clients, toutes les dépenses de l'agence), puis vérifier l'accès API selon l'offre pour le lot 2 de l'onglet Finance
 - **Coût par lead actuel** sur Meta, à remesurer (le chiffre de 2 € date d'un an)

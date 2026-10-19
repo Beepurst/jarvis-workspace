@@ -33,7 +33,8 @@
   - clé Stripe Kleak restreinte en lecture seule (Balance, Customers, Invoices) ;
   - test de bout en bout en mode test Stripe validé par Edgar (999 € + 1 800 € payés hors Stripe − 90 € de remboursement), puis données purgées.
 - **Liquid glass** validé sur la maquette Finance et étendu à tout le hub par une autre conversation.
-- **Reste :** fusionner `finance` dans `main`, poser `STRIPE_SECRET_KEY` dans Vercel.
+- **En production le 19/10** : branche fusionnée dans `main`, `STRIPE_SECRET_KEY` posée dans Vercel.
+- **Taux de cotisation URSSAF confirmé par Edgar : 21,2 %.** Seul le seuil de franchise de TVA reste à vérifier.
 
 ### Hub Agence en ligne et refondu
 
