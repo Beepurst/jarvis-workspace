@@ -2,7 +2,7 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Bibliothèque de créatives, suivi des performances Meta rapproché du CRM, générateur de textes d'annonce (Llama via Groq) avec garde-fous vérifiés dans le code, et envoi de campagnes Prospects en pause dans Meta.
+**Goal:** Bibliothèque de créatives, suivi des performances Meta rapproché du CRM, générateur de textes d'annonce (`gpt-oss-120b` via Groq) avec garde-fous vérifiés dans le code, et envoi de campagnes Prospects en pause dans Meta.
 
 **Architecture:** Même découpage que le reste du hub : logique pure dans `src/lib/ads/*.ts` testée par `scripts/test-ads-*.ts` (node:test), accès base et réseau dans des fichiers séparés, routes API minces, pages serveur sous `src/app/(app)/ads/`. Le code Meta est copié du Hub Ecom (`livrables/hub/`, jamais modifié) puis adapté à l'objectif Prospects avec formulaire instantané. **Ads est une rubrique à sous-onglets** de la navigation refondue le 18-19/10 (`src/lib/navigation.ts`), et ses écrans suivent le thème clair (`src/app/theme.css`).
 
@@ -50,7 +50,7 @@
 
 - [ ] **Step 1 :** Avec Edgar, dans le Business Manager : créer un utilisateur système (rôle admin), lui assigner le compte publicitaire et la Page Kleak, générer un jeton sur son app avec `ads_management`, `ads_read`, `pages_show_list`, `pages_read_engagement`, `pages_manage_ads`, `leads_retrieval`.
 - [ ] **Step 2 :** Vérifier dans la doc Meta et sur l'app que ces droits fonctionnent en accès standard sur les actifs d'Edgar. Si une validation d'app est requise, s'arrêter et le dire à Edgar avant les Tâches 4 et 11.
-- [ ] **Step 3 :** Edgar crée une clé Groq (offre gratuite). Vérifier dans la doc Groq qu'un modèle Llama acceptant les images est disponible (Llama 4 Scout ou Maverick), noter son identifiant exact, ses limites gratuites et la taille d'image acceptée.
+- [ ] **Step 3 :** Edgar crée une clé Groq (offre gratuite) et vérifie sur sa page de limites (console.groq.com/settings/limits) que `openai/gpt-oss-120b` y figure. Modèle retenu le 19/10 : `ADS_TEXT_MODEL = "openai/gpt-oss-120b"`, `ADS_TEXT_VOIT_IMAGE = false` (Llama 4 Scout retiré de Groq, Llama 3.x en Enterprise, et licence Llama 4 restreinte dans l'UE).
 - [ ] **Step 4 :** Poser les variables dans `livrables/hub-agence-ads/.env.local` sans les afficher. `CREAS_INTAKE_SECRET` : `openssl rand -hex 32`.
 
 ---
@@ -385,7 +385,7 @@ test("plus de 2 emojis rejeté", () => {
 **Interfaces:**
 - Consumes : Tâche 8, tables de la Tâche 1.
 - Produces :
-  - `ADS_TEXT_MODEL` (constante unique, identifiant noté en Tâche 0), `ADS_TEXT_VOIT_IMAGE: boolean`.
+  - `ADS_TEXT_MODEL = "openai/gpt-oss-120b"` (constante unique), `ADS_TEXT_VOIT_IMAGE = false`.
   - `genererTexte(p: { systeme: string; utilisateur: string; imageUrl?: string | null }, fetchImpl?: typeof fetch): Promise<{ ok: true; texte: string } | { ok: false; message: string }>` : appel Groq `chat/completions`, `response_format: { type: "json_object" }`, image en `image_url` si `ADS_TEXT_VOIT_IMAGE`. 429 → « Groq limite les appels gratuits, réessaie dans une minute. » ; autre échec → message lisible.
   - `ANGLES = [{ cle: "prix_delai", libelle: "Prix et délai" }, { cle: "tranquillite", libelle: "On s'occupe de tout" }, { cle: "avis", libelle: "Preuve par les avis" }]`
   - `interface VersionTexte { angle: string; texte_principal: string; titre: string; description: string; problemes: string[] }`
@@ -402,7 +402,7 @@ test("plus de 2 emojis rejeté", () => {
   - `appel` rendant `{ ok: false, message: "Groq limite…" }` → `ok: false` avec ce message ;
   - `construirePrompt` contient le texte de l'avis de Laura Dias, le mot « tiret », et pas plus de 6 exemples quand on lui en passe 10.
 - [ ] **Step 2 :** Lancer : FAIL. Implémenter. Lancer : PASS.
-- [ ] **Step 3 :** Essai réel : un appel avec la créa B, ton « Direct et chiffré », offre Essentiel. Lire les 3 versions, noter dans le résumé de tâche si le modèle a vu l'image (le texte parle-t-il du visuel ?).
+- [ ] **Step 3 :** Essai réel : un appel avec la créa B, ton « Direct et chiffré », offre Essentiel. Lire les 3 versions, vérifier la qualité du français et le respect des garde-fous.
 - [ ] **Step 4 :** Commit `Module Ads : générateur de textes d'annonce (Groq)`.
 
 ---

@@ -98,17 +98,18 @@ Meta : **texte principal, titre, description**. Champs modifiables en place. Cha
 peut être **relancée seule avec une consigne courte** (« plus court », « commence par le
 prix »).
 
-**Modèle : Llama via Groq, gratuit** (décision d'Edgar : ne pas payer pour le moment).
-Clé `GROQ_API_KEY` (celle du Hub Ecom si elle est encore valide, sinon une nouvelle, offre
-gratuite de Groq), à poser dans `.env.local` du hub et sur Vercel.
-- **Préférer un modèle Llama qui voit l'image** (Llama 4 Scout ou Maverick sur Groq, à
-  vérifier par le constructeur : disponibilité, limites de l'offre gratuite, taille d'image
-  acceptée). Sinon `llama-3.3-70b-versatile`, qui ne voit pas l'image : il écrit alors à
-  partir du nom de la créa et des métadonnées déposées par l'agent créas (angle, accroche),
-  et l'écran le signale.
+**Modèle : `openai/gpt-oss-120b` via Groq, gratuit** (décision d'Edgar : ne pas payer pour le
+moment ; modèle changé le 19/10, voir ci-dessous). Clé `GROQ_API_KEY` (nouvelle, offre gratuite
+de Groq), à poser dans `.env.local` du hub et sur Vercel.
+- **Pourquoi plus Llama (19/10/2026)** : Groq ne propose plus Llama 4 Scout et réserve ses Llama
+  3.x à l'offre Enterprise ; de plus, la licence Llama 4 n'accorde pas certains droits aux
+  entreprises basées dans l'UE. `gpt-oss-120b` est sous licence Apache 2.0, disponible en accès
+  libre (1 000 requêtes par jour, largement assez).
+- Il **ne voit pas l'image** : il écrit à partir du nom de la créa et des métadonnées déposées
+  par l'agent créas (angle, accroche), et l'écran le signale (`ADS_TEXT_VOIT_IMAGE = false`).
 - L'appel au modèle passe par une seule fonction, pour pouvoir passer à Claude plus tard en
   changeant une ligne de configuration.
-- La qualité du français de Llama est moins bonne : les garde-fous ci-dessous, vérifiés dans
+- La qualité du français d'un modèle ouvert est moins bonne que celle de Claude : les garde-fous ci-dessous, vérifiés dans
   le code, comptent d'autant plus.
 
 **Garde-fous, vérifiés dans le code, pas seulement demandés au modèle :**
@@ -267,7 +268,7 @@ Dans le module, ordre proposé par Claude :
   conventions du schéma existant (RLS activée sans policy, clé service role côté serveur).
 - Placement dans la navigation du hub.
 - Version de l'API Graph (le code ecom est en v21.0, à mettre à jour si dépréciée).
-- Modèle Llama exact et prompt, dans le respect de 3.2.
+- Prompt et réglages du modèle, dans le respect de 3.2.
 - Limites de longueur des champs Meta.
 
 ### À vérifier avant de construire
