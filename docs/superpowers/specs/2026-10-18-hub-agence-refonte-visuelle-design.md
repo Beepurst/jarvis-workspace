@@ -100,6 +100,15 @@ Points particuliers :
 - `statusBarStyle` passe de `black-translucent` à une barre de statut adaptée au fond clair. Vérifier qu'aucune bande parasite n'apparaît sous l'encoche ni au-dessus de la barre d'onglets.
 - Les icônes d'accueil (`public/icons/`) sont à revoir si elles sont sur fond noir : à signaler à Edgar, pas à redessiner sans lui.
 
+## Avenant du 19/10/2026 : touche « liquid glass »
+
+Validée par Edgar sur la maquette `finance-a-verre.html` (conversation Finance), puis étendue au hub. Elle **remplace**, pour ces seuls éléments, l'anti-objectif « verre dépoli décoratif, dégradés » :
+- un halo léger en haut des pages principales (vert au centre, violet à droite ; la tache bleue en haut à gauche a été retirée à la demande d'Edgar) ;
+- les cartes de chiffres de l'Accueil, le relevé d'Analytics et de SEO, et le sélecteur de période en verre (`.hub-verre`, `.hub-pilules-verre`) ;
+- un dégradé vertical subtil sous les courbes, et une barre de progression en dégradé (`.hub-barre-progression`, utilisée par Finance).
+
+Le reste ne change pas : listes, tableaux et barre latérale restent mats. Replis : sans `backdrop-filter` ou avec « Réduire la transparence », le verre devient blanc opaque et le halo disparaît. Jetons dans `theme.css`.
+
 ## Contraintes
 
 - Next.js 15, React 19, Tailwind CSS 4 et CSS classique (`globals.css`, fichiers `.css` par composant). Garder cette pile.
