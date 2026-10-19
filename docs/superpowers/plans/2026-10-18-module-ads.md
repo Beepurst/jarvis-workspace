@@ -4,15 +4,17 @@
 
 **Goal:** Bibliothèque de créatives, suivi des performances Meta rapproché du CRM, générateur de textes d'annonce (Llama via Groq) avec garde-fous vérifiés dans le code, et envoi de campagnes Prospects en pause dans Meta.
 
-**Architecture:** Même découpage que le reste du hub : logique pure dans `src/lib/ads/*.ts` testée par `scripts/test-ads-*.ts` (node:test), accès base et réseau dans des fichiers séparés, routes API minces, pages serveur dans `src/app/(app)/`. Le code Meta est copié du Hub Ecom (`livrables/hub/`, jamais modifié) puis adapté à l'objectif Prospects avec formulaire instantané.
+**Architecture:** Même découpage que le reste du hub : logique pure dans `src/lib/ads/*.ts` testée par `scripts/test-ads-*.ts` (node:test), accès base et réseau dans des fichiers séparés, routes API minces, pages serveur sous `src/app/(app)/ads/`. Le code Meta est copié du Hub Ecom (`livrables/hub/`, jamais modifié) puis adapté à l'objectif Prospects avec formulaire instantané. **Ads est une rubrique à sous-onglets** de la navigation refondue le 18-19/10 (`src/lib/navigation.ts`), et ses écrans suivent le thème clair (`src/app/theme.css`).
 
 **Tech Stack:** Next.js 15 (App Router), Supabase (Postgres + Storage), API Graph Meta (v21.0 au départ), API Groq (compatible OpenAI), Node 26 `node --test` avec `scripts/alias-hook.mjs`.
 
-**Spec:** `docs/superpowers/specs/2026-10-18-module-ads-design.md` (racine du workspace).
+**Spec:** `docs/superpowers/specs/2026-10-18-module-ads-design.md` (racine du workspace). Pour l'apparence et la navigation : `docs/superpowers/specs/2026-10-18-hub-agence-refonte-visuelle-design.md`, avenant « liquid glass » compris.
 
-**Où coder :** worktree `livrables/hub-agence-ads/`, branche `module-ads`. Serveur de dev sur le port 3001 (`npm run dev -- -p 3001`). Ne jamais lancer `npm run build` pendant qu'un serveur dev tourne. Ne jamais afficher `.env.local`.
+> **Révision du 19/10/2026.** Le plan d'origine (18/10) ajoutait quatre entrées à plat dans `src/lib/channels.tsx`, en thème sombre. Ce fichier n'existe plus depuis la refonte. Cette révision change uniquement la navigation, les chemins des pages et l'apparence (Tâches 3, 6, 7, 10, 12, nouvelle Tâche 2b) ; la logique (Tâches 1, 2, 4, 5, 8, 9, 11) est inchangée.
 
-**Quand :** après l'agent créas (décision d'Edgar du 18/10). **Mode d'exécution choisi par Edgar : subagent-driven** (superpowers:subagent-driven-development). Fusion dans `main` seulement une fois le hub en ligne sur Vercel.
+**Où coder :** worktree `livrables/hub-agence-ads/`, branche `module-ads`, **recréée depuis le `main` refondu** (l'ancienne branche partait de `f121220`, avant la refonte, et n'avait aucun commit) : `git -C livrables/hub-agence worktree remove ../hub-agence-ads && git -C livrables/hub-agence branch -D module-ads && git -C livrables/hub-agence worktree add ../hub-agence-ads -b module-ads main`, puis `npm install` et copie de `.env.local` depuis `livrables/hub-agence/` (sans l'afficher). Serveur de dev sur le port 3001 (`npm run dev -- -p 3001`). Ne jamais lancer `npm run build` pendant qu'un serveur dev tourne. Ne jamais afficher `.env.local`. D'autres worktrees travaillent en parallèle (`hub-agence-finance`, `hub-agence-todo`) : ne pas y toucher.
+
+**Quand :** après l'agent créas (décision d'Edgar du 18/10). **Mode d'exécution choisi par Edgar : subagent-driven** (superpowers:subagent-driven-development). Le hub est en ligne depuis le 19/10 : chaque push sur `main` déploie en production, donc fusion seulement après validation d'Edgar sur la prévisualisation Vercel de la branche (les variables Preview existent déjà).
 
 ## Global Constraints
 
@@ -27,7 +29,12 @@
 - Modèle de texte : une seule fonction d'appel (`genererTexte`), modèle lu dans une constante unique (`ADS_TEXT_MODEL`), pour passer à Claude plus tard en changeant une ligne.
 - Tables Supabase : RLS activée sans policy, accès par la clé service role côté serveur (convention de `supabase/schema.sql`).
 - Fichiers d'image : PNG, JPEG ou WebP, 4 Mo maximum (limite Vercel, cf. `CAPTURE_MAX_BYTES`).
-- Variables d'environnement nouvelles : `HUB_META_ADS_ACCESS_TOKEN`, `HUB_META_ADS_ACCOUNT_ID` (`act_…`), `HUB_META_ADS_PAGE_ID`, `HUB_DSA_ENTITY`, `GROQ_API_KEY`, `CREAS_INTAKE_SECRET`. Ajoutées à `.env.example` sans valeur.
+- Variables d'environnement nouvelles : `HUB_META_ADS_ACCESS_TOKEN`, `HUB_META_ADS_ACCOUNT_ID` (`act_…`), `HUB_META_ADS_PAGE_ID`, `HUB_DSA_ENTITY`, `GROQ_API_KEY`, `CREAS_INTAKE_SECRET`. Ajoutées à `.env.example` sans valeur. Sur Vercel, Edgar les pose lui-même par script (`vercel env add <NOM> <env> --value … --yes --force --non-interactive < /dev/null`), en Production et en Preview.
+- **Navigation** : une seule entrée dans `src/lib/navigation.ts`, la rubrique `ads` et ses sous-onglets (Tâche 2b). Aucune autre liste de menu à modifier : barre latérale, barre d'onglets, page Plus et sous-onglets en dérivent. Toutes les pages du module vivent sous `/ads/…` pour que la rubrique reste active.
+- **Apparence** (refonte du 18-19/10) : aucune couleur écrite en dur hors de `src/app/theme.css` (`scripts/test-couleurs.ts` échoue sinon) ; texte coloré seulement avec les variantes accessibles (`--orange-texte`, `--vert-texte`, `--rouge`, `--accent`, vérifiées par `scripts/test-contraste.ts`) ; composants existants : `PageHeader({ title, eyebrow?, subtitle?, actions? })` (les sous-onglets s'affichent seuls), `Chiffres`, `pillStyle(actif)`, `buttonStyle`, `buttonSecondaireStyle`, `cardStyle`, `inputStyle`, `filtreStyle`, `labelStyle`, `PeriodSelector` (sans prop `accent`), `NotConnected` (sans prop `accent`), `Readout`. Listes en groupes iOS (`.hub-groupe`, `.hub-ligne`, `.hub-ligne-sous`, `.hub-chevron`) ; tableaux dans `.hub-scroll-x`.
+- **Verre** : `<div className="hub-halo" aria-hidden="true" />` en premier élément de chaque page principale du module ; `.hub-verre` sur les blocs de chiffres (pas sur les lignes de tableau ni les grilles de vignettes) ; `.hub-pilules-verre` est déjà porté par `PeriodSelector`.
+- **iPhone** (sous 860 px) : aucune page ne défile en largeur (`scrollWidth <= clientWidth`, vérifié par capture à 390 px) ; champs à 16 px (règle globale déjà en place).
+- Tests existants au départ : 116, tous verts.
 
 ## Review Focus
 
@@ -126,15 +133,60 @@ test("lireDimensions : octets quelconques -> null", () => assert.equal(lireDimen
 
 ---
 
+### Task 2b : Rubrique « Ads » dans la navigation
+
+**Files:**
+- Modify: `src/lib/navigation.ts`, `src/components/icons.tsx`, `src/components/nav-icons.tsx`, `src/app/globals.css` (règle `.hub-sous-onglets`)
+- Create: `src/app/(app)/ads/page.tsx`
+- Test: `scripts/test-navigation.ts` (ajouts et mise à jour)
+
+**Interfaces:**
+- Produces :
+  - `CleIcone` gagne `"ads"` ; `AdsIcon` dans `icons.tsx` (mégaphone, trait fin, `currentColor`, même grille 24 que les autres) ; `NAV_ICONES.ads = AdsIcon`.
+  - `RUBRIQUES.ads = { cle: "ads", href: "/ads", libelle: "Ads", icone: "ads", sousOnglets: [{ cle: "creatives", href: "/ads/creatives", libelle: "Créatives" }, { cle: "meta", href: "/ads/meta", libelle: "Meta Ads" }, { cle: "reglages", href: "/ads/reglages", libelle: "Réglages" }] }`. « Nouvelle campagne » n'est pas un sous-onglet : c'est une action (bouton) de `/ads/meta`.
+  - `SECTIONS` : nouvelle section `{ titre: "Acquisition", cles: ["ads"] }` insérée entre la section sans titre et « Production ».
+  - `ONGLETS_MOBILE` inchangé (`accueil`, `pipeline`, `todo`, `briefs`) : sur iPhone, Ads est dans « Plus ». Choix d'Edgar à confirmer avant exécution ; s'il veut Ads dans la barre du bas, remplacer `briefs` par `ads` dans `ONGLETS_MOBILE` et adapter le test « plus ».
+  - `/ads` redirige vers `/ads/creatives` (`redirect` de `next/navigation`).
+  - Desktop : `.hub-sous-onglets` gagne `overflow-x: auto` et `scrollbar-width: none` hors media query (mineur reporté de la revue de la refonte : sans lui, des sous-onglets nombreux seraient rognés par `overflow-x: clip` entre 861 et 1000 px).
+
+- [ ] **Step 1 : Tests** (dans `scripts/test-navigation.ts`)
+
+```ts
+test("rubrique Ads : sous-onglets et pages imbriquées", () => {
+  assert.equal(rubriqueActive("/ads/meta")?.sousOnglet?.cle, "meta");
+  assert.equal(rubriqueActive("/ads/creatives/b-7-jours-999")?.sousOnglet?.cle, "creatives");
+  const nouvelle = rubriqueActive("/ads/campagnes/nouvelle");
+  assert.equal(nouvelle?.rubrique.cle, "ads");
+  assert.equal(nouvelle?.sousOnglet, null);
+  assert.equal(modeSousOnglets(RUBRIQUES.ads.sousOnglets!.length), "segmente");
+});
+test("Ads dans la section Acquisition", () => {
+  assert.deepEqual(SECTIONS.map((s) => s.titre), [null, "Acquisition", "Production", "Chiffres"]);
+});
+```
+
+Mettre à jour le test existant « plus contient tout sauf les onglets du bas » : `["ads", "bibliotheque", "analytics", "seo", "reglages"]`.
+
+- [ ] **Step 2 :** `node --import ./scripts/alias-hook.mjs --test scripts/test-navigation.ts` : FAIL.
+- [ ] **Step 3 :** Implémenter (navigation, icône, page de redirection, règle CSS).
+- [ ] **Step 4 :** Même commande puis `npm test` : PASS.
+- [ ] **Step 5 :** Vérifier à l'écran **le premier rendu réel des sous-onglets** (jamais vu depuis la refonte) avec une page provisoire `src/app/(app)/ads/creatives/page.tsx` réduite à un `PageHeader` (remplacée en Tâche 3) :
+  - 1440 px : « Ads » dans la section Acquisition de la barre latérale, sous-onglets dépliés dessous, onglets texte soulignés en haut de page ;
+  - 390 px : Ads dans la page « Plus », sélecteur segmenté à 3 sous-onglets sous le titre, `scrollWidth <= clientWidth`.
+- [ ] **Step 6 :** Commit `Module Ads : rubrique Ads et sous-onglets dans la navigation`.
+
+> **Fusion avec l'onglet Finance :** le worktree `hub-agence-finance` ajoute probablement sa propre rubrique dans `navigation.ts`. Les deux ajouts touchent les mêmes lignes (`RUBRIQUES`, `SECTIONS`, `CleIcone`) : conflit attendu à la fusion, à résoudre en gardant les deux rubriques et en ajustant le test « plus ».
+
+---
+
 ### Task 3 : Bibliothèque de créatives (routes, dépôt de l'agent, page)
 
 **Files:**
-- Create: `src/lib/ads/creatives-db.ts`, `src/app/api/creatives/route.ts`, `src/app/api/creatives/[id]/route.ts`, `src/app/api/intake/creatives/route.ts`, `src/app/(app)/creatives/page.tsx`, `src/app/(app)/creatives/depot.tsx`
-- Modify: `src/lib/channels.tsx`, `src/components/icons.tsx`
+- Create: `src/lib/ads/creatives-db.ts`, `src/app/api/creatives/route.ts`, `src/app/api/creatives/[id]/route.ts`, `src/app/api/intake/creatives/route.ts`, `src/app/(app)/ads/creatives/page.tsx`, `src/app/(app)/ads/creatives/depot.tsx`
 - Test: `scripts/test-ads-creatives.ts` (ajouts)
 
 **Interfaces:**
-- Consumes : Tâche 2.
+- Consumes : Tâches 2 et 2b.
 - Produces :
   - `enregistrerCreative(p: { octets: Uint8Array; type: string; nomFichier: string; angle?: string | null; accroche?: string | null; source_html?: string | null }): Promise<Creative>` dans `creatives-db.ts` : valide (`validerCapture` de `@/lib/bibliotheque`), lit les dimensions, refuse un format non reconnu avec le message « Format d'image non reconnu (attendu : carré, 4:5 ou story 9:16). », envoie dans le bucket `creatives` avec `upsert: true`, puis `upsert` sur `(nom_base, format)`.
   - `interface Creative { id; nom_base; format: FormatCreative; largeur; hauteur; url: string; angle: string | null; accroche: string | null; created_at }`
@@ -142,14 +194,14 @@ test("lireDimensions : octets quelconques -> null", () => assert.equal(lireDimen
   - `POST /api/intake/creatives` : en-tête `x-kleak-secret` comparé à `CREAS_INTAKE_SECRET` en temps constant (reprendre `secretValide` de `src/app/api/intake/sheet/route.ts`, l'extraire dans `src/lib/secret.ts` si elle y est privée), multipart `file` + `angle`, `accroche`, `source_html`. 503 si la variable manque, 401 si le secret est faux. Le middleware exclut déjà `api/intake`.
   - `POST /api/creatives` (session Edgar) : multipart, plusieurs `file`.
   - `DELETE /api/creatives/[id]` : retire la ligne et le fichier.
-  - Entrée de menu `creatives` (« Créatives ») dans un nouveau groupe `{ title: "Ads", keys: ["creatives"] }` placé après « Commercial ».
+  - Pas de modification de menu : l'entrée « Créatives » existe déjà comme sous-onglet depuis la Tâche 2b.
 
 - [ ] **Step 1 :** Ajouter au test : `secretValide("abc", "abc") === true`, `secretValide("abd", "abc") === false`, `secretValide(null, "abc") === false`, `secretValide("ab", "abc") === false`.
 - [ ] **Step 2 :** Lancer : FAIL.
 - [ ] **Step 3 :** Implémenter `src/lib/secret.ts`, l'utiliser dans les deux routes d'intake, puis `creatives-db.ts` et les routes.
-- [ ] **Step 4 :** Page `/creatives` : grille groupée par `nom_base`, une vignette par format avec son étiquette, zone de glisser-déposer multi-fichiers (`depot.tsx`, client), bouton supprimer par format. Reprendre l'allure de `src/app/(app)/bibliotheque/page.tsx`.
-- [ ] **Step 5 :** `npm test` : tout passe (98 tests existants + nouveaux).
-- [ ] **Step 6 :** Vérification à la main, serveur sur 3001 : déposer `livrables/creas-meta/rendus/post/b-7-jours-999-post.png` par la page ; puis `curl -F file=@…/a-un-kleak-post.png -H "x-kleak-secret: $CREAS_INTAKE_SECRET" localhost:3001/api/intake/creatives` (secret lu depuis `.env.local` dans le shell, jamais affiché) ; redéposer le même fichier et constater qu'il n'y a toujours qu'une vignette.
+- [ ] **Step 4 :** Page `/ads/creatives` : halo, `PageHeader` (titre « Ads », sous-titre « Créatives », action « Ajouter » en `buttonStyle`) ; grille groupée par `nom_base` (`gridTemplateColumns: "repeat(auto-fill, minmax(min(240px, 100%), 1fr))"`), une vignette par format avec son étiquette en texte gris, cartes `cardStyle` sans verre ; zone de glisser-déposer multi-fichiers (`depot.tsx`, client) en pointillé `--filet-fort` sur fond `--surface-2` ; bouton supprimer par format en `buttonSecondaireStyle` couleur `--rouge`. Reprendre l'allure de `src/app/(app)/bibliotheque/page.tsx`.
+- [ ] **Step 5 :** `npm test` : tout passe (116 tests existants + nouveaux, dont `test-couleurs` et `test-contraste`).
+- [ ] **Step 6 :** Vérification à la main, serveur sur 3001, à 1440 et 390 px de large (aucun défilement horizontal) : déposer `livrables/creas-meta/rendus/post/b-7-jours-999-post.png` par la page ; puis `curl -F file=@…/a-un-kleak-post.png -H "x-kleak-secret: $CREAS_INTAKE_SECRET" localhost:3001/api/intake/creatives` (secret lu depuis `.env.local` dans le shell, jamais affiché) ; redéposer le même fichier et constater qu'il n'y a toujours qu'une vignette.
 - [ ] **Step 7 :** Documenter l'appel d'intake (URL, en-tête, champs) dans `livrables/creas-meta/README.md` du workspace, pour l'agent créas.
 - [ ] **Step 8 :** Commit `Module Ads : bibliothèque de créatives et dépôt par l'agent créas`.
 
@@ -230,20 +282,21 @@ test("assembler : filtre les campagnes hors prospects, regroupe par campagne, is
 ### Task 6 : Page de suivi des performances
 
 **Files:**
-- Create: `src/lib/ads/insights.ts`, `src/lib/ads/attribution-db.ts`, `src/app/(app)/meta-ads/page.tsx`, `src/app/(app)/meta-ads/tableau.tsx`
-- Modify: `src/lib/channels.tsx` (ajouter `metaAds` « Meta Ads » au groupe « Ads »), `src/lib/crm/db.ts` (extraire la pagination par lots de `chiffresDuMois` si besoin de la réutiliser)
+- Create: `src/lib/ads/insights.ts`, `src/lib/ads/attribution-db.ts`, `src/app/(app)/ads/meta/page.tsx`, `src/app/(app)/ads/meta/tableau.tsx`, `src/app/(app)/ads/meta/liste-mobile.tsx`
+- Modify: `src/lib/crm/db.ts` (extraire la pagination par lots de `chiffresDuMois` si besoin de la réutiliser), `src/lib/period.ts`
 
 **Interfaces:**
 - Consumes : Tâches 4 et 5, `parsePeriod` / `PeriodSelector` / `RefreshButton` / `NotConnected` existants.
 - Produces :
   - `lireLignesMeta(config: MetaConfig, range: DateRange): Promise<{ ok: true; lignes: LigneMeta[] } | { ok: false; message: string }>` : `insights?level=ad&fields=ad_id,ad_name,campaign_id,campaign_name,objective,spend,clicks,actions&time_range=…`, puis miniatures par `/{ad_id}?fields=creative{thumbnail_url}` en un appel groupé (`?ids=`).
   - `crmParAnnonce(range: DateRange): Promise<CrmParAnnonce[]>` : leads dont `lead_cree_le` est dans la période, groupés par `ad_id` ; RDV = comptes distincts ayant au moins un événement `rdv_reserve` (même définition que `chiffresDuMois`) ; `ca: null` partout tant que la phase 2 n'existe pas.
-- Page : sélecteur de période (7 j, 30 j, mois en cours, dates libres ; ajouter la clé `mois` à `PeriodKey` et à `parsePeriod` dans `src/lib/period.ts`, elle n'existe pas encore), tableau des campagnes (dépense, leads, CPL, CPC, coût par RDV, ROAS), clic sur une ligne pour déplier ses annonces avec miniature, ligne « Leads non rattachés à une pub », phrase sous le tableau : « Seules les campagnes de prospects sont comptées. »
+- Page `/ads/meta` : halo ; `PageHeader` (titre « Ads », action « Nouvelle campagne » en `buttonStyle` vers `/ads/campagnes/nouvelle`) ; `PeriodSelector` (7 j, 30 j, mois en cours, dates libres ; ajouter la clé `mois` à `PeriodKey` et à `parsePeriod` dans `src/lib/period.ts` si l'onglet Finance ne l'a pas déjà fait, vérifier avant) ; bloc de synthèse de la période (dépense, leads, CPL, coût par RDV) dans un `Readout` (déjà en verre) ou une `div.hub-verre` ; tableau des campagnes (dépense, leads, CPL, CPC, coût par RDV, ROAS) dans `.hub-scroll-x`, chiffres en `.hub-mono`, filets `--filet`, clic sur une ligne pour déplier ses annonces avec miniature ; ligne « Leads non rattachés à une pub » ; phrase sous le tableau : « Seules les campagnes de prospects sont comptées. »
+- **Sous 860 px**, le tableau est masqué et remplacé par `liste-mobile.tsx` : un groupe `.hub-groupe` par campagne, une ligne par indicateur clé (dépense, leads, CPL, coût par RDV), annonces dépliables. Même règle que le Pipeline : les données sont calculées côté serveur et passées en objets simples (aucune `Date` vers un composant client).
 - Si `missingMetaEnv()` non vide : composant `NotConnected` avec la liste des variables. Si `lireLignesMeta` rend `ok: false` (jeton expiré code 190, droits manquants) : bandeau avec le message de Meta, chiffres « indisponible », pas d'exception.
 
 - [ ] **Step 1 :** Ajouter à `scripts/test-ads-meta.ts` : `lireLignesMeta` avec `fetch` simulé renvoyant `{error:{code:190}}` → `ok: false` et message contenant « jeton » ; renvoyant deux pages (`paging.next`) → toutes les lignes.
 - [ ] **Step 2 :** Lancer : FAIL. Implémenter. Lancer : PASS.
-- [ ] **Step 3 :** Construire la page et le menu.
+- [ ] **Step 3 :** Construire la page (aucun menu à toucher). Captures à 1440 et 390 px.
 - [ ] **Step 4 :** Vérifier à la main sur le vrai compte (après Tâche 0) : les chiffres d'une campagne sur 30 jours sont égaux à ceux du Gestionnaire de publicités pour la même période. Si la première campagne manuelle n'a pas encore tourné, le vérifier sur une ancienne campagne du compte en retirant temporairement le filtre d'objectif, puis le remettre.
 - [ ] **Step 5 :** `npm test` : PASS. Commit `Module Ads : page de suivi Meta Ads`.
 
@@ -253,18 +306,18 @@ test("assembler : filtre les campagnes hors prospects, regroupe par campagne, is
 
 **Files:**
 - Create: `src/lib/ads/depenses.ts`
-- Modify: `src/lib/crm/db.ts` (`enregistrerDepense` pose `source: "manuel"`), `src/app/(app)/meta-ads/page.tsx`, `src/app/(app)/dashboard/page.tsx` (mention « (Meta) » ou « (saisie) » à côté du coût par lead)
+- Modify: `src/lib/crm/db.ts` (`enregistrerDepense` pose `source: "manuel"`), `src/app/(app)/ads/meta/page.tsx`, `src/app/(app)/dashboard/page.tsx` (mention « (Meta) » ou « (saisie) » à côté du coût par lead, en texte `--texte-2`)
 - Test: `scripts/test-ads-performances.ts` (ajouts)
 
 **Interfaces:**
 - Produces :
   - `decisionDepense(existante: { montant: number; source: "manuel" | "meta" } | null, montantMeta: number): { action: "ecrire" | "garder"; ecart: number | null }` : `null` ou `meta` → écrire ; `manuel` → garder, `ecart = montantMeta - montant` si l'écart dépasse 1 €, sinon `null`.
   - `synchroniserDepenses(config: MetaConfig, mois: string[]): Promise<{ mois: string; action: "ecrire" | "garder"; ecart: number | null }[]>` : dépense des campagnes prospects par mois (`insights?level=campaign&fields=objective,spend&time_range` du mois), puis upsert `source: "meta"` si `ecrire`.
-- Appelée au chargement de `/meta-ads` pour le mois en cours et le précédent. Si un écart existe, bandeau : « Mois de <mois> : saisie manuelle de X €, Meta indique Y €. La saisie manuelle est conservée. »
+- Appelée au chargement de `/ads/meta` pour le mois en cours et le précédent. Si un écart existe, bandeau au style de l'Accueil (`.hub-bandeau`, point `--orange`) : « Mois de <mois> : saisie manuelle de X €, Meta indique Y €. La saisie manuelle est conservée. »
 
 - [ ] **Step 1 :** Tests : `decisionDepense(null, 40)` → écrire ; `({montant: 30, source: "meta"}, 40)` → écrire ; `({montant: 30, source: "manuel"}, 40)` → garder, écart 10 ; `({montant: 30, source: "manuel"}, 30.5)` → garder, écart null.
 - [ ] **Step 2 :** Lancer : FAIL. Implémenter. Lancer : PASS.
-- [ ] **Step 3 :** Vérifier à la main : saisir 1 € pour le mois en cours depuis le dashboard, ouvrir `/meta-ads`, constater le bandeau d'écart et que `depenses_pub` vaut toujours 1 € en `manuel`. Supprimer la ligne ensuite.
+- [ ] **Step 3 :** Vérifier à la main : saisir 1 € pour le mois en cours depuis l'Accueil, ouvrir `/ads/meta`, constater le bandeau d'écart et que `depenses_pub` vaut toujours 1 € en `manuel`. Supprimer la ligne ensuite.
 - [ ] **Step 4 :** Commit `Module Ads : dépense mensuelle remplie depuis Meta`.
 
 ---
@@ -357,20 +410,20 @@ test("plus de 2 emojis rejeté", () => {
 ### Task 10 : Écrans du générateur et réglages Ads
 
 **Files:**
-- Create: `src/app/(app)/creatives/[nom]/page.tsx`, `src/app/(app)/creatives/[nom]/generateur.tsx`, `src/app/(app)/ads-reglages/page.tsx`, `src/app/api/ads/reglages/route.ts`, `src/app/api/ads/textes/valider/route.ts`
-- Modify: `src/lib/ads/textes-db.ts`, `src/lib/channels.tsx` (« Réglages Ads » dans le groupe « Ads »)
+- Create: `src/app/(app)/ads/creatives/[nom]/page.tsx`, `src/app/(app)/ads/creatives/[nom]/generateur.tsx`, `src/app/(app)/ads/reglages/page.tsx`, `src/app/api/ads/reglages/route.ts`, `src/app/api/ads/textes/valider/route.ts`
+- Modify: `src/lib/ads/textes-db.ts`
 
 **Interfaces:**
 - Consumes : Tâches 3 et 9.
 - Produces :
-  - Page d'une créa : ses formats, choix du ton (boutons) et de l'offre (boutons), bouton « Écrire les textes », 3 cartes modifiables (texte principal, titre, description, compteur de caractères), avertissements `problemes` en orange, sous chaque carte un champ consigne + « Relancer cette version », bouton « Garder ce texte » qui enregistre dans `textes_annonce` (sans `valide_le`).
-  - Si `ADS_TEXT_VOIT_IMAGE` est faux : bandeau « Le modèle ne voit pas l'image, il écrit à partir du nom et de l'accroche de la créa. »
-  - `/ads-reglages` : listes modifiables (ajout, suppression, édition) des tons, des offres (nom, contenu, prix), des avis, des tournures interdites.
+  - Page d'une créa (`/ads/creatives/<nom>`, le sous-onglet « Créatives » reste actif) : ses formats, choix du ton et de l'offre en pastilles (`pillStyle`), bouton « Écrire les textes » (`buttonStyle`), 3 cartes modifiables (`cardStyle`, champs `inputStyle`, compteur de caractères en `--texte-3`, en `--rouge` au-delà de la limite), avertissements `problemes` en texte `--orange-texte` précédé d'un point `--orange`, sous chaque carte un champ consigne + « Relancer cette version » (`buttonSecondaireStyle`), bouton « Garder ce texte » qui enregistre dans `textes_annonce` (sans `valide_le`). Sur iPhone, les 3 cartes s'empilent.
+  - Si `ADS_TEXT_VOIT_IMAGE` est faux : bandeau `.hub-bandeau` (point `--texte-3`) « Le modèle ne voit pas l'image, il écrit à partir du nom et de l'accroche de la créa. »
+  - `/ads/reglages` : quatre sections (`.hub-section-titre`), chacune en groupe `.hub-groupe` modifiable (ajout, suppression, édition) : tons, offres (nom, contenu, prix), avis, tournures interdites.
   - `marquerValides(ids: string[]): Promise<void>` dans `textes-db.ts` (pose `valide_le`), utilisée par la Tâche 12.
 
 - [ ] **Step 1 :** Construire les écrans et la route de réglages (validation : nom et texte non vides, prix entiers positifs).
 - [ ] **Step 2 :** Vérification à la main : générer, retoucher, relancer une version avec « plus court », garder ; ajouter une tournure dans les réglages et constater qu'une génération qui l'emploie remonte un avertissement.
-- [ ] **Step 3 :** `npm test` : PASS. Commit `Module Ads : écrans du générateur et réglages`.
+- [ ] **Step 3 :** `npm test` : PASS. Captures à 1440 et 390 px. Commit `Module Ads : écrans du générateur et réglages`.
 
 ---
 
@@ -429,19 +482,18 @@ test("lienGestionnaire", () => assert.equal(lienGestionnaire("act_123", "456"), 
 ### Task 12 : Écran de création de campagne
 
 **Files:**
-- Create: `src/app/(app)/campagnes/nouvelle/page.tsx`, `src/app/(app)/campagnes/nouvelle/formulaire.tsx`, `src/app/api/ads/campagnes/route.ts`, `src/app/api/ads/formulaires/route.ts`
-- Modify: `src/lib/channels.tsx` (« Nouvelle campagne » dans le groupe « Ads »)
+- Create: `src/app/(app)/ads/campagnes/nouvelle/page.tsx`, `src/app/(app)/ads/campagnes/nouvelle/formulaire.tsx`, `src/app/api/ads/campagnes/route.ts`, `src/app/api/ads/formulaires/route.ts`
 
 **Interfaces:**
 - Consumes : Tâches 3, 10, 11.
 - Produces :
-  - Formulaire : nom de campagne prérempli `Kleak | <libellé> | AAAA-MM-JJ` ; choix des créatives (cases), pour chacune la liste des textes gardés (`textes_annonce`) ; budget par jour (défaut 7 €) ; pays France, âge 25 à 65 (modifiables), champ libre région ; formulaire instantané (liste de `GET /api/ads/formulaires`) ; bouton d'appel à l'action ; rappel en haut : « La campagne est créée en pause. Rien ne diffuse tant que tu ne l'actives pas dans le Gestionnaire. »
+  - Page `/ads/campagnes/nouvelle` : pas de sous-onglet propre (la rubrique Ads reste active, on y arrive par le bouton « Nouvelle campagne » de `/ads/meta`) ; `PageHeader` titre « Nouvelle campagne », eyebrow « Ads ». Formulaire en sections `cardStyle`, champs `inputStyle`, cases et boutons d'appel à l'action en pastilles : nom de campagne prérempli `Kleak | <libellé> | AAAA-MM-JJ` ; choix des créatives (cases), pour chacune la liste des textes gardés (`textes_annonce`) ; budget par jour (défaut 7 €) ; pays France, âge 25 à 65 (modifiables), champ libre région ; formulaire instantané (liste de `GET /api/ads/formulaires`) ; bouton d'appel à l'action ; rappel en haut en `.hub-bandeau` (point `--accent`) : « La campagne est créée en pause. Rien ne diffuse tant que tu ne l'actives pas dans le Gestionnaire. »
   - `POST /api/ads/campagnes` : `validateCampaignInput`, `createPausedCampaign`, enregistre `envois_campagne` (succès ou échec, avec les objets créés), et en cas de succès appelle `marquerValides` sur les textes utilisés.
   - Après succès : lien « Ouvrir dans le Gestionnaire » (`lienGestionnaire`). Après échec : l'étape (`failedAt`), le message de Meta, et la liste `leftovers` s'il en reste.
   - Si `missingMetaEnv()` non vide : `NotConnected`.
 
 - [ ] **Step 1 :** Construire.
-- [ ] **Step 2 :** `npm test` : PASS. Commit `Module Ads : écran de création de campagne`.
+- [ ] **Step 2 :** `npm test` : PASS. Captures à 1440 et 390 px. Commit `Module Ads : écran de création de campagne`.
 
 ---
 
@@ -452,4 +504,4 @@ test("lienGestionnaire", () => assert.equal(lienGestionnaire("act_123", "456"), 
 - [ ] **Step 3 :** Si Meta refuse une charge utile, corriger le constructeur concerné, ajouter un test qui fige la forme acceptée, recommencer.
 - [ ] **Step 4 :** Faire supprimer la campagne de test par Edgar.
 - [ ] **Step 5 :** Mettre à jour le commentaire d'en-tête de `src/lib/ads/meta-campaign.ts` (« CE QUI A ÉTÉ VÉRIFIÉ EN RÉEL », date). Commit `Module Ads : validé en réel sur le compte Kleak`.
-- [ ] **Step 6 :** Revue de toute la branche, puis fusion dans `main` seulement si le hub est déjà en ligne sur Vercel (sinon attendre), poser les six variables sur Vercel (`--no-sensitive` pour les identifiants qui ne sont pas secrets).
+- [ ] **Step 6 :** Revue de toute la branche. Edgar pose les six variables sur Vercel en Preview et en Production par script (`--no-sensitive` pour les identifiants qui ne sont pas secrets). Pousser la branche, Edgar valide sur la prévisualisation (Mac et iPhone), puis fusion dans `main` (déploiement de production).
