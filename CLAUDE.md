@@ -124,6 +124,7 @@ Les sous-dossiers de `livrables/` se créent au besoin (par exemple `offre/`, `p
   - toutes les couleurs vivent dans `src/app/theme.css`, `scripts/test-couleurs.ts` et `scripts/test-contraste.ts` le vérifient ;
   - la navigation est décrite une seule fois dans `src/lib/navigation.ts` : une rubrique ou un sous-onglet, c'est une entrée dans ce fichier ;
   - classes verre `.hub-halo`, `.hub-verre`, `.hub-pilules-verre`, `.hub-barre-progression`, à réserver aux chiffres et aux en-têtes, jamais aux listes.
+- **Onglet Finance** (spec `docs/superpowers/specs/2026-10-19-finance-design.md`) : lot 1 Stripe seul construit dans le worktree `livrables/hub-agence-finance/` (branche `finance`, à fusionner dans `main`, puis poser `STRIPE_SECRET_KEY` dans Vercel). Lot 2 Revolut Business quand le compte sera ouvert.
 - **Ne jamais lancer `npm run build` pendant qu'un serveur dev tourne.**
 - Variables Vercel posées par Edgar via des scripts qui lisent `.env.local` sans rien afficher. La CLI `vercel env add` doit recevoir `--value` et `--non-interactive`.
 

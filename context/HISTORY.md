@@ -9,6 +9,24 @@
 
 ## 2026-10-19
 
+### Onglet Finance du hub (lot 1, Stripe)
+
+- **Conçu avec Edgar** (spec `docs/superpowers/specs/2026-10-19-finance-design.md`, plan `docs/superpowers/plans/2026-10-19-finance-lot-1.md`) :
+  - Kleak uniquement : Stripe pour les factures, Revolut Business pour toutes les dépenses ;
+  - deux chiffres clés : le brut, et le net après toutes les dépenses et une estimation mensuelle des cotisations (21,2 %, modifiable), pour ne pas attendre le prélèvement URSSAF réel ;
+  - objectif comparé à 2 000 € nets par mois.
+- **Revolut Business pas encore ouvert**, donc le travail est découpé en deux lots : lot 1 Stripe seul, lot 2 Revolut à l'ouverture du compte.
+- **Lot 1 construit et testé** (branche `finance`, 141 tests, relecture par tâche et relecture finale) :
+  - synchronisation chaque nuit et bouton « Actualiser » ;
+  - « Indisponible » plutôt que 0 € quand la donnée manque ;
+  - taux URSSAF et date de départ dans Réglages.
+- **Mise en route :**
+  - SQL exécuté sur Supabase ;
+  - clé Stripe Kleak restreinte en lecture seule (Balance, Customers, Invoices) ;
+  - test de bout en bout en mode test Stripe validé par Edgar (999 € + 1 800 € payés hors Stripe − 90 € de remboursement), puis données purgées.
+- **Liquid glass** validé sur la maquette Finance et étendu à tout le hub par une autre conversation.
+- **Reste :** fusionner `finance` dans `main`, poser `STRIPE_SECRET_KEY` dans Vercel.
+
 ### Hub Agence en ligne et refondu
 
 - **Hub en production** sur https://hub-agence-kleak.vercel.app (projet Vercel `hub-agence-kleak`, dépôt `Beepurst/hub-agence-kleak`, déploiement automatique à chaque push sur `main`). Pas de domaine personnalisé, décision d'Edgar : outil interne. Mot de passe d'accès créé par Edgar.
