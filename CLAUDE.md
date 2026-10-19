@@ -136,6 +136,7 @@ Les sous-dossiers de `livrables/` se créent au besoin (par exemple `offre/`, `p
 - **/morning** : démarrer la journée avec une veille courte et le focus du jour
 - **/commit** : committer le travail en cours avec un message propre
 - **/agent** : créer un agent spécialisé dans `.claude/agents/`, à documenter ici en une ligne
+- **/demain** : préparer le soir la to-do du lendemain et l'écrire dans le Hub Agence après validation (utilise `HUB_URL` et `TODO_AGENT_SECRET` du `.env`)
 
 ---
 
