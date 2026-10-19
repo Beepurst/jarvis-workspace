@@ -16,6 +16,8 @@
 
 **Quand :** après l'agent créas (décision d'Edgar du 18/10). **Mode d'exécution choisi par Edgar : subagent-driven** (superpowers:subagent-driven-development). Le hub est en ligne depuis le 19/10 : chaque push sur `main` déploie en production, donc fusion seulement après validation d'Edgar sur la prévisualisation Vercel de la branche (les variables Preview existent déjà).
 
+**Ordre d'exécution (19/10/2026)** : le compte développeur Meta d'Edgar est restreint, l'app et le jeton Meta sont créés par un ami d'Edgar dans le portefeuille Kleak (en cours). On construit d'abord ce qui ne dépend pas de Meta : **1, 2, 2b, 3, 8, 9, 10**, puis, une fois le jeton posé, **0 (partie Meta), 4, 5, 6, 7, 11, 12, 13**. La clé Groq est déjà dans `livrables/hub-agence/.env.local`.
+
 ## Global Constraints
 
 - Toute campagne, tout ensemble et toute annonce sont créés en `PAUSED`. Les quatre verrous de `livrables/hub/src/lib/meta-campaign.ts` sont repris tels quels (pas de paramètre de statut, `PAUSED` écrit une fois et appliqué après l'étalement, `assertPaused()` avant chaque envoi, `graphPost()` privée).
