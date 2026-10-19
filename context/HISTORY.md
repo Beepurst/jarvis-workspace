@@ -7,6 +7,36 @@
 
 ---
 
+## 2026-10-19
+
+### Hub Agence en ligne et refondu
+
+- **Hub en production** sur https://hub-agence-kleak.vercel.app (projet Vercel `hub-agence-kleak`, dépôt `Beepurst/hub-agence-kleak`, déploiement automatique à chaque push sur `main`). Pas de domaine personnalisé, décision d'Edgar : outil interne. Mot de passe d'accès créé par Edgar.
+- **Branchement du CRM :**
+  - **Cal.com fait** : événement « Appel découverte Kleak Agency » (30 min, Google Meet), `https://cal.com/kleak-agency/appel-decouverte`, 2 rappels email (J-1, H-1) sur le modèle gratuit, webhook réservation/annulation/report vers le hub.
+  - **Google Sheet fait** : script Apps Script installé, envoi toutes les 5 min. Les 80 anciens leads de 2025 importés au premier passage ont été supprimés de la base.
+  - **Brevo en attente** : domaine `kleakagency.fr` authentifié, expéditeur `contact@kleakagency.fr` vérifié. Restent la balise `rua` du DMARC chez IONOS (problème de boîte mail, appel IONOS prévu), la clé API, les 4 modèles d'email et le webhook.
+- **Refonte visuelle du hub, en production le 19/10** (spec `docs/superpowers/specs/2026-10-18-hub-agence-refonte-visuelle-design.md`, plan associé). Ce qui change :
+  - thème clair, structure Notion et finition Apple ;
+  - barre latérale en texte sur Mac, barre d'onglets en bas sur iPhone ;
+  - étape d'un compte modifiable depuis sa fiche ;
+  - touche « liquid glass » validée depuis la maquette Finance (halo, cartes de chiffres et sélecteur de période en verre) ;
+  - contrastes AA vérifiés par test.
+- **Prochaines étapes du hub :**
+  - réécrire le plan du module Ads pour la nouvelle navigation (Ads en rubrique à sous-onglets, `src/lib/navigation.ts`) ;
+  - onglet Finance en cours de conception dans une autre conversation ;
+  - icônes de l'app iPhone encore sur fond noir.
+
+### Créas du premier test validées, nouveau compte publicitaire
+
+- **3 créas validées pour le test de 50 €**, en post et en story, avec leurs textes d'annonce (`livrables/creas-meta/`) :
+  - A « Un site web en un Kleak » (marque, 4,8/5 Google) ;
+  - B « Votre site vitrine en 7 jours, dès 999 € » (prix, avis de Laura Dias) ;
+  - D « Un site qui donne envie d'appeler », avant / après : site daté inventé (« Site vieillot », mention « Avant : illustration » en petit) contre la vraie réalisation Accueil Sénior Assistance (« Site moderne et fluide »), pastille « dès 999 € en 7 jours* ». Accroches C et E écartées.
+- **Règles d'Edgar sur le copy** : pas de formules ni de paires en miroir « qui font IA », partir de ses mots. Les textes d'annonce finissent sur ce qui se passe vraiment (« vous recevez tout de suite un message pour choisir un créneau d'appel »). Pas de mention de l'hébergement en plus dans les pubs (décision d'Edgar). Coquilles du site client laissées.
+- **Nouveau compte publicitaire Meta**, formulaire instantané refait à zéro. Les libellés des questions doivent rester identiques à ceux lus par le CRM (`src/lib/crm/sheet.ts`), « Nom de l’entreprise » en question personnalisée. Le coût par lead d'il y a un an n'est plus un repère.
+- Politique de confidentialité de kleakagency.fr (avril 2025) à compléter : Brevo, Cal.com, WhatsApp.
+
 ## 2026-10-18
 
 ### Module Ads du hub conçu, agent créas en priorité

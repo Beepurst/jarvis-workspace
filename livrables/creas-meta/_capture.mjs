@@ -7,18 +7,31 @@ const shots = [
   { name: 'demo-v2-mobile', url: 'https://massive-account-916652.framer.app/atelier-hauteville-v2', w: 390, h: 844 },
   { name: 'demo-v1-desktop', url: 'https://massive-account-916652.framer.app/atelier-hauteville', w: 1440, h: 900 },
   { name: 'demo-v1-mobile', url: 'https://massive-account-916652.framer.app/atelier-hauteville', w: 390, h: 844 },
+  // Vraie réalisation Kleak (Framer, crédit Kleak en pied de page), montrée dans la créa D.
+  { name: 'asa-mobile', url: 'https://accueilseniorassistance.com/', w: 390, h: 844 },
 ];
+// `node _capture.mjs asa-mobile` ne refait que les captures nommées.
+const filtre = process.argv.slice(2);
 const b = await chromium.launch({ channel: 'chromium' });
 let n = 0;
-for (const s of shots) {
+const choix = filtre.length ? shots.filter((s) => filtre.includes(s.name)) : shots;
+for (const s of choix) {
   const p = await b.newPage({ viewport: { width: s.w, height: s.h }, deviceScaleFactor: 2 });
   await p.goto(s.url, { waitUntil: 'networkidle', timeout: 60000 });
   await p.waitForTimeout(2500);
   // Le badge « Made in Framer », le crayon d'édition et le bandeau cookies ne font pas partie du site livré.
   await p.addStyleTag({ content: '#__framer-badge-container,#__framer-editorbar,#__framer-editorbar-button,[id^="__framer-editorbar"]{display:none!important}' });
   await p.evaluate(() => {
+    // « Paramètres Cookies » (démo) ou « Paramètres des Cookies » (Accueil Sénior Assistance) :
+    // on retire le bloc en position fixe qui le porte, sinon le bloc lui-même.
+    const re = /^Paramètres (des )?Cookies/i;
     for (const el of document.querySelectorAll('div,section,aside')) {
-      if (el.innerText && el.innerText.startsWith('Paramètres Cookies')) el.remove();
+      if (!el.isConnected || !el.innerText || !re.test(el.innerText.trim())) continue;
+      let cible = el;
+      for (let a = el; a && a !== document.body; a = a.parentElement) {
+        if (getComputedStyle(a).position === 'fixed') { cible = a; break; }
+      }
+      cible.remove();
     }
   });
   await p.waitForTimeout(300);
@@ -26,5 +39,5 @@ for (const s of shots) {
   await p.close(); n++; console.log(s.name);
 }
 await b.close();
-if (n !== shots.length) { console.error(`${n}/${shots.length}`); process.exit(1); }
+if (!choix.length || n !== choix.length) { console.error(`${n}/${choix.length}`); process.exit(1); }
 console.log(n, 'captures');

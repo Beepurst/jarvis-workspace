@@ -24,7 +24,7 @@ Je reprends mon agence de création de sites internet, Kleak Agency, **et elle r
 
 | | |
 |---|---|
-| Nom | **Kleak Agency** (nom de l'ancienne agence Framer, repris). Domaine `kleakagency.fr`, page Facebook et compte publicitaire Meta toujours actifs |
+| Nom | **Kleak Agency** (nom de l'ancienne agence Framer, repris). Domaine `kleakagency.fr`, page Facebook toujours active. **Nouveau compte publicitaire Meta** dans le Business Manager existant (décision du 19/10 ; Page Facebook, Instagram et Business Manager inchangés), formulaire instantané refait à zéro |
 | Activité | Création de sites internet, en prestation |
 | Outil de production | **Framer**, piloté par Claude Code via l'outil `@framer/agent` (décision finale du 18/10) |
 | Cible | **PME françaises de tous secteurs**, sites vitrines. Pas de spécialisation sectorielle (décision du 18/10, comme l'ancienne agence) |
@@ -114,12 +114,12 @@ SaaS de dashboard marketing multi-connecteurs, jusqu'ici mon activité principal
 | Site de démo | V1 et V2 Framer publiées en test le 18/10. V2 : 77 à 85 sur mobile, 95 sur bureau, accessibilité 100 |
 | Site Kleak | `kleakagency.fr` sur Framer, on le garde |
 | Orbikal | En pause, mise en sommeil à organiser (abonnés, facturation Stripe) |
-| Outil interne | Hub Agence (`livrables/hub-agence/`, dépôt `Beepurst/hub-agence-kleak`) : Bibliothèque, Briefs et CRM phase 1 codés et testés, mise en ligne Vercel en cours. **Module Ads** (créatives, textes par IA, campagnes envoyées en pause dans Meta, suivi CPL, coût par RDV, ROAS) conçu et planifié le 18/10, à construire après l'agent créas, dans le worktree `livrables/hub-agence-ads/` |
+| Outil interne | Hub Agence (`livrables/hub-agence/`, dépôt `Beepurst/hub-agence-kleak`) **en production** sur https://hub-agence-kleak.vercel.app, refondu le 19/10 (thème clair, Notion/Apple, touche verre). CRM : Cal.com et Google Sheet branchés, **Brevo en attente** (DMARC chez IONOS, clé API, 4 modèles, webhook). **Module Ads** (créatives, textes par IA, campagnes envoyées en pause dans Meta, suivi CPL, coût par RDV, ROAS) conçu et planifié le 18/10, à construire après l'agent créas, dans le worktree `livrables/hub-agence-ads/` |
 | Chiffre d'affaires | 0 € (objectif : 2 550 €/mois dès décembre) |
 
 ### Prochain chantier
 
-Préparer la première campagne Meta, visée vers le 25 octobre : démo Atelier Hauteville en ligne comme réalisation (et socle des sections réutilisables), formulaire instantané avec filtre de budget et consentement, automatisation email/WhatsApp vers la prise de rendez-vous, 2 ou 3 visuels. **Les visuels viendront d'un agent de production de créas** (Claude Code, chaîne de `livrables/creas-meta/`), à concevoir maintenant ; Edgar ne passe plus par Canva. La première campagne se monte à la main dans le Gestionnaire, le module Ads du hub servira pour les suivantes. En parallèle : coordonnées sur la fiche offre et CGV de prestation. La mise en ligne du Hub Agence passe après.
+Préparer la première campagne Meta, visée vers le 25 octobre. **Fait :** les 3 visuels du test (A marque, B prix, D avant / après avec la réalisation Accueil Sénior Assistance), post et story, et leurs textes d'annonce, produits par l'agent `createur-creas` (`livrables/creas-meta/`, voir `TEXTES-ANNONCES.md`). **Reste :** le formulaire instantané à créer sur le nouveau compte (libellés des questions identiques à ceux lus par le CRM, case WhatsApp, lien vers la politique de confidentialité), la politique de confidentialité à mettre à jour (Brevo, Cal.com, WhatsApp), le branchement de Brevo pour l'email d'invitation (le CRM est en ligne, Cal.com et le Sheet sont branchés), prévenir Accueil Sénior Assistance. La première campagne se monte à la main dans le Gestionnaire, le module Ads du hub servira pour les suivantes. En parallèle : coordonnées sur la fiche offre et CGV de prestation.
 
 ---
 
@@ -128,7 +128,7 @@ Préparer la première campagne Meta, visée vers le 25 octobre : démo Atelier 
 **Canal unique pour le moment : Meta Ads**, ce qui marchait le mieux pour l'ancienne agence.
 
 - Pubs statiques, formulaire instantané Meta, puis email et/ou WhatsApp automatique pour que le lead prenne rendez-vous.
-- **Historique mesuré il y a un an** : 2 € par lead, 1 rendez-vous pour 3 leads, 1 signature pour 3 à 4 rendez-vous, soit environ 10 à 12 leads par client.
+- **Historique mesuré il y a un an, sur l'ancien compte** (le nouveau compte part sans historique, le repère vaut donc peu) : 2 € par lead, 1 rendez-vous pour 3 leads, 1 signature pour 3 à 4 rendez-vous, soit environ 10 à 12 leads par client.
 - **Budget : 200 € par mois.**
 - Projection à 5 € par lead (chiffres d'il y a un an, et novembre plus cher) : 40 leads, environ 13 rendez-vous, environ 3,5 signatures par mois, soit plus que la capacité. Le budget n'est pas le frein, la capacité de production l'est.
 - Garde-fous : test de 50 € sur 5 à 7 jours pour remesurer le coût par lead avant d'engager le reste ; question de budget dans le formulaire pour filtrer ; consentement WhatsApp explicite et mention RGPD dans le formulaire.
