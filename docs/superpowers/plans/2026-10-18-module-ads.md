@@ -145,7 +145,7 @@ test("lireDimensions : octets quelconques -> null", () => assert.equal(lireDimen
   - `CleIcone` gagne `"ads"` ; `AdsIcon` dans `icons.tsx` (mégaphone, trait fin, `currentColor`, même grille 24 que les autres) ; `NAV_ICONES.ads = AdsIcon`.
   - `RUBRIQUES.ads = { cle: "ads", href: "/ads", libelle: "Ads", icone: "ads", sousOnglets: [{ cle: "creatives", href: "/ads/creatives", libelle: "Créatives" }, { cle: "meta", href: "/ads/meta", libelle: "Meta Ads" }, { cle: "reglages", href: "/ads/reglages", libelle: "Réglages" }] }`. « Nouvelle campagne » n'est pas un sous-onglet : c'est une action (bouton) de `/ads/meta`.
   - `SECTIONS` : nouvelle section `{ titre: "Acquisition", cles: ["ads"] }` insérée entre la section sans titre et « Production ».
-  - `ONGLETS_MOBILE` inchangé (`accueil`, `pipeline`, `todo`, `briefs`) : sur iPhone, Ads est dans « Plus ». Choix d'Edgar à confirmer avant exécution ; s'il veut Ads dans la barre du bas, remplacer `briefs` par `ads` dans `ONGLETS_MOBILE` et adapter le test « plus ».
+  - `ONGLETS_MOBILE` devient `["accueil", "pipeline", "todo", "ads"]` (décision d'Edgar du 19/10 : pendant les campagnes, Meta Ads se consulte plus souvent que les Briefs). Briefs passe dans « Plus ».
   - `/ads` redirige vers `/ads/creatives` (`redirect` de `next/navigation`).
   - Desktop : `.hub-sous-onglets` gagne `overflow-x: auto` et `scrollbar-width: none` hors media query (mineur reporté de la revue de la refonte : sans lui, des sous-onglets nombreux seraient rognés par `overflow-x: clip` entre 861 et 1000 px).
 
@@ -165,14 +165,14 @@ test("Ads dans la section Acquisition", () => {
 });
 ```
 
-Mettre à jour le test existant « plus contient tout sauf les onglets du bas » : `["ads", "bibliotheque", "analytics", "seo", "reglages"]`.
+Mettre à jour le test existant « plus contient tout sauf les onglets du bas » : `["briefs", "bibliotheque", "analytics", "seo", "reglages"]`, et ajouter `assert.deepEqual(ONGLETS_MOBILE, ["accueil", "pipeline", "todo", "ads"])`.
 
 - [ ] **Step 2 :** `node --import ./scripts/alias-hook.mjs --test scripts/test-navigation.ts` : FAIL.
 - [ ] **Step 3 :** Implémenter (navigation, icône, page de redirection, règle CSS).
 - [ ] **Step 4 :** Même commande puis `npm test` : PASS.
 - [ ] **Step 5 :** Vérifier à l'écran **le premier rendu réel des sous-onglets** (jamais vu depuis la refonte) avec une page provisoire `src/app/(app)/ads/creatives/page.tsx` réduite à un `PageHeader` (remplacée en Tâche 3) :
   - 1440 px : « Ads » dans la section Acquisition de la barre latérale, sous-onglets dépliés dessous, onglets texte soulignés en haut de page ;
-  - 390 px : Ads dans la page « Plus », sélecteur segmenté à 3 sous-onglets sous le titre, `scrollWidth <= clientWidth`.
+  - 390 px : onglet « Ads » dans la barre du bas (actif sur toutes les pages `/ads/…`), Briefs dans la page « Plus », sélecteur segmenté à 3 sous-onglets sous le titre, `scrollWidth <= clientWidth`.
 - [ ] **Step 6 :** Commit `Module Ads : rubrique Ads et sous-onglets dans la navigation`.
 
 > **Fusion avec l'onglet Finance :** le worktree `hub-agence-finance` ajoute probablement sa propre rubrique dans `navigation.ts`. Les deux ajouts touchent les mêmes lignes (`RUBRIQUES`, `SECTIONS`, `CleIcone`) : conflit attendu à la fusion, à résoudre en gardant les deux rubriques et en ajustant le test « plus ».
