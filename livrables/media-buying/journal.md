@@ -33,7 +33,9 @@ Format fixe d'une entrée :
 - **Décision** : à la création de la campagne, décocher sur B les deux textes migrés, « Site
   complet 7 j » et « Sans effort de votre part » (délai sans condition, contenu et hébergement
   présentés comme inclus dans les 999 €, promesse trop forte). Description de B ramenée à
-  « Mentions légales, RGPD inclus » (31 caractères refusés).
+  « Mentions légales, RGPD inclus » (31 caractères refusés). Sur D, décocher aussi le texte 3
+  (« Votre site date un peu ? On le refait… ») : redite « refait » et « clair » avec la phrase
+  suivante, décision d'Edgar du 20/10. D part avec 2 textes.
 - **Leçon** : aucune sur les performances. Le hub accepte un délai sans sa condition et
   l'hébergement attribué au prix du site (textes migrés de B) : la relecture contre la fiche
   offre reste à faire par l'agent.
