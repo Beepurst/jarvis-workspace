@@ -73,6 +73,9 @@ de variantes.
 | Règles et journal dans des fichiers du workspace (`livrables/media-buying/`) | Choix de Claude |
 | Le générateur de textes Groq est retiré du module Ads, l'agent écrit les textes | Choix de Claude, présenté à Edgar sans objection |
 | Seuils chiffrés des alertes (valeurs par défaut ci-dessous), modifiables dans Réglages | Choix de Claude |
+| Seuls les textes d'annonce passent de `createur-creas` à `media-buyer` ; `createur-creas` ne fait plus que les visuels | Choix de Claude (suite logique de « l'agent écrit les textes ») |
+| Les seuils chiffrés vivent dans les Réglages du hub, qui font foi ; `regles.md` les cite et l'agent les lit par l'entrée réservée | Choix de Claude |
+| CA signé par pub : « indisponible » jusqu'à la phase 2 du CRM (devis, montants) | Choix de Claude |
 
 ## Partie 1 : l'agent `media-buyer`
 
@@ -125,10 +128,25 @@ le budget ; comment lire la fréquence ; comment juger la qualité des leads (bu
 taux de RDV) avant le CPL brut ; ce que l'agent doit dire quand les données manquent. Les
 seuils d'alerte du hub (Partie 4) doivent être cohérents avec ces règles.
 
+**Seuils** : les valeurs chiffrées (CPL cible, budget mensuel, volume minimum avant bilan,
+seuils d'alerte) vivent dans les Réglages du hub, qui font foi. `regles.md` explique la
+logique et renvoie à ces réglages ; l'agent lit leurs valeurs par l'entrée réservée. Pas de
+table des tests dans le hub.
+
 **`livrables/media-buying/journal.md`** : une entrée par test lancé et par bilan, format fixe
-(date, campagne, hypothèse, chiffres, décision, leçon). Repris depuis l'historique existant :
-le test de 50 € des créas A, B, D (voir `livrables/creas-meta/NOTES.md` et
-`context/CONTEXT.md`, section Acquisition).
+(date, campagne, hypothèse, chiffres, décision, leçon). Première entrée : le test de 50 € des
+créas A, B, D (voir `livrables/creas-meta/NOTES.md` et `context/CONTEXT.md`, section
+Acquisition), **prévu, pas encore lancé** au 20/10 (le compte « Kleak Pub » ne contient que les
+campagnes de mars 2025, en pause, plus la campagne de test de 1 € du hub). Toutes les règles
+de départ sont donc des choix à réviser, aucune ne vient encore des données du compte.
+
+**Partage avec `createur-creas`** : `createur-creas` ne fait plus que les visuels. Le
+constructeur retire de `.claude/agents/createur-creas.md` l'écriture des textes d'annonce (son
+étape 4 et les déclencheurs « il me faut les textes pour Meta », « les textes d'une pub »), qui
+passent à `media-buyer`, et ajuste `livrables/creas-meta/README.md` en conséquence. Les textes
+déjà validés de A, B et D (`livrables/creas-meta/TEXTES-ANNONCES.md`) deviennent les premiers
+dépôts de l'agent dans le hub ; les deux variantes de D encore ouvertes sont présentées à
+Edgar au premier mode PRÉPARER.
 
 ## Partie 2 : données du hub
 
@@ -154,8 +172,14 @@ Si Meta ne les fournit pas, le dire à Edgar ; ne pas inventer de répartition.
 
 **Qualité des leads par pub** : rapprocher les leads du CRM de leur `ad_id` (déjà stocké, voir
 `src/lib/crm/sheet.ts`) et exposer par pub : nombre de leads, répartition des réponses
-« budget » du formulaire, nombre passés en `rdv` et au-delà, nombre de `client`, CA signé. Les
-leads sans `ad_id` restent dans une ligne « non rattachés » (règle existante).
+« budget » du formulaire, nombre de RDV, nombre de clients, CA signé. Étapes du CRM
+(`comptes.etape`) : un lead compte en **RDV** s'il est à `rdv_pris` ou au-delà
+(`devis_envoye`, `acompte_paye`, `en_production`, `livre`, `solde`) ; en **client** à partir de
+`acompte_paye`. Un lead `perdu` ne compte que comme lead (le CRM ne garde pas l'étape atteinte
+avant la perte ; si un historique d'étapes existe, le constructeur s'en sert pour compter les
+RDV perdus ensuite). Le **CA signé** reste « indisponible » tant que la phase 2 du CRM (devis,
+montants) n'existe pas, comme le ROAS aujourd'hui. Les leads sans `ad_id` restent dans une
+ligne « non rattachés » (règle existante).
 
 **Affichage** : la page `/ads/meta` montre les nouveaux indicateurs (au moins CTR, CPM,
 fréquence, et la qualité des leads par pub). Le détail par texte s'affiche dans la fiche d'une
@@ -218,7 +242,7 @@ dans Réglages) :
 | CPL qui double | CPL des 7 derniers jours ≥ 2 × CPL des 7 jours précédents, avec un volume minimum de leads sur chaque période |
 | Répétition trop élevée | Fréquence ≥ 3 sur 7 jours |
 | Dépense du mois trop rapide | Dépense du mois en avance de plus de 20 % sur le rythme du budget mensuel |
-| Test arrivé au volume minimum | Volume défini dans `regles.md` atteint : « lance un bilan » |
+| Pub arrivée au volume minimum | Dépense ou nombre de leads d'une pub au niveau du réglage « volume minimum avant bilan » : « lance un bilan » |
 
 « CPL cible » et « budget mensuel » sont des réglages (valeurs de départ : 5 € et 200 €, tirées
 de `context/CONTEXT.md`, section Acquisition). Le texte de chaque notification dit ce qui se
