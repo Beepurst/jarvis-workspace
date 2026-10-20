@@ -263,6 +263,13 @@ function analyserSection(n) {
     return {
       balise: el.tagName.toLowerCase(),
       famille: cs.fontFamily.split(",")[0].replace(/["']/g, "").trim(),
+      largeurMoyenne: (() => {
+        const brut = (el.textContent || "").replace(/\s+/g, "");
+        if (brut.length < 4) return null;
+        const g = (decrireTexte.canvas ||= document.createElement("canvas")).getContext("2d");
+        g.font = `${cs.fontStyle} ${cs.fontWeight} ${cs.fontSize} ${cs.fontFamily}`;
+        return Math.round((g.measureText(brut.slice(0, 80)).width / Math.min(brut.length, 80) / parseFloat(cs.fontSize)) * 100) / 100;
+      })(),
       generique: cs.fontFamily.split(",").pop().replace(/["']/g, "").trim().toLowerCase(),
       graisse: cs.fontWeight,
       style: cs.fontStyle,
@@ -334,7 +341,9 @@ function analyserSection(n) {
     const kids = [...el.children].filter((k) => visible(k) && ((k.innerText || "").trim() || k.querySelector("img, video, picture") || k.tagName === "IMG"));
     if (kids.length < 2) continue;
     const re = el.getBoundingClientRect();
+    if (re.height < 80 && re.width < rs.width * 0.9) continue; // petit groupe en ligne (bouton + fleche)
     if (re.width > rs.width + 1) continue;
+    if (re.width < rs.width * 0.5) continue; // petits groupes (bouton + fleche) : pas la grille principale
     const t0 = kids[0].getBoundingClientRect().top;
     const ligneEntiere = kids.filter((k) => Math.abs(k.getBoundingClientRect().top - t0) < 4);
     // colonnes visibles dans la largeur de la section ; le reste deborde (carrousel, bandeau)
@@ -667,9 +676,11 @@ async function faireVignette(navigateur, jpeg) {
 }
 
 // Categorie de police sans jamais donner le nom exact.
-function categoriePolice(famille, generique) {
+// largeurMoyenne : chasse moyenne d'un caractere / taille de police, mesuree dans la page.
+const SEUIL_CONDENSEE = 0.5;
+function categoriePolice(famille, generique, largeurMoyenne) {
   const f = (famille || "").toLowerCase();
-  if (/condensed|narrow|compressed|\bcond\b|oswald|bebas|anton|league gothic|fjalla|barlow condensed/.test(f)) return "condensee";
+  if (typeof largeurMoyenne === "number" && largeurMoyenne < SEUIL_CONDENSEE) return "condensee";
   if (/mono|courier|consolas|code/.test(f) || generique === "monospace") return "mono";
   if (/\bsans\b|grotesk|grotesque|gothic|helvetica|arial|inter\b|roboto|poppins|montserrat/.test(f)) return "sans-serif";
   if (/serif|georgia|times|garamond|playfair|merriweather|lora\b|baskerville|didot|bodoni|cormorant|fraunces|caslon|newsreader|crimson|cambria|palatino|libre/.test(f) || generique === "serif") return "serif";
@@ -698,12 +709,12 @@ function construireResume({ info, bureau, mobile, blocsBureau, blocsMobile, aver
   const titrePrincipal = bureau.titres[0] || plusGrand;
   const capitales = [...bureau.titres, ...bureau.textesLesPlusGrands].some((t) => t.casse === "uppercase");
   const g = bureau.grillePrincipale;
-  const gm = mobile?.grillePrincipale;
+  const gm = mobile && mobile !== "introuvable" ? mobile.grillePrincipale : null;
   const colB = g ? g.colonnes : 1;
-  const colM = mobile ? (gm ? gm.colonnes : 1) : null;
+  const colM = mobile && mobile !== "introuvable" ? (gm ? gm.colonnes : 1) : null;
   const nb = (a, k) => a?.elementsVisibles?.[k] ?? 0;
   const disparait = {};
-  if (mobile) {
+  if (mobile && mobile !== "introuvable") {
     for (const [k, cle] of [["textes", "textes"], ["images", "images"], ["boutonsOuLiens", "boutons"]]) {
       const d = nb(bureau, k) - nb(mobile, k);
       if (d > 0) disparait[cle] = d;
@@ -717,7 +728,7 @@ function construireResume({ info, bureau, mobile, blocsBureau, blocsMobile, aver
       tailles,
       plusGrandTexte: plusGrand ? rel(plusGrand.taille) : null,
       capitales,
-      policeTitres: titrePrincipal ? categoriePolice(titrePrincipal.famille, titrePrincipal.generique) : null,
+      policeTitres: titrePrincipal ? categoriePolice(titrePrincipal.famille, titrePrincipal.generique, titrePrincipal.largeurMoyenne) : null,
       policeTexte: bureau.texteCourant ? categoriePolice(bureau.texteCourant.famille, null) : null,
     },
     grille: {
@@ -727,7 +738,9 @@ function construireResume({ info, bureau, mobile, blocsBureau, blocsMobile, aver
       ecart: g?.ecart && g.ecart !== "normal" ? g.ecart : null,
       marges: bureau.contenu?.margesInternes ?? null,
     },
-    mobile: mobile
+    mobile: mobile === "introuvable"
+      ? { introuvable: true, hauteurBureau: bureau.section.hauteur }
+      : mobile
       ? {
           colonnes: colM,
           passeEnColonne: colB > 1 && colM <= 1,
@@ -814,22 +827,32 @@ async function capturerSection(navigateur, args) {
   writeFileSync(capture, image);
   await bureau.contexte.close();
 
-  // mobile : page rechargee en 390 x 844
+  // mobile : page rechargee en 390 x 844, section retrouvee par son titre (pas par son numero)
   let analyseMobile = null;
   let blocsMobile = [];
   let avertissementMobile = null;
+  let vignetteMobile = null;
   try {
     const mobile = await ouvrir(navigateur, args.url, true);
-    const infoM = mobile.sections[n - 1];
-    if (!infoM) {
-      avertissementMobile = `En mobile, la page n'a que ${mobile.sections.length} sections : pas de section ${n}.`;
+    const aiguille = info.premierTitre;
+    const trouvees = aiguille ? await mobile.page.evaluate(chercherTitre, aiguille) : [];
+    const m = trouvees.includes(n) ? n : trouvees[0];
+    if (!m) {
+      analyseMobile = "introuvable";
+      avertissementMobile = `Section ${n} introuvable en mobile (titre "${aiguille}") : mobile non mesure.`;
     } else {
-      analyseMobile = await mobile.page.evaluate(analyserSection, n);
-      analyseMobile.animations.mouvement = await mobile.page.evaluate(mesurerMouvement, n);
-      blocsMobile = await mobile.page.evaluate(ordreBlocs, n);
-      if (infoM.balise !== info.balise || infoM.id !== info.id || infoM.classes !== info.classes) {
-        avertissementMobile = `La section ${n} en mobile ne semble pas la meme qu'en bureau (${infoM.balise}.${infoM.classes} contre ${info.balise}.${info.classes}, titre "${infoM.premierTitre}") : verifier.`;
-      }
+      analyseMobile = await mobile.page.evaluate(analyserSection, m);
+      analyseMobile.animations.mouvement = await mobile.page.evaluate(mesurerMouvement, m);
+      blocsMobile = await mobile.page.evaluate(ordreBlocs, m);
+      if (m !== n) avertissementMobile = `En mobile, la section est la ${m} (la ${n} en bureau).`;
+      await mobile.page.evaluate(figerPourCapture);
+      await mobile.page.evaluate(masquerFixesHors, m);
+      const zm = await mobile.page.evaluate((k) => {
+        const r = document.querySelector(`[data-kleak-n="${k}"]`).getBoundingClientRect();
+        return { x: r.left + window.scrollX, y: r.top + window.scrollY, width: r.width, height: r.height };
+      }, m);
+      vignetteMobile = await capturerZone(navigateur, mobile.page, { ...zm, height: Math.min(zm.height, 1600) }, { qualite: 60 });
+      writeFileSync(join(args.sortie, "vignette-mobile.jpg"), vignetteMobile);
     }
     await mobile.contexte.close();
   } catch (e) {
@@ -848,10 +871,11 @@ async function capturerSection(navigateur, args) {
   const chemin = join(args.sortie, "analyse.json");
   writeFileSync(chemin, JSON.stringify(analyse, null, 2));
   const vignette = join(args.sortie, "vignette.jpg");
+  const vignetteMobileChemin = vignetteMobile ? join(args.sortie, "vignette-mobile.jpg") : null;
   writeFileSync(vignette, await faireVignette(navigateur, image));
   const resume = join(args.sortie, "resume.json");
   writeFileSync(resume, JSON.stringify(construireResume({ info, bureau: analyseBureau, mobile: analyseMobile, blocsBureau, blocsMobile, avertissements: analyse.avertissements })));
-  process.stdout.write(JSON.stringify({ capture, vignette, resume, analyse: chemin, octets: image.length, qualite, decoupe, outil, avertissements: analyse.avertissements }, null, 2) + "\n");
+  process.stdout.write(JSON.stringify({ capture, vignette, vignetteMobile: vignetteMobileChemin, resume, analyse: chemin, octets: image.length, qualite, decoupe, outil, avertissements: analyse.avertissements }, null, 2) + "\n");
 }
 
 async function capturerEcran(navigateur, args) {
