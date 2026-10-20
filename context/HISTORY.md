@@ -9,6 +9,25 @@
 
 ## 2026-10-20
 
+### Agent media buyer et module Ads renforcé
+
+- **Compte publicitaire :** on travaille sur l'ancien compte « Kleak Pub ». Le « nouveau compte » du 19/10 était une erreur d'Edgar.
+- **App Meta « Kleak Hub » publiée** (elle était en mode Développement, ce qui bloquait la création des pubs). La création d'une campagne en pause depuis le hub est validée en réel.
+- **Décisions d'Edgar :**
+  - un agent `media-buyer` vit dans Claude Code, pas dans le hub (API Claude écartée après comparaison des coûts) ;
+  - il recommande, Edgar exécute dans le Gestionnaire ;
+  - plusieurs textes, titres et descriptions par pub ;
+  - toutes les données nécessaires au diagnostic ;
+  - notifications push sur l'iPhone.
+- **Construit sur la branche `module-ads`** (spec `docs/superpowers/specs/2026-10-20-media-buyer-design.md`, plan associé, relecture à chaque tâche puis relecture finale, 403 tests) :
+  - jusqu'à 5 textes, 5 titres et 5 descriptions par pub, déposés par l'agent avec les garde-fous ;
+  - générateur Groq retiré ;
+  - impressions, CTR, CPM, fréquence, résultats par texte et par titre (vérifiés en réel sur les anciennes pubs), qualité des leads par pub ;
+  - seuils dans Réglages ;
+  - alertes push chaque matin, une seule fois par alerte, renvoyées tant qu'elles n'ont pas été reçues.
+- **Agent `media-buyer`** (`.claude/agents/media-buyer.md`) : modes PRÉPARER, BILAN, COMMANDER, règles dans `livrables/media-buying/regles.md`, journal des tests dans `journal.md`. `createur-creas` ne fait plus que les visuels.
+- **Reste (tâche 11, avec Edgar) :** exécuter `supabase/media-buyer.sql`, supprimer la campagne de test à 1 €, tester en réel une campagne à deux visuels et plusieurs textes, poser `ADS_AGENT_SECRET` sur Vercel, valider la prévisualisation, fusionner. Puis premier dépôt des textes de A, B et D par l'agent.
+
 ### Onglet Analytics du hub : GA4 de kleakagency.fr branché
 
 - **GA4 branché le 19/10** : compte de service Google `hub-ga4` en lecture seule sur la propriété `433476352`, variables posées en local et dans Vercel.
