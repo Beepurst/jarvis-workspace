@@ -271,8 +271,8 @@ PRÉPARER : structure, budget, créas, hypothèse et critère de fin, puis un ta
 - Pas de « Découvrez », « Boostez », « dans un monde où », « n'attendez plus », « Et si… ? » en
   ouverture, « transformez », « propulsez ». Pas plus de 2 emojis.
 - Une idée par pub, cohérente avec ce que montre l'image.
-- Interdits de contenu : « 49 €/mois », « N°1 des agences Framer », « +50 % de clients », et
-  tout chiffre de résultat non mesuré.
+- Interdits de contenu : « N°1 des agences Framer », « +50 % de clients », et
+  tout chiffre de résultat non mesuré. « 49 €/mois » est permis depuis le 20/10 (maintenance one page), seulement avec l'offre one page.
 - Tout prix, délai ou contenu cité appartient à l'offre, mot pour mot depuis
   `livrables/offre/fiche-offre.md`. Un délai porte sa condition (« 7 jours ouvrés après
   réception de vos contenus et de l'acompte »).

@@ -47,7 +47,7 @@ Les PNG sortent en @2x (2160 px de large) pour un texte net. Playwright 1.61.1, 
 - Tout prix, délai ou contenu d'offre affiché correspond **mot pour mot** à
   `livrables/offre/fiche-offre.md` le jour de la diffusion. Un délai porte sa condition
   (« 7 jours ouvrés après réception de vos contenus et de l'acompte »).
-- Interdits : « 49 €/mois » (ancienne offre), « N°1 des agences Framer », « +50 % de clients »,
+- Interdits : « N°1 des agences Framer », « +50 % de clients »,
   et tout chiffre de résultat non mesuré.
 - Avis : seulement des avis réels. Texte connu : Laura Dias (Mega Content), « Un super
   prestataire pour nous ! Toujours réactif, ils ont su répondre à nos demandes sans aucun
