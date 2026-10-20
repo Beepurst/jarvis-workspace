@@ -239,3 +239,8 @@ et de contraste existants doivent continuer à passer.
 - Pour rester en lecture seule, Finance utilise **son propre jeton**, généré pour le même
   utilisateur système avec la seule permission **`ads_read`** : variable
   **`HUB_META_FINANCE_ACCESS_TOKEN`**. « Meta branché » = ces deux variables présentes.
+- **Décision d'Edgar du 20/10 :** le jeton posé dans `HUB_META_FINANCE_ACCESS_TOKEN` est un jeton
+  distinct de celui du module Ads mais avec les mêmes permissions (`ads_management`, `ads_read`,
+  `business_management`, `pages_*`), vérifiées par `debug_token`. Edgar le garde tel quel. La
+  lecture seule de Finance est donc garantie par le code (client `meta-graph.ts` en lecture seule),
+  pas par Meta.
