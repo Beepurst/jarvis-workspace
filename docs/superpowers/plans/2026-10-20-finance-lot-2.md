@@ -410,10 +410,157 @@ git commit -m "Finance lot 2 : import du relevé, dépenses par poste et correct
 
 ---
 
-### Task 7 : mise en production
+### Task 7 : dépenses Meta, logique pure
+
+Spec : section 11. Branchement Meta repris du module Ads (worktree `livrables/hub-agence-ads`, branche `module-ads`, non fusionnée).
+
+**Files:**
+- Create: `livrables/hub-agence/src/lib/ads/meta-graph.ts` (copie **à l'identique** de `git show module-ads:src/lib/ads/meta-graph.ts`, pour une fusion sans conflit ; ne pas le modifier)
+- Create: `livrables/hub-agence/src/lib/finance/meta-depenses.ts`
+- Modify: `livrables/hub-agence/src/lib/finance/revolut-classement.ts`
+- Modify: `livrables/hub-agence/src/lib/finance/calculs.ts`
+- Test: `livrables/hub-agence/scripts/test-finance-meta.ts`, `scripts/test-finance-revolut-classement.ts`, `scripts/test-finance-calculs.ts`
+
+**Interfaces:**
+- Consumes: `graphReadAll(path, accessToken, f?)` et `masquer` de `meta-graph.ts` ; `Mouvement`, `debutJourParis`, `instantParis` (calculs) ; `classer` (Task 2).
+- Produces:
+  - `meta-depenses.ts` :
+    - `getMetaFinanceConfig(): { accessToken: string; adAccountId: string } | null` : lit `HUB_META_FINANCE_ACCESS_TOKEN` et `HUB_META_ADS_ACCOUNT_ID` (rognés) ; `adAccountId` toujours préfixé `act_` (ajouté s'il manque).
+    - `metaBranche(): boolean` = `getMetaFinanceConfig() !== null`.
+    - `interface JourMeta { date_start: string; spend: string; account_currency?: string }`
+    - `mouvementsDepuisInsights(jours: JourMeta[], adAccountId: string, dateDepart: string): { ok: true; mouvements: Mouvement[] } | { ok: false; erreur: string }`
+    - `lireDepensesMeta(config, depuis: string /* AAAA-MM-JJ */, jusqua: string, f?: typeof fetch): Promise<{ ok: true; jours: JourMeta[] } | { ok: false; erreur: string }>` : `graphReadAll` sur `/${adAccountId}/insights?level=account&fields=spend,account_currency&time_increment=1&time_range=${encodeURIComponent(JSON.stringify({ since, until }))}&limit=500`.
+  - `revolut-classement.ts` : `Classement` gagne `"couvert_meta"` ; `Choix` gagne `"couvert_meta"` (libellé `Couvert par Meta (exclu)`) ; `classer(e, regles, options?: { metaBranche?: boolean })`.
+  - `calculs.ts` : `Mouvement.source` devient `"stripe" | "revolut" | "meta"` ; `Reglages` gagne `derniereSynchroMeta: string | null` ; `vueFinance(mouvements, periode, reglages, options?: { metaBranche?: boolean })`.
+
+- [ ] **Step 1 : copier `meta-graph.ts`** : `git show module-ads:src/lib/ads/meta-graph.ts > src/lib/ads/meta-graph.ts` (le dépôt partage ses branches avec le worktree). Vérifier `git diff --no-index` nul avec la version de la branche.
+
+- [ ] **Step 2 : écrire les tests qui échouent.**
+
+```ts
+// test-finance-meta.ts
+test("mouvementsDepuisInsights : un jour, une ligne", () => {
+  const r = mouvementsDepuisInsights([{ date_start: "2026-10-21", spend: "7.35", account_currency: "EUR" }], "act_123", "2026-10-15");
+  assert.ok(r.ok);
+  assert.deepEqual(r.mouvements, [{
+    id: "meta:act_123:2026-10-21", source: "meta", sens: "sortie", montantCentimes: 735,
+    date: instantParis(2026, 10, 21, 12, 0, 0).toISOString(), libelle: "Publicité Meta",
+    clientId: null, clientNom: null, poste: "Publicité", classement: null,
+  }]);
+});
+test("mouvementsDepuisInsights : aucune dépense, aucun jour", () => {
+  assert.deepEqual(mouvementsDepuisInsights([], "act_123", "2026-10-15"), { ok: true, mouvements: [] });
+});
+test("mouvementsDepuisInsights : jour à 0 ignoré, jour avant le départ ignoré", () => { /* spend "0" et date_start "2026-10-14" → aucune ligne */ });
+test("mouvementsDepuisInsights : devise autre que l'euro refusée", () => {
+  const r = mouvementsDepuisInsights([{ date_start: "2026-10-21", spend: "5", account_currency: "USD" }], "act_123", "2026-10-15");
+  assert.equal(r.ok, false);
+  assert.match((r as { erreur: string }).erreur, /euro/);
+});
+test("getMetaFinanceConfig : préfixe act_ ajouté, null si une variable manque", () => { /* process.env, restaurer après */ });
+test("lireDepensesMeta : fetch simulé, réponse ok, refus et réseau en panne", () => {
+  // f simulé : renvoie { data: [ ... ] } → ok ; { error: { code: 190, message: "Malformed access token EAAxyz" } } en 400
+  // → ok:false, erreur sans "EAAxyz" ; fetch qui lève → ok:false
+});
+
+// test-finance-revolut-classement.ts
+test("couvert par Meta : seulement si Meta est branché", () => {
+  const fb = ent({ libelle: "FACEBK *X", fournisseur: "facebk" });
+  assert.deepEqual(classer(fb, new Map()), { classement: "depense", poste: "Publicité" });
+  assert.deepEqual(classer(fb, new Map(), { metaBranche: true }), { classement: "couvert_meta", poste: null });
+  assert.deepEqual(classer(ent({ sens: "entree", type: "CARD_REFUND", libelle: "Facebook", fournisseur: "facebook" }), new Map(), { metaBranche: true }), { classement: "couvert_meta", poste: null });
+  assert.deepEqual(classer(ent({ libelle: "Metro", fournisseur: "metro" }), new Map(), { metaBranche: true }), { classement: "depense", poste: "Autre" });
+});
+test("couvert par Meta : priorités", () => {
+  const fb = ent({ libelle: "FACEBK *X", fournisseur: "facebk" });
+  assert.equal(classer(fb, new Map([["facebk", "Publicité" as const]]), { metaBranche: true }).classement, "couvert_meta");
+  assert.equal(classer({ ...fb, choixManuel: "interne" }, new Map(), { metaBranche: true }).classement, "interne");
+  assert.equal(classer({ ...fb, choixManuel: "couvert_meta" }, new Map()).classement, "couvert_meta");
+  assert.equal(classer({ ...fb, etat: "PENDING" }, new Map(), { metaBranche: true }).classement, "ignore");
+});
+
+// test-finance-calculs.ts
+const meta = (s: Partial<Mouvement>) => mvt({ source: "meta", sens: "sortie", poste: "Publicité", classement: null, ...s });
+test("Meta : compté en dépenses, en Publicité, absent des derniers mouvements", () => {
+  // synthese : depenses inclut meta ; couvert_meta Revolut exclu ; depensesParPoste inclut Publicité meta ;
+  // serieMensuelle sorties inclut meta ; derniersMouvements ne contient aucune ligne meta
+});
+test("vueFinance : Meta branché jamais synchronisé, Dépenses et Net indisponibles", () => {
+  // reglages.derniereSynchroMeta null, options { metaBranche: true } → cartes[1].valeur et cartes[2].valeur === "Indisponible",
+  // cartes[0] (Brut) chiffré ; detail des deux cartes : "Meta jamais synchronisé"
+});
+test("vueFinance : Meta non branché, comportement inchangé", () => { /* options absentes ou metaBranche false */ });
+```
+
+- [ ] **Step 3 : vérifier l'échec**
+
+Run: `node --import ./scripts/alias-hook.mjs --test scripts/test-finance-meta.ts scripts/test-finance-revolut-classement.ts scripts/test-finance-calculs.ts`
+Expected: FAIL (module `meta-depenses` introuvable, nouveaux tests en échec).
+
+- [ ] **Step 4 : implémenter.**
+  - Ligne Meta : `date` = midi, heure de Paris, du jour `date_start` ; montant `Math.round(parseFloat(spend) * 100)` ; un `spend` illisible fait échouer tout le lot (`Réponse Meta illisible.`). Devise absente : acceptée (le champ est demandé, Meta le renvoie) ; présente et différente de `EUR` : `Le compte publicitaire n'est pas en euros (XXX).`
+  - Reconnaissance « couvert par Meta » : libellé en minuscules qui contient `facebk`, `facebook` ou le mot `meta` (`\bmeta\b`), entrée ou sortie. Ordre dans `classer` : `ignore` d'abord, puis choix de la ligne, puis `couvert_meta` si `metaBranche`, puis choix du fournisseur, puis règles automatiques. Le choix manuel `couvert_meta` donne `couvert_meta` même Meta non branché. Profiter de ce changement pour borner aussi la règle Publicité existante à `\bmeta\b` (minor différé de la Task 2).
+  - `compteRendu` : `couvert_meta` compté dans `ignorees` ; il reçoit `options` et les transmet à `classer`.
+  - Calculs : `compte(m)` vrai pour `meta` ; `meta` ajouté aux dépenses, aux sorties du graphique et à `depensesParPoste` (poste Publicité) ; `derniersMouvements` écarte `meta`. `vueFinance` : `metaBranche && derniereSynchroMeta === null` donne « Indisponible » sur Dépenses et Net, détail `Meta jamais synchronisé`.
+  - Mettre à jour les fabriques de test et `db.ts` pour les nouveaux champs (`derniereSynchroMeta: null` provisoire si besoin, Task 8 le lit vraiment).
+
+- [ ] **Step 5 : vérifier** : la commande du step 3 passe, puis `npm test` et `npx tsc --noEmit`.
+
+- [ ] **Step 6 : commit**
+
+```bash
+git add src/lib/ads/meta-graph.ts src/lib/finance scripts/test-finance-*.ts
+git commit -m "Finance lot 2 : dépenses Meta (logique) et classement « couvert par Meta »"
+```
+
+---
+
+### Task 8 : dépenses Meta, synchro et affichage
+
+**Files:**
+- Modify: `livrables/hub-agence/supabase/finance-lot-2.sql`
+- Modify: `livrables/hub-agence/src/lib/finance/db.ts`
+- Modify: `livrables/hub-agence/src/app/api/cron/finance/route.ts`, `src/app/api/finance/actualiser/route.ts`
+- Modify: `livrables/hub-agence/src/app/(app)/finance/page.tsx`, `src/app/(app)/finance/revolut/page.tsx`, `src/app/(app)/finance/actualiser-bouton.tsx` si besoin
+- Modify: `livrables/hub-agence/.env.example` s'il existe (nom de variable seul, sans valeur)
+
+**Interfaces:**
+- Consumes: tout ce que produit la Task 7.
+- Produces:
+  - `synchroniserMeta(maintenant: Date): Promise<{ jours: number }>` dans `db.ts` : lève une `Error` au message déjà masqué si Meta ne répond pas.
+  - `lireReglages()` renvoie `derniereSynchroMeta` ; `lireMouvements` lit les lignes `meta` et passe `{ metaBranche: metaBranche() }` à `classer`.
+
+- [ ] **Step 1 : compléter `supabase/finance-lot-2.sql`** (pas encore exécuté par Edgar), idempotent :
+
+```sql
+alter table finance_mouvements drop constraint if exists finance_mouvements_source_check;
+alter table finance_mouvements add constraint finance_mouvements_source_check
+  check (source in ('stripe', 'revolut', 'meta'));
+alter table finance_reglages add column if not exists derniere_synchro_meta timestamptz;
+```
+
+- [ ] **Step 2 : `synchroniserMeta` dans `db.ts`.** Config absente : `Error("Meta non configuré")`. Lit de la date de départ à aujourd'hui (jour de Paris) ; en cas d'échec, lève sans rien écrire ni effacer. En cas de succès : upsert des lignes (`onConflict: "id"`), puis suppression des lignes `source = 'meta'` de la plage dont l'id n'est pas dans la réponse (aucune ligne reçue = toutes celles de la plage retirées), puis `derniere_synchro_meta = maintenant`. Les lignes `meta` antérieures à la date de départ ne sont jamais lues (filtre existant à la lecture), ni supprimées.
+
+- [ ] **Step 3 : cron et Actualiser.** Stripe puis Meta, chacun dans son propre `try`. Meta non configuré : on le saute sans erreur. Réponse : `{ stripe: {…} | { error }, meta: {…} | { error } | null }`, statut 500 seulement si toutes les sources configurées ont échoué. Le bouton Actualiser affiche le message d'erreur Meta s'il y en a un (`Meta : <message>`), même quand Stripe a réussi, puis rafraîchit. Le cron garde sa vérification `CRON_SECRET` à l'identique.
+
+- [ ] **Step 4 : page Finance.** Eyebrow : ajouter `Meta · mis à jour X` (ou `Meta · jamais synchronisé`) quand Meta est branché, rien sinon. Bandeau orange si `synchroPerimee(derniereSynchroMeta)` : `Données Meta du 21/10 à 05:00 : la synchronisation automatique ne passe plus. Clique sur Actualiser.` Passer `{ metaBranche }` à `vueFinance`. Page de détail Revolut : afficher les lignes `couvert_meta` (filtre `?filtre=couvert-meta`, lien depuis « Dépenses par poste » quand il y en a : `N lignes Revolut couvertes par Meta`).
+
+- [ ] **Step 5 : vérifier** : `npx tsc --noEmit` et `npm test` passent. Ne pas lancer le serveur ni appeler Meta.
+
+- [ ] **Step 6 : commit**
+
+```bash
+git add supabase/finance-lot-2.sql src/lib/finance/db.ts src/app/api "src/app/(app)/finance"
+git commit -m "Finance lot 2 : synchronisation des dépenses Meta dans le cron et Actualiser"
+```
+
+---
+
+### Task 9 : essai de bout en bout et mise en production
 
 - [ ] **Step 1 :** Edgar exécute `supabase/finance-lot-2.sql` dans le SQL Editor du projet Supabase du hub (avant le test de la Task 6 et avant le déploiement).
 - [ ] **Step 2 :** `npm test` et `npx tsc --noEmit` sur la branche, relecture finale de toute la branche.
+- [ ] **Step 2 bis :** essai de bout en bout reporté de la Task 6 (son step 3, avec l'accord d'Edgar pour les lignes d'essai), plus Meta : Edgar pose `HUB_META_FINANCE_ACCESS_TOKEN` (et vérifie `HUB_META_ADS_ACCOUNT_ID`) dans `.env.local` puis dans Vercel ; Actualiser synchronise Meta sans erreur sur un compte sans dépense (eyebrow `Meta · mis à jour …`, Publicité 0 €) ; avec Meta branché, la ligne d'essai Facebook passe en « couvert par Meta » et sort des dépenses.
 - [ ] **Step 3 :** Edgar valide sur un déploiement de prévisualisation Vercel de la branche, depuis l'iPhone : import du relevé vide du compte Pro (compte rendu `Aucune opération dans ce relevé.`, eyebrow `relevé du …`).
-- [ ] **Step 4 :** après son accord seulement, fusion dans `main` (`git checkout main && git merge --no-ff finance-lot-2 -m "Fusion : onglet Finance, lot 2 (relevé Revolut Pro)" && git push`), ce qui déploie en production.
+- [ ] **Step 4 :** après son accord seulement, fusion dans `main` (`git checkout main && git merge --no-ff finance-lot-2 -m "Fusion : onglet Finance, lot 2 (relevé Revolut Pro et dépenses Meta)" && git push`), ce qui déploie en production.
 - [ ] **Step 5 :** au premier vrai relevé d'Edgar, vérifier les hypothèses de la spec (types, signe des montants, frais, libellés des virements Stripe et perso) et ajuster `revolut-releve.ts` ou les règles de `revolut-classement.ts` si besoin.

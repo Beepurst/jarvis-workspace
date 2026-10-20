@@ -28,7 +28,9 @@ comptabilité, pas de rapprochement facture par facture (inutile, voir 4).
 - un versement Stripe ou un apport d'Edgar compté en chiffre d'affaires ;
 - un virement d'Edgar vers son compte perso ou le prélèvement URSSAF réel compté en dépense ;
 - un import à moitié fait (fichier Excel, PDF ou mal formé) qui laisse des données partielles ;
-- une correction de poste faite à la main écrasée par l'import suivant.
+- une correction de poste faite à la main écrasée par l'import suivant ;
+- **la publicité comptée deux fois** : une fois par la dépense Meta, une fois par le prélèvement
+  Meta sur le relevé Revolut (voir 11).
 
 ## 3. Le fichier
 
@@ -184,3 +186,56 @@ et de contraste existants doivent continuer à passer.
 - Les règles de reconnaissance (Stripe, URSSAF, apports, virements perso, fournisseurs connus).
 - Le parcours de correction sur iPhone (feuille, menu, page dédiée).
 - Les textes exacts du compte rendu et des erreurs, en français simple et sans tiret long.
+
+## 11. Dépenses publicitaires lues chez Meta (ajout d'Edgar du 20/10)
+
+À livrer dans ce lot, avant la mise en production.
+
+**Décisions d'Edgar :**
+1. Les dépenses publicitaires viennent de Meta, en continu, et **Meta fait foi** pour le poste
+   Publicité.
+2. On compte le **montant dépensé** dans le Gestionnaire de publicités (`spend` de l'API Insights,
+   par jour), pas le montant prélevé par Meta.
+3. **Dès que la source Meta est branchée**, les lignes Facebook / Meta du relevé Revolut sont
+   exclues des dépenses : nouveau classement **« couvert par Meta »**, hors dépenses, visible et
+   reclassable comme « interne ». Tant que Meta n'est pas branché, la règle actuelle s'applique
+   (ligne Revolut, poste Publicité).
+
+**Synchronisation :**
+- Dans le **cron quotidien Finance** et le **bouton Actualiser** existants, à côté de Stripe. Une
+  panne Meta ne bloque pas Stripe, et inversement.
+- Stockée dans `finance_mouvements` : source `meta`, sortie, poste Publicité, **une ligne par jour
+  et par compte publicitaire**, identifiant stable (par exemple `meta:<compte>:<AAAA-MM-JJ>`) pour
+  réécrire un jour déjà synchronisé. Plage : de la date de départ des Réglages à aujourd'hui.
+- **Meta fait foi sur la plage lue** (choix de Claude) : un jour synchronisé qui n'apparaît plus
+  dans la réponse de Meta est retiré. Cela ne se fait qu'après une lecture complète réussie.
+- Un compte qui n'a encore **aucune dépense** (cas du 20/10) : synchro réussie, aucune ligne,
+  Publicité à 0 € réel, sans erreur.
+- Devise du compte autre que l'euro : la synchro échoue avec un message clair (choix de Claude).
+
+**Affichage :**
+- **« Indisponible » plutôt que 0 €** : si Meta est branché mais n'a jamais été synchronisé avec
+  succès, les cartes Dépenses et Net affichent « Indisponible » (le brut reste affiché).
+- **Dernière synchro Meta** mentionnée dans l'en-tête de la page, à côté de Stripe et du relevé
+  Revolut. Si elle date de plus de 36 h, bandeau orange sur le modèle de celui de Stripe (même
+  seuil, choix de Claude).
+- Les lignes Meta comptent dans les cartes, le graphique et « Dépenses par poste » (Publicité).
+  **Elles n'apparaissent pas dans « Derniers mouvements »** (choix de Claude : une ligne par jour
+  noierait les autres mouvements).
+- Les lignes Revolut « couvert par Meta » sont listées sous ce libellé dans la page de détail
+  Revolut et peuvent être reclassées. Priorité (choix de Claude) : la correction d'une ligne passe
+  avant « couvert par Meta », qui passe avant le choix retenu pour le fournisseur. Ainsi une règle
+  fournisseur « Publicité » posée avant le branchement de Meta ne réintroduit pas de double
+  comptage.
+
+**Accès (choix de Claude, à valider par Edgar) :**
+- Le module Ads (worktree `livrables/hub-agence-ads`, non fusionné) a déjà un client Meta en
+  lecture seule (`src/lib/ads/meta-graph.ts`, jeton masqué dans tous les messages) et prévoit un
+  **utilisateur système** du Business Manager avec un jeton large (`ads_management`, etc.) dans
+  `HUB_META_ADS_ACCESS_TOKEN`.
+- Pour ne pas faire deux branchements, Finance **reprend ce client à l'identique** (même fichier,
+  même chemin, pour que la fusion du module Ads se fasse sans conflit) et **le même compte
+  publicitaire** (`HUB_META_ADS_ACCOUNT_ID`).
+- Pour rester en lecture seule, Finance utilise **son propre jeton**, généré pour le même
+  utilisateur système avec la seule permission **`ads_read`** : variable
+  **`HUB_META_FINANCE_ACCESS_TOKEN`**. « Meta branché » = ces deux variables présentes.
