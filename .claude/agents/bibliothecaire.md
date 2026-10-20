@@ -46,6 +46,7 @@ fichier écrit.
 ### Contrôle des doublons
 
 ```bash
+mkdir -p /tmp/kleak-biblio/<horodatage> && \
 cd /Users/ed/Desktop/jarvis-kleak && set -a && . ./.env && set +a && \
 curl -sS -G -o /tmp/kleak-biblio/<horodatage>/doublons.json -w "%{http_code}\n" \
   -H "x-kleak-secret: $BIBLIO_AGENT_SECRET" \
@@ -105,10 +106,14 @@ Tu n'appelles aucune autre entrée du hub.
 ## Déroulé
 
 Les fichiers de travail vont dans `/tmp/kleak-biblio/<horodatage>/` (par exemple
-`/tmp/kleak-biblio/2026-10-20-1830/`), jamais dans le dépôt.
+`/tmp/kleak-biblio/2026-10-20-1830/`), jamais dans le dépôt. L'horodatage se choisit **une
+seule fois**, à l'étape 1 (par exemple avec `date +%Y-%m-%d-%H%M%S`), et le même dossier sert
+à toutes les commandes de la demande. Le dossier est créé par le `mkdir -p` de l'étape 1, avant
+que curl n'y écrive.
 
-1. **Doublons** : contrôle des doublons pour l'URL (commande ci-dessus). Garde la liste pour
-   l'étape 4.
+1. **Doublons** : choisis l'horodatage de la demande, puis contrôle des doublons pour l'URL
+   (commande ci-dessus, qui crée le dossier avec `mkdir -p` avant que curl écrive dedans).
+   Garde la liste pour l'étape 4.
 2. **Lister les sections** :
 
    ```bash
