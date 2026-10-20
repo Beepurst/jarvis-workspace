@@ -108,7 +108,7 @@ SaaS de dashboard marketing multi-connecteurs, jusqu'ici mon activité principal
 | Chantier | Statut |
 |----------|--------|
 | Outil | **Framer**, décidé le 18/10 après test. Production pilotée par Claude Code |
-| Offre et prix | Définie le 16/10 : **Essentiel 999 €** (3 pages, 7 jours), **Pro 1 800 €** (5 pages, 10 jours), option automatisation 400 €, maintenance + reporting 90 €/mois sur 12 mois. Acompte 50 %. Fiche client et note interne dans `livrables/offre/`. Déroulé client ajouté (questionnaire, planche de direction). Reste : téléphone, CGV |
+| Offre et prix | Revue le 20/10, **3 formules** : **One page 699 €** (porte d'entrée petit budget, 1 page, 5 jours), **Essentiel 999 €** (3 pages, fiche Google optimisée, 7 jours), **Pro 1 800 €** (5 pages, sur mesure, SEO local, mesure, 10 jours). Option automatisation 400 €. Maintenance 49 €/mois (one page) ou 90 €/mois (Essentiel, Pro), 12 mois, **hébergement Framer sur le compte Kleak inclus**, jamais vendu seul. Paiement en une fois (acompte 50 %) ou **en 6 fois sans frais** (prélèvement Stripe, maintenance obligatoire, site à Kleak jusqu'au dernier versement). Fiche client et note interne dans `livrables/offre/`. Page tarifs à ajouter sur `kleakagency.fr` après le problème IONOS. Reste : téléphone, CGV |
 | Prospection | **Meta Ads uniquement** (décision du 18/10), voir « Acquisition » plus bas. Aucun ancien client ni réseau à relancer |
 | Clients | Aucun |
 | Site de démo | V1 et V2 Framer publiées en test le 18/10. V2 : 77 à 85 sur mobile, 95 sur bureau, accessibilité 100 |

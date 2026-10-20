@@ -22,6 +22,18 @@
 - **Site Framer en suspens** à cause d'un problème d'adresse mail et de domaine chez IONOS. Les marches « RDV » et « signés » du funnel du site resteront vides jusqu'au passage à Cal.com avec `canal=site` (tâche ajoutée à la to-do du 21/10).
 - **Retouche des titres du hub** demandée (tailles plus marquées) : reportée après la fusion de Finance lot 2 et du module Ads pour éviter les conflits.
 
+### Offre revue : trois formules, paiement en 6 fois, hébergement chez Kleak
+
+- **One page à 699 €**, prix d'entrée pour les leads petit budget : une seule page avec toutes les infos, sections existantes, 1 série de retouches courte, 5 jours ouvrés. Passage à l'Essentiel possible plus tard en payant la différence.
+- **Essentiel (999 €) et Pro (1 800 €) inchangés**, sauf l'**optimisation de la fiche Google** ajoutée à l'Essentiel (environ 1 h) pour le distinguer du one page.
+- **Maintenance à 49 €/mois pour le one page** (15 min de modifications, rapport simple), 90 €/mois pour les deux autres. Engagement de 12 mois.
+- **Hébergement sur le compte Framer de Kleak**, inclus dans la maintenance, jamais vendu seul. Coût estimé à 12 €/mois par site (plan Basic à 10 $/mois facturé à l'année, plus le domaine), à confirmer sur la première facture. À vérifier : prix mensuel du plan Basic et transfert d'un site vers le compte d'un client.
+- **Paiement en 6 fois sans frais** (6 × 116,50 €, 166,50 € ou 300 €) : premier versement à la signature, prélèvement Stripe, maintenance obligatoire, site à Kleak jusqu'au dernier versement, suspension en cas d'impayé (à écrire dans les CGV). Moins de cash en novembre : suivre la part des clients en 6 fois.
+- **Page tarifs** à créer sur `kleakagency.fr` dans la DA du site (3 cartes, bascule « En une fois / En 6 fois », tableau comparatif), après le problème IONOS.
+- **À faire :** adapter le hub (fiche client et onglet Finance : mode de paiement, maintenance).
+
+---
+
 ## 2026-10-19
 
 ### To-do du lendemain dans le hub, Notion abandonné

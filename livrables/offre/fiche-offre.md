@@ -6,7 +6,22 @@ Un site clair, rapide, lisible sur mobile, conforme à la loi, et pensé pour un
 
 ---
 
-## Deux formules
+## Trois formules
+
+### One page · 699 €
+
+Pour avoir une adresse en ligne propre, où on vous trouve et on vous contacte.
+
+- **1 page** qui réunit tout : présentation, services, avis, zone d'intervention, contact
+- Mise en page construite à partir de sections éprouvées, adaptées à vos couleurs et à votre logo
+- Affichage soigné sur mobile, tablette et ordinateur
+- Formulaire de contact : chaque demande arrive directement dans votre boîte mail
+- Référencement de base : titre et description de la page, structure lisible par Google
+- Mentions légales, bandeau cookies et conformité RGPD
+- Mise en ligne sur votre nom de domaine
+- **1 série de retouches**
+- **Livraison en 5 jours ouvrés** après réception de vos contenus et du premier paiement
+- Besoin de plus de pages plus tard ? Vous passez à l'Essentiel en payant seulement la différence
 
 ### Essentiel · 999 €
 
@@ -16,7 +31,8 @@ Pour être présent en ligne, proprement, sans y passer des semaines.
 - Mise en page construite à partir de sections éprouvées, adaptées à vos couleurs et à votre logo
 - Affichage soigné sur mobile, tablette et ordinateur
 - Formulaire de contact : chaque demande arrive directement dans votre boîte mail
-- Référencement de base : titres et descriptions des pages, structure lisible par Google, lien vers votre fiche Google
+- Référencement de base : titres et descriptions des pages, structure lisible par Google
+- **Votre fiche Google optimisée** : catégories, horaires, description, photos et lien vers votre site
 - Mentions légales, bandeau cookies et conformité RGPD
 - Mise en ligne sur votre nom de domaine
 - **1 série de retouches** après la première présentation
@@ -48,14 +64,31 @@ Tout ce qui est dans Essentiel, et en plus :
 
 ---
 
-## Maintenance et suivi · 90 € par mois
+## Maintenance et hébergement
 
-Votre site reste à jour, et vous savez chaque mois ce qu'il vous apporte.
+Votre site est hébergé et surveillé par nous, il reste à jour, et vous savez chaque mois ce qu'il vous apporte.
 
-- Mises à jour techniques et surveillance du bon fonctionnement
-- Jusqu'à 30 minutes de petites modifications par mois (un texte, une photo, un horaire)
-- **Un rapport mensuel** : nombre de visiteurs, d'où ils viennent, combien vous ont contacté
-- Engagement de 12 mois
+| | One page · 49 € par mois | Essentiel et Pro · 90 € par mois |
+|---|---|---|
+| Hébergement du site | Inclus | Inclus |
+| Mises à jour techniques et surveillance | Oui | Oui |
+| Petites modifications (un texte, une photo, un horaire) | 15 minutes par mois | 30 minutes par mois |
+| Rapport mensuel | Visiteurs et demandes reçues | Visiteurs, d'où ils viennent, demandes reçues |
+
+Engagement de 12 mois. À la fin, vous renouvelez, ou nous transférons le site sur votre propre compte.
+
+---
+
+## Payer en une fois ou en 6 fois
+
+| | En une fois | En 6 fois sans frais |
+|---|---|---|
+| One page | 699 € | 6 × 116,50 € |
+| Essentiel | 999 € | 6 × 166,50 € |
+| Pro | 1 800 € | 6 × 300 € |
+
+- **En une fois** : 50 % à la signature, 50 % avant la mise en ligne.
+- **En 6 fois** : le premier versement à la signature, puis un prélèvement automatique chaque mois. La maintenance est comprise dans ce mode de paiement et démarre à la mise en ligne. Le site vous appartient au dernier versement.
 
 ---
 
@@ -63,13 +96,13 @@ Votre site reste à jour, et vous savez chaque mois ce qu'il vous apporte.
 
 1. **Un appel de 30 minutes** pour comprendre votre activité et vos objectifs.
 2. **Un devis** à prix fixe, valable 30 jours.
-3. **À la signature** : acompte de 50 %, et vous recevez un questionnaire en ligne (15 minutes). Vous y décrivez vos goûts (ambiance, couleurs, styles d'écriture, sites que vous aimez) et vous y déposez vos contenus (logo, photos, textes).
+3. **À la signature** : acompte de 50 % (ou premier versement si vous payez en 6 fois), et vous recevez un questionnaire en ligne (15 minutes). Vous y décrivez vos goûts (ambiance, couleurs, styles d'écriture, sites que vous aimez) et vous y déposez vos contenus (logo, photos, textes).
 4. **Une planche de direction** sous 48 heures : la structure de votre site, les couleurs, les polices et les photos retenues, sur une seule page. Vous validez ou vous corrigez avant qu'on construise quoi que ce soit.
 5. **Formule Pro** : nous construisons d'abord le haut de votre page d'accueil, sur ordinateur et sur téléphone. Vous validez le style sur du vrai, puis nous réalisons le reste.
 6. **Votre site complet** à la date annoncée, à consulter directement sur votre téléphone, puis les retouches prévues dans votre formule.
-7. **Mise en ligne** au paiement du solde de 50 %. Le site vous appartient.
+7. **Mise en ligne** au paiement du solde de 50 %, et le site vous appartient. En 6 fois, la mise en ligne se fait à la livraison et le site vous appartient au dernier versement.
 
-Le délai de livraison démarre à la réception du questionnaire complet et de l'acompte.
+Le délai de livraison démarre à la réception du questionnaire complet et du premier paiement.
 
 ---
 
@@ -77,7 +110,8 @@ Le délai de livraison démarre à la réception du questionnaire complet et de 
 
 - **Les contenus sont fournis par vous** (textes, photos, logo). Le délai démarre à leur réception.
 - **Ce qui n'est pas compris** : boutique en ligne, espace client, prise de rendez-vous en ligne, traduction, photos professionnelles, et toute demande hors de la formule choisie. Tout cela reste possible, sur devis.
-- **L'abonnement de l'outil d'hébergement du site et le nom de domaine** sont à votre nom et réglés directement par vous auprès des prestataires. Nous vous indiquons le montant exact dans le devis.
+- **L'hébergement est compris dans la maintenance.** Sans maintenance, le site est mis en ligne sur votre propre compte, dont l'abonnement est réglé par vous (nous vous indiquons le montant dans le devis).
+- **Le nom de domaine** est à votre nom.
 - **TVA non applicable, article 293 B du CGI.** Les prix indiqués sont les prix que vous payez.
 
 ---
