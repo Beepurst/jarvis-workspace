@@ -35,7 +35,12 @@
   - seuils dans Réglages ;
   - alertes push chaque matin, une seule fois par alerte, renvoyées tant qu'elles n'ont pas été reçues.
 - **Agent `media-buyer`** (`.claude/agents/media-buyer.md`) : modes PRÉPARER, BILAN, COMMANDER, règles dans `livrables/media-buying/regles.md`, journal des tests dans `journal.md`. `createur-creas` ne fait plus que les visuels.
-- **Reste (tâche 11, avec Edgar) :** exécuter `supabase/media-buyer.sql`, supprimer la campagne de test à 1 €, tester en réel une campagne à deux visuels et plusieurs textes, poser `ADS_AGENT_SECRET` sur Vercel, valider la prévisualisation, fusionner. Puis premier dépôt des textes de A, B et D par l'agent.
+- **Validation réelle et mise en production le 20/10 :**
+  - SQL exécuté, variables Vercel posées (dont `HUB_DSA_ENTITY` sans guillemets) ;
+  - Meta refuse plusieurs textes avec un visuel story séparé : décision d'Edgar, le hub passe au visuel 4:5 seul dès qu'une pub a plusieurs textes, avec les options de texte de Meta (`DEGREES_OF_FREEDOM`), validé dans le Gestionnaire ;
+  - `main` (ventes, finance lot 2) fusionné dans la branche, prévisualisation validée par Edgar sur Mac et iPhone, puis mise en production ;
+  - lecture de l'agent testée en production (200, aucun avertissement).
+- **Reste :** premier dépôt des textes de A, B et D par l'agent.
 
 ### Onglet Analytics du hub : GA4 de kleakagency.fr branché
 
