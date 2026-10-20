@@ -4,10 +4,15 @@
 //   node livrables/bibliotheque/capturer.mjs <url> --lister [--sortie <dossier>]
 //   node livrables/bibliotheque/capturer.mjs <url> --section <n> [--sortie <dossier>]
 //   node livrables/bibliotheque/capturer.mjs <url> --ecran <haut> [--sortie <dossier>]
+//   node livrables/bibliotheque/capturer.mjs <url> --titre "<texte>" [--sortie <dossier>]
 //
 // --lister  : JSON { sections: [{ n, balise, id, classes, premierTitre, haut, hauteur }] } sur la
 //             sortie standard, et apercu.jpg (page entiere reduite, sections numerotees).
-// --section : capture.jpg (la section seule, JPEG, 4 Mo au plus) et analyse.json (bureau et mobile).
+// --section : capture.jpg (la section seule, JPEG, 4 Mo au plus), analyse.json (bureau et mobile, pour
+//             les cas de doute), vignette.jpg (800 px de large, qualite 60, pour verifier) et resume.json
+//             (ce que la fiche courte utilise, moins de 3 Ko).
+// --titre   : cherche la section dont un titre (h1 a h4) ou un texte de plus de 20 caracteres contient le
+//             texte donne (sans casse, sans accents). Sortie { n, premierTitre, autres? }, code 2 si absent.
 // --ecran   : repli quand une section ne s'isole pas : capture.jpg de l'ecran (1440 x 900) avec
 //             son haut a <haut> px du haut de la page. Pas d'analyse.
 //
@@ -40,12 +45,13 @@ class ErreurSortie extends Error {
 // ---------- arguments ----------
 
 function lireArguments(argv) {
-  const args = { url: null, lister: false, section: null, ecran: null, sortie: null };
+  const args = { url: null, lister: false, section: null, ecran: null, titre: null, sortie: null };
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
     if (a === "--lister") args.lister = true;
     else if (a === "--section") args.section = Number(argv[++i]);
     else if (a === "--ecran") args.ecran = Number(argv[++i]);
+    else if (a === "--titre") args.titre = argv[++i] ?? "";
     else if (a === "--sortie") args.sortie = argv[++i];
     else if (!a.startsWith("--") && !args.url) args.url = a;
     else throw new ErreurSortie(1, `Argument inconnu : ${a}`);
@@ -57,9 +63,10 @@ function lireArguments(argv) {
   } catch {
     throw new ErreurSortie(1, `URL invalide : ${args.url}`);
   }
-  if ([args.lister, args.section !== null, args.ecran !== null].filter(Boolean).length !== 1) {
-    throw new ErreurSortie(1, "Choisir un seul mode : --lister, --section <n> ou --ecran <haut>.");
+  if ([args.lister, args.section !== null, args.ecran !== null, args.titre !== null].filter(Boolean).length !== 1) {
+    throw new ErreurSortie(1, "Choisir un seul mode : --lister, --section <n>, --ecran <haut> ou --titre \"<texte>\".");
   }
+  if (args.titre !== null && !args.titre.trim()) throw new ErreurSortie(1, "--titre attend un texte non vide.");
   if (args.ecran !== null && (!Number.isFinite(args.ecran) || args.ecran < 0)) throw new ErreurSortie(1, "--ecran attend une position en px (0 ou plus).");
   if (args.section !== null && (!Number.isInteger(args.section) || args.section < 1)) {
     throw new ErreurSortie(1, "--section attend un numero entier a partir de 1 (celui donne par --lister).");
@@ -256,6 +263,7 @@ function analyserSection(n) {
     return {
       balise: el.tagName.toLowerCase(),
       famille: cs.fontFamily.split(",")[0].replace(/["']/g, "").trim(),
+      generique: cs.fontFamily.split(",").pop().replace(/["']/g, "").trim().toLowerCase(),
       graisse: cs.fontWeight,
       style: cs.fontStyle,
       taille: px(cs.fontSize),
@@ -449,6 +457,56 @@ function analyserSection(n) {
   };
 }
 
+// Cherche, parmi les sections numerotees, celles dont un titre (h1 a h4) ou un texte de plus de
+// 20 caracteres contient `recherche` (sans casse, sans accents, espaces normalises).
+function chercherTitre(recherche) {
+  const norm = (t) => (t || "").normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/\s+/g, " ").trim().toLowerCase();
+  const cible = norm(recherche);
+  const trouvees = [];
+  for (const sec of document.querySelectorAll("[data-kleak-n]")) {
+    const textes = [...sec.querySelectorAll("h1, h2, h3, h4")].map((e) => norm(e.textContent));
+    for (const e of [sec, ...sec.querySelectorAll("*")]) {
+      const direct = [...e.childNodes].filter((c) => c.nodeType === 3).map((c) => c.textContent).join(" ");
+      if (norm(direct).length > 20) textes.push(norm(direct));
+    }
+    if (textes.some((t) => t.includes(cible))) trouvees.push(Number(sec.getAttribute("data-kleak-n")));
+  }
+  return trouvees;
+}
+
+// Ordre des blocs de la section (titre, texte, bouton, image, video...), dans l'ordre de lecture,
+// sans doublons consecutifs.
+function ordreBlocs(n) {
+  const sec = document.querySelector(`[data-kleak-n="${n}"]`);
+  if (!sec) return [];
+  const rs = sec.getBoundingClientRect();
+  const out = [];
+  const direct = (el) => [...el.childNodes].filter((c) => c.nodeType === 3).map((c) => c.textContent).join("").trim();
+  for (const el of sec.querySelectorAll("*")) {
+    const cs = getComputedStyle(el);
+    if (cs.display === "none" || cs.visibility === "hidden") continue;
+    const r = el.getBoundingClientRect();
+    if (r.width < 1 || r.height < 1) continue;
+    if (r.width >= rs.width - 1 && r.height >= rs.height - 1) continue;
+    const t = el.tagName;
+    let type = null;
+    if (/^H[1-6]$/.test(t)) type = "titre";
+    else if (t === "A" || t === "BUTTON") type = "bouton";
+    else if (t === "IMG" || t === "PICTURE") type = "image";
+    else if (t === "VIDEO") type = "video";
+    else if (t === "CANVAS") type = "canvas";
+    else if (t === "INPUT" || t === "TEXTAREA" || t === "SELECT") type = "champ";
+    else if (direct(el).length > 0 && !el.closest("h1,h2,h3,h4,h5,h6,a,button")) type = "texte";
+    if (!type) continue;
+    if (el.closest("a, button") && el !== el.closest("a, button") && type !== "image") continue;
+    out.push({ type, haut: r.top, gauche: r.left });
+  }
+  out.sort((a, b) => Math.round(a.haut / 12) - Math.round(b.haut / 12) || a.gauche - b.gauche);
+  const suite = [];
+  for (const o of out) if (suite[suite.length - 1] !== o.type) suite.push(o.type);
+  return suite.slice(0, 14);
+}
+
 // Animations en cours (CSS et Web Animations, dont celles de Framer) et elements qui bougent
 // tout seuls (bandeaux defilants pilotes en JavaScript), mesures sur 600 ms sans defiler.
 async function mesurerMouvement(n) {
@@ -589,6 +647,120 @@ async function capturerParMorceaux(navigateur, page, zone, { largeurSortie, qual
   return recoller(navigateur, morceaux, largeur, { largeurSortie, qualite });
 }
 
+// ---------- vignette et resume (pour limiter ce que l'agent doit lire) ----------
+
+// Largeur et hauteur d'un JPEG (lecture de l'en-tete SOF).
+function dimensionsJpeg(buf) {
+  let i = 2;
+  while (i < buf.length) {
+    if (buf[i] !== 0xff) { i++; continue; }
+    const m = buf[i + 1];
+    if (m >= 0xc0 && m <= 0xcf && m !== 0xc4 && m !== 0xc8 && m !== 0xcc) return { hauteur: buf.readUInt16BE(i + 5), largeur: buf.readUInt16BE(i + 7) };
+    i += 2 + buf.readUInt16BE(i + 2);
+  }
+  throw new Error("dimensions JPEG illisibles");
+}
+
+async function faireVignette(navigateur, jpeg) {
+  const { largeur, hauteur } = dimensionsJpeg(jpeg);
+  return recoller(navigateur, [{ y: 0, hauteur, b64: jpeg.toString("base64") }], largeur, { largeurSortie: Math.min(800, largeur), qualite: 60 });
+}
+
+// Categorie de police sans jamais donner le nom exact.
+function categoriePolice(famille, generique) {
+  const f = (famille || "").toLowerCase();
+  if (/condensed|narrow|compressed|\bcond\b|oswald|bebas|anton|league gothic|fjalla|barlow condensed/.test(f)) return "condensee";
+  if (/mono|courier|consolas|code/.test(f) || generique === "monospace") return "mono";
+  if (/\bsans\b|grotesk|grotesque|gothic|helvetica|arial|inter\b|roboto|poppins|montserrat/.test(f)) return "sans-serif";
+  if (/serif|georgia|times|garamond|playfair|merriweather|lora\b|baskerville|didot|bodoni|cormorant|fraunces|caslon|newsreader|crimson|cambria|palatino|libre/.test(f) || generique === "serif") return "serif";
+  return "sans-serif";
+}
+
+const compacter = (v) => {
+  if (Array.isArray(v)) { const a = v.map(compacter).filter((x) => x !== undefined); return a.length ? a : undefined; }
+  if (v && typeof v === "object") {
+    const o = {};
+    for (const [k, x] of Object.entries(v)) { const c = compacter(x); if (c !== undefined) o[k] = c; }
+    return Object.keys(o).length ? o : undefined;
+  }
+  if (v === 0 || v === false || v === null || v === "" || v === undefined) return undefined;
+  return typeof v === "string" ? v.slice(0, 70) : v;
+};
+
+function construireResume({ info, bureau, mobile, blocsBureau, blocsMobile, avertissements }) {
+  const base = bureau.texteCourant?.taille || 16;
+  const rel = (t) => Math.round((t / base) * 10) / 10;
+  const parBalise = {};
+  for (const t of bureau.titres) parBalise[t.balise] = Math.max(parBalise[t.balise] || 0, t.taille);
+  const tailles = {};
+  for (const [b, t] of Object.entries(parBalise)) tailles[b] = rel(t);
+  const plusGrand = bureau.textesLesPlusGrands[0];
+  const titrePrincipal = bureau.titres[0] || plusGrand;
+  const capitales = [...bureau.titres, ...bureau.textesLesPlusGrands].some((t) => t.casse === "uppercase");
+  const g = bureau.grillePrincipale;
+  const gm = mobile?.grillePrincipale;
+  const colB = g ? g.colonnes : 1;
+  const colM = mobile ? (gm ? gm.colonnes : 1) : null;
+  const nb = (a, k) => a?.elementsVisibles?.[k] ?? 0;
+  const disparait = {};
+  if (mobile) {
+    for (const [k, cle] of [["textes", "textes"], ["images", "images"], ["boutonsOuLiens", "boutons"]]) {
+      const d = nb(bureau, k) - nb(mobile, k);
+      if (d > 0) disparait[cle] = d;
+    }
+  }
+  const resume = {
+    section: { n: info.n, balise: info.balise, premierTitre: info.premierTitre },
+    structure: { colonnes: colB, blocs: blocsBureau },
+    hierarchie: {
+      tailleDeBase: base,
+      tailles,
+      plusGrandTexte: plusGrand ? rel(plusGrand.taille) : null,
+      capitales,
+      policeTitres: titrePrincipal ? categoriePolice(titrePrincipal.famille, titrePrincipal.generique) : null,
+      policeTexte: bureau.texteCourant ? categoriePolice(bureau.texteCourant.famille, null) : null,
+    },
+    grille: {
+      largeurUtile: bureau.contenu?.largeur ?? null,
+      colonnes: colB,
+      largeursColonnes: g?.largeursColonnes ?? null,
+      ecart: g?.ecart && g.ecart !== "normal" ? g.ecart : null,
+      marges: bureau.contenu?.margesInternes ?? null,
+    },
+    mobile: mobile
+      ? {
+          colonnes: colM,
+          passeEnColonne: colB > 1 && colM <= 1,
+          disparait,
+          blocs: JSON.stringify(blocsMobile) === JSON.stringify(blocsBureau) ? "idem" : blocsMobile,
+          hauteurBureau: bureau.section.hauteur,
+          hauteurMobile: mobile.section.hauteur,
+        }
+      : { hauteurBureau: bureau.section.hauteur, hauteurMobile: null },
+    animations: compacter(bureau.animations) || {},
+    performance: {
+      images: bureau.images.nombre,
+      plusLargeSource: bureau.images.plusLargeSource,
+      graisses: new Set(bureau.polices.map((p) => p.graisse)).size,
+    },
+  };
+  if (avertissements.length) resume.avertissements = avertissements.map((a) => a.slice(0, 160));
+  return resume;
+}
+
+async function chercher(navigateur, args) {
+  const { contexte, page, sections } = await ouvrir(navigateur, args.url, false);
+  const trouvees = await page.evaluate(chercherTitre, args.titre);
+  await contexte.close();
+  if (!trouvees.length) {
+    throw new ErreurSortie(2, `Aucune section ne contient "${args.titre}" (${sections.length} sections). Passer par --lister et l'apercu.`);
+  }
+  const info = sections[trouvees[0] - 1];
+  const sortie = { n: trouvees[0], premierTitre: info.premierTitre };
+  if (trouvees.length > 1) sortie.autres = trouvees.slice(1);
+  process.stdout.write(JSON.stringify(sortie, null, 2) + "\n");
+}
+
 async function lister(navigateur, args) {
   const { contexte, page, sections } = await ouvrir(navigateur, args.url, false);
   if (!sections.length) throw new ErreurSortie(2, "Aucune section de premier niveau trouvee dans la page.");
@@ -615,6 +787,7 @@ async function capturerSection(navigateur, args) {
   const outil = await page.evaluate(detecterOutil);
   const analyseBureau = await page.evaluate(analyserSection, n);
   analyseBureau.animations.mouvement = await page.evaluate(mesurerMouvement, n);
+  const blocsBureau = await page.evaluate(ordreBlocs, n);
   await page.evaluate(figerPourCapture);
   const fixesMasques = await page.evaluate(masquerFixesHors, n);
   const zone = await page.evaluate((k) => {
@@ -643,6 +816,7 @@ async function capturerSection(navigateur, args) {
 
   // mobile : page rechargee en 390 x 844
   let analyseMobile = null;
+  let blocsMobile = [];
   let avertissementMobile = null;
   try {
     const mobile = await ouvrir(navigateur, args.url, true);
@@ -652,6 +826,7 @@ async function capturerSection(navigateur, args) {
     } else {
       analyseMobile = await mobile.page.evaluate(analyserSection, n);
       analyseMobile.animations.mouvement = await mobile.page.evaluate(mesurerMouvement, n);
+      blocsMobile = await mobile.page.evaluate(ordreBlocs, n);
       if (infoM.balise !== info.balise || infoM.id !== info.id || infoM.classes !== info.classes) {
         avertissementMobile = `La section ${n} en mobile ne semble pas la meme qu'en bureau (${infoM.balise}.${infoM.classes} contre ${info.balise}.${info.classes}, titre "${infoM.premierTitre}") : verifier.`;
       }
@@ -672,7 +847,11 @@ async function capturerSection(navigateur, args) {
   };
   const chemin = join(args.sortie, "analyse.json");
   writeFileSync(chemin, JSON.stringify(analyse, null, 2));
-  process.stdout.write(JSON.stringify({ capture, analyse: chemin, octets: image.length, qualite, decoupe, outil, avertissements: analyse.avertissements }, null, 2) + "\n");
+  const vignette = join(args.sortie, "vignette.jpg");
+  writeFileSync(vignette, await faireVignette(navigateur, image));
+  const resume = join(args.sortie, "resume.json");
+  writeFileSync(resume, JSON.stringify(construireResume({ info, bureau: analyseBureau, mobile: analyseMobile, blocsBureau, blocsMobile, avertissements: analyse.avertissements })));
+  process.stdout.write(JSON.stringify({ capture, vignette, resume, analyse: chemin, octets: image.length, qualite, decoupe, outil, avertissements: analyse.avertissements }, null, 2) + "\n");
 }
 
 async function capturerEcran(navigateur, args) {
@@ -711,6 +890,7 @@ async function principal() {
   try {
     if (args.lister) await lister(navigateur, args);
     else if (args.ecran !== null) await capturerEcran(navigateur, args);
+    else if (args.titre !== null) await chercher(navigateur, args);
     else await capturerSection(navigateur, args);
   } finally {
     await navigateur.close();
