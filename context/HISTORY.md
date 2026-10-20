@@ -58,7 +58,7 @@
 - **Hébergement sur le compte Framer de Kleak**, inclus dans la maintenance, jamais vendu seul. Coût estimé à 12 €/mois par site (plan Basic à 10 $/mois facturé à l'année, plus le domaine), à confirmer sur la première facture. À vérifier : prix mensuel du plan Basic et transfert d'un site vers le compte d'un client.
 - **Paiement en 6 fois sans frais** (6 × 116,50 €, 166,50 € ou 300 €) : premier versement à la signature, prélèvement Stripe, maintenance obligatoire, site à Kleak jusqu'au dernier versement, suspension en cas d'impayé (à écrire dans les CGV). Moins de cash en novembre : suivre la part des clients en 6 fois.
 - **Page tarifs** à créer sur `kleakagency.fr` dans la DA du site (3 cartes, bascule « En une fois / En 6 fois », tableau comparatif), après le problème IONOS.
-- **À faire :** adapter le hub (fiche client et onglet Finance : mode de paiement, maintenance).
+- **Hub adapté et en production le 20/10** (spec et plan `2026-10-20-ventes-paiements`) : une vente signée par compte (formule, une fois ou 6 fois, maintenance), échéancier rapproché des factures Stripe payées (délai de grâce de 5 jours), carte Vente sur la fiche client, section « Ventes signées » dans Finance (à encaisser ce mois, maintenance mensuelle, reste, part en 6 fois, retards, fins d'engagement, prévision sur 6 mois face à 2 538 € de CA). Étapes renommées « 1er paiement reçu » et « Site payé ». Limite connue : les remboursements Stripe n'ont pas de client, ils sont signalés au lieu d'être rattachés. 297 tests.
 
 ---
 
