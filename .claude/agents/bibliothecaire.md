@@ -43,11 +43,19 @@ Toujours depuis la racine du workspace. Le secret se charge depuis `.env` et ne 
 jamais : pas de `echo`, pas de `cat .env`, pas de `set -x`, pas de `env`, pas de secret dans un
 fichier écrit.
 
+### Essai sur un hub local
+
+Chaque commande ci-dessous recharge `.env` puis applique `HUB_URL="${HUB_URL_ESSAI:-$HUB_URL}"` :
+sans `HUB_URL_ESSAI`, c'est le hub de production. Quand Edgar donne une adresse de hub pour un
+essai (par exemple `http://localhost:3000`), écris `HUB_URL_ESSAI=<adresse>` en première ligne
+de CHAQUE commande bash (avant le `mkdir` ou le `cd`), et utilise cette même adresse dans les
+liens de ta réponse finale à la place de la production. Les règles sur le secret ne changent pas.
+
 ### Contrôle des doublons
 
 ```bash
 mkdir -p /tmp/kleak-biblio/<horodatage> && \
-cd /Users/ed/Desktop/jarvis-kleak && set -a && . ./.env && set +a && \
+cd /Users/ed/Desktop/jarvis-kleak && set -a && . ./.env && set +a && HUB_URL="${HUB_URL_ESSAI:-$HUB_URL}" && \
 curl -sS -G -o /tmp/kleak-biblio/<horodatage>/doublons.json -w "%{http_code}\n" \
   -H "x-kleak-secret: $BIBLIO_AGENT_SECRET" \
   --data-urlencode "url=<URL donnée par Edgar>" \
@@ -64,7 +72,7 @@ La fiche technique s'écrit avec Write dans `/tmp/kleak-biblio/<horodatage>/fich
 puis :
 
 ```bash
-cd /Users/ed/Desktop/jarvis-kleak && set -a && . ./.env && set +a && \
+cd /Users/ed/Desktop/jarvis-kleak && set -a && . ./.env && set +a && HUB_URL="${HUB_URL_ESSAI:-$HUB_URL}" && \
 curl -sS -o /tmp/kleak-biblio/<horodatage>/depot-<n>.json -w "%{http_code}\n" -X POST \
   -H "x-kleak-secret: $BIBLIO_AGENT_SECRET" \
   --form-string "titre=<titre>" \
@@ -266,7 +274,7 @@ Ignoré :
 - FAQ : déjà dans la bibliothèque (« FAQ accordéon 2 colonnes, agence web »).
 ```
 
-Remplace `$HUB_URL` par sa valeur (`https://hub-agence-kleak.vercel.app`). Ajoute, s'il y en
+Remplace `$HUB_URL` par sa valeur (`https://hub-agence-kleak.vercel.app`, ou l'adresse de `HUB_URL_ESSAI` pendant un essai). Ajoute, s'il y en
 a : capture de la zone visible au lieu de la section seule, capture coupée à 3000 px, dépôt
 sans capture, désignation ambiguë et ce que tu as choisi. Rien d'autre : pas de résumé de la
 fiche technique, Edgar la lit dans le hub.
