@@ -147,6 +147,7 @@ Les sous-dossiers de `livrables/` se créent au besoin (par exemple `offre/`, `p
 
 - **createur-creas** : produit les créas Meta Ads (HTML rendu en PNG dans `livrables/creas-meta/`) en deux temps, proposer 3 créas sur une planche puis finaliser post et story (les textes d'annonce sont à `media-buyer`). Déclencheur : « fais-moi des créas », « nouvelle série de pubs », « je garde la A et la C ».
 - **media-buyer** : media buyer Meta Ads, recommande et n'agit jamais dans Meta. Prépare les campagnes, écrit et dépose les textes d'annonce dans le Hub (entrées `/api/agent/ads`, secret `ADS_AGENT_SECRET` du `.env`), fait les bilans et tient `livrables/media-buying/` (règles, journal). Déclencheur : « fais le bilan », « prépare la prochaine campagne », « j'ai reçu une alerte », « il me faut les textes pour Meta ».
+- **bibliothecaire** : ajoute une section d'un site à la bibliothèque du hub (capture, analyse du code, fiche technique) et la dépose directement. Déclencheur : « ajoute le hero de … », « range cette section ».
 
 Les 15 agents et 4 skills de l'ecom sont dans `archive/ecom/.claude/`. Certains pourraient être adaptés à l'agence (`juriste-conformite`, `espion-concurrence`, `auditeur-conversion`), à condition de les réécrire avant de les remettre dans `.claude/`.
 
