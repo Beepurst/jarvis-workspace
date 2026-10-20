@@ -140,6 +140,7 @@ Les sous-dossiers de `livrables/` se créent au besoin (par exemple `offre/`, `p
 - **/commit** : committer le travail en cours avec un message propre
 - **/agent** : créer un agent spécialisé dans `.claude/agents/`, à documenter ici en une ligne
 - **/demain** : préparer le soir la to-do du lendemain et l'écrire dans le Hub Agence après validation (utilise `HUB_URL` et `TODO_AGENT_SECRET` du `.env`)
+- **/site** : démarrer léger une session de construction Framer (`/site <client ou test>`), sans lire le contexte de l'agence, à la place de `/prime`
 
 ---
 
