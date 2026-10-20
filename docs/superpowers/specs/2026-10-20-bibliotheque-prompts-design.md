@@ -107,18 +107,22 @@ section », « les témoignages »), éventuellement une capture fournie par Edg
 - En cas d'échec d'une étape (page protégée, section introuvable), il n'invente pas : il
   dépose sans capture ou ne dépose pas, et le dit.
 
-**Format de la fiche technique** (texte, titres fixes, pour que le prompt reste lisible) :
+**Format de la fiche technique** (texte, titres fixes, pour que le prompt reste lisible ;
+format court du 21/10, 6 rubriques, 180 mots au plus) :
 
 ```
 Structure : …
-Typographie : …
-Couleurs et fond : …
-Espacements et grille : …
+Hiérarchie et grille : …
 Mobile : …
 Animations : … (chacune marquée compatible / à alléger / à proscrire)
 Ce qui fait la force de la section : …
 Points d'attention performance : …
 ```
+
+Ni couleurs exactes (rgb, hex), ni noms de polices du site d'origine, ni textes au-delà de
+leur forme.
+
+> Décisions du 21/10 (Sonnet, fiche courte, mode retravailler, `/site`) : `docs/superpowers/plans/2026-10-21-bibliotheque-optimisation.md`, qui prime sur cette spec.
 
 La note d'Edgar (`note`) reste à part : c'est son avis à lui (ce qui lui plaît, ce qu'il
 veut changer). L'agent ne la remplit pas, sauf si Edgar lui donne une consigne en ajoutant la
