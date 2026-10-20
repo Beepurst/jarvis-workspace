@@ -3,7 +3,7 @@
 > Mon contexte personnel et professionnel pour mon Jarvis.
 > Mis à jour au fil du temps par Claude, via `/update` ou quand un changement important est détecté.
 >
-> Dernière mise à jour : 19 octobre 2026
+> Dernière mise à jour : 20 octobre 2026
 
 ---
 
@@ -93,7 +93,7 @@ SaaS de dashboard marketing multi-connecteurs, jusqu'ici mon activité principal
 - **2 000 € nets par mois minimum, à partir de décembre 2026.**
 - Soit environ **2 550 € de chiffre d'affaires par mois** (cotisations micro BIC prestations de services de **21,2 %**, taux confirmé par Edgar le 19/10 ; impôt sur le revenu en plus).
 - Traduction : environ 2 sites à 1 500 € signés d'ici mi-novembre (acomptes de 50 % en novembre, soldes en décembre), puis environ 1,5 site par mois à 1 800 €, moins à mesure que la maintenance récurrente s'accumule.
-- Jugement posé le 15/10 : faisable mais serré, uniquement par le réseau et les anciens clients. Offre prête cette semaine, relances la semaine suivante, sinon l'objectif glisse vers janvier.
+- Jugement posé le 15/10 : faisable mais serré. Il supposait le réseau et les anciens clients, qui n'existent pas : depuis le 18/10, tout repose sur Meta Ads (voir « Acquisition »).
 - **Recalé le 16/10 sur les vrais temps** (4 à 5 journées de 8 h par site, soit 31 à 37 €/h aux nouveaux prix) : l'objectif n'est tenable qu'avec deux leviers, retenus :
   1. **Production plafonnée** grâce aux sections réutilisables : 14 h pour un Essentiel, 24 h pour un Pro (45 à 50 €/h).
   2. **6 h par jour jusqu'à fin décembre**, puis retour à 4 h.
@@ -103,7 +103,7 @@ SaaS de dashboard marketing multi-connecteurs, jusqu'ici mon activité principal
 
 ## Où j'en suis
 
-**Statut au 18 octobre 2026 : Kleak Agency relancée en agence Framer, aucun client, aucun encaissement.**
+**Statut au 20 octobre 2026 : Kleak Agency relancée en agence Framer, aucun client, aucun encaissement.**
 
 | Chantier | Statut |
 |----------|--------|
@@ -112,9 +112,9 @@ SaaS de dashboard marketing multi-connecteurs, jusqu'ici mon activité principal
 | Prospection | **Meta Ads uniquement** (décision du 18/10), voir « Acquisition » plus bas. Aucun ancien client ni réseau à relancer |
 | Clients | Aucun |
 | Site de démo | V1 et V2 Framer publiées en test le 18/10. V2 : 77 à 85 sur mobile, 95 sur bureau, accessibilité 100 |
-| Site Kleak | `kleakagency.fr` sur Framer, on le garde |
+| Site Kleak | `kleakagency.fr` sur Framer, on le garde. **Travaux en suspens** tant que le problème d'adresse mail et de domaine chez IONOS n'est pas réglé (20/10). À faire ensuite : remplacer l'ancien Calendly par Cal.com avec `canal=site` dans le lien (tâche dans la to-do), vérifier le bandeau cookies (GA4 semble passer par Google Tag Manager) |
 | Orbikal | En pause, mise en sommeil à organiser (abonnés, facturation Stripe) |
-| Outil interne | Hub Agence (`livrables/hub-agence/`, dépôt `Beepurst/hub-agence-kleak`) **en production** sur https://hub-agence-kleak.vercel.app, refondu le 19/10 (thème clair, Notion/Apple, touche verre). **To-do du lendemain** en ligne le 19/10 : 6 thématiques (Prospection, Réunions, Production, Clients, Admin et finances, Outils), onglets Aujourd'hui, Demain et Historique, préparée chaque soir avec Claude par `/demain`, Notion abandonné. CRM : Cal.com et Google Sheet branchés, **Brevo en attente** (DMARC chez IONOS, clé API, 4 modèles, webhook). **Module Ads** (créatives, textes par IA, campagnes envoyées en pause dans Meta, suivi CPL, coût par RDV, ROAS) conçu et planifié le 18/10, à construire après l'agent créas, dans le worktree `livrables/hub-agence-ads/`. **Onglet Finance** (lot 1, Stripe seul) **en production** depuis le 19/10 (`/finance`) : brut, net après frais et cotisations estimées à 21,2 %, clients, objectif 2 000 € nets. Stripe Kleak connecté par une clé restreinte en lecture seule. Lot 2 Revolut Business à l'ouverture du compte |
+| Outil interne | Hub Agence (`livrables/hub-agence/`, dépôt `Beepurst/hub-agence-kleak`) **en production** sur https://hub-agence-kleak.vercel.app, refondu le 19/10 (thème clair, Notion/Apple, touche verre). **To-do du lendemain** en ligne le 19/10 : 6 thématiques (Prospection, Réunions, Production, Clients, Admin et finances, Outils), onglets Aujourd'hui, Demain et Historique, préparée chaque soir avec Claude par `/demain`, Notion abandonné. CRM : Cal.com et Google Sheet branchés, **Brevo en attente** (DMARC chez IONOS, clé API, 4 modèles, webhook). **Module Ads** (créatives, textes par IA, campagnes envoyées en pause dans Meta, suivi CPL, coût par RDV, ROAS) conçu et planifié le 18/10, à construire après l'agent créas, dans le worktree `livrables/hub-agence-ads/`. **Onglet Finance** (lot 1, Stripe seul) **en production** depuis le 19/10 (`/finance`) : brut, net après frais et cotisations estimées à 21,2 %, clients, objectif 2 000 € nets. Stripe Kleak connecté par une clé restreinte en lecture seule. Lot 2 Revolut Business à l'ouverture du compte. **Onglet Analytics en production le 20/10** (`/analytics`) : GA4 de kleakagency.fr branché, funnel du site et funnel des pubs Meta séparés, pages d'arrivée, sources et campagnes, évolution avec repères, trafic des aperçus Framer exclu. Une réservation Cal.com d'une personne inconnue crée désormais un compte (origine « site » si le lien porte `canal=site`). Volume actuel : environ 50 visiteurs par mois. **Retouche des titres** (tailles plus marquées dans tout le hub) prévue après la fusion de Finance lot 2 et du module Ads |
 | Chiffre d'affaires | 0 € (objectif : 2 550 €/mois dès décembre) |
 
 ### Prochain chantier

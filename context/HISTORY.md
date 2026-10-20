@@ -7,6 +7,21 @@
 
 ---
 
+## 2026-10-20
+
+### Onglet Analytics du hub : GA4 de kleakagency.fr branché
+
+- **GA4 branché le 19/10** : compte de service Google `hub-ga4` en lecture seule sur la propriété `433476352`, variables posées en local et dans Vercel.
+- **Page Analytics refaite et en production le 20/10** (spec `docs/superpowers/specs/2026-10-19-analytics-ga4-design.md`, plan associé, construite avec relecture à chaque étape) :
+  - funnel du site (visiteurs, page de réservation, RDV, signés) et funnel des pubs Meta (dépensé, leads, RDV, signés) séparés, pour ne pas gonfler le taux du site avec les leads du formulaire instantané ;
+  - pages d'arrivée, sources et campagnes, évolution avec repères posés à la main ;
+  - une marche atteinte reste atteinte, effectifs toujours affichés, « pas encore mesuré » plutôt que 0, alerte sous 100 visiteurs ou 30 leads ;
+  - trafic des aperçus `*.framer.app` exclu (décision d'Edgar).
+- **CRM** : une réservation Cal.com d'une personne inconnue crée un compte au lieu de finir en « RDV non rattaché ». Migration SQL lancée par Edgar, testée contre la vraie base. Les chiffres Meta de l'accueil ne comptent plus que les leads du formulaire.
+- **Constats sur le site** : environ 50 visiteurs par mois, l'accueil fait presque tout le trafic. La page de réservation renvoie encore vers l'ancien Calendly, que le CRM ne voit pas.
+- **Site Framer en suspens** à cause d'un problème d'adresse mail et de domaine chez IONOS. Les marches « RDV » et « signés » du funnel du site resteront vides jusqu'au passage à Cal.com avec `canal=site` (tâche ajoutée à la to-do du 21/10).
+- **Retouche des titres du hub** demandée (tailles plus marquées) : reportée après la fusion de Finance lot 2 et du module Ads pour éviter les conflits.
+
 ## 2026-10-19
 
 ### To-do du lendemain dans le hub, Notion abandonné
@@ -51,7 +66,7 @@
   - contrastes AA vérifiés par test.
 - **Prochaines étapes du hub :**
   - réécrire le plan du module Ads pour la nouvelle navigation (Ads en rubrique à sous-onglets, `src/lib/navigation.ts`) ;
-  - onglet Finance en cours de conception dans une autre conversation ;
+  - onglet Finance conçu et construit dans une autre conversation (voir plus haut) ;
   - icônes de l'app iPhone encore sur fond noir.
 
 ### Créas du premier test validées, nouveau compte publicitaire
