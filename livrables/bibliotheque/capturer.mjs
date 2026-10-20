@@ -264,7 +264,11 @@ function analyserSection(n) {
       balise: el.tagName.toLowerCase(),
       famille: cs.fontFamily.split(",")[0].replace(/["']/g, "").trim(),
       largeurMoyenne: (() => {
-        const brut = (el.textContent || "").replace(/\s+/g, "");
+        let brut = (el.textContent || "").replace(/\s+/g, " ").trim();
+        if (cs.textTransform === "uppercase") brut = brut.toUpperCase();
+        else if (cs.textTransform === "lowercase") brut = brut.toLowerCase();
+        else if (cs.textTransform === "capitalize") brut = brut.replace(/(^|\s)(\S)/g, (m, a, b) => a + b.toUpperCase());
+        brut = brut.replace(/\s+/g, "");
         if (brut.length < 4) return null;
         const g = (decrireTexte.canvas ||= document.createElement("canvas")).getContext("2d");
         g.font = `${cs.fontStyle} ${cs.fontWeight} ${cs.fontSize} ${cs.fontFamily}`;
@@ -483,6 +487,17 @@ function chercherTitre(recherche) {
   return trouvees;
 }
 
+// Premier texte de plus de 20 caracteres de la section (repli quand elle n'a pas de titre).
+function premierTexteLong(n) {
+  const sec = document.querySelector(`[data-kleak-n="${n}"]`);
+  if (!sec) return null;
+  for (const e of [sec, ...sec.querySelectorAll("*")]) {
+    const t = [...e.childNodes].filter((c) => c.nodeType === 3).map((c) => c.textContent).join(" ").replace(/\s+/g, " ").trim();
+    if (t.length > 20) return t.slice(0, 80);
+  }
+  return null;
+}
+
 // Ordre des blocs de la section (titre, texte, bouton, image, video...), dans l'ordre de lecture,
 // sans doublons consecutifs.
 function ordreBlocs(n) {
@@ -606,16 +621,16 @@ async function capturerZone(navigateur, page, zone, opts) {
   }
 }
 
-async function recoller(navigateur, morceaux, largeur, { largeurSortie, qualite }) {
+async function recoller(navigateur, morceaux, largeur, { largeurSortie, qualite, hauteurMaxSortie }) {
   const echelle = largeurSortie ? largeurSortie / largeur : 1;
   const total = morceaux.reduce((s, m) => s + m.hauteur, 0);
   const contexte = await navigateur.newContext({ viewport: { width: 800, height: 600 } });
   const atelier = await contexte.newPage();
   const dataUrl = await atelier.evaluate(
-    async ({ morceaux, largeur, total, echelle, qualite }) => {
+    async ({ morceaux, largeur, total, echelle, qualite, hauteurMaxSortie }) => {
       const c = document.createElement("canvas");
       c.width = Math.round(largeur * echelle);
-      c.height = Math.round(total * echelle);
+      c.height = Math.min(Math.round(total * echelle), hauteurMaxSortie || Infinity);
       const g = c.getContext("2d");
       g.imageSmoothingQuality = "high";
       for (const m of morceaux) {
@@ -626,7 +641,7 @@ async function recoller(navigateur, morceaux, largeur, { largeurSortie, qualite 
       }
       return c.toDataURL("image/jpeg", qualite / 100);
     },
-    { morceaux, largeur, total, echelle, qualite },
+    { morceaux, largeur, total, echelle, qualite, hauteurMaxSortie },
   );
   await contexte.close();
   return Buffer.from(dataUrl.split(",")[1], "base64");
@@ -672,7 +687,7 @@ function dimensionsJpeg(buf) {
 
 async function faireVignette(navigateur, jpeg) {
   const { largeur, hauteur } = dimensionsJpeg(jpeg);
-  return recoller(navigateur, [{ y: 0, hauteur, b64: jpeg.toString("base64") }], largeur, { largeurSortie: Math.min(800, largeur), qualite: 60 });
+  return recoller(navigateur, [{ y: 0, hauteur, b64: jpeg.toString("base64") }], largeur, { largeurSortie: Math.min(800, largeur), qualite: 60, hauteurMaxSortie: 2400 });
 }
 
 // Categorie de police sans jamais donner le nom exact.
@@ -721,7 +736,7 @@ function construireResume({ info, bureau, mobile, blocsBureau, blocsMobile, aver
     }
   }
   const resume = {
-    section: { n: info.n, balise: info.balise, premierTitre: info.premierTitre },
+    section: { n: info.n, balise: info.balise, premierTitre: info.premierTitre ? info.premierTitre.slice(0, 70) : null },
     structure: { colonnes: colB, blocs: blocsBureau },
     hierarchie: {
       tailleDeBase: base,
@@ -801,6 +816,7 @@ async function capturerSection(navigateur, args) {
   const analyseBureau = await page.evaluate(analyserSection, n);
   analyseBureau.animations.mouvement = await page.evaluate(mesurerMouvement, n);
   const blocsBureau = await page.evaluate(ordreBlocs, n);
+  const texteLong = await page.evaluate(premierTexteLong, n);
   await page.evaluate(figerPourCapture);
   const fixesMasques = await page.evaluate(masquerFixesHors, n);
   const zone = await page.evaluate((k) => {
@@ -834,9 +850,19 @@ async function capturerSection(navigateur, args) {
   let vignetteMobile = null;
   try {
     const mobile = await ouvrir(navigateur, args.url, true);
-    const aiguille = info.premierTitre;
-    const trouvees = aiguille ? await mobile.page.evaluate(chercherTitre, aiguille) : [];
-    const m = trouvees.includes(n) ? n : trouvees[0];
+    // aiguilles : le titre, sinon le premier texte long ; sans texte du tout, repli par numero
+    const aiguilles = [info.premierTitre, texteLong].filter(Boolean);
+    let trouvees = [];
+    for (const a of aiguilles) {
+      trouvees = await mobile.page.evaluate(chercherTitre, a);
+      if (trouvees.length) break;
+    }
+    let m = trouvees.includes(n) ? n : trouvees[0];
+    const aiguille = aiguilles[0] || null;
+    if (!aiguilles.length && mobile.sections[n - 1]) {
+      m = n;
+      avertissementMobile = `Section ${n} sans texte : retrouvee en mobile par son numero, a verifier.`;
+    }
     if (!m) {
       analyseMobile = "introuvable";
       avertissementMobile = `Section ${n} introuvable en mobile (titre "${aiguille}") : mobile non mesure.`;
