@@ -49,7 +49,7 @@ Entrée : URL, sections désignées, parfois une capture. Consigne d'Edgar en aj
    ```bash
    mkdir -p /tmp/kleak-biblio/<h> && <HUB> curl -sS -G -o /tmp/kleak-biblio/<h>/doublons.json -w "%{http_code}\n" -H "x-kleak-secret: $BIBLIO_AGENT_SECRET" --data-urlencode "url=<URL>" "$HUB_URL/api/agent/bibliotheque"
    ```
-   Lis `doublons.json` : `{ fiches: [{ id, titre, type_section, url_source }] }` (URL normalisées).
+   Lis `doublons.json` : `{ fiches: [{ id, titre, type_section, url_source, capture_url }] }` (URL normalisées).
 2. **Repérer** avec un texte de la section (donné par Edgar ou lu sur sa capture) :
    ```bash
    cd /Users/ed/Desktop/jarvis-kleak && node livrables/bibliotheque/capturer.mjs "<URL>" --titre "<texte>"
@@ -92,11 +92,13 @@ d'Edgar, l'origine et les épingles.
    ```
    `{ fiches: [{ id, titre, url_source, type_section, note, capture_url }] }` : fiches sans
    fiche technique, plus anciennes d'abord. Fiche nommée par Edgar (même au format long à 8
-   rubriques) : même commande avec `url=<url_source>` à la place, pour son `id`.
+   rubriques) : même commande avec `url=<url_source>` à la place, qui donne `id` et
+   `capture_url`. Plusieurs fiches pour cette URL : prends celle dont le titre ou le type
+   correspond à la demande, sans poser de question ; vraiment ambigu : dis laquelle tu as prise.
 2. **Capture d'Edgar**, téléchargée et réduite, puis lue pour savoir quelle section c'est (la
-   `note` aide aussi). Sans `capture_url`, pars du titre et du type :
+   `note` aide aussi). Sans `capture_url`, ou code autre que `200`, pars du titre et du type :
    ```bash
-   curl -sS -o /tmp/kleak-biblio/<h>/edgar-<id>.img "<capture_url>" && sips -Z 800 -s format jpeg /tmp/kleak-biblio/<h>/edgar-<id>.img --out /tmp/kleak-biblio/<h>/edgar-<id>.jpg >/dev/null
+   curl -sS -o /tmp/kleak-biblio/<h>/edgar-<id>.img -w "%{http_code}\n" "<capture_url>" && sips -Z 800 -s format jpeg /tmp/kleak-biblio/<h>/edgar-<id>.img --out /tmp/kleak-biblio/<h>/edgar-<id>.jpg >/dev/null
    ```
 3. **Repérer** sur `url_source` avec `--titre "<texte lu sur la capture>"` (repli `--lister`
    comme en AJOUTER), puis `--section <n> --sortie /tmp/kleak-biblio/<h>/fiche-<id>`.
