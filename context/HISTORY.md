@@ -9,6 +9,15 @@
 
 ## 2026-10-20
 
+### Onglet Finance, lot 2 en production : Revolut Pro et dépenses Meta
+
+- **Revolut Pro au lieu de Revolut Business** : Edgar a ouvert un compte Pro dans son Revolut perso, avec son propre IBAN. Pas d'API pour ce compte : les dépenses arrivent par **import du relevé CSV depuis l'app iPhone du hub**, environ une fois par mois. Agrégateur bancaire écarté (payant, couverture incertaine).
+- **Règles validées par Edgar** : tous les clients paient par Stripe, donc les entrées Revolut ne comptent jamais en chiffre d'affaires ; seules les lignes terminées comptent ; réimport sans doublon ; postes Publicité, Outils et abonnements, Banque et frais, Matériel, Formation, Déplacements, Autre ; une correction de poste s'applique à tout le fournisseur, **rétroactivement**.
+- **Meta fait foi pour la publicité** (ajout d'Edgar) : dépense quotidienne du Gestionnaire de publicités synchronisée par le cron et Actualiser ; les lignes Facebook du relevé passent en « couvert par Meta », hors dépenses. « Indisponible » plutôt que 0 € si Meta ne répond pas.
+- **Jeton Meta** : jeton d'utilisateur système distinct de celui du module Ads, mais avec les mêmes permissions larges ; Edgar le garde, la lecture seule est assurée par le code. Variables posées dans Vercel (production et prévisualisation), clé Stripe ajoutée en prévisualisation.
+- Construit en sous-agents (9 tâches, relecture par tâche et relecture finale), essai de bout en bout sur la vraie base puis nettoyage, validé par Edgar sur iPhone, **en production le 20/10**. Spec `docs/superpowers/specs/2026-10-20-finance-lot-2-revolut-csv-design.md`, plan `docs/superpowers/plans/2026-10-20-finance-lot-2.md`.
+- À faire : importer le premier vrai relevé avec des opérations pour vérifier les hypothèses de lecture.
+
 ### Agent media buyer et module Ads renforcé
 
 - **Compte publicitaire :** on travaille sur l'ancien compte « Kleak Pub ». Le « nouveau compte » du 19/10 était une erreur d'Edgar.
