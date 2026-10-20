@@ -7,6 +7,17 @@
 
 ---
 
+## 2026-10-21
+
+### Formulaire instantané, offres du hub et circuit des leads
+
+- **Formulaire « Kleak | Appel découverte | 2026-10 »** créé sur la Page Kleak (intention plus élevée, sans vérification SMS pour le test de 50 €), relié au Google Sheet dans un **nouvel onglet**. Questions : site existant, budget (moins de 700 €, 700 à 1 000 €, 1 000 à 2 000 €, plus de 2 000 €), nom de l'entreprise, coordonnées. Écran de fin avec bouton vers Cal.com (Brevo pas encore branché).
+- **Circuit des leads corrigé** : le script du Sheet ne lisait que le premier onglet ; il lit maintenant tous les onglets à colonne `id`. Le CRM comprend les en-têtes français du nouveau formulaire (`nom_complet`, `e-mail`, `numéro_de_téléphone`) et ignore les leads créés avant le 19/10. Lead test arrivé dans le CRM avec toutes ses réponses, puis supprimé.
+- **Offres du hub refaites** d'après la fiche offre : `one-page` (699 €, 49 €), `essentiel` (999 €, 90 €), `pro` (1 800 €, 90 €), `kleak` (tous les prix). Hébergement inclus dans la maintenance, cité dans les textes.
+- **« 49 €/mois » n'est plus un contenu interdit** (maintenance du one page, décision d'Edgar).
+- **Bug corrigé dans Réglages** : « 999,90 » était lu comme une décimale et refusé.
+- **Textes déposés par l'agent `media-buyer`** pour A, B et D (offre Essentiel). À la création de la campagne : décocher sur B les 2 textes migrés, « Site complet 7 j » et « Sans effort de votre part », et sur D le texte 3.
+
 ## 2026-10-20
 
 ### Onglet Finance, lot 2 en production : Revolut Pro et dépenses Meta
