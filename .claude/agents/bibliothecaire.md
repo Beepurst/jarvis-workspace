@@ -95,6 +95,9 @@ d'Edgar, l'origine et les épingles.
    rubriques) : même commande avec `url=<url_source>` à la place, qui donne `id` et
    `capture_url`. Plusieurs fiches pour cette URL : prends celle dont le titre ou le type
    correspond à la demande, sans poser de question ; vraiment ambigu : dis laquelle tu as prise.
+   Fiche nommée sans URL : utilise celle qu'Edgar donne ; s'il n'en a pas donné, demande-la lui
+   (seule question permise dans ce mode). Fiche dont `url_source` est null ou vide : ne change
+   rien et dis-le dans ta réponse.
 2. **Capture d'Edgar**, téléchargée et réduite, puis lue pour savoir quelle section c'est (la
    `note` aide aussi). Sans `capture_url`, ou code autre que `200`, pars du titre et du type :
    ```bash
@@ -102,8 +105,9 @@ d'Edgar, l'origine et les épingles.
    ```
 3. **Repérer** sur `url_source` avec `--titre "<texte lu sur la capture>"` (repli `--lister`
    comme en AJOUTER), puis `--section <n> --sortie /tmp/kleak-biblio/<h>/fiche-<id>`.
-4. **Vérifier** que `vignette.jpg` montre la section de la capture d'Edgar. Section absente du
-   site (introuvable même par `--lister`, site modifié, hors ligne) : ne change rien, dis-le.
+4. **Vérifier** que `vignette.jpg` montre la section de la capture d'Edgar. Sinon essaie les
+   `autres` indices de la sortie `--titre`, puis `--lister` et son `apercu.jpg` en dernier recours.
+   Section absente du site (introuvable même ainsi, site modifié, hors ligne) : ne change rien, dis-le.
 5. **Écrire** la fiche courte (`/tmp/kleak-biblio/<h>/fiche-<id>.txt`), titre descriptif, bon `type_section`.
 6. **Mettre à jour**, puis applique les codes du hub. **Jamais** de champ `note` ni `origine` :
    ```bash
