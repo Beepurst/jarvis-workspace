@@ -111,7 +111,7 @@ Couper veut dire : Edgar met la pub en pause dans le Gestionnaire. L'agent ne le
   À 6,60 € par jour partagés entre 3 pubs, c'est en gros une semaine. Même seuil que l'alerte
   « pub qui dépense sans lead ». **Choix de départ à réviser.**
 - **CPL trop haut au volume minimum** : la pub a atteint le volume minimum et son CPL dépasse
-  2 × `cplCible` (10 €) → couper, sauf si sa qualité de leads compense (section 7 : coût par RDV
+  2 × `cplCible` (10 €) → couper, sauf si sa qualité de leads compense (section 8 : coût par RDV
   au moins aussi bon que celui des autres pubs). **Choix de départ à réviser.**
 - **CTR très bas** : pas de repère de marché. On compare au reste du compte : après au moins
   1 000 impressions, une pub dont le CTR lien est inférieur à la moitié de celui de la meilleure
@@ -120,7 +120,7 @@ Couper veut dire : Edgar met la pub en pause dans le Gestionnaire. L'agent ne le
   **Choix de départ à réviser.**
 - **CPL qui double** (alerte « CPL qui double » : CPL des 7 derniers jours ≥ `cplHausseRatio` ×
   CPL des 7 précédents, avec au moins `cplHausseMinLeads` leads sur chaque période) : on ne coupe
-  pas tout de suite. On regarde d'abord fréquence, CPM et CTR (section 6) pour savoir si c'est la
+  pas tout de suite. On regarde d'abord fréquence, CPM et CTR (section 7) pour savoir si c'est la
   fatigue, l'audience ou une saison plus chère. **Choix de départ à réviser.**
 - **Pub refusée, compte bloqué, jeton qui ne marche plus** : rien à analyser, c'est à régler
   d'abord dans le Gestionnaire ou dans le hub. **Choix de départ à réviser** (évident, mais écrit).

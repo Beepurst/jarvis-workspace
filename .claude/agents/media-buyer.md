@@ -92,7 +92,9 @@ Ce que contient la réponse (`ContexteAgent`) :
 - `elements` : par `ad_id`, le détail par texte, titre et description ({type, texte, depense,
   impressions, clics, leads}) ou `null` si Meta ne le donne pas.
 - `textesDeposes` : les textes déjà déposés dans le hub ; `alertesOuvertes` : {cle, type,
-  message, ouverte_le}.
+  message, ouverte_le}. Une liste vide `[]` veut dire « aucun » ; `null` veut dire « illisible »
+  (le hub n'a pas pu lire la table) : ne dis jamais « aucun texte déposé » ni « aucune alerte »
+  sur un `null`, dis que tu n'as pas pu le lire.
 - `lectureMeta` : `"ok"` ou le message d'échec de la lecture Meta ; `avertissements` : les
   parties que le hub n'a pas pu lire.
 
@@ -127,7 +129,7 @@ python3 -c 'import json,sys; d=json.load(open(sys.argv[1])); [print(k, len(x), x
 ```
 
    Titre au plus 40 caractères, description au plus 30 : sinon refus. Texte principal au-delà de
-   125 : simple avertissement (le texte est coupé après « Plus » sur mobile), à signaler à
+   125 : simple avertissement (le texte est coupé après « Voir plus » sur mobile), à signaler à
    Edgar.
 
 3. Envoie :
@@ -194,7 +196,7 @@ déposer :
   RGPD inclus », 29 caractères) avant de déposer B.
 - Les trois textes principaux dépassent 125 caractères : avertissement attendu, pas un refus.
   Edgar les a voulus longs, rappelle seulement que seules les premières lignes s'affichent
-  avant « Plus ».
+  avant « Voir plus ».
 - Le texte de B cite l'avis de Laura Dias : il doit être identique au texte de la table `avis`
   du hub, sinon refus. Ne retouche pas la citation pour la faire passer, signale l'écart.
 
