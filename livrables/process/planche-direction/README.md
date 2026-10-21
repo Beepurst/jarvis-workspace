@@ -9,6 +9,7 @@ Une page envoyée au client **après le questionnaire de cadrage et avant toute 
 
 ## Pour un nouveau client
 
+0. Demander des inspirations au bibliothécaire (« trouve des inspirations pour <client> ») : il pose `inspirations.jpg` dans `livrables/clients/<client>/`, 4 ou 5 démos du Framer Marketplace du même secteur. Les sections retenues vont dans la bibliothèque, puis s'épinglent au brief.
 1. Copier `modele.html` en `planche-<client>.html`, dans `livrables/clients/<client>/`.
 2. Remplir uniquement l'objet `PLANCHE` en haut du fichier, à partir des réponses au questionnaire (`livrables/process/questionnaire-cadrage.md`) :
    - `mots`, `luminosite` : réponses `mots` et `luminosite`
