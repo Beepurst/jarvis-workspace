@@ -9,6 +9,21 @@
 
 ## 2026-10-21
 
+### Bibliothèque du hub : agent bibliothecaire et prompts de construction
+
+- **Prompts copiables** (en production) : « Copier le prompt » sur chaque fiche de la bibliothèque, et dans le brief d'un client, épingles rangées **par page** (avec une page « Commune » pour navigation et footer), ordonnées, avec une adaptation par client et un bouton « Copier le prompt de la page ». Le hub assemble le prompt sans IA : reprendre la structure et l'adapter au client, ne jamais copier textes, images ni marque, règles de performance de la checklist section 9.
+- **Fiches** : bouton Modifier (capture comprise), suppression en deux temps dans la carte, types de section élargis (réalisations, à propos, chiffres, logos, étapes, appel à l'action).
+- **Agent `bibliothecaire`** (Sonnet) : Edgar donne une URL et une section, l'agent la capture seule avec Playwright, lit le code de la page, écrit une **fiche technique courte** (6 rubriques, 180 mots, sans couleurs ni polices du site d'origine) et la dépose directement. Mode **retravailler** : refait titre, capture et fiche sur la même ligne, garde la note et les épingles. Les 6 fiches de la bibliothèque ont été retravaillées le 21/10 (vérifier la capture de la fiche process, prise en pleine animation).
+- **Économie de tokens** (décision d'Edgar après un test de construction mesuré à 102 tours et environ 19 millions de tokens relus) : sessions de construction ouvertes avec **`/site`** à la place de `/prime`, captures réduites, appels Framer groupés, une capture de contrôle par section ; la session **ouvre le site d'origine** pour voir et reproduire l'animation, limité à la section (correction d'Edgar). Construction gardée sur **Opus**. Agent : environ 170 000 à 240 000 tokens par fiche au lieu de 335 000, sur Sonnet ; étapes regroupées en deux scripts (`preparer.sh`, `deposer.sh`).
+- Spec `docs/superpowers/specs/2026-10-20-bibliotheque-prompts-design.md`, plans `docs/superpowers/plans/2026-10-20-bibliotheque-prompts.md` et `2026-10-21-bibliotheque-optimisation.md`.
+
+### Business plan closing : pas de closeur pour l'instant
+
+- **Décision : Edgar fait lui-même les premiers RDV.** La contrainte est la production (environ 90 h par mois, 1 Pro + 2 Essentiels), pas la vente. Un closeur à 15 % coûterait environ 570 € par mois pour environ 13 h libérées, soit 44 € par heure face à un net horaire de 34 à 39 €.
+- **Déclencheurs du recrutement** : 15 RDV menés par Edgar avec un taux de closing mesuré, un script testé, des CGV, plus de RDV que de temps disponible, et une capacité de production pour absorber plus de ventes. Sans ce dernier point, le premier renfort à recruter est un renfort de production.
+- **Barème prévu le jour venu** : 100 % à la commission, montant fixe par formule (70 €, 120 €, 200 €, 40 € pour l'automatisation), versé sur l'encaissé, repris en cas de remboursement, rien sur la maintenance. Risques de requalification et de statut d'agent commercial à faire valider par un juriste.
+- Plan dans `livrables/closing/business-plan-closing.md`. Prochaine étape : script d'appel découverte et fiche de RDV avant la campagne du 25/10.
+
 ### Formulaire instantané, offres du hub et circuit des leads
 
 - **Formulaire « Kleak | Appel découverte | 2026-10 »** créé sur la Page Kleak (intention plus élevée, sans vérification SMS pour le test de 50 €), relié au Google Sheet dans un **nouvel onglet**. Questions : site existant, budget (moins de 700 €, 700 à 1 000 €, 1 000 à 2 000 €, plus de 2 000 €), nom de l'entreprise, coordonnées. Écran de fin avec bouton vers Cal.com (Brevo pas encore branché).
