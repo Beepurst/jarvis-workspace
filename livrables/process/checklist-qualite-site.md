@@ -6,6 +6,13 @@
 
 ---
 
+## 0. Avant de construire (depuis le 21/10)
+
+- [ ] Planche de direction validée par le client (couleurs, polices, photos, textes)
+- [ ] **Maquette HTML de la page entière** au style maison (`style-maison.md`), une section de référence par partie du site, relue en bureau et en mobile puis **validée par Edgar** avant toute construction Framer
+- [ ] Le prompt de construction demande de **reproduire** la maquette, pas de concevoir
+- [ ] Contrôle « niveau Framer » (`style-maison.md`, section 8) passé sur les captures avant de montrer le site
+
 ## 1. Contrôle visuel (non négociable)
 
 - [ ] Capture de la page entière à 1440 px, 820 px et 375 px, dans un navigateur réel, sur le site **publié**

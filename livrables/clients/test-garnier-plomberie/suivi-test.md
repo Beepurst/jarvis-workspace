@@ -5,6 +5,10 @@
 | Brief (faux questionnaire) | 21/10 | 0 | Écrit par Claude, validé par Edgar |
 | Planche de direction V1 | 21/10 | 1 | Validée avec 3 réponses, sans changement visuel. Photos : 2 séries de recherche Unsplash (extension Chrome déconnectée) |
 | Construction | 21/10 | | Prompt donné à 15 h 02 (heure de Paris). Fin : 17 h 52, page construite dans le canevas mais non publiée (publication et captures Framer en échec, voir constats) |
+| Retour d'Edgar sur la V1 Framer | 21/10 | 2 | « Vieillot, basique, pas Framer. » Cause : prompt décrivant un site de plombier type, sans référence de mise en page, animations retirées, direction réglée sur les goûts du client |
+| Style maison et maquette HTML V2 | 21/10 | | `livrables/process/style-maison.md` tiré de 20 modèles Framer mesurés. Maquette `maquette/index.html` : accroche BLDR, pourquoi moi, zone, questions et appel final Renovatehub, services Roofaro, avis Refit, pied de page Lintel |
+| Validation de la maquette V2 | 21/10 | 3 | Validée par Edgar (« c'est bien »), retouches faites ensuite par Edgar dans Framer |
+| Construction V2 | | | Prompt : `prompt-construction-v2.md`, page `/garnier-v2`. Début : · Fin : |
 | Checklist qualité et PageSpeed | | | |
 | Livraison | | | |
 

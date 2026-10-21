@@ -9,6 +9,15 @@
 
 ## 2026-10-21
 
+### Test de production One page : style maison et maquette avant Framer
+
+- **Test complet sur un faux client** (Garnier Plomberie Chauffage, plombier fictif à Osny, formule One page) : faux brief au format du questionnaire de cadrage, planche de direction validée en 1 aller-retour, construction Framer par `/site` en 2 h 50 dont environ 1 h 30 perdue sur des erreurs de `@framer/agent` (délais dépassés, publication en échec).
+- **Résultat jugé « vieillot, basique, pas Framer »** par Edgar après 2 allers-retours. Causes : prompt décrivant un site de plombier type sans référence de mise en page, animations retirées, direction réglée sur les goûts du client, planche qui validait des couleurs et pas une mise en page.
+- **Décision d'Edgar : les modèles Framer servent d'inspiration**, on en mélange plusieurs, on ne part jamais d'un modèle dupliqué.
+- **Charte de style maison** (`livrables/process/style-maison.md`) tirée de 20 modèles Framer de la catégorie construction, mesurés en ligne : titres de 64 à 76 px serrés, fond chaud, cartes arrondies sans bordure, en-têtes en deux colonnes, alternance claire et sombre, boutons pilule, photos dominantes, peu d'animation, et un contrôle « niveau Framer » en 10 points.
+- **Maquette HTML** de Garnier (`livrables/clients/test-garnier-plomberie/maquette/`) mélangeant BLDR, Renovatehub, Roofaro, Refit et Lintel : **validée par Edgar** (« c'est bien »), qui fera les retouches dans Framer. Prompt V2 : la session Framer reproduit la maquette au lieu de concevoir.
+- **Trous du process relevés** : pas de colonne One page dans le questionnaire de cadrage ; le brief du hub (10 champs) ne porte ni questionnaire, ni planche, ni textes ; le modèle de planche colore mal le bouton d'accroche ; l'extension Chrome déconnectée ralentit le choix des photos.
+
 ### Créas de la série J, K, test Meta préparé, maintenance sans engagement
 
 - **Maintenance sans engagement**, avec un préavis de 2 mois : l'engagement de 12 mois est abandonné (décision d'Edgar). Fiche offre, note interne et contexte mis à jour. Reste : la constante `ENGAGEMENT_MOIS = 12` du hub (`src/lib/offre.ts`, fins d'engagement des ventes), à revoir sur une branche.
