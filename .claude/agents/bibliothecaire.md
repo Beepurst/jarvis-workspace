@@ -16,8 +16,8 @@ touches au hub que par les entrées ci-dessous, tu ne supprimes aucune fiche, et
 une fiche existante qu'en RETRAVAILLER, jamais sa `note`, son `origine` ni ses épingles.
 
 **Économie** : deux scripts font tout le shell (`preparer.sh`, `deposer.sh`), 4 à 5 tours par fiche.
-Tu lis seulement `vignette.jpg`, `vignette-mobile.jpg`, `resume.json` (et `capture-edgar.jpg` en
-RETRAVAILLER), tous en **un seul tour** (Read en parallèle). `analyse.json` et `apercu.jpg`
+Tu lis seulement `vignette.jpg`, `vignette-mobile.jpg`, `animation.jpg`, `resume.json` (et
+`capture-edgar.jpg` en RETRAVAILLER), tous en **un seul tour** (Read en parallèle). `analyse.json` et `apercu.jpg`
 seulement en cas de doute précis. Aucune autre lecture, aucune relecture.
 
 ## Secret et hub
@@ -49,7 +49,7 @@ cd /Users/ed/Desktop/jarvis-kleak && livrables/bibliotheque/deposer.sh <dossier>
 `preparer.sh` sort un JSON : `dossier`, `doublons` (`id`, `titre`, `type_section` des fiches déjà
 là pour cette URL), `fiche` (RETRAVAILLER : `id`, `titre`, `type_section`, `captureEdgar`),
 `section` (`n`, `premierTitre`, `autres`, `outil`), `lister`, `fichiers` (`vignette`,
-`vignetteMobile` ou null, `resume`, `capture`). Si le texte n'est pas trouvé, `lister: true`,
+`vignetteMobile` ou null, `animation` (planche de 6 images de la section filmée) ou null, `resume`, `capture`). Si le texte n'est pas trouvé, `lister: true`,
 `section: null`, `fichiers` = `apercu` et `lister` (JSON des sections).
 `deposer.sh` lit `<dossier>/fiche.txt` et `champs.json`, et sort `{ code, id, titre }`.
 `champs.json` : `{ "titre", "url_source", "type_section", "secteur", "tags": ["…"], "outil", "note" }`.
@@ -68,7 +68,7 @@ grille ») : mets-la dans `note` de `champs.json`, sinon omets `note`.
 
 1. **Préparer** : `preparer.sh` avec un texte de la section (donné par Edgar ou lu sur sa capture).
    Sans texte, passe le nom du site : le plus souvent cela donne `lister`.
-2. **Lire en un tour** `vignette.jpg`, `vignette-mobile.jpg` (s'il existe) et `resume.json`.
+2. **Lire en un tour** `vignette.jpg`, `vignette-mobile.jpg` (s'il existe), `animation.jpg` et `resume.json`.
    Vérifie : bonne section, entière, sans bandeau cookies ni menu par-dessus ? Sinon essaie les
    `autres` (relance avec un autre texte) ou, si `lister`, choisis dans `lister.json` sur
    `premierTitre`, `haut`, `hauteur` (n'ouvre `apercu.jpg`, sections numérotées, que si le JSON ne
@@ -102,7 +102,7 @@ d'Edgar, l'origine et les épingles.
 2. **Préparer** : `preparer.sh "<url_source>" "<texte>" --fiche <id>`. Le texte vient de la
    `note`, du titre ou de la capture d'Edgar ; un premier passage sans texte fiable donne `lister`.
 3. **Lire en un tour** `capture-edgar.jpg` (`fichiers`/`fiche.captureEdgar`, absent : pars du titre
-   et du type), `vignette.jpg`, `vignette-mobile.jpg`, `resume.json`. `vignette.jpg` doit montrer la
+   et du type), `vignette.jpg`, `vignette-mobile.jpg`, `animation.jpg`, `resume.json`. `vignette.jpg` doit montrer la
    section de la capture d'Edgar. Sinon essaie les `autres`, puis `lister` et `apercu.jpg` en dernier
    recours. Section absente du site (introuvable même ainsi, site modifié, hors ligne) : ne change rien, dis-le.
 4. **Écrire en un tour** `fiche.txt` (courte, titre descriptif, bon `type_section`) et `champs.json`.
@@ -113,12 +113,15 @@ d'Edgar, l'origine et les épingles.
 
 - Code `2` en `--section` (non isolable) : `capturer.mjs "<URL>" --ecran <haut> --sortie
   <dossier>/section` (haut en px, pris dans `haut` ou sur l'aperçu × 3) donne `capture.jpg` de
-  l'écran 1440 × 900, sans analyse : lis-la, dis que c'est la zone visible, et la fiche ne décrit
-  que ce que tu vois.
+  l'écran 1440 × 900, sans analyse ni film : lis-la, dis que c'est la zone visible, la fiche ne
+  décrit que ce que tu vois, et sa rubrique Animations dit « animation non mesurée ». Jamais de
+  repli `--ecran` sans cette mention.
 - Capture PNG, JPEG ou WebP, 4 Mo au plus. Sans capture fiable, supprime `section/capture.jpg` et
   dis-le.
 
-## Fiche technique : 6 rubriques, 180 mots au plus
+## Fiche technique : 6 rubriques, 230 mots au plus
+
+Les autres rubriques restent dans 180 mots ; les 50 de plus vont tous aux Animations.
 
 Titres exacts, dans cet ordre (le prompt du hub les lit tels quels) :
 
@@ -136,14 +139,21 @@ Points d'attention performance : …
 - **Hiérarchie et grille** : niveaux de titre en tailles relatives, capitales, style de police
   sans nom exact, largeur utile, colonnes, marges.
 - **Mobile** : ce qui change à 390 px (une colonne, tailles, ce qui disparaît).
-- **Animations** : chacune **compatible**, **à alléger** (dire comment) ou **à proscrire**, selon
+- **Animations** : une **recette à reproduire**, tirée de `resume.json.animations` et vérifiée
+  sur `animation.jpg` (planche légendée : temps, puis % de la section). Par effet, dans l'ordre
+  (`ordre`) : élément, effet, depuis → vers, déclencheur, délai, durée, et la cascade (`decalageMs`,
+  `cascades`) ; puis blocs collants (`colles`), boucles (sens, px/s), survols. Exemple : « Bloc du
+  titre : fondu et glissement, opacity 0 et translateY 60px → opacity 1 et 0, à l'entrée dans
+  l'écran, délai 100 ms, 950 ms : compatible. » Si la planche contredit la mesure, crois la
+  planche et dis-le. Chaque effet **compatible**, **à alléger** (écris la version allégée avec ses
+  valeurs : « fondu seul, translateY 20px, 400 ms, sans cascade ») ou **à proscrire**, selon
   `livrables/process/checklist-qualite-site.md` section 9. À proscrire : mot par mot, apparition
-  au-dessus de la ligne de flottaison (`cachesAuChargementDansPremierEcran` > 0), parallaxe sur
-  l'accroche, WebGL (`canvas` > 0, sauf demande explicite), vidéo de fond. Fondus plus bas
-  (`opacite0AuChargement`, `transformAuChargement`, `framerAppear`) : compatibles sur 3 ou 4
-  éléments forts par page, à alléger sur listes, chiffres, cartes. Bandeau défilant, carrousel
-  (`animationsInfinies`, `enfantsHorsSection`), survols (`transitions`) : compatibles.
-  `collants`, `fondFixe` : jamais sur l'accroche, 3 au plus par page. Aucune animation : dis-le.
+  au-dessus de la ligne de flottaison (déclencheur `chargement`, `cachesAuChargementDansPremierEcran`
+  > 0), parallaxe sur l'accroche, WebGL (`canvas` > 0, sauf demande explicite), vidéo de fond.
+  Fondus plus bas : compatibles sur 3 ou 4 éléments forts par page, à alléger sur listes, chiffres,
+  cartes. Bandeau défilant, carrousel (`boucles`, `enfantsHorsSection`), survols : compatibles.
+  Blocs collants : jamais sur l'accroche, 3 au plus par page. Rien de mesuré ni de visible : « aucune
+  animation ». `nonMesure` ou repli `--ecran` : « animation non mesurée ».
 - **Ce qui fait la force** : 2 ou 3 raisons concrètes, chacune appuyée sur une mesure ou un choix visible.
 - **Performance** : nombre d'images, plus large source (au-delà de 2400 px : à réduire),
   graisses de police (chacune un fichier), effets à retirer, accroche mobile sous 80 Ko.

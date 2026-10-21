@@ -28,7 +28,8 @@ Détail : `/Users/ed/Desktop/jarvis-kleak/livrables/process/checklist-qualite-si
 
 - Appels Framer groupés : 2 ou 3 par section au plus, pas un appel par élément.
 - Captures de contrôle réduites à 1000 px de large, une seule par section, à la fin de la section.
-- Ouvre le site d'origine pour voir les animations et interactions de la section et les reproduire (selon la fiche : « à alléger » allégée, « à proscrire » non reproduite). Va droit à la section, au plus 2 captures de cette section réduites à 1000 px, rien d'autre du site.
+- Animations : reproduis exactement la recette de la rubrique « Animations » de la fiche (élément, effet, depuis → vers, déclencheur, délai, durée, cascade, blocs collants, survols), dans la version permise (« à alléger » allégée comme écrit, « à proscrire » non reproduite). Ne construis jamais statique une section dont la fiche décrit une animation.
+- Pour voir l'animation, sans Chrome : `node /Users/ed/Desktop/jarvis-kleak/livrables/bibliotheque/capturer.mjs <url> --titre "<texte de la section>"` donne son numéro `n`, puis `node /Users/ed/Desktop/jarvis-kleak/livrables/bibliotheque/capturer.mjs <url> --section <n> --sortie /tmp/kleak-biblio/site-<section>` écrit `animation.jpg` (6 images légendées) et `resume.json` (`animations` : mesures) ; lis les deux une fois. Chrome seulement s'il est déjà connecté et que la planche ne suffit pas : au plus 2 captures de la section réduites à 1000 px, rien d'autre du site.
 - Ne relis pas un fichier déjà lu dans la session.
 
 ### Étape 4 : Attendre

@@ -10,7 +10,11 @@
 //             sortie standard, et apercu.jpg (page entiere reduite, sections numerotees).
 // --section : capture.jpg (la section seule, JPEG, 4 Mo au plus), analyse.json (bureau et mobile, pour
 //             les cas de doute), vignette.jpg (800 px de large, qualite 60, pour verifier) et resume.json
-//             (ce que la fiche courte utilise, moins de 3 Ko).
+//             (ce que la fiche courte utilise, 4 Ko au plus), et animation.jpg : planche de 6 images de
+//             la section filmee dans une page neuve (entree dans l'ecran sur 2,5 s, ou entree puis
+//             25 a 100 % du defilement si elle est collante ou liee au defilement). resume.json.animations
+//             donne, en plus des compteurs, chaque effet mesure (element, effet, depuis, vers,
+//             declencheur, delaiMs, dureeMs, ordre), les cascades, les boucles et 4 survols au plus.
 // --titre   : cherche la section dont un titre (h1 a h4) ou un texte de plus de 20 caracteres contient le
 //             texte donne (sans casse, sans accents). Sortie { n, premierTitre, autres? }, code 2 si absent.
 // --ecran   : repli quand une section ne s'isole pas : capture.jpg de l'ecran (1440 x 900) avec
@@ -161,7 +165,35 @@ function trouverSections() {
     blocs = blocsDe(document.body);
   }
 
-  const texte = (el) => (el.innerText || el.textContent || "").replace(/\s+/g, " ").trim();
+  // Enveloppes geantes (Webflow : tout le contenu dans un seul div) : un bloc de plus de 1,5 ecran
+  // est remplace par ses <section> (les plus externes) si elles couvrent la moitie de sa hauteur,
+  // sinon par ses enfants de plus de 150 px s'il en a au moins 2. Recursif, 4 niveaux. Une <section>
+  // n'est eclatee qu'en <section>, et un bloc collant (defilement lie) n'est jamais eclate.
+  const SEUIL = window.innerHeight * 1.5;
+  const haut = (el) => el.getBoundingClientRect().height;
+  const collant = (el) => getComputedStyle(el).position === "sticky";
+  const eclater = (el, prof) => {
+    if (prof > 4 || haut(el) <= SEUIL || enTete(el) || el.matches("footer")) return [el];
+    const secs = [...el.querySelectorAll("section")].filter((s) => visible(s) && haut(s) > 150);
+    const externes = secs.filter((s) => !secs.some((o) => o !== s && o.contains(s)));
+    let candidats = [];
+    if (externes.length >= 2 && externes.reduce((t, s) => t + haut(s), 0) >= haut(el) * 0.5) candidats = externes;
+    else if (el.tagName !== "SECTION") {
+      let r = el;
+      for (let k = enfants(r).filter((c) => !fixe(c)); k.length === 1; k = enfants(r).filter((c) => !fixe(c))) {
+        if (collant(r)) return [el];
+        r = k[0];
+      }
+      if (collant(r)) return [el];
+      candidats = enfants(r).filter((c) => !fixe(c) && haut(c) > 150);
+      if (candidats.some(collant)) return [el];
+    }
+    if (candidats.length < 2) return [el];
+    return candidats.flatMap((c) => eclater(c, prof + 1));
+  };
+  blocs = blocs.flatMap((b) => eclater(b, 0));
+
+  const texte =(el) => (el.innerText || el.textContent || "").replace(/\s+/g, " ").trim();
   return blocs.map((el, i) => {
     el.setAttribute("data-kleak-n", String(i + 1));
     const r = el.getBoundingClientRect();
@@ -552,6 +584,184 @@ async function mesurerMouvement(n) {
   return { animationsEnCours: anims.length, animationsInfiniesEnCours: infinies.length, elementsQuiBougentSansDefiler: bougent };
 }
 
+// ---------- mesure des animations (page neuve, sans defilement prealable) ----------
+
+// Choisit jusqu'a 60 elements de la section a suivre (priorite : ceux qu'un moteur d'animation
+// pilote, puis titres, textes, images, boutons, cartes), les marque data-kleak-a et donne leur role.
+function preparerAnimation(n) {
+  const sec = document.querySelector(`[data-kleak-n="${n}"]`);
+  if (!sec) return null;
+  const rs = sec.getBoundingClientRect();
+  const direct = (el) => [...el.childNodes].filter((c) => c.nodeType === 3).map((c) => c.textContent).join("").trim();
+  const nonNeutre = (cs) => cs.visibility === "hidden" || parseFloat(cs.opacity) < 0.99 || (cs.transform !== "none" && cs.transform !== "matrix(1, 0, 0, 1, 0, 0)") || (cs.translate && cs.translate !== "none") || (cs.scale && cs.scale !== "none") || /blur/.test(cs.filter);
+  const classe = (el) => (typeof el.className === "string" ? el.className.trim() : "");
+  const carte = (el) => {
+    const c = classe(el);
+    if (!c || !el.parentElement) return false;
+    const r = el.getBoundingClientRect();
+    if (r.width < 120 || r.height < 80) return false;
+    return [...el.parentElement.children].filter((s) => classe(s) === c).length >= 3;
+  };
+  const cand = [];
+  for (const el of sec.querySelectorAll("*")) {
+    if (["SCRIPT", "STYLE", "NOSCRIPT", "TEMPLATE", "path", "g", "BR"].includes(el.tagName)) continue;
+    const cs = getComputedStyle(el);
+    if (cs.display === "none") continue; // visibility: hidden reste suivi (etat de depart des moteurs)
+    const r = el.getBoundingClientRect();
+    if (r.width < 12 || r.height < 12) continue;
+    const st = el.getAttribute("style") || "";
+    let score = 0;
+    if (el.hasAttribute("data-w-id") || el.hasAttribute("data-framer-appear-id") || /opacity|transform|translate/.test(st) || nonNeutre(cs)) score = 3;
+    else if (/^(H[1-6]|IMG|VIDEO|PICTURE|A|BUTTON|P)$/.test(el.tagName) || carte(el)) score = 2;
+    else if (direct(el).length > 0) score = 1;
+    if (score) cand.push({ el, score });
+  }
+  const pris = cand.map((c, i) => ({ ...c, i })).sort((a, b) => b.score - a.score || a.i - b.i).slice(0, 60).sort((a, b) => a.i - b.i);
+  const cartes = new Map();
+  const familles = new Map();
+  for (const { el } of pris) if (carte(el)) {
+    const freres = [...el.parentElement.children].filter((s) => classe(s) === classe(el));
+    cartes.set(el, `carte ${freres.indexOf(el) + 1}/${freres.length}`);
+  }
+  const role = (el) => {
+    if (cartes.has(el)) return cartes.get(el);
+    const t = el.tagName;
+    let base = /^H[12]$/.test(t) ? "titre" : /^H[3-6]$/.test(t) ? "sous-titre" : t === "IMG" || t === "PICTURE" ? "image" : t === "VIDEO" ? "video"
+      : t === "BUTTON" || (t === "A" && (getComputedStyle(el).backgroundColor !== "rgba(0, 0, 0, 0)" || parseFloat(getComputedStyle(el).borderTopWidth) > 0)) ? "bouton"
+      : t === "A" ? "lien" : direct(el).length > 0 ? "texte" : el.querySelector("img, video, picture") && el.children.length <= 2 ? "image"
+      : el.querySelector("h1, h2") ? "bloc du titre" : el.querySelector("h3, h4, h5, h6") ? "bloc de sous-titre" : el.querySelector("img, video, picture") ? "bloc image"
+      : el.querySelector("a, button") ? "bloc bouton" : "bloc";
+    const anc = [...cartes.keys()].find((c) => c !== el && c.contains(el));
+    return anc ? `${base} (${cartes.get(anc)})` : base;
+  };
+  return {
+    haut: Math.round(rs.top + window.scrollY),
+    hauteur: Math.round(rs.height),
+    collant: [sec, ...sec.querySelectorAll("*")].some((e) => getComputedStyle(e).position === "sticky"),
+    // elements collants (position: sticky) : seuls ou empiles (memes parents), ce qu'ils contiennent,
+    // la hauteur de defilement pendant laquelle ils restent fixes, et le decalage horizontal de leur
+    // contenu d'un bloc a l'autre (cartes qui se posent cote a cote)
+    colles: (() => {
+      const st = [sec, ...sec.querySelectorAll("*")].filter((e) => getComputedStyle(e).position === "sticky" && e.getBoundingClientRect().height > 20);
+      const contenu = (e) => [["h1, h2", "titre"], ["h3, h4, h5, h6", "sous-titres"], ["p", "texte"], ["img, picture, video", "image"], ["a, button", "bouton"]].filter(([q]) => e.matches(q) || e.querySelector(q)).map(([, m]) => m).join(", ") || "décor";
+      const groupes = new Map();
+      for (const e of st) { if (!groupes.has(e.parentElement)) groupes.set(e.parentElement, []); groupes.get(e.parentElement).push(e); }
+      return [...groupes.entries()].slice(0, 3).map(([p, g]) => {
+        const r = g[0].getBoundingClientRect();
+        const course = Math.round(p.getBoundingClientRect().height - r.height);
+        const haut = getComputedStyle(g[0]).top;
+        if (g.length === 1) return `1 bloc collant (${contenu(g[0])}), ${Math.round(r.height)} px, fixé à top ${haut} pendant ${course} px de défilement`;
+        // bord gauche du contenu visible (textes, images) de chaque bloc
+        const gauche = g.map((e) => {
+          const l = [...e.querySelectorAll("img, picture, video, h1, h2, h3, h4, h5, h6, p")].map((x) => x.getBoundingClientRect()).filter((b) => b.width > 0).map((b) => b.left);
+          return l.length ? Math.min(...l) : null;
+        });
+        const dx = gauche.every((v) => v !== null) ? gauche.slice(1).map((v, i) => Math.round(v - gauche[i])) : [];
+        const decale = dx.length && dx.every((d) => Math.abs(d) > 20) ? `, contenu décalé de ${dx[0]} px à chaque bloc (se posent côte à côte)` : "";
+        return `${g.length} blocs collants empilés (${contenu(g[0])}), ${Math.round(r.height)} px chacun, fixés à top ${haut} : chacun monte puis se fige au même niveau${decale}, parent de ${Math.round(p.getBoundingClientRect().height)} px`;
+      });
+    })(),
+    elements: pris.map(({ el }, k) => {
+      el.setAttribute("data-kleak-a", String(k));
+      el.setAttribute("data-kleak-role", role(el));
+      return {
+        k,
+        role: el.getAttribute("data-kleak-role"),
+        famille: (() => {
+          const c = [...cartes.keys()].find((x) => x.contains(el));
+          const p = (c || el).parentElement;
+          if (!familles.has(p)) familles.set(p, familles.size);
+          return familles.get(p);
+        })(),
+        init: el.getAttribute("data-kleak-init") || null,
+        moteur: el.hasAttribute("data-w-id") ? "webflow" : el.hasAttribute("data-framer-appear-id") ? "framer-appear" : null,
+        parent: (() => {
+          const ancs = pris.filter((p) => p.el !== el && p.el.contains(el));
+          const proche = ancs.find((a) => ancs.every((b) => b === a || b.el.contains(a.el)));
+          return proche ? pris.indexOf(proche) : -1;
+        })(),
+      };
+    }),
+  };
+}
+
+// Etat des elements suivis : [opacite, translateX, translateY, echelle, rotation, flou] (proprietes
+// de l'element lui-meme), plus la position dans la section et l'animation en cours (duree, delai).
+function etatsAnimation(n) {
+  const sec = document.querySelector(`[data-kleak-n="${n}"]`);
+  const rs = sec.getBoundingClientRect();
+  return [...document.querySelectorAll("[data-kleak-a]")].map((el) => {
+    const cs = getComputedStyle(el);
+    let tx = 0, ty = 0, sc = 1, rot = 0;
+    if (cs.transform && cs.transform !== "none") {
+      const m = new DOMMatrixReadOnly(cs.transform);
+      tx = m.m41; ty = m.m42; sc = Math.hypot(m.a, m.b); rot = (Math.atan2(m.b, m.a) * 180) / Math.PI;
+    }
+    if (cs.translate && cs.translate !== "none") { const p = cs.translate.split(" ").map(parseFloat); tx += p[0] || 0; ty += p[1] || 0; }
+    if (cs.scale && cs.scale !== "none") sc *= parseFloat(cs.scale) || 1;
+    if (cs.rotate && cs.rotate !== "none") rot += parseFloat(cs.rotate) || 0;
+    const flou = parseFloat((cs.filter.match(/blur\(([\d.]+)px\)/) || [])[1] || 0);
+    const r = el.getBoundingClientRect();
+    const a = el.getAnimations ? el.getAnimations().map((x) => x.effect?.getTiming?.()).filter(Boolean) : [];
+    const d = a.length ? Math.max(...a.map((t) => (typeof t.duration === "number" ? t.duration : 0))) : 0;
+    const inf = a.some((t) => t.iterations === Infinity);
+    const tr = cs.transitionProperty !== "none" ? Math.max(...cs.transitionDuration.split(",").map((x) => parseFloat(x) * 1000)) : 0;
+    // visibility: hidden compte comme opacite 0 seulement sur la racine du sous-arbre cache (pas sur
+    // les enfants qui en heritent)
+    const cache = cs.visibility === "hidden" && (!el.parentElement || getComputedStyle(el.parentElement).visibility !== "hidden");
+    return [cache ? 0 : +parseFloat(cs.opacity).toFixed(2), Math.round(tx), Math.round(ty), +sc.toFixed(3), Math.round(rot), Math.round(flou), Math.round(r.left - rs.left), Math.round(r.top - rs.top), Math.round(d), inf ? 1 : 0, Math.round(tr || 0)];
+  });
+}
+
+// Lance un echantillonnage en tache de fond (toutes les 50 ms), lu par lireEchantillons.
+// Les temps sont relatifs a window.__kleakT0, pose par marquerT0 a l'arrivee du defilement.
+function demarrerEchantillons(n) {
+  window.__kleakE = [];
+  window.__kleakT0 = performance.now();
+  const f = new Function("n", `return (${window.__kleakEtats})(n)`);
+  window.__kleakI = setInterval(() => window.__kleakE.push([performance.now(), f(n)]), 50);
+}
+function marquerT0() {
+  window.__kleakT0 = performance.now();
+}
+function lireEchantillons() {
+  clearInterval(window.__kleakI);
+  return window.__kleakE.map(([t, e]) => [Math.round(t - window.__kleakT0), e]);
+}
+
+// Survol : etat visuel d'un element et de 12 descendants au plus (proprietes que les survols changent).
+function etatSurvol(k) {
+  const el = document.querySelector(`[data-kleak-s="${k}"]`);
+  const lum = (c) => { const m = c.match(/[\d.]+/g); if (!m) return null; const [r, g, b, a = 1] = m.map(Number); return a < 0.05 ? null : Math.round(0.2126 * r + 0.7152 * g + 0.0722 * b); };
+  return [el, ...[...el.querySelectorAll("*")].slice(0, 12)].map((e) => {
+    const cs = getComputedStyle(e);
+    let tx = 0, ty = 0, sc = 1, rot = 0;
+    if (cs.transform && cs.transform !== "none") { const m = new DOMMatrixReadOnly(cs.transform); tx = m.m41; ty = m.m42; sc = Math.hypot(m.a, m.b); rot = (Math.atan2(m.b, m.a) * 180) / Math.PI; }
+    return {
+      tag: e.tagName, role: e.getAttribute("data-kleak-role"), op: +parseFloat(cs.opacity).toFixed(2), tx: Math.round(tx), ty: Math.round(ty), sc: +sc.toFixed(3), rot: Math.round(rot),
+      fond: lum(cs.backgroundColor), texte: lum(cs.color), bord: parseFloat(cs.borderTopWidth) > 0 ? lum(cs.borderTopColor) : null,
+      ombre: cs.boxShadow !== "none", flou: /blur/.test(cs.filter), duree: Math.round(Math.max(...cs.transitionDuration.split(",").map((x) => parseFloat(x) * 1000)) || 0),
+      img: e.tagName === "IMG" || e.tagName === "PICTURE",
+    };
+  });
+}
+
+// Elements interactifs de la section a survoler : boutons, cartes, liens avec transition (4 au plus).
+function choisirSurvols(n) {
+  const sec = document.querySelector(`[data-kleak-n="${n}"]`);
+  const trans = (e) => [e, ...e.querySelectorAll("*")].slice(0, 20).some((x) => { const cs = getComputedStyle(x); return cs.transitionProperty !== "none" && cs.transitionDuration.split(",").some((d) => parseFloat(d) > 0); });
+  const ok = (e) => { const r = e.getBoundingClientRect(); const cs = getComputedStyle(e); return r.width >= 20 && r.height >= 16 && cs.visibility !== "hidden" && cs.display !== "none"; };
+  const cartes = [...sec.querySelectorAll("[data-kleak-a]")].filter((e) => /^carte/.test(e.getAttribute("data-kleak-role") || ""));
+  const liens = [...sec.querySelectorAll("a, button, [role=button]")];
+  const pris = [];
+  const ajouter = (e) => { if (pris.length < 4 && e && ok(e) && !pris.some((p) => p.contains(e) || e.contains(p))) pris.push(e); };
+  ajouter(cartes.find(trans));
+  ajouter(liens.find((e) => trans(e) && e.querySelector("img")));
+  for (const e of liens.filter(trans)) ajouter(e);
+  ajouter(cartes.find(ok));
+  return pris.map((e, k) => { e.setAttribute("data-kleak-s", String(k)); return k; });
+}
+
 function detecterOutil() {
   const html = document.documentElement.outerHTML;
   if (document.documentElement.hasAttribute("data-wf-page") || document.querySelector("[data-wf-page]")) return "webflow";
@@ -671,6 +881,322 @@ async function capturerParMorceaux(navigateur, page, zone, { largeurSortie, qual
   return recoller(navigateur, morceaux, largeur, { largeurSortie, qualite });
 }
 
+// ---------- animations : film et lecture des mesures ----------
+
+const pause = (ms) => new Promise((r) => setTimeout(r, Math.max(0, ms)));
+
+// Planche contact : images cote a cote, 3 par rangee, 520 px chacune (1560 px au plus), legende
+// en haut de chaque image, JPEG qualite 60.
+async function faireplanche(navigateur, images) {
+  const contexte = await navigateur.newContext({ viewport: { width: 800, height: 600 } });
+  const atelier = await contexte.newPage();
+  const dataUrl = await atelier.evaluate(async ({ images, ratio }) => {
+    const L = 520, H = Math.round(L * ratio), B = 26, col = Math.min(3, images.length);
+    const c = document.createElement("canvas");
+    c.width = col * L + (col - 1) * 6;
+    c.height = Math.ceil(images.length / col) * (H + B + 6) - 6;
+    const g = c.getContext("2d");
+    g.fillStyle = "#fff"; g.fillRect(0, 0, c.width, c.height);
+    g.imageSmoothingQuality = "high";
+    for (const [i, im] of images.entries()) {
+      const x = (i % col) * (L + 6), y = Math.floor(i / col) * (H + B + 6);
+      const img = new Image();
+      img.src = `data:image/jpeg;base64,${im.b64}`;
+      await img.decode();
+      g.fillStyle = "#111"; g.fillRect(x, y, L, B);
+      g.fillStyle = "#fff"; g.font = "bold 16px Arial, sans-serif"; g.fillText(`${i + 1}. ${im.legende}`, x + 8, y + 18);
+      g.drawImage(img, x, y + B, L, H);
+    }
+    return c.toDataURL("image/jpeg", 0.6);
+  }, { images, ratio: BUREAU.height / BUREAU.width });
+  await contexte.close();
+  return Buffer.from(dataUrl.split(",")[1], "base64");
+}
+
+const TOL = [0.05, 4, 4, 0.02, 2, 1]; // opacite, translateX, translateY, echelle, rotation, flou
+const differe = (a, b) => a.slice(0, 6).some((v, i) => Math.abs(v - b[i]) > TOL[i]);
+const TOL_FIN = [0.01, 1, 1, 0.005, 0.5, 0.5]; // fin de mouvement : on suit la queue de la courbe
+const differeFin = (a, b) => a.slice(0, 6).some((v, i) => Math.abs(v - b[i]) > TOL_FIN[i]);
+const NEUTRE = [1, 0, 0, 1, 0, 0];
+
+function decrireEtat(e, autre) {
+  const p = [];
+  if (Math.abs(e[0] - autre[0]) > TOL[0]) p.push(`opacity ${e[0]}`);
+  if (Math.abs(e[1] - autre[1]) > TOL[1]) p.push(`translateX ${e[1]}px`);
+  if (Math.abs(e[2] - autre[2]) > TOL[2]) p.push(`translateY ${e[2]}px`);
+  if (Math.abs(e[3] - autre[3]) > TOL[3]) p.push(`scale ${+e[3].toFixed(2)}`);
+  if (Math.abs(e[4] - autre[4]) > TOL[4]) p.push(`rotate ${e[4]}deg`);
+  if (Math.abs(e[5] - autre[5]) > TOL[5]) p.push(`blur ${e[5]}px`);
+  return p.join(", ").replace(/ 0px/g, " 0").replace(/ 0deg/g, " 0");
+}
+function natureEffet(a, b) {
+  const k = [];
+  if (Math.abs(a[0] - b[0]) > TOL[0]) k.push("fondu");
+  if (Math.abs(a[1] - b[1]) > TOL[1] || Math.abs(a[2] - b[2]) > TOL[2]) k.push("glissement");
+  if (Math.abs(a[3] - b[3]) > TOL[3]) k.push("zoom");
+  if (Math.abs(a[4] - b[4]) > TOL[4]) k.push("rotation");
+  if (Math.abs(a[5] - b[5]) > TOL[5]) k.push("flou");
+  return k.length === 1 ? k[0] : `combinaison (${k.join(" + ")})`;
+}
+const arrondi50 = (v) => Math.round(v / 50) * 50;
+const mediane = (a) => { const s = [...a].sort((x, y) => x - y); return s.length ? s[Math.floor(s.length / 2)] : 0; };
+const baseRole = (r) => r.replace(/ \d+\/\d+/, "").replace(/ \(carte\)/, " de carte");
+const pluriel = (n, base) => (/\s/.test(base) ? `${n} × ${base}` : `${n} ${base}s`);
+
+// Lit les echantillons : entrees (fondus, glissements...), defilement lie, boucles.
+function lireAnimations({ prep, avant, phases, auChargement }) {
+  const entrees = [];
+  const boucles = [];
+  const lies = [];
+  const el = prep.elements;
+  const enBoucle = new Set();
+  // boucles : position qui avance sans s'arreter pendant l'entree (bandeau defilant), ou animation infinie
+  const e0 = phases[0].echantillons.filter(([t]) => t >= 0);
+  for (const x of el) {
+    const serie = e0.map(([t, s]) => [t, s[x.k]]).filter(([, s]) => s);
+    if (serie.length < 10) continue;
+    const [t1, s1] = serie[0], [tm, sm] = serie[Math.floor(serie.length / 2)], [t2, s2] = serie[serie.length - 1];
+    const dx1 = sm[6] - s1[6], dx2 = s2[6] - sm[6], dy1 = sm[7] - s1[7], dy2 = s2[7] - sm[7], dr = s2[4] - s1[4];
+    const horiz = Math.abs(dx1) > 4 && Math.abs(dx2) > 4 && Math.sign(dx1) === Math.sign(dx2);
+    const vert = Math.abs(dy1) > 4 && Math.abs(dy2) > 4 && Math.sign(dy1) === Math.sign(dy2) && !horiz;
+    const tourne = Math.abs(dr) > 10 && Math.abs(sm[4] - s1[4]) > 4;
+    const infinie = serie.some(([, s]) => s[9]);
+    if (!horiz && !vert && !tourne && !infinie) continue;
+    enBoucle.add(x.k);
+    if (x.parent >= 0 && enBoucle.has(x.parent)) continue;
+    const duree = (t2 - t1) / 1000 || 1;
+    boucles.push(horiz || vert
+      ? { element: x.role, direction: horiz ? (dx2 < 0 ? "vers la gauche" : "vers la droite") : dy2 < 0 ? "vers le haut" : "vers le bas", vitessePxS: Math.round(Math.abs(horiz ? s2[6] - s1[6] : s2[7] - s1[7]) / duree) }
+      : tourne ? { element: x.role, direction: "rotation continue", vitesseDegS: Math.round(Math.abs(dr) / duree) }
+      : { element: x.role, direction: "animation CSS infinie", dureeMs: s2[8] || null });
+  }
+  for (const x of el) {
+    if (enBoucle.has(x.k)) continue;
+    const debut = avant[x.k].slice();
+    if (auChargement && x.init && /opacite0/.test(x.init) && debut[0] > 0.05) debut[0] = 0;
+    // etat pose a la fin de chaque phase, et mouvement a l'interieur de chaque phase
+    const poses = phases.map((ph) => ph.echantillons.length ? ph.echantillons[ph.echantillons.length - 1][1][x.k] : null);
+    if (poses.some((p) => !p)) continue;
+    const changementsApresEntree = poses.slice(1).filter((p, i) => differe(p, poses[i])).length;
+    if (changementsApresEntree >= 2) {
+      lies.push({ x, depuis: poses[0], vers: poses[poses.length - 1] });
+      continue;
+    }
+    // premiere phase ou l'element change : celle de son declenchement
+    let i = 0, ref = debut;
+    for (; i < phases.length; i++) {
+      const ech = phases[i].echantillons;
+      if (ech.some(([, s]) => differe(s[x.k], ref))) break;
+      ref = poses[i];
+    }
+    if (i === phases.length) continue;
+    const ech = phases[i].echantillons;
+    const fin = poses[i];
+    if (!differe(ref, fin) && !ech.some(([, s]) => differe(s[x.k], fin))) continue;
+    const tDebutBrut = (ech.find(([, s]) => differe(s[x.k], ref)) || [0])[0]; // < 0 : commence pendant le defilement
+    const tDebut = Math.max(0, tDebutBrut);
+    const enMouvement = ech.filter(([, s]) => differeFin(s[x.k], fin));
+    const tFin = enMouvement.length ? enMouvement[enMouvement.length - 1][0] + 50 : tDebut;
+    const encore = enMouvement.length && enMouvement[enMouvement.length - 1][0] >= ech[ech.length - 1][0] - 60;
+    // etat de depart : pour chaque propriete, la valeur la plus eloignee de l'etat final (un moteur
+    // peut poser son etat initial apres notre premiere mesure, au chargement surtout)
+    const depart = ref.slice();
+    for (const [t, s] of ech) {
+      if (t > tFin) break;
+      for (let p = 0; p < 6; p++) if (Math.abs(s[x.k][p] - fin[p]) > Math.abs(depart[p] - fin[p])) depart[p] = s[x.k][p];
+    }
+    const waapi = Math.max(0, ...ech.map(([, s]) => s[x.k][8]));
+    const css = Math.max(0, ...ech.map(([, s]) => s[x.k][10]));
+    const dureeMs = waapi > 0 && waapi < 10000 ? Math.round(waapi) : css > 0 && css < 5000 ? Math.round(css) : arrondi50(Math.max(50, tFin - tDebutBrut));
+    entrees.push({
+      x, effet: natureEffet(depart, fin), depuis: decrireEtat(depart, fin), vers: decrireEtat(fin, depart),
+      declencheur: auChargement && i === 0 ? "chargement" : i === 0 ? "entrée dans l'écran" : `entrée dans l'écran (plus bas, ${phases[i].legende})`,
+      delaiMs: arrondi50(tDebut), dureeMs, encoreEnCours: !!encore, source: waapi > 0 ? "animation mesurée" : css > 0 ? "transition CSS" : "estimée sur les images",
+    });
+  }
+  for (const l of lies) {
+    entrees.push({ x: l.x, effet: natureEffet(l.depuis, l.vers), depuis: decrireEtat(l.depuis, l.vers), vers: decrireEtat(l.vers, l.depuis), declencheur: "défilement lié", delaiMs: null, dureeMs: null, lie: true });
+  }
+
+  // regroupement : meme role, meme effet, meme famille (freres) : une ligne, avec le decalage
+  const groupes = new Map();
+  for (const e of entrees) {
+    const cle = [baseRole(e.x.role), e.effet, e.depuis, e.vers, e.declencheur.split(" (")[0], e.x.famille].join("|");
+    if (!groupes.has(cle)) groupes.set(cle, []);
+    groupes.get(cle).push(e);
+  }
+  const lignes = [...groupes.values()].map((g) => {
+    g.sort((a, b) => (a.delaiMs ?? 0) - (b.delaiMs ?? 0) || a.x.k - b.x.k);
+    const delais = g.map((e) => e.delaiMs ?? 0);
+    const ecarts = delais.slice(1).map((d, i) => d - delais[i]);
+    const decalage = g.length > 1 ? arrondi50(mediane(ecarts)) : 0;
+    const e = g[0];
+    const o = {
+      element: g.length > 1 ? pluriel(g.length, baseRole(e.x.role)) : e.x.role,
+      effet: e.effet, depuis: e.depuis, vers: e.vers, declencheur: e.declencheur,
+    };
+    if (!e.lie) { o.delaiMs = e.delaiMs; o.dureeMs = mediane(g.map((x) => x.dureeMs)); }
+    if (decalage >= 40) o.decalageMs = decalage;
+    if (e.encoreEnCours) o.encoreEnCours = true;
+    if (e.x.moteur) o.moteur = e.x.moteur;
+    return { o, k: e.x.k, n: g.length, base: baseRole(e.x.role), decalage, delai: e.delaiMs ?? 99999 };
+  });
+  lignes.sort((a, b) => a.delai - b.delai || a.k - b.k);
+  lignes.forEach((l, i) => (l.o.ordre = i + 1));
+  const cascades = lignes.filter((l) => l.n >= 2 && l.decalage >= 40).map((l) => `${pluriel(l.n, l.base)}, décalage ${l.decalage} ms`);
+  // detail pour analyse.json : etat avant et pose a la fin de chaque phase, par element
+  const detail = el.map((x) => ({ role: x.role, avant: avant[x.k].slice(0, 8).join(" "), poses: phases.map((ph) => (ph.echantillons.at(-1)?.[1][x.k] || []).slice(0, 8).join(" ")) }));
+  return { entrees: lignes.map((l) => l.o), cascades, boucles, detail };
+}
+
+function lireSurvol(role, avant, apres) {
+  const depuis = [];
+  const vers = [];
+  const kinds = new Set();
+  let duree = 0;
+  for (let i = 0; i < Math.min(avant.length, apres.length); i++) {
+    const a = avant[i], b = apres[i];
+    const qui = i === 0 ? "" : `${a.img ? "image" : a.role || a.tag.toLowerCase()} interne `;
+    const d = [], v = [];
+    const paire = (x, y, kind) => { d.push(x); v.push(y); kinds.add(kind); };
+    if (Math.abs(a.sc - b.sc) > 0.01) paire(`scale ${a.sc}`, `scale ${b.sc}`, "zoom");
+    if (Math.abs(a.tx - b.tx) > 2) paire(`translateX ${a.tx}px`, `translateX ${b.tx}px`, "glissement");
+    if (Math.abs(a.ty - b.ty) > 2) paire(`translateY ${a.ty}px`, `translateY ${b.ty}px`, "glissement");
+    if (Math.abs(a.rot - b.rot) > 2) paire(`rotate ${a.rot}deg`, `rotate ${b.rot}deg`, "rotation");
+    if (Math.abs(a.op - b.op) > 0.05) paire(`opacity ${a.op}`, `opacity ${b.op}`, "fondu");
+    const lum = (x, y, nom) => {
+      if (x === y) return;
+      if (x === null || y === null) return paire(x === null ? `sans ${nom}` : `${nom} d'origine`, y === null ? `${nom} transparent` : `${nom} qui apparaît`, "couleur");
+      if (Math.abs(x - y) > 8) paire(`${nom} d'origine`, `${nom} plus ${y > x ? "clair" : "sombre"}`, "couleur");
+    };
+    lum(a.fond, b.fond, "fond"); lum(a.texte, b.texte, "texte"); lum(a.bord, b.bord, "bordure");
+    if (a.ombre !== b.ombre) paire(a.ombre ? "avec ombre" : "sans ombre", b.ombre ? "avec ombre" : "sans ombre", "ombre");
+    if (a.flou !== b.flou) paire(a.flou ? "flou" : "net", b.flou ? "flou" : "net", "flou");
+    if (d.length) { depuis.push(qui + d.join(", ")); vers.push(qui + v.join(", ")); duree = Math.max(duree, b.duree || a.duree); }
+  }
+  if (!depuis.length) return null;
+  const k = [...kinds];
+  return { element: role, effet: k.length === 1 ? k[0] : `combinaison (${k.join(" + ")})`, depuis: depuis.slice(0, 3).join(" ; ").slice(0, 110), vers: vers.slice(0, 3).join(" ; ").slice(0, 110), declencheur: "survol", dureeMs: duree || null };
+}
+
+// Filme la section dans une page neuve (rien n'a encore ete joue) : etat avant, arrivee par le bas
+// de l'ecran, 6 images sur 2,5 s (ou entree puis 25 a 100 % du defilement si la section est
+// collante), puis survols. Ecrit animation.jpg et rend { animations, detail }.
+async function mesurerAnimations(navigateur, url, info, n, sortie) {
+  const vh = BUREAU.height;
+  const auChargement = info.haut < vh * 0.85;
+  const contexte = await navigateur.newContext({ viewport: BUREAU, deviceScaleFactor: 1, locale: "fr-FR", bypassCSP: true });
+  try {
+    const page = await contexte.newPage();
+    await page.addInitScript(`document.addEventListener("DOMContentLoaded", () => (${marquerEtatInitial.toString()})());`);
+    await page.goto(url, { waitUntil: auChargement ? "domcontentloaded" : "load", timeout: 45000 });
+    if (!auChargement) await page.waitForLoadState("networkidle", { timeout: 15000 }).catch(() => {});
+    const sections = await page.evaluate(trouverSections);
+    let m = sections[n - 1] && sections[n - 1].premierTitre === info.premierTitre ? n : null;
+    if (!m && info.premierTitre) m = (await page.evaluate(chercherTitre, info.premierTitre.slice(0, 40)))[0] ?? null;
+    if (!m) {
+      const proche = sections.slice().sort((a, b) => Math.abs(a.haut - info.haut) - Math.abs(b.haut - info.haut))[0];
+      if (proche && Math.abs(proche.haut - info.haut) < 300) m = proche.n;
+    }
+    if (!m) return { animations: { nonMesure: "section introuvable dans une page neuve" } };
+    const prep = await page.evaluate(preparerAnimation, m);
+    await page.evaluate(masquerFixesHors, m);
+    await page.evaluate((s) => { window.__kleakEtats = s; }, etatsAnimation.toString());
+    const avant = await page.evaluate(etatsAnimation, m);
+    trace(`animation : ${prep.elements.length} elements suivis, collant ${prep.collant}`);
+
+    const defilerVers = async (y) => {
+      const depart = await page.evaluate(() => window.scrollY);
+      for (let i = 1; i <= 6; i++) { await page.evaluate((v) => window.scrollTo(0, v), depart + ((y - depart) * i) / 6); await pause(50); }
+    };
+    const filmer = async (legendes) => {
+      const debut = Date.now();
+      const images = [];
+      for (const [o, legende] of legendes) {
+        await pause(o - (Date.now() - debut));
+        images.push({ legende, b64: (await page.screenshot({ type: "jpeg", quality: 70, timeout: 10000 })).toString("base64") });
+      }
+      return images;
+    };
+
+    const tall = prep.hauteur > vh * 1.2;
+    const lieAuDefilement = prep.collant && tall;
+    const legendesEntree = [[0, "0 ms"], [250, "250 ms"], [600, "600 ms"], [1000, "1 s"], [1600, "1,6 s"], [2500, "2,5 s"]];
+    const phases = [];
+    const images = [];
+    // entree
+    await page.evaluate(demarrerEchantillons, m);
+    // saut direct (pas de defilement progressif) : tout ce qui est dans l'ecran se declenche au meme
+    // moment, un decalage mesure est donc un vrai decalage (cascade) et pas l'effet du defilement
+    if (!auChargement) {
+      await page.evaluate((y) => window.scrollTo(0, y), Math.max(0, prep.haut - vh));
+      await pause(80);
+      await page.evaluate((y) => window.scrollTo(0, y), Math.max(0, prep.haut - vh * 0.1));
+    }
+    await page.evaluate(marquerT0);
+    images.push(...(await filmer(legendesEntree)));
+    await pause(2600 - 2500);
+    phases.push({ legende: "entrée", echantillons: await page.evaluate(lireEchantillons) });
+    // traversee de la section (25, 50, 75, 100 %) : elements plus bas, defilement lie
+    const entreeY = Math.max(0, prep.haut - vh * 0.1);
+    const imagesTraversee = [];
+    for (const p of [25, 50, 75, 100]) {
+      await page.evaluate(demarrerEchantillons, m);
+      await defilerVers(tall ? Math.max(entreeY, prep.haut + (p / 100) * (prep.hauteur - vh)) : entreeY + (p / 100) * Math.min(prep.hauteur, vh) * 0.5);
+      await page.evaluate(marquerT0);
+      await pause(1200);
+      imagesTraversee.push(...(await filmer([[0, `${p} % de la section`]])));
+      phases.push({ legende: `${p} %`, echantillons: await page.evaluate(lireEchantillons) });
+    }
+    const lu = lireAnimations({ prep, avant, phases, auChargement });
+    if (process.env.KLEAK_DEBUG) writeFileSync(join(sortie, "echantillons.json"), JSON.stringify({ prep, avant, phases }));
+    const filmeEnDefilement = lieAuDefilement || lu.entrees.some((e) => e.declencheur === "défilement lié");
+    if (filmeEnDefilement) images.splice(0, images.length, images[0], images[images.length - 1], ...imagesTraversee);
+
+    // survols
+    const survols = [];
+    const ks = await page.evaluate(choisirSurvols, m);
+    for (const k of ks) {
+      try {
+        const boite = await page.evaluate(async (k) => {
+          const e = document.querySelector(`[data-kleak-s="${k}"]`);
+          e.scrollIntoView({ block: "center" });
+          await new Promise((r) => setTimeout(r, 500));
+          const r = e.getBoundingClientRect();
+          return { x: r.left + r.width / 2, y: r.top + r.height / 2, role: e.getAttribute("data-kleak-role") || (e.tagName === "A" ? "lien" : "bouton") };
+        }, k);
+        const a = await page.evaluate(etatSurvol, k);
+        await page.mouse.move(boite.x, boite.y, { steps: 4 });
+        await pause(700);
+        const b = await page.evaluate(etatSurvol, k);
+        await page.mouse.move(2, 2);
+        await pause(300);
+        const s = lireSurvol(boite.role, a, b);
+        if (s) survols.push(s);
+      } catch (e) {
+        trace(`survol ${k} impossible : ${e.message.split("\n")[0]}`);
+      }
+    }
+
+    const planche = join(sortie, "animation.jpg");
+    writeFileSync(planche, await faireplanche(navigateur, images));
+    const animations = {
+      planche: `animation.jpg (${images.map((i) => i.legende).join(", ")})`,
+      declencheur: auChargement ? "chargement" : lieAuDefilement ? "entrée puis défilement lié (section collante)" : filmeEnDefilement ? "entrée puis défilement lié" : "entrée dans l'écran",
+      suivis: prep.elements.length,
+      colles: prep.colles,
+      entrees: lu.entrees,
+      cascades: lu.cascades,
+      boucles: lu.boucles,
+      survols,
+    };
+    if (!lu.entrees.length && !lu.boucles.length) animations.aucuneEntree = true;
+    return { animations, fichier: planche, detail: lu.detail };
+  } finally {
+    await contexte.close();
+  }
+}
+
 // ---------- vignette et resume (pour limiter ce que l'agent doit lire) ----------
 
 // Largeur et hauteur d'un JPEG (lecture de l'en-tete SOF).
@@ -713,7 +1239,25 @@ const compacter = (v) => {
   return typeof v === "string" ? v.slice(0, 70) : v;
 };
 
-function construireResume({ info, bureau, mobile, blocsBureau, blocsMobile, avertissements }) {
+// Animations du resume : compteurs de la page au repos, puis la mesure filmee, coupee pour que
+// resume.json reste sous 4 Ko (entrees les plus tardives retirees d'abord).
+function animationsResume(compteurs, mesure, budget) {
+  const a = { ...(compacter(compteurs) || {}), ...(mesure || {}) };
+  for (const cle of ["entrees", "survols", "boucles", "cascades", "colles"]) if (Array.isArray(a[cle]) && !a[cle].length) delete a[cle];
+  if (a.entrees) a.entrees = a.entrees.slice(0, 10);
+  if (a.boucles) a.boucles = a.boucles.slice(0, 3);
+  if (a.cascades) a.cascades = a.cascades.slice(0, 4);
+  while (JSON.stringify(a).length > budget) {
+    if (a.entrees?.length > 3) { a.entrees.pop(); a.entreesCoupees = (a.entreesCoupees || 0) + 1; }
+    else if (a.survols?.length > 1) a.survols.pop();
+    else if (a.transitions?.length > 2) a.transitions.pop();
+    else if (a.animationsCss?.length > 2) a.animationsCss.pop();
+    else break;
+  }
+  return a;
+}
+
+function construireResume({ info, bureau, mobile, blocsBureau, blocsMobile, avertissements, mesure }) {
   const base = bureau.texteCourant?.taille || 16;
   const rel = (t) => Math.round((t / base) * 10) / 10;
   const parBalise = {};
@@ -765,7 +1309,7 @@ function construireResume({ info, bureau, mobile, blocsBureau, blocsMobile, aver
           hauteurMobile: mobile.section.hauteur,
         }
       : { hauteurBureau: bureau.section.hauteur, hauteurMobile: null },
-    animations: compacter(bureau.animations) || {},
+    animations: {},
     performance: {
       images: bureau.images.nombre,
       plusLargeSource: bureau.images.plusLargeSource,
@@ -773,6 +1317,7 @@ function construireResume({ info, bureau, mobile, blocsBureau, blocsMobile, aver
     },
   };
   if (avertissements.length) resume.avertissements = avertissements.map((a) => a.slice(0, 160));
+  resume.animations = animationsResume(bureau.animations, mesure, 4000 - JSON.stringify(resume).length - 50);
   return resume;
 }
 
@@ -843,6 +1388,15 @@ async function capturerSection(navigateur, args) {
   writeFileSync(capture, image);
   await bureau.contexte.close();
 
+  // animation filmee dans une page neuve (bureau)
+  let mesure;
+  try {
+    mesure = await mesurerAnimations(navigateur, args.url, info, n, args.sortie);
+  } catch (e) {
+    mesure = { animations: { nonMesure: `mesure impossible : ${e.message.split("\n")[0].slice(0, 100)}` } };
+  }
+  trace("animation mesuree");
+
   // mobile : page rechargee en 390 x 844, section retrouvee par son titre (pas par son numero)
   let analyseMobile = null;
   let blocsMobile = [];
@@ -890,7 +1444,7 @@ async function capturerSection(navigateur, args) {
     outil,
     section: info,
     capture: { fichier: capture, octets: image.length, qualite, decoupeA3000px: decoupe, elementsFixesMasques: fixesMasques },
-    bureau: analyseBureau,
+    bureau: { ...analyseBureau, animationsMesurees: mesure.animations, animationsDetail: mesure.detail || null },
     mobile: analyseMobile,
     avertissements: avertissementMobile ? [avertissementMobile] : [],
   };
@@ -900,8 +1454,8 @@ async function capturerSection(navigateur, args) {
   const vignetteMobileChemin = vignetteMobile ? join(args.sortie, "vignette-mobile.jpg") : null;
   writeFileSync(vignette, await faireVignette(navigateur, image));
   const resume = join(args.sortie, "resume.json");
-  writeFileSync(resume, JSON.stringify(construireResume({ info, bureau: analyseBureau, mobile: analyseMobile, blocsBureau, blocsMobile, avertissements: analyse.avertissements })));
-  process.stdout.write(JSON.stringify({ capture, vignette, vignetteMobile: vignetteMobileChemin, resume, analyse: chemin, octets: image.length, qualite, decoupe, outil, avertissements: analyse.avertissements }, null, 2) + "\n");
+  writeFileSync(resume, JSON.stringify(construireResume({ info, bureau: analyseBureau, mobile: analyseMobile, blocsBureau, blocsMobile, avertissements: analyse.avertissements, mesure: mesure.animations })));
+  process.stdout.write(JSON.stringify({ capture, vignette, vignetteMobile: vignetteMobileChemin, animation: mesure.fichier || null, resume, analyse: chemin, octets: image.length, qualite, decoupe, outil, avertissements: analyse.avertissements }, null, 2) + "\n");
 }
 
 async function capturerEcran(navigateur, args) {

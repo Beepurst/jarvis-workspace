@@ -58,7 +58,7 @@ lister = lister == "true"
 sec = None if lister else {"n": int(n), "premierTitre": json.loads(pt), "autres": json.loads(autres), "outil": outil}
 s = d + "/section/"
 fich = {k: (s + v if os.path.exists(s + v) else None) for k, v in
-        [("vignette", "vignette.jpg"), ("vignetteMobile", "vignette-mobile.jpg"), ("resume", "resume.json"), ("capture", "capture.jpg")]}
+        [("vignette", "vignette.jpg"), ("vignetteMobile", "vignette-mobile.jpg"), ("animation", "animation.jpg"), ("resume", "resume.json"), ("capture", "capture.jpg")]}
 if lister:
     fich = {"apercu": d + "/apercu.jpg", "lister": d + "/lister.json"}
 print(json.dumps({"dossier": d, "codeHub": 200, "doublons": [cut(x) for x in dbl], "fiche": f, "section": sec, "lister": lister, "fichiers": fich}, ensure_ascii=False, separators=(",", ":")))

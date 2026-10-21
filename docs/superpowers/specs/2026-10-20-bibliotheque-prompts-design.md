@@ -108,13 +108,17 @@ section », « les témoignages »), éventuellement une capture fournie par Edg
   dépose sans capture ou ne dépose pas, et le dit.
 
 **Format de la fiche technique** (texte, titres fixes, pour que le prompt reste lisible ;
-format court du 21/10, 6 rubriques, 180 mots au plus) :
+format court du 21/10, 6 rubriques ; 230 mots au plus depuis le 21/10, les 50 mots ajoutés allant
+tous aux Animations) :
 
 ```
 Structure : …
 Hiérarchie et grille : …
 Mobile : …
-Animations : … (chacune marquée compatible / à alléger / à proscrire)
+Animations : … (recette reproductible tirée de resume.json.animations et de animation.jpg :
+  élément, effet, depuis → vers, déclencheur, délai, durée, cascade ; chacune marquée
+  compatible / à alléger, avec la version allégée chiffrée / à proscrire ; « animation non
+  mesurée » si la capture n'a pas filmé la section)
 Ce qui fait la force de la section : …
 Points d'attention performance : …
 ```
