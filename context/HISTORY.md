@@ -9,12 +9,33 @@
 
 ## 2026-10-21
 
+### Créas de la série J, K, test Meta préparé, maintenance sans engagement
+
+- **Maintenance sans engagement**, avec un préavis de 2 mois : l'engagement de 12 mois est abandonné (décision d'Edgar). Fiche offre, note interne et contexte mis à jour. Reste : la constante `ENGAGEMENT_MOIS = 12` du hub (`src/lib/offre.ts`, fins d'engagement des ventes), à revoir sur une branche.
+- **Créas** : F, G, H et I écartées (« trop d'informations », « ça fait trop IA », trop de prix). Nouvelle DA d'après les créas Orbikal d'Edgar (`livrables/creas-meta/assets/references-da/`) : fond sombre, verre, une idée et un objet par créa, le prix seulement sur certaines. **J** (avis clients, sans prix) et **K** (devis One page 699 €) validées en post et en story. **B et D passent au One page 699 € en 5 jours.**
+- **Règles des pubs** : textes courts ; jamais « Je m'appelle Edgar » ni rien qui dise qui est derrière l'agence ; pas de mention de TVA ni de l'article 293 B ; pas de promesse de message immédiat tant que Brevo n'est pas branché.
+- **Hub** : les 5 créas (A, B, D, J, K) importées en post et en story. L'ancienne `b-7-jours-999` et ses textes, ainsi que les textes Essentiel de D, sont supprimés. Les textes de B, D, J et K ont été déposés par `media-buyer`, ceux de J, K et D réécrits en version courte.
+- **Test préparé** : J, K et D, 7 € par jour pendant 7 jours (49 €), 1 ensemble, 3 pubs. Il mesure le coût par lead, pas la meilleure pub (trop peu de leads). Avant d'activer : lead de test, prévenir Accueil Sénior Assistance, politique de confidentialité.
+
+### SEO : Search Console branché, agent redacteur-seo, cible nationale
+
+- **Search Console branché au hub** : compte de service `hub-ga4` ajouté en « Restreint » sur la propriété Domaine `kleakagency.fr`, `GSC_SITE_URL=sc-domain:kleakagency.fr` posé en local et dans Vercel, production redéployée par Edgar. L'onglet SEO existait déjà (copie de l'Orbikal Hub).
+- **Point de départ** : 16 clics en 90 jours (19 sur les 90 jours précédents), 15 sur la home, la moitié sur la requête « kleak ». Les 22 articles du blog parlent de Framer et n'attirent aucun client. Le site ne mentionne jamais une ville.
+- **Décisions d'Edgar** :
+  - cible **nationale** (patrons de PME et artisans), le local est mis de côté ; la fiche Google Business Profile, domiciliée à l'étranger, sera à refaire ;
+  - pas d'outil payant (Semrush, DataForSEO) : Search Console tranche après publication ;
+  - pas d'agent dans le hub : l'agent `redacteur-seo` vit dans Claude Code, Edgar relit chaque article dans la conversation ;
+  - publication dans le CMS Framer bloquée tant que le problème IONOS n'est pas réglé.
+- **Construit** : agent `redacteur-seo` (modes écrire et bilan), `livrables/seo/` (stratégie, 12 sujets priorisés, suivi, script `gsc.mjs` en lecture seule). 1 article par semaine au départ.
+- **Premier article écrit** : « site internet paiement en plusieurs fois ». Réponses d'Edgar : maintenance **en plus** des 6 versements, à partir du **mois de la mise en ligne** ; la suspension en cas d'impayé reste dans l'article ; le paiement en une fois sans maintenance n'est pas mis en avant. **Fiche offre corrigée** : elle disait la maintenance « comprise » dans le paiement en 6 fois.
+
 ### Bibliothèque du hub : agent bibliothecaire et prompts de construction
 
 - **Prompts copiables** (en production) : « Copier le prompt » sur chaque fiche de la bibliothèque, et dans le brief d'un client, épingles rangées **par page** (avec une page « Commune » pour navigation et footer), ordonnées, avec une adaptation par client et un bouton « Copier le prompt de la page ». Le hub assemble le prompt sans IA : reprendre la structure et l'adapter au client, ne jamais copier textes, images ni marque, règles de performance de la checklist section 9.
 - **Fiches** : bouton Modifier (capture comprise), suppression en deux temps dans la carte, types de section élargis (réalisations, à propos, chiffres, logos, étapes, appel à l'action).
-- **Agent `bibliothecaire`** (Sonnet) : Edgar donne une URL et une section, l'agent la capture seule avec Playwright, lit le code de la page, écrit une **fiche technique courte** (6 rubriques, 180 mots, sans couleurs ni polices du site d'origine) et la dépose directement. Mode **retravailler** : refait titre, capture et fiche sur la même ligne, garde la note et les épingles. Les 6 fiches de la bibliothèque ont été retravaillées le 21/10 (vérifier la capture de la fiche process, prise en pleine animation).
+- **Agent `bibliothecaire`** (Sonnet) : Edgar donne une URL et une section, l'agent la capture seule avec Playwright, lit le code de la page, écrit une **fiche technique courte** (6 rubriques, sans couleurs ni polices du site d'origine) et la dépose directement. Mode **retravailler** : refait titre, capture et fiche sur la même ligne, garde la note et les épingles. Les 6 fiches de la bibliothèque ont été retravaillées le 21/10 (vérifier la capture de la fiche process, prise en pleine animation).
 - **Économie de tokens** (décision d'Edgar après un test de construction mesuré à 102 tours et environ 19 millions de tokens relus) : sessions de construction ouvertes avec **`/site`** à la place de `/prime`, captures réduites, appels Framer groupés, une capture de contrôle par section ; la session **ouvre le site d'origine** pour voir et reproduire l'animation, limité à la section (correction d'Edgar). Construction gardée sur **Opus**. Agent : environ 170 000 à 240 000 tokens par fiche au lieu de 335 000, sur Sonnet ; étapes regroupées en deux scripts (`preparer.sh`, `deposer.sh`).
+- **Animations mesurées** (après un test d'Edgar où une section animée est sortie statique) : causes trouvées, fiche sans recette d'animation, sections Webflow non repérées (un seul conteneur géant), session de construction bloquée sans Chrome. Le script filme maintenant l'entrée de la section (planche de 6 images légendées) et mesure chaque élément (effet, depuis → vers, déclencheur, délai, durée estimée, cascade, survols) ; la rubrique Animations devient une **recette à reproduire** (fiche à 230 mots, longueur contrôlée avant dépôt) ; la session de construction relance le script au lieu de Chrome et ne construit jamais statique une section animée. Les **8 fiches** refaites, **test de construction validé par Edgar** le 21/10. Reste : angles de l'éventail algorix non chiffrés (rotation liée au défilement pas encore mesurée par le script).
 - Spec `docs/superpowers/specs/2026-10-20-bibliotheque-prompts-design.md`, plans `docs/superpowers/plans/2026-10-20-bibliotheque-prompts.md` et `2026-10-21-bibliotheque-optimisation.md`.
 
 ### Business plan closing : pas de closeur pour l'instant
