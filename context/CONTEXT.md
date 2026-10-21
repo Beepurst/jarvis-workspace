@@ -103,7 +103,7 @@ SaaS de dashboard marketing multi-connecteurs, jusqu'ici mon activité principal
 
 ## Où j'en suis
 
-**Statut au 20 octobre 2026 : Kleak Agency relancée en agence Framer, aucun client, aucun encaissement.**
+**Statut au 21 octobre 2026 : Kleak Agency relancée en agence Framer, aucun client, aucun encaissement.**
 
 | Chantier | Statut |
 |----------|--------|
@@ -119,7 +119,7 @@ SaaS de dashboard marketing multi-connecteurs, jusqu'ici mon activité principal
 
 ### Prochain chantier
 
-Préparer la première campagne Meta, visée vers le 25 octobre. **Fait :** les 3 visuels du test (A marque, B prix, D avant / après avec la réalisation Accueil Sénior Assistance), post et story, et leurs textes d'annonce, produits par l'agent `createur-creas` (`livrables/creas-meta/`, voir `TEXTES-ANNONCES.md`). **Reste :** le formulaire instantané à créer sur « Kleak Pub » (libellés des questions identiques à ceux lus par le CRM, case WhatsApp, lien vers la politique de confidentialité), la politique de confidentialité à mettre à jour (Brevo, Cal.com, WhatsApp), le branchement de Brevo pour l'email d'invitation (le CRM est en ligne, Cal.com et le Sheet sont branchés), prévenir Accueil Sénior Assistance. La première campagne peut partir du hub une fois le module Ads en production, préparée avec l'agent `media-buyer` (textes multiples, budget, critère de fin), qui fait ensuite les bilans à partir des alertes. En parallèle : coordonnées sur la fiche offre et CGV de prestation.
+Préparer la première campagne Meta, visée vers le 25 octobre. **Fait :** les 3 visuels du test (A marque, B prix, D avant / après avec la réalisation Accueil Sénior Assistance), post et story, produits par l'agent `createur-creas` (`livrables/creas-meta/`) ; leurs textes d'annonce déposés dans le hub par l'agent `media-buyer` le 21/10 (à la création : décocher sur B « Site complet 7 j » et « Sans effort de votre part », sur D le texte 3) ; le formulaire instantané « Kleak | Appel découverte | 2026-10 » créé le 21/10 et relié au CRM ; le module Ads en production. **Reste :** le script d'appel découverte et la fiche de RDV (`livrables/closing/`), la politique de confidentialité à mettre à jour (Brevo, Cal.com, WhatsApp), le branchement de Brevo pour l'email d'invitation (bloqué par le DMARC chez IONOS), prévenir Accueil Sénior Assistance. La campagne part du hub, préparée avec l'agent `media-buyer` (budget, critère de fin), qui fait ensuite les bilans à partir des alertes. En parallèle : coordonnées sur la fiche offre et CGV de prestation.
 
 ---
 
