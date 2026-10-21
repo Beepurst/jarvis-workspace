@@ -144,12 +144,14 @@ Points d'attention performance : …
 - **Animations** : une **recette à reproduire**, tirée de `resume.json.animations` et vérifiée
   sur `animation.jpg` (planche légendée du temps réel de chaque image). Par effet, dans l'ordre
   (`ordre`) : élément, effet, depuis → vers, déclencheur, délai, durée, et la cascade (`decalageMs`,
-  `cascades`) ; puis blocs collants (`colles`), boucles (sens, px/s), survols. Exemple : « Bloc du
+  `cascades`) ; puis blocs collants (`colles`) ; défilement lié (`defilement` : la ligne de `groupes`,
+  puis par élément chaque propriété `debut` → `fin` (angles et décalages carte par carte), `plage` en % de la section, `courbe`) ; boucles (sens, px/s, ou pour la 3D `axe`, `vitesse`, `perspective`,
+  `pasAngulaire`) ; survols. Chaque chiffre vient de `resume.json`, jamais d'une mesure faite à la main : une valeur
+  absente s'écrit « non chiffré » (`defilementNonMesure` : dis-le). Exemple : « Bloc du
   titre : fondu et glissement, opacity 0 et translateY 60px → opacity 1 et 0, à l'entrée dans
   l'écran, délai 100 ms, ≈ 950 ms (estimée) : compatible. » `dureeSource` « estimée » : écris « ≈ 450 ms
-  (estimée) ». Si la planche contredit la mesure, crois la
-  planche et dis-le. Chaque effet **compatible**, **à alléger** (écris la version allégée avec ses
-  valeurs : « fondu seul, translateY 20px, 400 ms, sans cascade ») ou **à proscrire**, selon
+  (estimée) ». Si la planche contredit la mesure, crois la planche et dis-le. Chaque effet **compatible**,
+  **à alléger** (écris la version allégée avec ses valeurs : « fondu seul, translateY 20px, 400 ms, sans cascade ») ou **à proscrire**, selon
   `livrables/process/checklist-qualite-site.md` section 9. À proscrire : mot par mot, apparition
   au-dessus de la ligne de flottaison (déclencheur `chargement`, `cachesAuChargementDansPremierEcran`
   > 0), parallaxe sur l'accroche, WebGL (`canvas` > 0, sauf demande explicite), vidéo de fond.

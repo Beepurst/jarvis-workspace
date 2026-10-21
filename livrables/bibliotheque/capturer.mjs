@@ -10,11 +10,15 @@
 //             sortie standard, et apercu.jpg (page entiere reduite, sections numerotees).
 // --section : capture.jpg (la section seule, JPEG, 4 Mo au plus), analyse.json (bureau et mobile, pour
 //             les cas de doute), vignette.jpg (800 px de large, qualite 60, pour verifier) et resume.json
-//             (ce que la fiche courte utilise, 4 Ko au plus), et animation.jpg : planche de 6 images de
+//             (ce que la fiche courte utilise, 5 Ko au plus), et animation.jpg : planche de 6 images de
 //             la section filmee dans une page neuve (entree dans l'ecran sur 2,5 s, ou entree puis
 //             25 a 100 % du defilement si elle est collante ou liee au defilement). resume.json.animations
 //             donne, en plus des compteurs, chaque effet mesure (element, effet, depuis, vers,
-//             declencheur, delaiMs, dureeMs, ordre), les cascades, les boucles et 4 survols au plus.
+//             declencheur, delaiMs, dureeMs, ordre), les cascades, les boucles et 4 survols au plus,
+//             puis animations.defilement : chaque element lie au defilement (transformation
+//             decomposee : translateX/Y/Z, rotate, rotateX/Y, scale, opacity, { debut, fin }, plage
+//             en % de la section, courbe) et un resume par groupe de freres ; les boucles mesurees
+//             defilement immobile gagnent axe, vitesse, perspective et pasAngulaire (anneau 3D).
 // --titre   : cherche la section dont un titre (h1 a h4) ou un texte de plus de 20 caracteres contient le
 //             texte donne (sans casse, sans accents). Sortie { n, premierTitre, autres? }, code 2 si absent.
 // --ecran   : repli quand une section ne s'isole pas : capture.jpg de l'ecran (1440 x 900) avec
@@ -1089,9 +1093,320 @@ function lireSurvol(role, avant, apres) {
   return { element: role, effet: k.length === 1 ? k[0] : `combinaison (${k.join(" + ")})`, depuis: depuis.slice(0, 3).join(" ; ").slice(0, 110), vers: vers.slice(0, 3).join(" ; ").slice(0, 110), declencheur: "survol", dureeMs: duree || null };
 }
 
+// ---------- defilement lie et boucles (transformations decomposees) ----------
+
+// Decompose la transformation calculee d'un element (matrix ou matrix3d, plus les proprietes CSS
+// translate, rotate et scale) : [translateX, translateY, translateZ, rotate, rotateX, rotateY,
+// scale, opacite, perspective portee par la transformation elle-meme (perspective(), 0 sinon)].
+// Injectee dans la page (window.__kleakDec).
+function decomposer(el) {
+  const cs = getComputedStyle(el);
+  let tx = 0, ty = 0, tz = 0, rz = 0, rx = 0, ry = 0, sc = 1, persp = 0;
+  const deg = (r) => (r * 180) / Math.PI;
+  if (cs.transform && cs.transform !== "none") {
+    const m = new DOMMatrixReadOnly(cs.transform);
+    tx = m.m41; ty = m.m42; tz = m.m43;
+    const w = Math.hypot(m.m14, m.m24, m.m34);
+    if (w > 1e-5) persp = Math.round(m.m44 / w);
+    if (m.is2D) { sc = Math.hypot(m.m11, m.m12); rz = deg(Math.atan2(m.m12, m.m11)); }
+    else {
+      const sx = Math.hypot(m.m11, m.m12, m.m13) || 1, sy = Math.hypot(m.m21, m.m22, m.m23) || 1, sz = Math.hypot(m.m31, m.m32, m.m33) || 1;
+      sc = sx;
+      const a13 = Math.max(-1, Math.min(1, m.m13 / sx));
+      ry = deg(Math.asin(-a13));
+      if (Math.abs(a13) < 0.9999) { rx = deg(Math.atan2(m.m23 / sy, m.m33 / sz)); rz = deg(Math.atan2(m.m12 / sx, m.m11 / sx)); }
+      else rz = deg(Math.atan2(-m.m21 / sy, m.m22 / sy));
+      // meme rotation ecrite autrement (rotateY au-dela de 90°) : on garde la forme sans rotateX ni rotate
+      if (Math.abs(rx) > 90 && Math.abs(rz) > 90) { rx -= 180 * Math.sign(rx); rz -= 180 * Math.sign(rz); ry = (ry >= 0 ? 180 : -180) - ry; }
+    }
+  }
+  if (cs.translate && cs.translate !== "none") { const p = cs.translate.split(" ").map(parseFloat); tx += p[0] || 0; ty += p[1] || 0; tz += p[2] || 0; }
+  if (cs.scale && cs.scale !== "none") sc *= parseFloat(cs.scale) || 1;
+  if (cs.rotate && cs.rotate !== "none") {
+    const p = cs.rotate.trim().split(/\s+/);
+    const brut = p[p.length - 1];
+    const a = parseFloat(brut) * (/rad$/.test(brut) ? 180 / Math.PI : /turn$/.test(brut) ? 360 : 1);
+    if (p.length === 1 || p[0] === "z") rz += a;
+    else if (p[0] === "x") rx += a;
+    else if (p[0] === "y") ry += a;
+    else if (p.length === 4) {
+      const v = p.slice(0, 3).map(Number);
+      const i = v.map(Math.abs).indexOf(Math.max(...v.map(Math.abs)));
+      const s = Math.sign(v[i]) * a;
+      if (i === 0) rx += s; else if (i === 1) ry += s; else rz += s;
+    }
+  }
+  const r1 = (v) => Math.round(v * 10) / 10;
+  return [Math.round(tx), Math.round(ty), Math.round(tz), r1(rz), r1(rx), r1(ry), +sc.toFixed(3), +parseFloat(cs.opacity).toFixed(2), persp];
+}
+
+// Marque (data-kleak-d) 40 elements de la section au plus pour la passe de defilement : d'abord les
+// elements suivis qui portent une transformation, puis les autres elements transformes de la section
+// (anneaux 3D, souvent sans taille), puis le reste des suivis. Rend leur role, leur famille (parent),
+// la perspective la plus proche (l'element ou un ancetre) et le preserve-3d.
+function preparerDefilement(n) {
+  const sec = document.querySelector(`[data-kleak-n="${n}"]`);
+  if (!sec) return null;
+  const transforme = (el) => {
+    const cs = getComputedStyle(el);
+    return (cs.transform !== "none" && cs.transform !== "matrix(1, 0, 0, 1, 0, 0)") || (cs.rotate && cs.rotate !== "none") || (cs.translate && cs.translate !== "none")
+      || (cs.scale && cs.scale !== "none") || /transform/.test(cs.willChange) || /transform|translate|rotate/.test(el.getAttribute("style") || "");
+  };
+  const suivis = [...sec.querySelectorAll("[data-kleak-a]")];
+  const autres = [...sec.querySelectorAll("*")].filter((el) => !el.hasAttribute("data-kleak-a") && !["SCRIPT", "STYLE", "path", "g", "BR"].includes(el.tagName) && getComputedStyle(el).display !== "none" && transforme(el));
+  const pris = [...new Set([...suivis.filter(transforme), ...autres, ...suivis])].slice(0, 40);
+  const familles = new Map();
+  return pris.map((el, d) => {
+    el.setAttribute("data-kleak-d", String(d));
+    let persp = null;
+    for (let p = el; p && p !== document.documentElement; p = p.parentElement) {
+      const v = getComputedStyle(p).perspective;
+      if (v && v !== "none") { persp = Math.round(parseFloat(v)); break; }
+    }
+    const parent = el.parentElement;
+    if (!familles.has(parent)) familles.set(parent, familles.size);
+    return {
+      d,
+      role: el.getAttribute("data-kleak-role") || (el.querySelector("img, picture, video") ? "bloc image" : "bloc"),
+      k: el.hasAttribute("data-kleak-a") ? Number(el.getAttribute("data-kleak-a")) : null,
+      famille: familles.get(parent),
+      perspective: persp,
+      preserve3d: getComputedStyle(el).transformStyle === "preserve-3d" || (!!parent && getComputedStyle(parent).transformStyle === "preserve-3d"),
+    };
+  });
+}
+
+// Etat decompose des elements marques data-kleak-d, dans l'ordre de leur numero, et l'heure.
+function etats3D() {
+  const v = [];
+  for (const el of document.querySelectorAll("[data-kleak-d]")) v[Number(el.getAttribute("data-kleak-d"))] = window.__kleakDec(el);
+  return { t: performance.now(), v };
+}
+
+// Anneau autour d'un element qui tourne : groupes d'au moins 3 freres (ses freres, puis ses
+// descendants sur 3 niveaux) avec, pour chacun, [rotateY, rayon = hypot(translateX, translateZ)].
+function anneauAutour(d) {
+  const el = document.querySelector(`[data-kleak-d="${d}"]`);
+  if (!el) return [];
+  const groupes = [];
+  if (el.parentElement && el.parentElement.children.length >= 3) groupes.push([...el.parentElement.children]);
+  const file = [[el, 0]];
+  let vus = 0;
+  while (file.length && vus++ < 400) {
+    const [e, p] = file.shift();
+    if (e.children.length >= 3) groupes.push([...e.children]);
+    if (p < 3) for (const c of e.children) file.push([c, p + 1]);
+  }
+  return groupes.slice(0, 8).map((g) => g.slice(0, 24).map((e) => { const s = window.__kleakDec(e); return [s[5], Math.round(Math.hypot(s[0], s[2]))]; }));
+}
+
+const PROPS3D = ["translateX", "translateY", "translateZ", "rotate", "rotateX", "rotateY", "scale", "opacity"];
+const TOL3D = [2, 2, 2, 1, 1, 1, 0.01, 0.03];
+const CALME3D = [0.5, 0.5, 0.5, 0.2, 0.2, 0.2, 0.002, 0.005];
+const estAngle = (p) => p >= 3 && p <= 5;
+// ecart de a vers b ; pour un angle, le plus court (un tour complet ne compte pas)
+const ecart3D = (p, a, b) => (estAngle(p) ? ((((b - a) % 360) + 540) % 360) - 180 : b - a);
+const unite3D = (p) => (estAngle(p) ? "°" : p <= 2 ? " px" : "");
+
+// Lit l'etat une fois les lisseurs de defilement (Lenis, Framer, Webflow IX2) poses : nouvelles
+// lectures toutes les 130 ms jusqu'a ce que rien ne bouge plus (hors elements qui bougent seuls),
+// 1,3 s au plus.
+async function lireStable(page, ignorer) {
+  await pause(220);
+  let avant = await page.evaluate(etats3D);
+  for (let i = 0; i < 8; i++) {
+    await pause(130);
+    const apres = await page.evaluate(etats3D);
+    const calme = apres.v.every((s, d) => ignorer.has(d) || !s || !avant.v[d] || s.slice(0, 8).every((x, p) => Math.abs(ecart3D(p, avant.v[d][p], x)) <= CALME3D[p]));
+    avant = apres;
+    if (calme) break;
+  }
+  return avant.v;
+}
+
+// Boucles : elements qui avancent a vitesse reguliere pendant que le defilement est immobile.
+// Un lisseur qui se pose ralentit (rapport des deux moities hors de 0,4 a 2,5) : pas une boucle.
+function detecterBoucles(meta, tenue) {
+  const boucles = new Map();
+  const duree = (tenue[tenue.length - 1].t - tenue[0].t) / 1000;
+  for (const x of meta) {
+    let mieux = null;
+    for (let p = 0; p < PROPS3D.length; p++) {
+      const pas = tenue.slice(1).map((s, i) => ecart3D(p, tenue[i].v[x.d][p], s.v[x.d][p]));
+      const total = pas.reduce((a, b) => a + b, 0);
+      if (Math.abs(total) <= TOL3D[p] * 2) continue;
+      if (pas.filter((v) => Math.sign(v) === Math.sign(total)).length < pas.length - 1) continue;
+      const moitie = Math.floor(pas.length / 2);
+      const v1 = pas.slice(0, moitie).reduce((a, b) => a + b, 0), v2 = pas.slice(pas.length - moitie).reduce((a, b) => a + b, 0);
+      if (!v1 || v2 / v1 < 0.4 || v2 / v1 > 2.5) continue;
+      const force = Math.abs(total) / TOL3D[p];
+      if (!mieux || force > mieux.force) mieux = { p, vitesse: total / duree, force };
+    }
+    if (mieux) boucles.set(x.d, mieux);
+  }
+  return boucles;
+}
+
+// Pas angulaire d'un anneau : angles distincts (3 au moins) ranges sur le tour, ecart median entre
+// voisins, si la plupart des ecarts lui ressemblent (3° pres).
+function pasAngulaire(angles) {
+  const u = [...new Set(angles.map((a) => Math.round(((a % 360) + 360) % 360) % 360))].sort((a, b) => a - b);
+  if (u.length < 3) return null;
+  const d = u.map((v, i) => (i ? v - u[i - 1] : v + 360 - u[u.length - 1]));
+  const m = mediane(d);
+  if (m < 3 || d.filter((x) => Math.abs(x - m) <= 3).length < u.length * 0.6) return null;
+  return { pas: m, n: u.length };
+}
+
+// Defilement lie : proprietes qui changent d'un pas de defilement a l'autre (3 pas au moins), qui
+// reviennent quand on remonte (sinon 5 pas au moins) et qui ne bougent pas defilement immobile.
+// pos : position de chaque lecture, en fraction de la traversee de la section.
+function lireDefilement({ meta, pos, pas, retour, bougent, course }) {
+  const N = pas.length - 1;
+  const pct = (i) => Math.round(pos[i] * 100);
+  const px = (i) => Math.round(pos[i] * course);
+  const arrondir = (p, v) => (p >= 6 ? +v.toFixed(2) : estAngle(p) ? Math.round(v * 10) / 10 : Math.round(v));
+  const bornes = (q) => {
+    const tol = TOL3D[q.p];
+    let a = 0; while (a < N && Math.abs(q.s[a + 1] - q.s[0]) <= tol) a++;
+    let b = N; while (b > 0 && Math.abs(q.s[b - 1] - q.s[N]) <= tol) b--;
+    return [a, Math.max(a, b)];
+  };
+  const elements = [];
+  for (const x of meta) {
+    if (bougent.has(x.d) || !pas.every((e) => e[x.d])) continue;
+    const props = [];
+    for (let p = 0; p < PROPS3D.length; p++) {
+      const s = [pas[0][x.d][p]]; // angles deroules d'un pas a l'autre
+      for (let i = 1; i <= N; i++) s.push(s[i - 1] + ecart3D(p, pas[i - 1][x.d][p], pas[i][x.d][p]));
+      const amp = Math.max(...s) - Math.min(...s);
+      if (amp <= TOL3D[p] * 2) continue;
+      props.push({ p, s, amp, actifs: s.slice(1).filter((v, i) => Math.abs(v - s[i]) > TOL3D[p] / 2).length, force: amp / TOL3D[p] });
+    }
+    if (!props.length) continue;
+    const main = props.reduce((a, b) => (b.force > a.force ? b : a));
+    const revient = Math.abs(ecart3D(main.p, pas[0][x.d][main.p], retour[x.d][main.p])) <= Math.max(TOL3D[main.p] * 2, main.amp * 0.25);
+    if (main.actifs < 3 || (!revient && main.actifs < 5)) continue;
+    let i0 = N, i1 = 0;
+    for (const q of props) { const [a, b] = bornes(q); i0 = Math.min(i0, a); i1 = Math.max(i1, b); }
+    const [a, b] = bornes(main);
+    const s = main.s;
+    let courbe;
+    if (Math.abs(s[N] - s[0]) < main.amp * 0.5) courbe = "aller-retour";
+    else if (b - a < 3) courbe = "brusque (moins de 3 mesures)";
+    else {
+      let dev = 0;
+      for (let i = a + 1; i < b; i++) dev += (s[i] - s[a]) / (s[b] - s[a]) - (pos[i] - pos[a]) / (pos[b] - pos[a]);
+      dev /= b - a - 1;
+      courbe = dev > 0.08 ? "ralentit" : dev < -0.08 ? "accélère" : "linéaire";
+    }
+    const o = { element: x.role, index: x.k ?? x.d };
+    for (const q of props) {
+      o[PROPS3D[q.p]] = { debut: arrondir(q.p, q.s[0]), fin: arrondir(q.p, q.s[N]) };
+      if (courbe === "aller-retour" && q === main) o[PROPS3D[q.p]].extreme = arrondir(q.p, Math.abs(Math.max(...s) - s[0]) > Math.abs(Math.min(...s) - s[0]) ? Math.max(...s) : Math.min(...s));
+    }
+    o.plage = `progression ${pct(i0)} % → ${pct(i1)} % de la section (${px(i0)} → ${px(i1)} px)`;
+    o.courbe = courbe;
+    const persp = x.perspective || pas[N][x.d][8];
+    if (persp && props.some((q) => q.p === 4 || q.p === 5 || q.p === 2)) o.perspective = `${persp} px`;
+    elements.push({ o, famille: x.famille, i0, i1, cle: props.map((q) => q.p).join(",") });
+  }
+  // resume par groupe de freres (meme parent, meme role, memes proprietes) : un eventail de cartes
+  const groupes = new Map();
+  for (const e of elements) {
+    const cle = `${e.famille}|${baseRole(e.o.element)}|${e.cle}`;
+    if (!groupes.has(cle)) groupes.set(cle, []);
+    groupes.get(cle).push(e);
+  }
+  const resumes = [];
+  for (const g of groupes.values()) {
+    if (g.length < 2) continue;
+    g.sort((x, y) => x.o.index - y.o.index);
+    const parties = g[0].cle.split(",").map(Number).map((p) => {
+      const nom = PROPS3D[p], u = unite3D(p);
+      const debuts = [...new Set(g.map((e) => e.o[nom].debut))];
+      const fins = g.map((e) => e.o[nom].fin);
+      let t = `${nom} de ${debuts.join(", ")}${u} à ${fins.join(", ")}${u}`;
+      const etage = fins.every((v, i) => !i || v > fins[i - 1]) || fins.every((v, i) => !i || v < fins[i - 1]);
+      if (g.length >= 3 && etage && Math.min(...fins) < 0 && Math.max(...fins) > 0) t += estAngle(p) ? " (éventail)" : " (écartées de part et d'autre)";
+      return t;
+    });
+    const courbes = g.map((e) => e.o.courbe);
+    const compte = (c) => courbes.filter((x) => x === c).length;
+    const courbe = [...courbes].sort((x, y) => compte(y) - compte(x))[0]; // la plus frequente
+    resumes.push(`${pluriel(g.length, baseRole(g[0].o.element))}, ${parties.join(", ")}, sur ${pct(Math.min(...g.map((e) => e.i0)))} → ${pct(Math.max(...g.map((e) => e.i1)))} % de la section, ${courbe}`);
+  }
+  return { groupes: resumes, elements: elements.map((e) => e.o) };
+}
+
+// Passe de defilement de la section, apres la mesure d'entree : defilement immobile (1,5 s, section
+// au milieu de l'ecran) pour reperer ce qui bouge avec le temps (boucles), puis 12 pas du haut de la
+// section au bas de l'ecran jusqu'a son bas en haut de l'ecran, puis retour au depart.
+async function mesurerDefilement(page, m, prep, sortie) {
+  const vh = BUREAU.height;
+  await page.evaluate((s) => { window.__kleakDec = new Function(`return (${s})`)(); }, decomposer.toString());
+  const meta = await page.evaluate(preparerDefilement, m);
+  if (!meta || !meta.length) return null;
+  const maxY = await page.evaluate(() => document.documentElement.scrollHeight - window.innerHeight);
+  const aller = (y) => page.evaluate((v) => window.scrollTo(0, v), Math.round(Math.max(0, Math.min(maxY, y))));
+  await aller(prep.haut + prep.hauteur / 2 - vh / 2);
+  await lireStable(page, new Set());
+  const tenue = [];
+  for (let i = 0; i < 7; i++) { if (i) await pause(250); tenue.push(await page.evaluate(etats3D)); }
+  const bougent = new Set(meta.filter((x) => tenue.every((s) => s.v[x.d]) && tenue.some((s) => s.v[x.d].slice(0, 8).some((v, p) => Math.abs(ecart3D(p, tenue[0].v[x.d][p], v)) > TOL3D[p]))).map((x) => x.d));
+  const boucles = detecterBoucles(meta.filter((x) => bougent.has(x.d)), tenue);
+  const debut = Math.max(0, prep.haut - vh), fin = Math.min(maxY, prep.haut + prep.hauteur);
+  const course = Math.max(0, fin - debut);
+  let pos = [], pas = [];
+  const lirePos = async (f) => { await aller(debut + course * f); pos.push(f); pas.push(await lireStable(page, bougent)); };
+  if (course > 50) {
+    for (let i = 0; i <= 12; i++) await lirePos(i / 12);
+    // affinage : les 4 intervalles ou le plus d'elements changent, recoupes en 4 (un eventail qui
+    // s'ouvre sur 2 pas donne alors une vraie courbe)
+    const change = (a, b) => meta.filter((x) => !bougent.has(x.d) && a[x.d] && b[x.d] && a[x.d].slice(0, 8).some((v, p) => Math.abs(ecart3D(p, v, b[x.d][p])) > TOL3D[p])).length;
+    const inter = pas.slice(1).map((s, i) => [i, change(pas[i], s)]).filter(([, c]) => c > 0).sort((x, y) => y[1] - x[1]).slice(0, 4).map(([i]) => i);
+    for (const i of inter.sort((x, y) => x - y)) for (const q of [1, 2, 3]) await lirePos((i + q / 4) / 12);
+    const ordre = pos.map((f, i) => i).sort((x, y) => pos[x] - pos[y]);
+    pos = ordre.map((i) => pos[i]);
+    pas = ordre.map((i) => pas[i]);
+  }
+  await aller(debut);
+  const retour = await lireStable(page, bougent);
+  if (process.env.KLEAK_DEBUG) writeFileSync(join(sortie, "defilement.json"), JSON.stringify({ meta, tenue, pos, pas, retour, debut, course }));
+  const lu = pas.length ? lireDefilement({ meta, pos, pas, retour, bougent, course }) : { groupes: [], elements: [] };
+
+  const sortieBoucles = [];
+  const vus = new Set();
+  for (const [d, b] of boucles) {
+    if (vus.has(d)) continue;
+    const x = meta[d];
+    const freres = [...boucles].filter(([e, c]) => !vus.has(e) && meta[e].famille === x.famille && c.p === b.p && Math.abs(c.vitesse - b.vitesse) <= Math.abs(b.vitesse) * 0.2).map(([e]) => e);
+    freres.forEach((e) => vus.add(e));
+    const v = Math.round(b.vitesse * (b.p >= 6 ? 100 : 1)) / (b.p >= 6 ? 100 : 1);
+    const o = { element: freres.length > 1 ? pluriel(freres.length, baseRole(x.role)) : x.role, axe: PROPS3D[b.p], vitesse: `${v > 0 ? "+" : ""}${v}${unite3D(b.p).trim() || ""}/s` };
+    if (x.perspective) o.perspective = `${x.perspective} px`;
+    else if (tenue[0].v[d][8]) o.perspective = `${tenue[0].v[d][8]} px (perspective() dans la transformation)`;
+    if (x.preserve3d) o.preserve3d = true;
+    if (estAngle(b.p)) {
+      let anneau = null;
+      if (freres.length >= 3 && b.p === 5) anneau = pasAngulaire(freres.map((e) => tenue[0].v[e][5]));
+      if (!anneau) {
+        for (const g of await page.evaluate(anneauAutour, d)) {
+          anneau = pasAngulaire(g.map((c) => c[0]));
+          if (anneau) { const r = mediane(g.map((c) => c[1])); if (r > 5) anneau.rayon = r; break; }
+        }
+      }
+      if (anneau) { o.pasAngulaire = `${anneau.pas}°`; o.elementsSurLAnneau = anneau.n; if (anneau.rayon) o.rayon = `${anneau.rayon} px`; }
+    }
+    sortieBoucles.push(o);
+  }
+  return { defilement: lu.elements.length ? lu : null, boucles: sortieBoucles };
+}
+
 // Filme la section dans une page neuve (rien n'a encore ete joue) : etat avant, arrivee par le bas
 // de l'ecran, 6 images sur 2,5 s (ou entree puis 25 a 100 % du defilement si la section est
-// collante), puis survols. Ecrit animation.jpg et rend { animations, detail }.
+// collante), puis passe de defilement (defilement lie, boucles), puis survols. Ecrit animation.jpg
+// et rend { animations, detail }.
 async function mesurerAnimations(navigateur, url, info, n, sortie) {
   const vh = BUREAU.height;
   const auChargement = info.haut < vh * 0.85;
@@ -1167,6 +1482,25 @@ async function mesurerAnimations(navigateur, url, info, n, sortie) {
     const filmeEnDefilement = lieAuDefilement || lu.entrees.some((e) => e.declencheur === "défilement lié");
     if (filmeEnDefilement) images.splice(0, images.length, images[0], images[images.length - 1], ...imagesTraversee);
 
+    // defilement lie (valeurs decomposees) et boucles mesurees defilement immobile
+    let defil = null;
+    try {
+      defil = await mesurerDefilement(page, m, prep, sortie);
+    } catch (e) {
+      defil = { erreur: `mesure du défilement impossible : ${e.message.split("\n")[0].slice(0, 80)}` };
+    }
+    for (const b of defil?.boucles || []) {
+      // meme element deja vu par la mesure d'entree (ou bandeau a la meme vitesse) : on complete
+      const v = parseFloat(b.vitesse);
+      const deja = lu.boucles.find((x) => x.element === b.element || (/^translate[XY]$/.test(b.axe) && x.vitessePxS && Math.abs(x.vitessePxS - Math.abs(v)) <= Math.abs(v) * 0.3));
+      if (deja) {
+        Object.assign(deja, b, { element: deja.element });
+        // une rotation 3D deplace aussi la boite de l'element : la vitesse en px/s n'a plus de sens
+        if (/^rotate/.test(b.axe)) { deja.direction = `rotation continue (${b.axe})`; delete deja.vitessePxS; }
+      }
+      else lu.boucles.push({ ...b, direction: "boucle, défilement immobile" });
+    }
+
     // survols
     const survols = [];
     const ks = await page.evaluate(choisirSurvols, m);
@@ -1210,6 +1544,11 @@ async function mesurerAnimations(navigateur, url, info, n, sortie) {
       boucles: lu.boucles,
       survols,
     };
+    if (defil?.defilement) {
+      animations.defilement = defil.defilement;
+      if (!animations.defilement.groupes.length) delete animations.defilement.groupes;
+    }
+    if (defil?.erreur) animations.defilementNonMesure = defil.erreur;
     if (!lu.entrees.length && !lu.boucles.length) animations.aucuneEntree = true;
     return { animations, fichier: planche, detail: lu.detail };
   } finally {
@@ -1260,15 +1599,23 @@ const compacter = (v) => {
 };
 
 // Animations du resume : compteurs de la page au repos, puis la mesure filmee, coupee pour que
-// resume.json reste sous 4 Ko (entrees les plus tardives retirees d'abord).
+// resume.json reste sous 5 Ko (elements de defilement deja resumes, puis entrees les plus tardives).
 function animationsResume(compteurs, mesure, budget) {
   const a = { ...(compacter(compteurs) || {}), ...(mesure || {}) };
   for (const cle of ["entrees", "survols", "boucles", "cascades", "colles"]) if (Array.isArray(a[cle]) && !a[cle].length) delete a[cle];
   if (a.entrees) a.entrees = a.entrees.slice(0, 10);
   if (a.boucles) a.boucles = a.boucles.slice(0, 3);
   if (a.cascades) a.cascades = a.cascades.slice(0, 4);
+  if (a.defilement) {
+    a.defilement = { ...a.defilement, elements: a.defilement.elements.slice(0, 12) };
+    if (a.defilement.groupes) a.defilement.groupes = a.defilement.groupes.slice(0, 3);
+  }
+  const couperDefilement = () => { a.defilement.elements.pop(); a.defilement.elementsCoupes = (a.defilement.elementsCoupes || 0) + 1; };
   while (Buffer.byteLength(JSON.stringify(a)) > budget) {
-    if (a.entrees?.length > 3) { a.entrees.pop(); a.entreesCoupees = (a.entreesCoupees || 0) + 1; }
+    // elements d'un groupe deja resume (ses valeurs sont dans groupes) : retires en premier
+    if (a.defilement?.groupes && a.defilement.elements.length > 4) couperDefilement();
+    else if (a.entrees?.length > 3) { a.entrees.pop(); a.entreesCoupees = (a.entreesCoupees || 0) + 1; }
+    else if (a.defilement?.elements.length > 2) couperDefilement();
     else if (a.survols?.length > 1) a.survols.pop();
     else if (a.transitions?.length > 2) a.transitions.pop();
     else if (a.animationsCss?.length > 2) a.animationsCss.pop();
@@ -1341,7 +1688,7 @@ function construireResume({ info, bureau, mobile, blocsBureau, blocsMobile, aver
     },
   };
   if (avertissements.length) resume.avertissements = avertissements.map((a) => a.slice(0, 160));
-  resume.animations = animationsResume(bureau.animations, mesure, 4000 - Buffer.byteLength(JSON.stringify(resume)) - 50);
+  resume.animations = animationsResume(bureau.animations, mesure, 5000 - Buffer.byteLength(JSON.stringify(resume)) - 50);
   return resume;
 }
 
