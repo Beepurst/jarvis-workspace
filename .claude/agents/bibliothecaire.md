@@ -119,9 +119,9 @@ d'Edgar, l'origine et les épingles.
 - Capture PNG, JPEG ou WebP, 4 Mo au plus. Sans capture fiable, supprime `section/capture.jpg` et
   dis-le.
 
-## Fiche technique : 6 rubriques, 230 mots au plus
+## Fiche technique : 6 rubriques, 230 mots de contenu au plus
 
-Compte avant de déposer : `wc -w fiche.txt` doit donner 260 au plus (titres compris). `deposer.sh` refuse au-delà (code 4) sans rien envoyer : raccourcis et relance, jamais de second dépôt pour corriger la longueur.
+Compte avant de déposer : `wc -w fiche.txt` compte aussi les titres, il doit donner 260 au plus. `deposer.sh` refuse au-delà (code 4) sans rien envoyer : raccourcis et relance, jamais de second dépôt pour corriger la longueur.
 
 Les autres rubriques restent dans 180 mots ; les 50 de plus vont tous aux Animations.
 
@@ -145,8 +145,8 @@ Points d'attention performance : …
   sur `animation.jpg` (planche légendée du temps réel de chaque image). Par effet, dans l'ordre
   (`ordre`) : élément, effet, depuis → vers, déclencheur, délai, durée, et la cascade (`decalageMs`,
   `cascades`) ; puis blocs collants (`colles`) ; défilement lié (`defilement` : la ligne de `groupes`,
-  puis par élément chaque propriété `debut` → `fin` (angles et décalages carte par carte), `plage` en % de la section, `courbe`) ; boucles (sens, px/s, ou pour la 3D `axe`, `vitesse`, `perspective`,
-  `pasAngulaire`) ; survols. Chaque chiffre vient de `resume.json`, jamais d'une mesure faite à la main : une valeur
+  puis par élément chaque propriété `debut` → `fin` (et `extreme` si la courbe fait aller-retour), `plage` en % de la section, `courbe`, `perspective`) ; boucles (sens, px/s, ou pour la 3D `axe`, `vitesse`, `perspective`,
+  `pasAngulaire` ; `type` aller-retour : propriété, amplitude, période) ; survols. `elementsCoupes` : des éléments manquent, écris le groupe. Chaque chiffre vient de `resume.json`, jamais d'une mesure faite à la main : une valeur
   absente s'écrit « non chiffré » (`defilementNonMesure` : dis-le). Exemple : « Bloc du
   titre : fondu et glissement, opacity 0 et translateY 60px → opacity 1 et 0, à l'entrée dans
   l'écran, délai 100 ms, ≈ 950 ms (estimée) : compatible. » `dureeSource` « estimée » : écris « ≈ 450 ms

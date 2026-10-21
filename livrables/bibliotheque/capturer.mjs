@@ -24,6 +24,9 @@
 // --ecran   : repli quand une section ne s'isole pas : capture.jpg de l'ecran (1440 x 900) avec
 //             son haut a <haut> px du haut de la page. Pas d'analyse.
 //
+// --verifier-decomposition (sans URL) : controle la decomposition des transformations sur des
+//             matrices de synthese, code 1 si une valeur est fausse.
+//
 // Codes de sortie : 0 succes, 1 erreur inattendue, 2 section introuvable, 3 page inaccessible.
 // Playwright est charge depuis livrables/creas-meta/node_modules (aucune installation ici).
 
@@ -1097,27 +1100,48 @@ function lireSurvol(role, avant, apres) {
 
 // Decompose la transformation calculee d'un element (matrix ou matrix3d, plus les proprietes CSS
 // translate, rotate et scale) : [translateX, translateY, translateZ, rotate, rotateX, rotateY,
-// scale, opacite, perspective portee par la transformation elle-meme (perspective(), 0 sinon)].
+// scale, opacite, perspective portee par la transformation (perspective(), 0 sinon), ordre des
+// rotations (0 : rotate rotateY rotateX, 1 : rotateX rotateY rotate, celui de Framer), perspective
+// a verifier (1 : translateZ place avant perspective(), valeur incertaine)].
+// Sans element, decompose la matrice donnee ({ m11..m44, is2D }) : sert a --verifier-decomposition.
 // Injectee dans la page (window.__kleakDec).
-function decomposer(el) {
-  const cs = getComputedStyle(el);
-  let tx = 0, ty = 0, tz = 0, rz = 0, rx = 0, ry = 0, sc = 1, persp = 0;
+function decomposer(el, matrice) {
+  const cs = el ? getComputedStyle(el) : { transform: "matrice", opacity: "1" };
+  let tx = 0, ty = 0, tz = 0, rz = 0, rx = 0, ry = 0, sc = 1, persp = 0, ordre = 0, perspDouteuse = 0;
   const deg = (r) => (r * 180) / Math.PI;
   if (cs.transform && cs.transform !== "none") {
-    const m = new DOMMatrixReadOnly(cs.transform);
+    const m = el ? new DOMMatrixReadOnly(cs.transform) : matrice;
     tx = m.m41; ty = m.m42; tz = m.m43;
-    const w = Math.hypot(m.m14, m.m24, m.m34);
-    if (w > 1e-5) persp = Math.round(m.m44 / w);
     if (m.is2D) { sc = Math.hypot(m.m11, m.m12); rz = deg(Math.atan2(m.m12, m.m11)); }
     else {
       const sx = Math.hypot(m.m11, m.m12, m.m13) || 1, sy = Math.hypot(m.m21, m.m22, m.m23) || 1, sz = Math.hypot(m.m31, m.m32, m.m33) || 1;
       sc = sx;
-      const a13 = Math.max(-1, Math.min(1, m.m13 / sx));
-      ry = deg(Math.asin(-a13));
-      if (Math.abs(a13) < 0.9999) { rx = deg(Math.atan2(m.m23 / sy, m.m33 / sz)); rz = deg(Math.atan2(m.m12 / sx, m.m11 / sx)); }
-      else rz = deg(Math.atan2(-m.m21 / sy, m.m22 / sy));
+      // R[ligne][colonne] de la rotation seule (colonnes divisees par leur echelle)
+      const R = [[m.m11 / sx, m.m21 / sy, m.m31 / sz], [m.m12 / sx, m.m22 / sy, m.m32 / sz], [m.m13 / sx, m.m23 / sy, m.m33 / sz]];
+      const lim = (v) => Math.max(-1, Math.min(1, v));
+      // deux ordres d'ecriture possibles, chacun exact : on garde celui qui donne la matrice, puis le
+      // moins de rotate (rotateX(30) rotateY(40) de Framer ne devient pas trois angles inventes)
+      const zyx = Math.abs(R[2][0]) < 0.9999 ? [Math.atan2(R[2][1], R[2][2]), Math.asin(lim(-R[2][0])), Math.atan2(R[1][0], R[0][0])] : [0, Math.asin(lim(-R[2][0])), Math.atan2(-R[0][1], R[1][1])];
+      const xyz = Math.abs(R[0][2]) < 0.9999 ? [Math.atan2(-R[1][2], R[2][2]), Math.asin(lim(R[0][2])), Math.atan2(-R[0][1], R[0][0])] : [0, Math.asin(lim(R[0][2])), Math.atan2(R[1][0], R[1][1])];
+      const rot = (axe, a) => {
+        const c = Math.cos(a), s = Math.sin(a);
+        return axe === 0 ? [[1, 0, 0], [0, c, -s], [0, s, c]] : axe === 1 ? [[c, 0, s], [0, 1, 0], [-s, 0, c]] : [[c, -s, 0], [s, c, 0], [0, 0, 1]];
+      };
+      const mul = (A, B) => A.map((l) => [0, 1, 2].map((j) => l[0] * B[0][j] + l[1] * B[1][j] + l[2] * B[2][j]));
+      const erreur = (Q) => Q.reduce((e, l, i) => e + l.reduce((f, v, j) => f + Math.abs(v - R[i][j]), 0), 0);
+      const eA = erreur(mul(mul(rot(2, zyx[2]), rot(1, zyx[1])), rot(0, zyx[0])));
+      const eB = erreur(mul(mul(rot(0, xyz[0]), rot(1, xyz[1])), rot(2, xyz[2])));
+      ordre = eB < eA - 1e-3 || (Math.abs(eB - eA) <= 1e-3 && Math.abs(xyz[2]) < Math.abs(zyx[2]) - 1e-3) ? 1 : 0;
+      [rx, ry, rz] = (ordre ? xyz : zyx).map(deg);
       // meme rotation ecrite autrement (rotateY au-dela de 90°) : on garde la forme sans rotateX ni rotate
       if (Math.abs(rx) > 90 && Math.abs(rz) > 90) { rx -= 180 * Math.sign(rx); rz -= 180 * Math.sign(rz); ry = (ry >= 0 ? 180 : -180) - ry; }
+      // perspective(d) en tete : 4e ligne = -(3e ligne de la rotation) x echelle / d, quel que soit le
+      // translateZ ; m44 doit alors valoir 1 - translateZ / d, sinon (translateZ avant perspective) : a verifier
+      const w = Math.hypot(m.m14, m.m24, m.m34);
+      if (w > 1e-6) {
+        persp = Math.round(sc / w);
+        if (Math.abs(m.m44 - (1 - tz / persp)) > 0.02) perspDouteuse = 1;
+      }
     }
   }
   if (cs.translate && cs.translate !== "none") { const p = cs.translate.split(" ").map(parseFloat); tx += p[0] || 0; ty += p[1] || 0; tz += p[2] || 0; }
@@ -1137,7 +1161,7 @@ function decomposer(el) {
     }
   }
   const r1 = (v) => Math.round(v * 10) / 10;
-  return [Math.round(tx), Math.round(ty), Math.round(tz), r1(rz), r1(rx), r1(ry), +sc.toFixed(3), +parseFloat(cs.opacity).toFixed(2), persp];
+  return [Math.round(tx), Math.round(ty), Math.round(tz), r1(rz), r1(rx), r1(ry), +sc.toFixed(3), +parseFloat(cs.opacity).toFixed(2), persp, ordre, perspDouteuse];
 }
 
 // Marque (data-kleak-d) 40 elements de la section au plus pour la passe de defilement : d'abord les
@@ -1207,6 +1231,9 @@ const estAngle = (p) => p >= 3 && p <= 5;
 // ecart de a vers b ; pour un angle, le plus court (un tour complet ne compte pas)
 const ecart3D = (p, a, b) => (estAngle(p) ? ((((b - a) % 360) + 540) % 360) - 180 : b - a);
 const unite3D = (p) => (estAngle(p) ? "°" : p <= 2 ? " px" : "");
+const ORDRES3D = ["rotate rotateY rotateX", "rotateX rotateY rotate"];
+// perspective d'un element : propriete CSS (element ou ancetre), sinon perspective() de sa matrice
+const textePerspective = (x, etat) => (x.perspective ? `${x.perspective} px` : etat[8] ? `${etat[8]} px (perspective() dans la transformation${etat[10] ? ", à vérifier : translateZ avant, angles faussés" : ""})` : null);
 
 // Lit l'etat une fois les lisseurs de defilement (Lenis, Framer, Webflow IX2) poses : nouvelles
 // lectures toutes les 130 ms jusqu'a ce que rien ne bouge plus (hors elements qui bougent seuls),
@@ -1225,7 +1252,7 @@ async function lireStable(page, ignorer) {
 }
 
 // Boucles : elements qui avancent a vitesse reguliere pendant que le defilement est immobile.
-// Un lisseur qui se pose ralentit (rapport des deux moities hors de 0,4 a 2,5) : pas une boucle.
+// Un lisseur qui se pose ralentit (rapport des deux moities hors de 0,6 a 1,6) : pas une boucle.
 function detecterBoucles(meta, tenue) {
   const boucles = new Map();
   const duree = (tenue[tenue.length - 1].t - tenue[0].t) / 1000;
@@ -1238,13 +1265,47 @@ function detecterBoucles(meta, tenue) {
       if (pas.filter((v) => Math.sign(v) === Math.sign(total)).length < pas.length - 1) continue;
       const moitie = Math.floor(pas.length / 2);
       const v1 = pas.slice(0, moitie).reduce((a, b) => a + b, 0), v2 = pas.slice(pas.length - moitie).reduce((a, b) => a + b, 0);
-      if (!v1 || v2 / v1 < 0.4 || v2 / v1 > 2.5) continue;
+      if (!v1 || v2 / v1 < 0.6 || v2 / v1 > 1.6) continue;
       const force = Math.abs(total) / TOL3D[p];
       if (!mieux || force > mieux.force) mieux = { p, vitesse: total / duree, force };
     }
     if (mieux) boucles.set(x.d, mieux);
   }
   return boucles;
+}
+
+// Mouvements qui bougent seuls sans avancer regulierement (flottement, pulsation) : propriete qui
+// bouge le plus, amplitude, periode (deux fois l'ecart median entre demi-tours), ou « irrégulier ».
+function lireAllersRetours(meta, lectures) {
+  const sortie = [];
+  for (const x of meta) {
+    const serie = lectures.filter((l) => l.v[x.d]);
+    if (serie.length < 5) continue;
+    let mieux = null;
+    for (let p = 0; p < PROPS3D.length; p++) {
+      const v = [serie[0].v[x.d][p]];
+      for (let i = 1; i < serie.length; i++) v.push(v[i - 1] + ecart3D(p, serie[i - 1].v[x.d][p], serie[i].v[x.d][p]));
+      const amp = Math.max(...v) - Math.min(...v);
+      if (amp <= TOL3D[p] * 2 || (mieux && amp / TOL3D[p] <= mieux.force)) continue;
+      const tours = [];
+      let sens = 0;
+      for (let i = 1; i < v.length; i++) {
+        const dv = v[i] - v[i - 1];
+        if (Math.abs(dv) < TOL3D[p] / 4) continue;
+        if (sens && Math.sign(dv) !== sens) tours.push(serie[i - 1].t);
+        sens = Math.sign(dv);
+      }
+      mieux = { p, amp, force: amp / TOL3D[p], tours };
+    }
+    if (!mieux) continue;
+    const ecarts = mieux.tours.slice(1).map((t, i) => t - mieux.tours[i]);
+    const duree = (serie[serie.length - 1].t - serie[0].t) / 1000;
+    const amplitude = `${mieux.p >= 6 ? +mieux.amp.toFixed(2) : Math.round(mieux.amp)}${unite3D(mieux.p)}`;
+    sortie.push({ x, p: mieux.p, o: mieux.tours.length
+      ? { type: "aller-retour", propriete: PROPS3D[mieux.p], amplitude, periode: ecarts.length ? `≈ ${((2 * mediane(ecarts)) / 1000).toFixed(1).replace(".", ",")} s` : `plus de ${duree.toFixed(0)} s` }
+      : { type: "irrégulier", propriete: PROPS3D[mieux.p], amplitude } });
+  }
+  return sortie;
 }
 
 // Pas angulaire d'un anneau : angles distincts (3 au moins) ranges sur le tour, ecart median entre
@@ -1307,8 +1368,9 @@ function lireDefilement({ meta, pos, pas, retour, bougent, course }) {
     }
     o.plage = `progression ${pct(i0)} % → ${pct(i1)} % de la section (${px(i0)} → ${px(i1)} px)`;
     o.courbe = courbe;
-    const persp = x.perspective || pas[N][x.d][8];
-    if (persp && props.some((q) => q.p === 4 || q.p === 5 || q.p === 2)) o.perspective = `${persp} px`;
+    const persp = textePerspective(x, pas[N][x.d]);
+    if (persp && props.some((q) => q.p === 4 || q.p === 5 || q.p === 2)) o.perspective = persp;
+    if (props.filter((q) => estAngle(q.p)).length >= 2) o.ordre = ORDRES3D[pas[N][x.d][9]];
     elements.push({ o, famille: x.famille, i0, i1, cle: props.map((q) => q.p).join(",") });
   }
   // resume par groupe de freres (meme parent, meme role, memes proprietes) : un eventail de cartes
@@ -1342,19 +1404,32 @@ function lireDefilement({ meta, pos, pas, retour, bougent, course }) {
 // Passe de defilement de la section, apres la mesure d'entree : defilement immobile (1,5 s, section
 // au milieu de l'ecran) pour reperer ce qui bouge avec le temps (boucles), puis 12 pas du haut de la
 // section au bas de l'ecran jusqu'a son bas en haut de l'ecran, puis retour au depart.
-async function mesurerDefilement(page, m, prep, sortie) {
+async function mesurerDefilement(page, m, prep, sortie, garde = {}) {
   const vh = BUREAU.height;
   await page.evaluate((s) => { window.__kleakDec = new Function(`return (${s})`)(); }, decomposer.toString());
   const meta = await page.evaluate(preparerDefilement, m);
   if (!meta || !meta.length) return null;
   const maxY = await page.evaluate(() => document.documentElement.scrollHeight - window.innerHeight);
-  const aller = (y) => page.evaluate((v) => window.scrollTo(0, v), Math.round(Math.max(0, Math.min(maxY, y))));
+  const aller = (y) => {
+    if (garde.stop) throw new Error("temps dépassé");
+    return page.evaluate((v) => window.scrollTo(0, v), Math.round(Math.max(0, Math.min(maxY, y))));
+  };
   await aller(prep.haut + prep.hauteur / 2 - vh / 2);
   await lireStable(page, new Set());
   const tenue = [];
   for (let i = 0; i < 7; i++) { if (i) await pause(250); tenue.push(await page.evaluate(etats3D)); }
-  const bougent = new Set(meta.filter((x) => tenue.every((s) => s.v[x.d]) && tenue.some((s) => s.v[x.d].slice(0, 8).some((v, p) => Math.abs(ecart3D(p, tenue[0].v[x.d][p], v)) > TOL3D[p]))).map((x) => x.d));
+  // bouge seul : mouvement apres les 2 premieres lectures (avant, un lisseur peut encore se poser)
+  const fin2 = tenue.slice(2);
+  const bougent = new Set(meta.filter((x) => tenue.every((s) => s.v[x.d]) && fin2.some((s) => s.v[x.d].slice(0, 8).some((v, p) => Math.abs(ecart3D(p, fin2[0].v[x.d][p], v)) > TOL3D[p]))).map((x) => x.d));
   const boucles = detecterBoucles(meta.filter((x) => bougent.has(x.d)), tenue);
+  // le reste de ce qui bouge seul (flottement, pulsation) : 2,5 s de plus, une lecture toutes les 100 ms
+  const autres = meta.filter((x) => bougent.has(x.d) && !boucles.has(x.d));
+  const allersRetours = [];
+  if (autres.length) {
+    const serie = tenue.slice();
+    for (let i = 0; i < 25; i++) { await pause(100); serie.push(await page.evaluate(etats3D)); }
+    allersRetours.push(...lireAllersRetours(autres, serie));
+  }
   const debut = Math.max(0, prep.haut - vh), fin = Math.min(maxY, prep.haut + prep.hauteur);
   const course = Math.max(0, fin - debut);
   let pos = [], pas = [];
@@ -1384,8 +1459,9 @@ async function mesurerDefilement(page, m, prep, sortie) {
     freres.forEach((e) => vus.add(e));
     const v = Math.round(b.vitesse * (b.p >= 6 ? 100 : 1)) / (b.p >= 6 ? 100 : 1);
     const o = { element: freres.length > 1 ? pluriel(freres.length, baseRole(x.role)) : x.role, axe: PROPS3D[b.p], vitesse: `${v > 0 ? "+" : ""}${v}${unite3D(b.p).trim() || ""}/s` };
-    if (x.perspective) o.perspective = `${x.perspective} px`;
-    else if (tenue[0].v[d][8]) o.perspective = `${tenue[0].v[d][8]} px (perspective() dans la transformation)`;
+    const persp = textePerspective(x, tenue[0].v[d]);
+    if (persp) o.perspective = persp;
+    if (estAngle(b.p) && [3, 4, 5].filter((p) => Math.abs(tenue[0].v[d][p]) > 0.5).length >= 2) o.ordre = ORDRES3D[tenue[0].v[d][9]];
     if (x.preserve3d) o.preserve3d = true;
     if (estAngle(b.p)) {
       let anneau = null;
@@ -1400,6 +1476,14 @@ async function mesurerDefilement(page, m, prep, sortie) {
     }
     sortieBoucles.push(o);
   }
+  // allers-retours : un par groupe de freres (meme parent, meme role, meme propriete)
+  const parGroupe = new Map();
+  for (const a of allersRetours) {
+    const cle = `${a.x.famille}|${baseRole(a.x.role)}|${a.p}|${a.o.type}`;
+    if (!parGroupe.has(cle)) parGroupe.set(cle, []);
+    parGroupe.get(cle).push(a);
+  }
+  for (const g of parGroupe.values()) sortieBoucles.push({ element: g.length > 1 ? pluriel(g.length, baseRole(g[0].x.role)) : g[0].x.role, ...g[0].o });
   return { defilement: lu.elements.length ? lu : null, boucles: sortieBoucles };
 }
 
@@ -1484,10 +1568,17 @@ async function mesurerAnimations(navigateur, url, info, n, sortie) {
 
     // defilement lie (valeurs decomposees) et boucles mesurees defilement immobile
     let defil = null;
+    const garde = { stop: false };
+    let minuteur;
+    const mesure = mesurerDefilement(page, m, prep, sortie, garde);
     try {
-      defil = await mesurerDefilement(page, m, prep, sortie);
+      defil = await Promise.race([mesure, new Promise((_, non) => { minuteur = setTimeout(() => non(new Error("arrêtée après 45 s")), 45000); })]);
     } catch (e) {
+      garde.stop = true;
+      await mesure.catch(() => {}); // s'arrete au pas suivant : la page est libre pour les survols
       defil = { erreur: `mesure du défilement impossible : ${e.message.split("\n")[0].slice(0, 80)}` };
+    } finally {
+      clearTimeout(minuteur);
     }
     for (const b of defil?.boucles || []) {
       // meme element deja vu par la mesure d'entree (ou bandeau a la meme vitesse) : on complete
@@ -1623,6 +1714,12 @@ function animationsResume(compteurs, mesure, budget) {
     else if (a.cascades?.length > 1) a.cascades.pop();
     else if (a.boucles?.length > 1) a.boucles.pop();
     else if (a.entrees?.length > 1) { a.entrees.pop(); a.entreesCoupees = (a.entreesCoupees || 0) + 1; }
+    else break;
+  }
+  // dernier recours : resumes de groupes, puis le compteur des elements coupes
+  while (Buffer.byteLength(JSON.stringify(a)) > budget && a.defilement) {
+    if (a.defilement.groupes?.length) { a.defilement.groupes.pop(); if (!a.defilement.groupes.length) delete a.defilement.groupes; }
+    else if (a.defilement.elementsCoupes) delete a.defilement.elementsCoupes;
     else break;
   }
   return a;
@@ -1853,7 +1950,52 @@ async function capturerEcran(navigateur, args) {
 
 // ---------- principal ----------
 
+// --verifier-decomposition : decompose des matrices de synthese et compare aux valeurs ecrites
+// (code 0 si tout est exact a 0,05 pres, 1 sinon). Aucun navigateur.
+function verifierDecomposition() {
+  const rad = (d) => (d * Math.PI) / 180;
+  const I = () => [[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]];
+  const f = {
+    rotateX: (a) => { const c = Math.cos(rad(a)), s = Math.sin(rad(a)); return [[1, 0, 0, 0], [0, c, -s, 0], [0, s, c, 0], [0, 0, 0, 1]]; },
+    rotateY: (a) => { const c = Math.cos(rad(a)), s = Math.sin(rad(a)); return [[c, 0, s, 0], [0, 1, 0, 0], [-s, 0, c, 0], [0, 0, 0, 1]]; },
+    rotate: (a) => { const c = Math.cos(rad(a)), s = Math.sin(rad(a)); return [[c, -s, 0, 0], [s, c, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]]; },
+    scale: (k) => [[k, 0, 0, 0], [0, k, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]],
+    translateZ: (z) => { const M = I(); M[2][3] = z; return M; },
+    perspective: (d) => { const M = I(); M[3][2] = -1 / d; return M; },
+  };
+  const mul = (A, B) => A.map((l) => [0, 1, 2, 3].map((j) => l.reduce((t, v, k) => t + v * B[k][j], 0)));
+  const matrice = (fns) => {
+    const M = fns.reduce((acc, [nom, v]) => mul(acc, f[nom](v)), I());
+    const o = { is2D: fns.every(([nom]) => nom === "rotate" || nom === "scale") };
+    for (let c = 1; c <= 4; c++) for (let r = 1; r <= 4; r++) o[`m${c}${r}`] = M[r - 1][c - 1];
+    return o;
+  };
+  const INDEX = { translateZ: 2, rotate: 3, rotateX: 4, rotateY: 5, scale: 6, perspective: 8, ordre: 9, perspDouteuse: 10 };
+  const cas = [
+    [[["rotateX", 30], ["rotateY", 40]], { rotateX: 30, rotateY: 40, rotate: 0, ordre: 1 }],
+    [[["rotateY", -45]], { rotateY: -45, rotateX: 0, rotate: 0 }],
+    [[["rotate", 30]], { rotate: 30, rotateX: 0, rotateY: 0 }],
+    [[["rotateY", 120]], { rotateY: 120, rotateX: 0, rotate: 0 }],
+    [[["scale", 0.8], ["rotate", -16]], { scale: 0.8, rotate: -16 }],
+    [[["rotate", 20], ["rotateY", 35], ["rotateX", -10]], { rotate: 20, rotateY: 35, rotateX: -10, ordre: 0 }],
+    [[["perspective", 500], ["rotateY", 30]], { rotateY: 30, perspective: 500, perspDouteuse: 0 }],
+    [[["perspective", 500], ["translateZ", 100], ["rotateY", 30]], { rotateY: 30, translateZ: 100, perspective: 500, perspDouteuse: 0 }],
+    // translateZ avant perspective() : angles et perspective faussés, seul le signal compte
+    [[["translateZ", 100], ["perspective", 500], ["rotateY", 30]], { perspDouteuse: 1 }],
+  ];
+  let ok = true;
+  for (const [fns, attendu] of cas) {
+    const v = decomposer(null, matrice(fns));
+    const ecarts = Object.entries(attendu).filter(([k, a]) => Math.abs(v[INDEX[k]] - a) > (k === "scale" ? 0.001 : 0.05));
+    ok &&= !ecarts.length;
+    const texte = fns.map(([n, a]) => `${n}(${a})`).join(" ");
+    process.stdout.write(`${ecarts.length ? "ÉCHEC" : "ok   "} ${texte} → ${Object.keys(attendu).map((k) => `${k} ${v[INDEX[k]]}`).join(", ")}\n`);
+  }
+  return ok ? 0 : 1;
+}
+
 async function principal() {
+  if (process.argv[2] === "--verifier-decomposition") { process.exitCode = verifierDecomposition(); return; }
   const args = lireArguments(process.argv.slice(2));
   mkdirSync(args.sortie, { recursive: true });
   // Chromium complet (nouveau mode headless) : avec le headless leger par defaut, les effets
