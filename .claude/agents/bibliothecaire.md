@@ -56,7 +56,7 @@ là pour cette URL), `fiche` (RETRAVAILLER : `id`, `titre`, `type_section`, `cap
 `note` n'est envoyée qu'à la création (jamais en `--fiche`), jamais `origine`. Sans capture dans `section/`, il dépose sans image : dis-le.
 
 - `type_section` : `hero`, `navigation`, `services`, `realisations`, `a_propos`, `chiffres`,
-  `logos`, `etapes`, `temoignages`, `tarifs`, `faq`, `appel_action`, `contact`, `footer`,
+  `logos`, `etapes`, `temoignages`, `comparatif`, `tarifs`, `faq`, `appel_action`, `contact`, `footer`,
   `page_complete`, `autre`. `outil` : celui de `section.outil` (`aucun` = « Inspiration »).
 - Titre : la forme puis le secteur (« Hero centré fond sombre, agence web »), jamais la marque.
   Secteur du site d'origine, 3 à 6 tags.
