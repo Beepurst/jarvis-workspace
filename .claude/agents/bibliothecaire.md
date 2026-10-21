@@ -145,8 +145,8 @@ Points d'attention performance : …
   sur `animation.jpg` (planche légendée du temps réel de chaque image). Par effet, dans l'ordre
   (`ordre`) : élément, effet, depuis → vers, déclencheur, délai, durée, et la cascade (`decalageMs`,
   `cascades`) ; puis blocs collants (`colles`) ; défilement lié (`defilement` : la ligne de `groupes`,
-  puis par élément chaque propriété `debut` → `fin` (et `extreme` si la courbe fait aller-retour), `plage` en % de la section, `courbe`, `perspective`) ; boucles (sens, px/s, ou pour la 3D `axe`, `vitesse`, `perspective`,
-  `pasAngulaire` ; `type` aller-retour : propriété, amplitude, période) ; survols. `elementsCoupes` : des éléments manquent, écris le groupe. Chaque chiffre vient de `resume.json`, jamais d'une mesure faite à la main : une valeur
+  puis par élément chaque propriété `debut` → `fin` (et `extreme` si la courbe fait aller-retour), `plage` en % de la section, `courbe`, `perspective`, `ordreRotations` à écrire tel quel, « rotateX puis rotateY », pour que Framer le reproduise) ; boucles (sens, px/s, ou pour la 3D `axe`, `vitesse`, `perspective`,
+  `pasAngulaire` ; `type` aller-retour : propriété, amplitude, période) ; survols. `elementsCoupes` ou `budgetDepasse` : des valeurs manquent, dis-le. Chaque chiffre vient de `resume.json`, jamais d'une mesure faite à la main : une valeur
   absente s'écrit « non chiffré » (`defilementNonMesure` : dis-le). Exemple : « Bloc du
   titre : fondu et glissement, opacity 0 et translateY 60px → opacity 1 et 0, à l'entrée dans
   l'écran, délai 100 ms, ≈ 950 ms (estimée) : compatible. » `dureeSource` « estimée » : écris « ≈ 450 ms

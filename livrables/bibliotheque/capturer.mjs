@@ -1231,17 +1231,18 @@ const estAngle = (p) => p >= 3 && p <= 5;
 // ecart de a vers b ; pour un angle, le plus court (un tour complet ne compte pas)
 const ecart3D = (p, a, b) => (estAngle(p) ? ((((b - a) % 360) + 540) % 360) - 180 : b - a);
 const unite3D = (p) => (estAngle(p) ? "°" : p <= 2 ? " px" : "");
-const ORDRES3D = ["rotate rotateY rotateX", "rotateX rotateY rotate"];
+const ORDRES3D = ["rotate puis rotateY puis rotateX", "rotateX puis rotateY puis rotate"];
 // perspective d'un element : propriete CSS (element ou ancetre), sinon perspective() de sa matrice
 const textePerspective = (x, etat) => (x.perspective ? `${x.perspective} px` : etat[8] ? `${etat[8]} px (perspective() dans la transformation${etat[10] ? ", à vérifier : translateZ avant, angles faussés" : ""})` : null);
 
 // Lit l'etat une fois les lisseurs de defilement (Lenis, Framer, Webflow IX2) poses : nouvelles
 // lectures toutes les 130 ms jusqu'a ce que rien ne bouge plus (hors elements qui bougent seuls),
 // 1,3 s au plus.
-async function lireStable(page, ignorer) {
+async function lireStable(page, ignorer, garde = {}) {
   await pause(220);
   let avant = await page.evaluate(etats3D);
   for (let i = 0; i < 8; i++) {
+    if (garde.stop) throw new Error("temps dépassé");
     await pause(130);
     const apres = await page.evaluate(etats3D);
     const calme = apres.v.every((s, d) => ignorer.has(d) || !s || !avant.v[d] || s.slice(0, 8).every((x, p) => Math.abs(ecart3D(p, avant.v[d][p], x)) <= CALME3D[p]));
@@ -1301,9 +1302,10 @@ function lireAllersRetours(meta, lectures) {
     const ecarts = mieux.tours.slice(1).map((t, i) => t - mieux.tours[i]);
     const duree = (serie[serie.length - 1].t - serie[0].t) / 1000;
     const amplitude = `${mieux.p >= 6 ? +mieux.amp.toFixed(2) : Math.round(mieux.amp)}${unite3D(mieux.p)}`;
-    sortie.push({ x, p: mieux.p, o: mieux.tours.length
-      ? { type: "aller-retour", propriete: PROPS3D[mieux.p], amplitude, periode: ecarts.length ? `≈ ${((2 * mediane(ecarts)) / 1000).toFixed(1).replace(".", ",")} s` : `plus de ${duree.toFixed(0)} s` }
-      : { type: "irrégulier", propriete: PROPS3D[mieux.p], amplitude } });
+    // aller-retour : 2 demi-tours au moins, sinon la periode n'est pas mesurable
+    sortie.push({ x, p: mieux.p, o: mieux.tours.length >= 2
+      ? { type: "aller-retour", propriete: PROPS3D[mieux.p], amplitude, periode: `≈ ${((2 * mediane(ecarts)) / 1000).toFixed(1).replace(".", ",")} s` }
+      : { type: "irrégulier", propriete: PROPS3D[mieux.p], amplitude, note: `moins de 2 demi-tours en ${duree.toFixed(0)} s` } });
   }
   return sortie;
 }
@@ -1370,7 +1372,7 @@ function lireDefilement({ meta, pos, pas, retour, bougent, course }) {
     o.courbe = courbe;
     const persp = textePerspective(x, pas[N][x.d]);
     if (persp && props.some((q) => q.p === 4 || q.p === 5 || q.p === 2)) o.perspective = persp;
-    if (props.filter((q) => estAngle(q.p)).length >= 2) o.ordre = ORDRES3D[pas[N][x.d][9]];
+    if (props.filter((q) => estAngle(q.p)).length >= 2) o.ordreRotations = ORDRES3D[pas[N][x.d][9]];
     elements.push({ o, famille: x.famille, i0, i1, cle: props.map((q) => q.p).join(",") });
   }
   // resume par groupe de freres (meme parent, meme role, memes proprietes) : un eventail de cartes
@@ -1415,7 +1417,7 @@ async function mesurerDefilement(page, m, prep, sortie, garde = {}) {
     return page.evaluate((v) => window.scrollTo(0, v), Math.round(Math.max(0, Math.min(maxY, y))));
   };
   await aller(prep.haut + prep.hauteur / 2 - vh / 2);
-  await lireStable(page, new Set());
+  await lireStable(page, new Set(), garde);
   const tenue = [];
   for (let i = 0; i < 7; i++) { if (i) await pause(250); tenue.push(await page.evaluate(etats3D)); }
   // bouge seul : mouvement apres les 2 premieres lectures (avant, un lisseur peut encore se poser)
@@ -1427,13 +1429,17 @@ async function mesurerDefilement(page, m, prep, sortie, garde = {}) {
   const allersRetours = [];
   if (autres.length) {
     const serie = tenue.slice();
-    for (let i = 0; i < 25; i++) { await pause(100); serie.push(await page.evaluate(etats3D)); }
+    for (let i = 0; i < 25; i++) {
+      if (garde.stop) throw new Error("temps dépassé");
+      await pause(100);
+      serie.push(await page.evaluate(etats3D));
+    }
     allersRetours.push(...lireAllersRetours(autres, serie));
   }
   const debut = Math.max(0, prep.haut - vh), fin = Math.min(maxY, prep.haut + prep.hauteur);
   const course = Math.max(0, fin - debut);
   let pos = [], pas = [];
-  const lirePos = async (f) => { await aller(debut + course * f); pos.push(f); pas.push(await lireStable(page, bougent)); };
+  const lirePos = async (f) => { await aller(debut + course * f); pos.push(f); pas.push(await lireStable(page, bougent, garde)); };
   if (course > 50) {
     for (let i = 0; i <= 12; i++) await lirePos(i / 12);
     // affinage : les 4 intervalles ou le plus d'elements changent, recoupes en 4 (un eventail qui
@@ -1446,7 +1452,7 @@ async function mesurerDefilement(page, m, prep, sortie, garde = {}) {
     pas = ordre.map((i) => pas[i]);
   }
   await aller(debut);
-  const retour = await lireStable(page, bougent);
+  const retour = await lireStable(page, bougent, garde);
   if (process.env.KLEAK_DEBUG) writeFileSync(join(sortie, "defilement.json"), JSON.stringify({ meta, tenue, pos, pas, retour, debut, course }));
   const lu = pas.length ? lireDefilement({ meta, pos, pas, retour, bougent, course }) : { groupes: [], elements: [] };
 
@@ -1461,7 +1467,7 @@ async function mesurerDefilement(page, m, prep, sortie, garde = {}) {
     const o = { element: freres.length > 1 ? pluriel(freres.length, baseRole(x.role)) : x.role, axe: PROPS3D[b.p], vitesse: `${v > 0 ? "+" : ""}${v}${unite3D(b.p).trim() || ""}/s` };
     const persp = textePerspective(x, tenue[0].v[d]);
     if (persp) o.perspective = persp;
-    if (estAngle(b.p) && [3, 4, 5].filter((p) => Math.abs(tenue[0].v[d][p]) > 0.5).length >= 2) o.ordre = ORDRES3D[tenue[0].v[d][9]];
+    if (estAngle(b.p) && [3, 4, 5].filter((p) => Math.abs(tenue[0].v[d][p]) > 0.5).length >= 2) o.ordreRotations = ORDRES3D[tenue[0].v[d][9]];
     if (x.preserve3d) o.preserve3d = true;
     if (estAngle(b.p)) {
       let anneau = null;
@@ -1581,15 +1587,18 @@ async function mesurerAnimations(navigateur, url, info, n, sortie) {
       clearTimeout(minuteur);
     }
     for (const b of defil?.boucles || []) {
-      // meme element deja vu par la mesure d'entree (ou bandeau a la meme vitesse) : on complete
+      // boucle deja vue par la mesure d'entree : on complete seulement le meme element sur le meme axe
+      // (ou un bandeau a la meme vitesse sur le meme axe) ; une rotation 3D deplace aussi la boite de
+      // l'element, d'ou le glissement mesure a l'entree, remplace ici par l'axe de rotation
+      const prop = b.axe || b.propriete;
+      const axeEntree = (x) => x.axe || x.propriete || (/gauche|droite/.test(x.direction) ? "translateX" : /haut|bas/.test(x.direction) ? "translateY" : /^rotation/.test(x.direction) ? "rotate" : null);
+      const memeAxe = (x) => { const a = axeEntree(x); return a === prop || (!a && /infinie/.test(x.direction || "")) || (b.axe && /^rotate[XY]$/.test(b.axe) && /^translate/.test(a || "")); };
       const v = parseFloat(b.vitesse);
-      const deja = lu.boucles.find((x) => x.element === b.element || (/^translate[XY]$/.test(b.axe) && x.vitessePxS && Math.abs(x.vitessePxS - Math.abs(v)) <= Math.abs(v) * 0.3));
+      const deja = lu.boucles.find((x) => memeAxe(x) && (x.element === b.element || (/^translate[XY]$/.test(b.axe) && x.vitessePxS && Math.abs(x.vitessePxS - Math.abs(v)) <= Math.abs(v) * 0.3)));
       if (deja) {
         Object.assign(deja, b, { element: deja.element });
-        // une rotation 3D deplace aussi la boite de l'element : la vitesse en px/s n'a plus de sens
-        if (/^rotate/.test(b.axe)) { deja.direction = `rotation continue (${b.axe})`; delete deja.vitessePxS; }
-      }
-      else lu.boucles.push({ ...b, direction: "boucle, défilement immobile" });
+        if (/^rotate[XY]$/.test(b.axe)) { deja.direction = `rotation continue (${b.axe})`; delete deja.vitessePxS; }
+      } else lu.boucles.push(b.type ? { ...b } : { ...b, direction: "boucle, défilement immobile" });
     }
 
     // survols
@@ -1716,12 +1725,15 @@ function animationsResume(compteurs, mesure, budget) {
     else if (a.entrees?.length > 1) { a.entrees.pop(); a.entreesCoupees = (a.entreesCoupees || 0) + 1; }
     else break;
   }
-  // dernier recours : resumes de groupes, puis le compteur des elements coupes
-  while (Buffer.byteLength(JSON.stringify(a)) > budget && a.defilement) {
-    if (a.defilement.groupes?.length) { a.defilement.groupes.pop(); if (!a.defilement.groupes.length) delete a.defilement.groupes; }
-    else if (a.defilement.elementsCoupes) delete a.defilement.elementsCoupes;
-    else break;
+  // dernier recours : resumes de groupes raccourcis puis retires (elementsCoupes reste : c'est le
+  // signal que des elements manquent) ; si cela ne suffit pas, budgetDepasse le dit
+  while (Buffer.byteLength(JSON.stringify(a)) > budget && a.defilement?.groupes) {
+    const g = a.defilement.groupes;
+    const long = g.findIndex((t) => t.length > 160);
+    if (long >= 0) g[long] = `${g[long].slice(0, 150)}…`;
+    else { g.pop(); if (!g.length) delete a.defilement.groupes; }
   }
+  if (Buffer.byteLength(JSON.stringify(a)) > budget) a.budgetDepasse = true;
   return a;
 }
 
