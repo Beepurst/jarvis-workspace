@@ -16,7 +16,7 @@ touches au hub que par les entrées ci-dessous, tu ne supprimes aucune fiche, et
 une fiche existante qu'en RETRAVAILLER, jamais sa `note`, son `origine` ni ses épingles.
 
 **Économie** : deux scripts font tout le shell (`preparer.sh`, `deposer.sh`), 4 à 5 tours par fiche.
-Tu lis seulement `vignette.jpg`, `vignette-mobile.jpg`, `animation.jpg` (s'il existe, sinon « animation non mesurée »), `resume.json` (et
+Tu lis seulement `vignette.jpg`, `vignette-mobile.jpg`, `animation.jpg` (s'il existe ; s'il manque, voir la règle Animations), `resume.json` (et
 `capture-edgar.jpg` en RETRAVAILLER), tous en **un seul tour** (Read en parallèle). `analyse.json` et `apercu.jpg`
 seulement en cas de doute précis. Aucune autre lecture, aucune relecture.
 
@@ -68,7 +68,7 @@ grille ») : mets-la dans `note` de `champs.json`, sinon omets `note`.
 
 1. **Préparer** : `preparer.sh` avec un texte de la section (donné par Edgar ou lu sur sa capture).
    Sans texte, passe le nom du site : le plus souvent cela donne `lister`.
-2. **Lire en un tour** `vignette.jpg`, `vignette-mobile.jpg` (s'il existe), `animation.jpg` (s'il existe, sinon « animation non mesurée ») et `resume.json`.
+2. **Lire en un tour** `vignette.jpg`, `vignette-mobile.jpg` (s'il existe), `animation.jpg` (s'il existe ; s'il manque, voir la règle Animations) et `resume.json`.
    Vérifie : bonne section, entière, sans bandeau cookies ni menu par-dessus ? Sinon essaie les
    `autres` (relance avec un autre texte) ou, si `lister`, choisis dans `lister.json` sur
    `premierTitre`, `haut`, `hauteur` (n'ouvre `apercu.jpg`, sections numérotées, que si le JSON ne
@@ -102,7 +102,7 @@ d'Edgar, l'origine et les épingles.
 2. **Préparer** : `preparer.sh "<url_source>" "<texte>" --fiche <id>`. Le texte vient de la
    `note`, du titre ou de la capture d'Edgar ; un premier passage sans texte fiable donne `lister`.
 3. **Lire en un tour** `capture-edgar.jpg` (`fichiers`/`fiche.captureEdgar`, absent : pars du titre
-   et du type), `vignette.jpg`, `vignette-mobile.jpg`, `animation.jpg` (s'il existe, sinon « animation non mesurée »), `resume.json`. `vignette.jpg` doit montrer la
+   et du type), `vignette.jpg`, `vignette-mobile.jpg`, `animation.jpg` (s'il existe ; s'il manque, voir la règle Animations), `resume.json`. `vignette.jpg` doit montrer la
    section de la capture d'Edgar. Sinon essaie les `autres`, puis `lister` et `apercu.jpg` en dernier
    recours. Section absente du site (introuvable même ainsi, site modifié, hors ligne) : ne change rien, dis-le.
 4. **Écrire en un tour** `fiche.txt` (courte, titre descriptif, bon `type_section`) et `champs.json`.
@@ -144,7 +144,7 @@ Points d'attention performance : …
   (`ordre`) : élément, effet, depuis → vers, déclencheur, délai, durée, et la cascade (`decalageMs`,
   `cascades`) ; puis blocs collants (`colles`), boucles (sens, px/s), survols. Exemple : « Bloc du
   titre : fondu et glissement, opacity 0 et translateY 60px → opacity 1 et 0, à l'entrée dans
-  l'écran, délai 100 ms, 950 ms : compatible. » `dureeSource` « estimée » : écris « ≈ 450 ms
+  l'écran, délai 100 ms, ≈ 950 ms (estimée) : compatible. » `dureeSource` « estimée » : écris « ≈ 450 ms
   (estimée) ». Si la planche contredit la mesure, crois la
   planche et dis-le. Chaque effet **compatible**, **à alléger** (écris la version allégée avec ses
   valeurs : « fondu seul, translateY 20px, 400 ms, sans cascade ») ou **à proscrire**, selon
@@ -154,7 +154,8 @@ Points d'attention performance : …
   Fondus plus bas : compatibles sur 3 ou 4 éléments forts par page, à alléger sur listes, chiffres,
   cartes. Bandeau défilant, carrousel (`boucles`, `enfantsHorsSection`), survols : compatibles.
   Blocs collants : jamais sur l'accroche, 3 au plus par page. Rien de mesuré ni de visible : « aucune
-  animation ». `nonMesure` ou repli `--ecran` : « animation non mesurée ».
+  animation ». `nonMesure` ou repli `--ecran` : « animation non mesurée ». Planche absente mais entrées présentes dans
+  `resume.json` : écris la recette depuis les entrées et ajoute « planche non produite ».
 - **Ce qui fait la force** : 2 ou 3 raisons concrètes, chacune appuyée sur une mesure ou un choix visible.
 - **Performance** : nombre d'images, plus large source (au-delà de 2400 px : à réduire),
   graisses de police (chacune un fichier), effets à retirer, accroche mobile sous 80 Ko.
