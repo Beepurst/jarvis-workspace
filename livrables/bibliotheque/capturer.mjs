@@ -24,7 +24,7 @@
 // Playwright est charge depuis livrables/creas-meta/node_modules (aucune installation ici).
 
 import { createRequire } from "node:module";
-import { mkdirSync, writeFileSync } from "node:fs";
+import { mkdirSync, rmSync, writeFileSync } from "node:fs";
 import { join, resolve } from "node:path";
 
 const require = createRequire(new URL("../creas-meta/package.json", import.meta.url));
@@ -705,7 +705,10 @@ function etatsAnimation(n) {
     const a = el.getAnimations ? el.getAnimations().map((x) => x.effect?.getTiming?.()).filter(Boolean) : [];
     const d = a.length ? Math.max(...a.map((t) => (typeof t.duration === "number" ? t.duration : 0))) : 0;
     const inf = a.some((t) => t.iterations === Infinity);
-    const tr = cs.transitionProperty !== "none" ? Math.max(...cs.transitionDuration.split(",").map((x) => parseFloat(x) * 1000)) : 0;
+    // duree de transition des proprietes qui animent l'entree (opacite, transform, filtre), pas des autres
+    const props = cs.transitionProperty.split(",").map((x) => x.trim());
+    const durees = cs.transitionDuration.split(",").map((x) => parseFloat(x) * 1000);
+    const tr = Math.max(0, ...props.map((pr, i) => (/^(all|opacity|transform|translate|scale|rotate|filter)$/.test(pr) ? durees[i % durees.length] || 0 : 0)));
     // visibility: hidden compte comme opacite 0 seulement sur la racine du sous-arbre cache (pas sur
     // les enfants qui en heritent)
     const cache = cs.visibility === "hidden" && (!el.parentElement || getComputedStyle(el.parentElement).visibility !== "hidden");
@@ -1007,21 +1010,23 @@ function lireAnimations({ prep, avant, phases, auChargement }) {
     }
     const waapi = Math.max(0, ...ech.map(([, s]) => s[x.k][8]));
     const css = Math.max(0, ...ech.map(([, s]) => s[x.k][10]));
-    const dureeMs = waapi > 0 && waapi < 10000 ? Math.round(waapi) : css > 0 && css < 5000 ? Math.round(css) : arrondi50(Math.max(50, tFin - tDebutBrut));
+    const dureeSource = waapi > 0 && waapi < 10000 ? "mesurée" : css > 0 && css < 5000 ? "transition CSS" : "estimée";
+    const dureeMs = dureeSource === "mesurée" ? Math.round(waapi) : dureeSource === "transition CSS" ? Math.round(css) : arrondi50(Math.max(50, tFin - tDebutBrut));
     entrees.push({
       x, effet: natureEffet(depart, fin), depuis: decrireEtat(depart, fin), vers: decrireEtat(fin, depart),
       declencheur: auChargement && i === 0 ? "chargement" : i === 0 ? "entrée dans l'écran" : `entrée dans l'écran (plus bas, ${phases[i].legende})`,
-      delaiMs: arrondi50(tDebut), dureeMs, encoreEnCours: !!encore, source: waapi > 0 ? "animation mesurée" : css > 0 ? "transition CSS" : "estimée sur les images",
+      delaiMs: arrondi50(tDebut), dureeMs, encoreEnCours: !!encore, dureeSource, phase: i,
     });
   }
   for (const l of lies) {
-    entrees.push({ x: l.x, effet: natureEffet(l.depuis, l.vers), depuis: decrireEtat(l.depuis, l.vers), vers: decrireEtat(l.vers, l.depuis), declencheur: "défilement lié", delaiMs: null, dureeMs: null, lie: true });
+    entrees.push({ x: l.x, effet: natureEffet(l.depuis, l.vers), depuis: decrireEtat(l.depuis, l.vers), vers: decrireEtat(l.vers, l.depuis), declencheur: "défilement lié", delaiMs: null, dureeMs: null, lie: true, phase: 99 });
   }
 
   // regroupement : meme role, meme effet, meme famille (freres) : une ligne, avec le decalage
   const groupes = new Map();
   for (const e of entrees) {
-    const cle = [baseRole(e.x.role), e.effet, e.depuis, e.vers, e.declencheur.split(" (")[0], e.x.famille].join("|");
+    // declencheur complet : une carte qui entre plus bas dans la section n'est pas groupee avec celles du haut
+    const cle = [baseRole(e.x.role), e.effet, e.depuis, e.vers, e.declencheur, e.x.famille].join("|");
     if (!groupes.has(cle)) groupes.set(cle, []);
     groupes.get(cle).push(e);
   }
@@ -1035,13 +1040,18 @@ function lireAnimations({ prep, avant, phases, auChargement }) {
       element: g.length > 1 ? pluriel(g.length, baseRole(e.x.role)) : e.x.role,
       effet: e.effet, depuis: e.depuis, vers: e.vers, declencheur: e.declencheur,
     };
-    if (!e.lie) { o.delaiMs = e.delaiMs; o.dureeMs = mediane(g.map((x) => x.dureeMs)); }
+    if (!e.lie) {
+      o.delaiMs = e.delaiMs;
+      o.dureeMs = mediane(g.map((x) => x.dureeMs));
+      const sources = new Set(g.map((x) => x.dureeSource));
+      o.dureeSource = sources.size === 1 ? e.dureeSource : "estimée"; // sources melangees : on reste prudent
+    }
     if (decalage >= 40) o.decalageMs = decalage;
     if (e.encoreEnCours) o.encoreEnCours = true;
     if (e.x.moteur) o.moteur = e.x.moteur;
-    return { o, k: e.x.k, n: g.length, base: baseRole(e.x.role), decalage, delai: e.delaiMs ?? 99999 };
+    return { o, k: e.x.k, n: g.length, base: baseRole(e.x.role), decalage, delai: e.delaiMs ?? 99999, phase: e.phase };
   });
-  lignes.sort((a, b) => a.delai - b.delai || a.k - b.k);
+  lignes.sort((a, b) => a.phase - b.phase || a.delai - b.delai || a.k - b.k);
   lignes.forEach((l, i) => (l.o.ordre = i + 1));
   const cascades = lignes.filter((l) => l.n >= 2 && l.decalage >= 40).map((l) => `${pluriel(l.n, l.base)}, décalage ${l.decalage} ms`);
   // detail pour analyse.json : etat avant et pose a la fin de chaque phase, par element
@@ -1109,19 +1119,23 @@ async function mesurerAnimations(navigateur, url, info, n, sortie) {
       const depart = await page.evaluate(() => window.scrollY);
       for (let i = 1; i <= 6; i++) { await page.evaluate((v) => window.scrollTo(0, v), depart + ((y - depart) * i) / 6); await pause(50); }
     };
-    const filmer = async (legendes) => {
-      const debut = Date.now();
+    // legende = temps reel apres chaque capture, dans la base de temps de l'echantillonneur
+    // (window.__kleakT0), pas le temps vise
+    const tempsPage = () => page.evaluate(() => Math.round(performance.now() - window.__kleakT0));
+    const ecrireMs = (t) => (t >= 1000 ? `${(t / 1000).toFixed(2).replace(".", ",")} s` : `${t} ms`);
+    const filmer = async (cibles, prefixe = "") => {
       const images = [];
-      for (const [o, legende] of legendes) {
-        await pause(o - (Date.now() - debut));
-        images.push({ legende, b64: (await page.screenshot({ type: "jpeg", quality: 70, timeout: 10000 })).toString("base64") });
+      for (const o of cibles) {
+        await pause(o - (await tempsPage()));
+        const b64 = (await page.screenshot({ type: "jpeg", quality: 70, timeout: 10000 })).toString("base64");
+        images.push({ legende: `${prefixe}${ecrireMs(await tempsPage())}`, b64 });
       }
       return images;
     };
 
     const tall = prep.hauteur > vh * 1.2;
     const lieAuDefilement = prep.collant && tall;
-    const legendesEntree = [[0, "0 ms"], [250, "250 ms"], [600, "600 ms"], [1000, "1 s"], [1600, "1,6 s"], [2500, "2,5 s"]];
+    const ciblesEntree = [0, 250, 600, 1000, 1600, 2500];
     const phases = [];
     const images = [];
     // entree
@@ -1134,7 +1148,7 @@ async function mesurerAnimations(navigateur, url, info, n, sortie) {
       await page.evaluate((y) => window.scrollTo(0, y), Math.max(0, prep.haut - vh * 0.1));
     }
     await page.evaluate(marquerT0);
-    images.push(...(await filmer(legendesEntree)));
+    images.push(...(await filmer(ciblesEntree)));
     await pause(2600 - 2500);
     phases.push({ legende: "entrée", echantillons: await page.evaluate(lireEchantillons) });
     // traversee de la section (25, 50, 75, 100 %) : elements plus bas, defilement lie
@@ -1145,7 +1159,7 @@ async function mesurerAnimations(navigateur, url, info, n, sortie) {
       await defilerVers(tall ? Math.max(entreeY, prep.haut + (p / 100) * (prep.hauteur - vh)) : entreeY + (p / 100) * Math.min(prep.hauteur, vh) * 0.5);
       await page.evaluate(marquerT0);
       await pause(1200);
-      imagesTraversee.push(...(await filmer([[0, `${p} % de la section`]])));
+      imagesTraversee.push(...(await filmer([0], `${p} %, +`)));
       phases.push({ legende: `${p} %`, echantillons: await page.evaluate(lireEchantillons) });
     }
     const lu = lireAnimations({ prep, avant, phases, auChargement });
@@ -1178,10 +1192,16 @@ async function mesurerAnimations(navigateur, url, info, n, sortie) {
       }
     }
 
-    const planche = join(sortie, "animation.jpg");
-    writeFileSync(planche, await faireplanche(navigateur, images));
+    let planche = join(sortie, "animation.jpg");
+    let plancheTexte = `animation.jpg (${images.map((i) => i.legende).join(", ")})`;
+    try {
+      writeFileSync(planche, await faireplanche(navigateur, images));
+    } catch (e) {
+      planche = null;
+      plancheTexte = `absente (${e.message.split("\n")[0].slice(0, 60)}) : mesures sans images`;
+    }
     const animations = {
-      planche: `animation.jpg (${images.map((i) => i.legende).join(", ")})`,
+      planche: plancheTexte,
       declencheur: auChargement ? "chargement" : lieAuDefilement ? "entrée puis défilement lié (section collante)" : filmeEnDefilement ? "entrée puis défilement lié" : "entrée dans l'écran",
       suivis: prep.elements.length,
       colles: prep.colles,
@@ -1247,11 +1267,15 @@ function animationsResume(compteurs, mesure, budget) {
   if (a.entrees) a.entrees = a.entrees.slice(0, 10);
   if (a.boucles) a.boucles = a.boucles.slice(0, 3);
   if (a.cascades) a.cascades = a.cascades.slice(0, 4);
-  while (JSON.stringify(a).length > budget) {
+  while (Buffer.byteLength(JSON.stringify(a)) > budget) {
     if (a.entrees?.length > 3) { a.entrees.pop(); a.entreesCoupees = (a.entreesCoupees || 0) + 1; }
     else if (a.survols?.length > 1) a.survols.pop();
     else if (a.transitions?.length > 2) a.transitions.pop();
     else if (a.animationsCss?.length > 2) a.animationsCss.pop();
+    else if (a.colles?.length > 1) a.colles.pop();
+    else if (a.cascades?.length > 1) a.cascades.pop();
+    else if (a.boucles?.length > 1) a.boucles.pop();
+    else if (a.entrees?.length > 1) { a.entrees.pop(); a.entreesCoupees = (a.entreesCoupees || 0) + 1; }
     else break;
   }
   return a;
@@ -1317,7 +1341,7 @@ function construireResume({ info, bureau, mobile, blocsBureau, blocsMobile, aver
     },
   };
   if (avertissements.length) resume.avertissements = avertissements.map((a) => a.slice(0, 160));
-  resume.animations = animationsResume(bureau.animations, mesure, 4000 - JSON.stringify(resume).length - 50);
+  resume.animations = animationsResume(bureau.animations, mesure, 4000 - Buffer.byteLength(JSON.stringify(resume)) - 50);
   return resume;
 }
 
@@ -1349,6 +1373,8 @@ async function lister(navigateur, args) {
 
 async function capturerSection(navigateur, args) {
   const n = args.section;
+  // un animation.jpg d'un passage precedent ne doit pas passer pour celui-ci
+  rmSync(join(args.sortie, "animation.jpg"), { force: true });
   const bureau = await ouvrir(navigateur, args.url, false);
   const { page } = bureau;
   if (n > bureau.sections.length) {
@@ -1459,6 +1485,8 @@ async function capturerSection(navigateur, args) {
 }
 
 async function capturerEcran(navigateur, args) {
+  // --ecran ne filme ni n'analyse : rien d'un passage --section precedent ne reste dans le dossier
+  for (const f of ["animation.jpg", "resume.json"]) rmSync(join(args.sortie, f), { force: true });
   const { contexte, page } = await ouvrir(navigateur, args.url, false);
   const hauteur = await page.evaluate(() => document.documentElement.scrollHeight);
   const y = Math.max(0, Math.min(args.ecran, hauteur - BUREAU.height));

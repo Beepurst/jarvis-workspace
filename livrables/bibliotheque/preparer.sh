@@ -27,7 +27,7 @@ print((f[0].get("capture_url") or "") if f else "")' "$D/doublons.json" "$FICHE"
   fi
 fi
 
-LISTER=false; N=""; PT=""; AUTRES="[]"; OUTIL=""
+LISTER=false; N=""; PT=""; AUTRES="[]"; OUTIL=""; ANIM=""
 SORTIE=$(node livrables/bibliotheque/capturer.mjs "$URL" --titre "$TITRE" 2>"$D/err.txt"); RC=$?
 if [ $RC -eq 0 ]; then
   N=$(printf '%s' "$SORTIE" | python3 -c 'import json,sys;print(json.load(sys.stdin)["n"])')
@@ -35,6 +35,7 @@ if [ $RC -eq 0 ]; then
   AUTRES=$(printf '%s' "$SORTIE" | python3 -c 'import json,sys;print(json.dumps(json.load(sys.stdin).get("autres",[])))')
   SEC=$(node livrables/bibliotheque/capturer.mjs "$URL" --section "$N" --sortie "$D/section" 2>"$D/err.txt"); RC=$?
   if [ $RC -eq 0 ]; then OUTIL=$(printf '%s' "$SEC" | python3 -c 'import json,sys;print(json.load(sys.stdin).get("outil") or "")')
+    ANIM=$(printf '%s' "$SEC" | python3 -c 'import json,sys;print(json.load(sys.stdin).get("animation") or "")')
   else echo "capturer --section code $RC : $(head -c 300 "$D/err.txt" | tr '\n' ' ')" >&2; exit $RC; fi
 elif [ $RC -eq 2 ]; then
   LISTER=true; PT="null"
@@ -43,9 +44,9 @@ else
   echo "capturer --titre code $RC : $(head -c 300 "$D/err.txt" | tr '\n' ' ')" >&2; exit $RC
 fi
 
-python3 - "$D" "$HUB_URL" "$FICHE" "$LISTER" "$N" "$PT" "$AUTRES" "$OUTIL" <<'PY'
+python3 - "$D" "$HUB_URL" "$FICHE" "$LISTER" "$N" "$PT" "$AUTRES" "$OUTIL" "$ANIM" <<'PY'
 import json, os, sys
-d, hub, fiche, lister, n, pt, autres, outil = sys.argv[1:9]
+d, hub, fiche, lister, n, pt, autres, outil, anim = sys.argv[1:10]
 dbl = json.load(open(d + "/doublons.json")).get("fiches", [])
 cut = lambda x: {"id": x.get("id"), "titre": x.get("titre"), "type_section": x.get("type_section")}
 f = None
@@ -58,7 +59,9 @@ lister = lister == "true"
 sec = None if lister else {"n": int(n), "premierTitre": json.loads(pt), "autres": json.loads(autres), "outil": outil}
 s = d + "/section/"
 fich = {k: (s + v if os.path.exists(s + v) else None) for k, v in
-        [("vignette", "vignette.jpg"), ("vignetteMobile", "vignette-mobile.jpg"), ("animation", "animation.jpg"), ("resume", "resume.json"), ("capture", "capture.jpg")]}
+        [("vignette", "vignette.jpg"), ("vignetteMobile", "vignette-mobile.jpg"), ("resume", "resume.json"), ("capture", "capture.jpg")]}
+# animation.jpg : seulement si ce passage de capturer.mjs l'a produit (champ "animation" de sa sortie)
+fich["animation"] = anim if anim and os.path.exists(anim) else None
 if lister:
     fich = {"apercu": d + "/apercu.jpg", "lister": d + "/lister.json"}
 print(json.dumps({"dossier": d, "codeHub": 200, "doublons": [cut(x) for x in dbl], "fiche": f, "section": sec, "lister": lister, "fichiers": fich}, ensure_ascii=False, separators=(",", ":")))
