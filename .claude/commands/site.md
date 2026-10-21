@@ -28,7 +28,7 @@ Détail : `/Users/ed/Desktop/jarvis-kleak/livrables/process/checklist-qualite-si
 
 - Appels Framer groupés : 2 ou 3 par section au plus, pas un appel par élément.
 - Captures de contrôle réduites à 1000 px de large, une seule par section, à la fin de la section.
-- Quand une section a une fiche technique, n'ouvre pas le site d'origine.
+- Ouvre le site d'origine pour voir les animations et interactions de la section et les reproduire (selon la fiche : « à alléger » allégée, « à proscrire » non reproduite). Va droit à la section, au plus 2 captures de cette section réduites à 1000 px, rien d'autre du site.
 - Ne relis pas un fichier déjà lu dans la session.
 
 ### Étape 4 : Attendre
