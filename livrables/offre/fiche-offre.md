@@ -75,7 +75,7 @@ Votre site est hébergé et surveillé par nous, il reste à jour, et vous savez
 | Petites modifications (un texte, une photo, un horaire) | 15 minutes par mois | 30 minutes par mois |
 | Rapport mensuel | Visiteurs et demandes reçues | Visiteurs, d'où ils viennent, demandes reçues |
 
-Engagement de 12 mois. À la fin, vous renouvelez, ou nous transférons le site sur votre propre compte.
+Sans engagement de durée : vous arrêtez quand vous voulez, avec un préavis de 2 mois. Nous transférons alors le site sur votre propre compte.
 
 ---
 
@@ -88,7 +88,7 @@ Engagement de 12 mois. À la fin, vous renouvelez, ou nous transférons le site 
 | Pro | 1 800 € | 6 × 300 € |
 
 - **En une fois** : 50 % à la signature, 50 % avant la mise en ligne.
-- **En 6 fois** : le premier versement à la signature, puis un prélèvement automatique chaque mois. La maintenance est comprise dans ce mode de paiement et démarre à la mise en ligne. Le site vous appartient au dernier versement.
+- **En 6 fois** : le premier versement à la signature, puis un prélèvement automatique chaque mois. La maintenance est obligatoire dans ce mode de paiement : elle démarre le mois de la mise en ligne et s'ajoute aux versements. Le site vous appartient au dernier versement.
 
 ---
 

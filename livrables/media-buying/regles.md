@@ -206,7 +206,9 @@ L'ordre de lecture d'une pub est donc :
 1. **Coût par RDV** (`coutParRdv`) et **taux de RDV** (`rdv` divisé par `leadsMeta` ou par
    `qualite.leads`), puis **clients** (`qualite.clients`).
 2. **Budget déclaré** dans le formulaire (`qualite.budgets`) : une pub qui attire surtout des
-   budgets sous 999 € amène des leads que l'offre ne sert pas, même pas chers.
+   budgets sous 699 € amène des leads que l'offre ne sert pas, même pas chers. Seuil abaissé de
+   999 € à 699 € par décision d'Edgar du 21/10/2026, à cause du One page à 699 €, la formule la
+   moins chère de `livrables/offre/fiche-offre.md`.
 3. Seulement ensuite, le **CPL**.
 
 Précautions :
@@ -254,3 +256,6 @@ citent les noms, pas les chiffres.
 
 - 20/10/2026 : première version, avant tout test. Aucune règle ne vient encore des données du
   compte.
+- 21/10/2026 : section 8, le seuil des budgets déclarés qui comptent comme un mauvais signe passe
+  de « sous 999 € » à « sous 699 € » (décision d'Edgar, arrivée du One page à 699 €). Ce n'est
+  pas une donnée du compte.

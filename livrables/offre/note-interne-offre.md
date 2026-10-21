@@ -39,7 +39,7 @@ Point de départ mesuré : 4 à 5 journées de 8 h par site Framer (32 à 40 h),
 Deux modes, au choix du client :
 
 - **En une fois** : acompte de 50 % à la signature, solde à la livraison avant mise en ligne. Un site signé mi-novembre encaisse la moitié en novembre et la moitié en décembre.
-- **En 6 fois sans frais** : 6 × 116,50 € (one page), 6 × 166,50 € (Essentiel), 6 × 300 € (Pro). Premier versement à la signature, les suivants prélevés chaque mois par Stripe (SEPA ou carte). La maintenance est obligatoire, démarre à la mise en ligne et s'ajoute aux versements. Le site reste à Kleak jusqu'au dernier versement, suspendu en cas d'impayé.
+- **En 6 fois sans frais** : 6 × 116,50 € (one page), 6 × 166,50 € (Essentiel), 6 × 300 € (Pro). Premier versement à la signature, les suivants prélevés chaque mois par Stripe (SEPA ou carte). La maintenance est obligatoire, démarre le mois de la mise en ligne et s'ajoute aux versements (précisé le 21/10, fiche client corrigée). Le site reste à Kleak jusqu'au dernier versement, suspendu en cas d'impayé.
 
 **Effet sur le cash :** un client en 6 fois rapporte un sixième du prix le premier mois au lieu de la moitié. Suivre la part des clients en 6 fois dans l'onglet Finance ; si elle grimpe, l'objectif de décembre demande plus de signatures.
 
@@ -53,5 +53,5 @@ Les sites sont hébergés sur le compte Framer de Kleak, plan Basic par site (10
 
 - Le nom de l'agence, l'email et le téléphone (champs entre crochets).
 - Le prix de la page supplémentaire (200 €) : proposé, pas encore discuté.
-- CGV de prestation à rédiger : périmètre, retouches, propriété (site à Kleak jusqu'au paiement complet), paiement en 6 fois et suspension en cas d'impayé, retards de contenus, résiliation de la maintenance, transfert du site en fin d'engagement.
+- CGV de prestation à rédiger : périmètre, retouches, propriété (site à Kleak jusqu'au paiement complet), paiement en 6 fois et suspension en cas d'impayé, retards de contenus, résiliation de la maintenance (sans engagement, préavis de 2 mois, décision du 21/10), transfert du site à l'arrêt de la maintenance.
 - Mention « TVA non applicable, article 293 B du CGI » valable tant que le CA reste sous le seuil de franchise (à vérifier).
