@@ -15,70 +15,73 @@ animations lourdes ; un doublon ; une fiche vague. Tu déposes sans demander de 
 touches au hub que par les entrées ci-dessous, tu ne supprimes aucune fiche, et tu ne modifies
 une fiche existante qu'en RETRAVAILLER, jamais sa `note`, son `origine` ni ses épingles.
 
-**Économie** : une commande bash par étape. Tu lis les réponses du hub, la capture d'Edgar,
-`vignette.jpg`, `vignette-mobile.jpg` et `resume.json`. `analyse.json` et `apercu.jpg` seulement
-en cas de doute précis. Aucune autre lecture, aucune relecture d'un fichier déjà lu.
+**Économie** : deux scripts font tout le shell (`preparer.sh`, `deposer.sh`), 4 à 5 tours par fiche.
+Tu lis seulement `vignette.jpg`, `vignette-mobile.jpg`, `resume.json` (et `capture-edgar.jpg` en
+RETRAVAILLER), tous en **un seul tour** (Read en parallèle). `analyse.json` et `apercu.jpg`
+seulement en cas de doute précis. Aucune autre lecture, aucune relecture.
 
 ## Secret et hub
 
-- Toujours depuis la racine du workspace. Le secret se charge depuis `.env` et ne s'affiche
-  jamais : pas de `echo`, pas de `cat .env`, pas de `set -x`, pas de `env`, pas de secret dans
+- Toujours depuis la racine du workspace. Les scripts chargent le secret depuis `.env` et ne
+  l'affichent jamais : toi non plus, pas de `echo`, `cat .env`, `set -x`, `env`, ni de secret dans
   un fichier écrit.
-- `<HUB>` dans les commandes = ce préfixe, recopié mot pour mot (il recharge `.env`, puis sans
-  `HUB_URL_ESSAI` vise la production) :
-  `cd /Users/ed/Desktop/jarvis-kleak && set -a && . ./.env && set +a && HUB_URL="${HUB_URL_ESSAI:-$HUB_URL}" &&`
 - Essai : quand Edgar donne une adresse de hub (par exemple `http://localhost:3000`), écris
-  `export HUB_URL_ESSAI=<adresse>` seul sur la première ligne de CHAQUE commande bash (avant le
-  `mkdir` ou le `cd`), et mets cette adresse dans les liens de ta réponse à la place de la
-  production. Les règles du secret ne changent pas.
-- `<h>` = horodatage (`date +%Y-%m-%d-%H%M%S`), choisi une fois par demande. Dossier
-  `/tmp/kleak-biblio/<h>/`, créé par le `mkdir -p` de la première commande, jamais dans le dépôt.
-- Le script charge Playwright depuis `livrables/creas-meta/node_modules` : s'il manque, dis-le,
-  n'installe rien. Pages publiques seulement, sans connexion ni formulaire.
+  `export HUB_URL_ESSAI=<adresse>` seul sur la première ligne de CHAQUE commande bash (les scripts
+  la lisent, sinon ils visent la production), et mets cette adresse dans les liens de ta réponse.
+- Dossier de travail `/tmp/kleak-biblio/<horodatage>/`, créé par `preparer.sh` (champ `dossier` de
+  sa sortie), jamais dans le dépôt.
+- Playwright vient de `livrables/creas-meta/node_modules` : s'il manque, dis-le, n'installe rien.
+  Pages publiques seulement, sans connexion ni formulaire.
 
-**Codes du hub** : `200`, `201` (`{ reference }`) : fait, garde `titre` et `type_section`. `400`
-`{ error }` : corrige, renvoie une fois, sinon arrête et dis-le. `401` (secret refusé), `503`
-(secret non configuré côté hub), `404` (entrée pas déployée, ou fiche introuvable en PATCH),
-`500` : arrête, donne le code et le message, ne réessaie pas.
+**Codes du hub** : `200`, `201` : fait, garde `titre` et `type_section`. `400` `{ error }` : corrige
+`champs.json`, relance `deposer.sh` une fois, sinon arrête et dis-le. `401` (secret refusé), `503`
+(secret non configuré côté hub), `404` (entrée pas déployée, ou fiche introuvable), `500` : arrête,
+donne le code et le message, ne réessaie pas. `preparer.sh` s'arrête avec ces codes sur stderr
+(exit 1), ou avec le code de `capturer.mjs` (`3` page inaccessible : rien n'est déposé, donne le message).
+
+## Les deux scripts
+
+```bash
+cd /Users/ed/Desktop/jarvis-kleak && livrables/bibliotheque/preparer.sh "<URL>" "<texte du titre>" [--fiche <id>]
+cd /Users/ed/Desktop/jarvis-kleak && livrables/bibliotheque/deposer.sh <dossier> <dossier>/champs.json [--fiche <id>]
+```
+
+`preparer.sh` sort un JSON : `dossier`, `doublons` (`id`, `titre`, `type_section` des fiches déjà
+là pour cette URL), `fiche` (RETRAVAILLER : `id`, `titre`, `type_section`, `captureEdgar`),
+`section` (`n`, `premierTitre`, `autres`, `outil`), `lister`, `fichiers` (`vignette`,
+`vignetteMobile` ou null, `resume`, `capture`). Si le texte n'est pas trouvé, `lister: true`,
+`section: null`, `fichiers` = `apercu` et `lister` (JSON des sections).
+`deposer.sh` lit `<dossier>/fiche.txt` et `champs.json`, et sort `{ code, id, titre }`.
+`champs.json` : `{ "titre", "url_source", "type_section", "secteur", "tags": ["…"], "outil" }`.
+Il n'envoie jamais `note` ni `origine`. Sans capture dans `section/`, il dépose sans image : dis-le.
+
+- `type_section` : `hero`, `navigation`, `services`, `realisations`, `a_propos`, `chiffres`,
+  `logos`, `etapes`, `temoignages`, `tarifs`, `faq`, `appel_action`, `contact`, `footer`,
+  `page_complete`, `autre`. `outil` : celui de `section.outil` (`aucun` = « Inspiration »).
+- Titre : la forme puis le secteur (« Hero centré fond sombre, agence web »), jamais la marque.
+  Secteur du site d'origine, 3 à 6 tags.
 
 ## Mode AJOUTER
 
-Entrée : URL, sections désignées, parfois une capture. Consigne d'Edgar en ajoutant (« j'aime la grille ») : dans `note`, sinon `note` vide.
+Entrée : URL, sections désignées, parfois une capture. Consigne d'Edgar en ajoutant (« j'aime la
+grille ») : la note n'est pas gérée par `deposer.sh`, signale-la dans ta réponse.
 
-1. **Doublons** :
-   ```bash
-   mkdir -p /tmp/kleak-biblio/<h> && <HUB> curl -sS -G -o /tmp/kleak-biblio/<h>/doublons.json -w "%{http_code}\n" -H "x-kleak-secret: $BIBLIO_AGENT_SECRET" --data-urlencode "url=<URL>" "$HUB_URL/api/agent/bibliotheque"
-   ```
-   Lis `doublons.json` : `{ fiches: [{ id, titre, type_section, url_source, capture_url }] }` (URL normalisées).
-2. **Repérer** avec un texte de la section (donné par Edgar ou lu sur sa capture) :
-   ```bash
-   cd /Users/ed/Desktop/jarvis-kleak && node livrables/bibliotheque/capturer.mjs "<URL>" --titre "<texte>"
-   ```
-   Sortie `{ n, premierTitre, autres? }`. Sans texte, ou code `2` : `--lister --sortie
-   /tmp/kleak-biblio/<h>`, choisis sur `premierTitre`, `haut`, `hauteur`, et n'ouvre `apercu.jpg`
-   (sections numérotées, échelle 3) que si le JSON ne suffit pas. Ambigu (deux blocs de
-   témoignages) : prends les deux et dis-le.
-3. **Doublon** si même URL, même type **et** visiblement la même section (même position, titre
-   équivalent) : ne crée rien, cite la fiche existante. Deux sections du même type font deux
+1. **Préparer** : `preparer.sh` avec un texte de la section (donné par Edgar ou lu sur sa capture).
+   Sans texte, passe le nom du site : le plus souvent cela donne `lister`.
+2. **Lire en un tour** `vignette.jpg`, `vignette-mobile.jpg` (s'il existe) et `resume.json`.
+   Vérifie : bonne section, entière, sans bandeau cookies ni menu par-dessus ? Sinon essaie les
+   `autres` (relance avec un autre texte) ou, si `lister`, choisis dans `lister.json` sur
+   `premierTitre`, `haut`, `hauteur` (n'ouvre `apercu.jpg`, sections numérotées, que si le JSON ne
+   suffit pas), puis `capturer.mjs "<URL>" --section <n> --sortie <dossier>/section`. Ambigu (deux
+   blocs de témoignages) : prends les deux et dis-le. `mobile.introuvable: true` : dis-le dans la fiche.
+3. **Doublon** si `doublons` contient même type **et** visiblement la même section (même position,
+   titre équivalent) : ne crée rien, cite la fiche existante. Deux sections du même type font deux
    fiches. Doute réel : ne crée pas, demande.
-4. **Capturer** :
-   ```bash
-   cd /Users/ed/Desktop/jarvis-kleak && node livrables/bibliotheque/capturer.mjs "<URL>" --section <n> --sortie /tmp/kleak-biblio/<h>/section-<n>
-   ```
-   Sortie `{ capture, vignette, vignetteMobile, resume, analyse, decoupe, outil, avertissements, … }`.
-   `capture.jpg` (déposée) : section seule, éléments fixes masqués, sous 4 Mo, coupée à 3000 px
-   si `decoupe: true`.
-5. **Vérifier** sur `vignette.jpg` : bonne section, entière, sans bandeau cookies ni menu par-dessus ?
-   Sinon, retour à l'étape 2. Puis `vignette-mobile.jpg` s'il existe.
-6. **Lire `resume.json`**. `mobile.introuvable: true` : mobile non mesuré, dis-le dans la fiche.
-7. **Écrire la fiche** (Write, `/tmp/kleak-biblio/<h>/fiche-<n>.txt`). Choisis titre,
-   `type_section`, secteur du site d'origine, 3 à 6 tags.
-8. **Déposer**, puis applique les codes du hub :
-   ```bash
-   <HUB> curl -sS -o /tmp/kleak-biblio/<h>/depot-<n>.json -w "%{http_code}\n" -X POST -H "x-kleak-secret: $BIBLIO_AGENT_SECRET" --form-string "titre=<titre>" --form-string "url_source=<URL>" --form-string "type_section=<type>" --form-string "secteur=<secteur>" --form-string "tags=<tag1, tag2>" --form-string "outil=<framer|webflow|aucun>" -F "fiche_technique=</tmp/kleak-biblio/<h>/fiche-<n>.txt" -F "file=@/tmp/kleak-biblio/<h>/section-<n>/capture.jpg;type=image/jpeg" "$HUB_URL/api/agent/bibliotheque"
-   ```
+4. **Écrire en un tour** `<dossier>/fiche.txt` (format ci-dessous) et `<dossier>/champs.json`.
+5. **Déposer** : `deposer.sh`, applique les codes du hub. Puis réponds.
 
-Plusieurs sections d'un site : doublons et repérage une fois, puis `--section` et dépôt par section.
+Plusieurs sections d'un site : une passe complète par section (`preparer.sh` par section, un
+dossier chacun).
 
 ## Mode RETRAVAILLER
 
@@ -86,48 +89,34 @@ Déclencheurs : « retravaille la bibliothèque », « complète les fiches », 
 … ». Sur la même fiche, tu remplaces titre, capture et fiche technique. Tu gardes la note
 d'Edgar, l'origine et les épingles.
 
-1. **Liste** :
+1. **Liste** (une seule commande, puis lis `a-retravailler.json`) :
    ```bash
-   mkdir -p /tmp/kleak-biblio/<h> && <HUB> curl -sS -G -o /tmp/kleak-biblio/<h>/a-retravailler.json -w "%{http_code}\n" -H "x-kleak-secret: $BIBLIO_AGENT_SECRET" --data-urlencode "a_retravailler=1" "$HUB_URL/api/agent/bibliotheque"
+   mkdir -p /tmp/kleak-biblio/liste && cd /Users/ed/Desktop/jarvis-kleak && set -a && . ./.env && set +a && HUB_URL="${HUB_URL_ESSAI:-$HUB_URL}" && curl -sS -G -o /tmp/kleak-biblio/liste/a-retravailler.json -w "%{http_code}\n" -H "x-kleak-secret: $BIBLIO_AGENT_SECRET" --data-urlencode "a_retravailler=1" "$HUB_URL/api/agent/bibliotheque"
    ```
-   `{ fiches: [{ id, titre, url_source, type_section, note, capture_url }] }` : fiches sans
-   fiche technique, plus anciennes d'abord. Fiche nommée par Edgar (même au format long à 8
-   rubriques) : même commande avec `url=<url_source>` à la place, qui donne `id` et
-   `capture_url`. Plusieurs fiches pour cette URL : prends celle dont le titre ou le type
-   correspond à la demande, sans poser de question ; vraiment ambigu : dis laquelle tu as prise.
-   Fiche nommée sans URL : utilise celle qu'Edgar donne ; s'il n'en a pas donné, demande-la lui
-   (seule question permise dans ce mode). Fiche dont `url_source` est null ou vide : ne change
-   rien et dis-le dans ta réponse.
-2. **Capture d'Edgar**, téléchargée et réduite, puis lue pour savoir quelle section c'est (la
-   `note` aide aussi). Sans `capture_url`, ou code autre que `200`, pars du titre et du type :
-   ```bash
-   curl -sS -o /tmp/kleak-biblio/<h>/edgar-<id>.img -w "%{http_code}\n" "<capture_url>" && sips -Z 800 -s format jpeg /tmp/kleak-biblio/<h>/edgar-<id>.img --out /tmp/kleak-biblio/<h>/edgar-<id>.jpg >/dev/null
-   ```
-3. **Repérer** sur `url_source` avec `--titre "<texte lu sur la capture>"` (repli `--lister`
-   comme en AJOUTER), puis `--section <n> --sortie /tmp/kleak-biblio/<h>/fiche-<id>`.
-4. **Vérifier** que `vignette.jpg` montre la section de la capture d'Edgar. Sinon essaie les
-   `autres` indices de la sortie `--titre`, puis `--lister` et son `apercu.jpg` en dernier recours.
-   Section absente du site (introuvable même ainsi, site modifié, hors ligne) : ne change rien, dis-le.
-5. **Écrire** la fiche courte (`/tmp/kleak-biblio/<h>/fiche-<id>.txt`), titre descriptif, bon `type_section`.
-6. **Mettre à jour**, puis applique les codes du hub. **Jamais** de champ `note` ni `origine` :
-   ```bash
-   <HUB> curl -sS -o /tmp/kleak-biblio/<h>/maj-<id>.json -w "%{http_code}\n" -X PATCH -H "x-kleak-secret: $BIBLIO_AGENT_SECRET" --form-string "titre=<titre>" --form-string "type_section=<type>" --form-string "secteur=<secteur>" --form-string "tags=<tag1, tag2>" --form-string "outil=<framer|webflow|aucun>" -F "fiche_technique=</tmp/kleak-biblio/<h>/fiche-<id>.txt" -F "file=@/tmp/kleak-biblio/<h>/fiche-<id>/capture.jpg;type=image/jpeg" "$HUB_URL/api/agent/bibliotheque/<id>"
-   ```
+   `{ fiches: [{ id, titre, url_source, type_section, note, capture_url }] }` : fiches sans fiche
+   technique, plus anciennes d'abord. Fiche nommée par Edgar (même au format long à 8 rubriques) :
+   saute la liste, `preparer.sh` donne `doublons` pour l'URL ; prends la fiche dont le titre ou le
+   type correspond, sans poser de question ; vraiment ambigu : dis laquelle tu as prise. Fiche
+   nommée sans URL : utilise celle qu'Edgar donne ; s'il n'en a pas donné, demande-la lui (seule
+   question permise dans ce mode). Fiche dont `url_source` est null ou vide : ne change rien, dis-le.
+2. **Préparer** : `preparer.sh "<url_source>" "<texte>" --fiche <id>`. Le texte vient de la
+   `note`, du titre ou de la capture d'Edgar ; un premier passage sans texte fiable donne `lister`.
+3. **Lire en un tour** `capture-edgar.jpg` (`fichiers`/`fiche.captureEdgar`, absent : pars du titre
+   et du type), `vignette.jpg`, `vignette-mobile.jpg`, `resume.json`. `vignette.jpg` doit montrer la
+   section de la capture d'Edgar. Sinon essaie les `autres`, puis `lister` et `apercu.jpg` en dernier
+   recours. Section absente du site (introuvable même ainsi, site modifié, hors ligne) : ne change rien, dis-le.
+4. **Écrire en un tour** `fiche.txt` (courte, titre descriptif, bon `type_section`) et `champs.json`.
+5. **Mettre à jour** : `deposer.sh <dossier> <dossier>/champs.json --fiche <id>`, applique les codes
+   du hub. Puis réponds.
 
-## Champs et échecs
+## Échecs
 
-- `--form-string` pour le texte (curl n'y lit ni `@`, ni `<`, ni `;`). Seuls `fiche_technique`
-  (`<fichier`, envoyé comme texte) et `file` (`@fichier`) passent par `-F`.
-- AJOUTER seulement : `--form-string "note=<consigne d'Edgar>"` s'il en a donné une. Capture PNG,
-  JPEG ou WebP, 4 Mo au plus. Sans capture fiable, retire la ligne `file` et dis-le.
-- `type_section` : `hero`, `navigation`, `services`, `realisations`, `a_propos`, `chiffres`,
-  `logos`, `etapes`, `temoignages`, `tarifs`, `faq`, `appel_action`, `contact`, `footer`,
-  `page_complete`, `autre`. `outil` : celui de la sortie `--section` (`aucun` = « Inspiration »).
-- Titre : la forme puis le secteur (« Hero centré fond sombre, agence web »), jamais la marque.
-- Code `2` en `--section` (non isolable) : `--ecran <haut> --sortie /tmp/kleak-biblio/<h>/ecran-<haut>`
-  (haut en px, pris dans `haut` ou sur l'aperçu × 3) donne `capture.jpg` de l'écran 1440 × 900,
-  sans analyse : lis-la, dis que c'est la zone visible, et la fiche ne décrit que ce que tu vois.
-- Code `3` (page inaccessible) ou `1` (erreur inattendue) : rien n'est déposé, donne le message.
+- Code `2` en `--section` (non isolable) : `capturer.mjs "<URL>" --ecran <haut> --sortie
+  <dossier>/section` (haut en px, pris dans `haut` ou sur l'aperçu × 3) donne `capture.jpg` de
+  l'écran 1440 × 900, sans analyse : lis-la, dis que c'est la zone visible, et la fiche ne décrit
+  que ce que tu vois.
+- Capture PNG, JPEG ou WebP, 4 Mo au plus. Sans capture fiable, supprime `section/capture.jpg` et
+  dis-le.
 
 ## Fiche technique : 6 rubriques, 180 mots au plus
 
