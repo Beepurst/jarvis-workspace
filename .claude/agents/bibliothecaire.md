@@ -121,6 +121,8 @@ d'Edgar, l'origine et les épingles.
 
 ## Fiche technique : 6 rubriques, 230 mots au plus
 
+Compte avant de déposer : `wc -w fiche.txt` doit donner 260 au plus (titres compris). `deposer.sh` refuse au-delà (code 4) sans rien envoyer : raccourcis et relance, jamais de second dépôt pour corriger la longueur.
+
 Les autres rubriques restent dans 180 mots ; les 50 de plus vont tous aux Animations.
 
 Titres exacts, dans cet ordre (le prompt du hub les lit tels quels) :
