@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Planche de direction</title>
+<!--
+  MODÈLE DE PLANCHE DE DIRECTION · Kleak Agency
+  1. Dupliquer ce fichier sous le nom du client (ex. planche-dupont-plomberie.html).
+  2. Remplir uniquement l'objet PLANCHE ci-dessous (à partir des réponses au questionnaire de cadrage).
+  3. Exporter : voir README.md (PDF A4 paysage + image PNG).
+  Les polices sont chargées depuis Google Fonts d'après les noms indiqués dans PLANCHE.polices.
+-->
+<script>
+const PLANCHE = {
+  client: "Garnier Plomberie Chauffage",
+  secteur: "Plombier chauffagiste · Osny · Entreprise fictive, site de démonstration",
+  formule: "One page",
+  date: "21 octobre 2026",
+  version: "V1",
+  intention: "Un site simple qui donne envie d'appeler : on voit ce que vous faites, où vous intervenez, et qu'on tombe sur vous au téléphone.",
+  mots: ["Rassurant", "Sobre", "Dynamique"],
+  luminosite: "Clair",
+  couleurs: [
+    { nom: "Blanc cassé", hex: "#F6F7F9", role: "Fond" },
+    { nom: "Bleu nuit", hex: "#16324F", role: "Titres, texte" },
+    { nom: "Bleu camion", hex: "#1F5FA8", role: "Liens, icônes" },
+    { nom: "Orange camion", hex: "#F08A24", role: "Bouton Appeler" },
+    { nom: "Gris ardoise", hex: "#5B6573", role: "Texte secondaire" },
+  ],
+  polices: {
+    titre: { nom: "Plus Jakarta Sans", poids: 700, exemple: "Prix annoncé avant de commencer." },
+    texte: { nom: "Inter", poids: 400, exemple: "Je réponds au téléphone moi-même, du lundi au vendredi de 8 h à 18 h." },
+  },
+  photos: [
+    { url: "https://images.unsplash.com/photo-1694827893591-af9b80361599?fm=jpg&q=80&w=900&fit=crop", legende: "Accroche : cuivre posé dans le mur" },
+    { url: "https://images.unsplash.com/photo-1676210134190-3f2c0d5cf58d?fm=jpg&q=80&w=700&fit=crop", legende: "Dépannage" },
+    { url: "https://images.unsplash.com/photo-1518276779712-dfdcb9daa7a1?fm=jpg&q=80&w=700&fit=crop", legende: "Chauffage" },
+    { url: "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?fm=jpg&q=80&w=700&fit=crop", legende: "Salle de bain" },
+    { url: "https://images.unsplash.com/photo-1776860155275-eee24bfb1dee?fm=jpg&q=80&w=700&fit=crop", legende: "Pompe à chaleur" },
+  ],
+  photosSource: "Photos libres de droits (Unsplash) pour le test. Chez un vrai client : ses photos, dont sa chaudière, sans la floue ni le chantier en désordre.",
+  accroche: {
+    titre: "Plombier chauffagiste à Osny et 20 km autour.",
+    sousTitre: "Dépannage, chaudière, salle de bain, pompe à chaleur. Devis gratuit, prix annoncé avant de commencer.",
+    bouton: "Appeler le 01 99 00 42 17",
+    boutonFond: "#F08A24",
+    boutonTexte: "#16324F",
+  },
+  pages: ["Une seule page"],
+  sections: [
+    "Bandeau : site de démonstration, entreprise fictive",
+    "En-tête : nom, bouton Appeler (fixé en bas d'écran sur mobile)",
+    "Accroche : titre, services, bouton Appeler, photo",
+    "Trois engagements : prix annoncé, vous tombez sur moi, RGE",
+    "Services : dépannage, chaudière, salle de bain, pompe à chaleur",
+    "Avis : note Google et 3 témoignages",
+    "Zone d'intervention et horaires",
+    "Questions fréquentes (4)",
+    "Appel final et formulaire court",
+    "Pied de page : mentions légales",
+  ],
+  animations: "Presque aucune : survols des boutons et des cartes, une apparition sur la photo des services. Rien sur l'accroche. Le site doit s'afficher vite sur un téléphone en 4G.",
+  questions: [
+    "Urgences : 7 jours sur 7, ou le week-end en plus de la semaine ? En combien de temps arrivez-vous ?",
+    "Le bleu et l'orange proposés sont-ils ceux de votre camion ?",
+    "Questions fréquentes : un prix de départ pour un dépannage, ou « sur devis » ?",
+  ],
+  agence: "Kleak Agency",
+  contact: "contact@kleakagency.fr",
+};
+</script>
+<style>
+  :root { --bg: #FAF8F4; --ink: #1E1A17; --mute: #6B625A; --line: rgba(30,26,23,.14); --accent: #8A6A3A; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  @page { size: 1600px 1000px; margin: 0; }
+  html, body { background: var(--bg); color: var(--ink); font-family: Inter, system-ui, sans-serif; }
+  .page { width: 1600px; height: 1000px; padding: 44px 56px 36px; display: grid; grid-template-rows: auto 1fr auto; gap: 26px; overflow: hidden; }
+  header { display: flex; justify-content: space-between; align-items: flex-end; padding-bottom: 16px; border-bottom: 1px solid var(--line); }
+  .eyebrow { font: 500 11px/1.4 Inter; letter-spacing: .14em; text-transform: uppercase; color: var(--accent); }
+  .client { font-size: 34px; margin-top: 6px; }
+  .meta { text-align: right; font: 400 13px/1.6 Inter; color: var(--mute); }
+  .grid { display: grid; grid-template-columns: 1.05fr 1.25fr 0.9fr; gap: 36px; min-height: 0; }
+  .col { display: flex; flex-direction: column; gap: 22px; min-height: 0; }
+  .block h3 { font: 500 11px/1.4 Inter; letter-spacing: .14em; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+  .intention { font-size: 24px; line-height: 1.25; }
+  .tags { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+  .tag { font: 500 12px Inter; padding: 6px 12px; border: 1px solid var(--line); border-radius: 999px; }
+  .small { font: 400 13px/1.55 Inter; color: var(--mute); }
+  .swatches { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+  .sw div { height: 64px; border: 1px solid var(--line); }
+  .sw b { display: block; font: 600 12px Inter; margin-top: 6px; }
+  .sw span { display: block; font: 400 11px/1.4 Inter; color: var(--mute); }
+  .typo .t { font-size: 46px; line-height: 1; letter-spacing: -.01em; }
+  .typo .b { font-size: 15px; line-height: 1.6; color: var(--mute); margin-top: 10px; }
+  .typo .names { display: flex; justify-content: space-between; margin-top: 10px; font: 400 12px Inter; color: var(--mute); }
+  .photos { display: grid; grid-template-columns: 1.4fr 1fr 1fr; grid-template-rows: 1fr 1fr; gap: 8px; height: 330px; }
+  .photos figure { position: relative; overflow: hidden; background: #ddd; }
+  .photos figure:first-child { grid-row: span 2; }
+  .photos img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .photos figcaption { position: absolute; left: 8px; bottom: 8px; font: 500 11px Inter; color: #fff; background: rgba(0,0,0,.45); padding: 3px 7px; }
+  .hero { padding: 22px; border: 1px solid var(--line); background: #fff; }
+  .hero .h { font-size: 36px; line-height: 1.02; }
+  .hero .s { font-size: 14px; color: var(--mute); margin-top: 8px; }
+  .hero .btn { display: inline-block; margin-top: 14px; background: var(--ink); color: #F5EFE6; font: 500 13px Inter; padding: 10px 16px; }
+  ol { list-style: none; counter-reset: s; }
+  ol li { counter-increment: s; display: flex; gap: 10px; font: 400 13px/1.35 Inter; padding: 6px 0; border-bottom: 1px solid var(--line); }
+  ol li::before { content: counter(s, decimal-leading-zero); color: var(--accent); font-weight: 500; width: 22px; }
+  .pages { font: 500 13px/1.6 Inter; }
+  footer { display: grid; grid-template-columns: 1.6fr 1fr; gap: 36px; padding-top: 16px; border-top: 1px solid var(--line); align-items: start; }
+  .ask { display: flex; gap: 26px; }
+  .ask div { font: 400 13px/1.45 Inter; display: flex; gap: 8px; }
+  .ask div::before { content: ""; flex: none; width: 14px; height: 14px; border: 1px solid var(--ink); margin-top: 2px; }
+  .sign { text-align: right; font: 400 12px/1.6 Inter; color: var(--mute); }
+</style>
+</head>
+<body>
+<div class="page" id="page"></div>
+<script>
+const P = PLANCHE;
+const fam = [P.polices.titre, P.polices.texte].map((f) => f.nom.replace(/ /g, "+") + ":ital,wght@0," + f.poids + ";1," + f.poids).join("&family=");
+const link = document.createElement("link");
+link.rel = "stylesheet"; link.href = "https://fonts.googleapis.com/css2?family=" + fam + "&display=block";
+document.head.appendChild(link);
+const esc = (s) => String(s).replace(/[&<>]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" })[c]);
+const titleFont = `font-family:'${P.polices.titre.nom}';font-weight:${P.polices.titre.poids}`;
+const withItalic = (t, it) => it && t.includes(it) ? esc(t).replace(esc(it), `<em>${esc(it)}</em>`) : esc(t);
+document.getElementById("page").innerHTML = `
+<header>
+  <div><div class="eyebrow">Planche de direction · ${esc(P.version)}</div><div class="client" style="${titleFont}">${esc(P.client)}</div><div class="small">${esc(P.secteur)}</div></div>
+  <div class="meta">Formule ${esc(P.formule)}<br>${esc(P.date)}<br>${esc(P.agence)}</div>
+</header>
+<div class="grid">
+  <div class="col">
+    <div class="block"><h3>L'intention</h3><p class="intention" style="${titleFont}">${esc(P.intention)}</p>
+      <div class="tags">${P.mots.map((m) => `<span class="tag">${esc(m)}</span>`).join("")}<span class="tag">${esc(P.luminosite)}</span></div></div>
+    <div class="block"><h3>Couleurs</h3><div class="swatches">${P.couleurs.map((c) => `<div class="sw"><div style="background:${c.hex}"></div><b>${esc(c.nom)}</b><span>${esc(c.role)}</span></div>`).join("")}</div></div>
+    <div class="block typo"><h3>Polices</h3><div class="t" style="${titleFont}">${withItalic(P.polices.titre.exemple, P.polices.titre.italique)}</div>
+      <div class="b" style="font-family:'${P.polices.texte.nom}'">${esc(P.polices.texte.exemple)}</div>
+      <div class="names"><span>Titres : ${esc(P.polices.titre.nom)}</span><span>Texte : ${esc(P.polices.texte.nom)}</span></div></div>
+  </div>
+  <div class="col">
+    <div class="block"><h3>Photos retenues</h3><div class="photos">${P.photos.slice(0, 5).map((p) => `<figure><img src="${p.url}" alt=""><figcaption>${esc(p.legende)}</figcaption></figure>`).join("")}</div>
+      <p class="small" style="margin-top:8px">${esc(P.photosSource)}</p></div>
+    <div class="block"><h3>Accroche proposée</h3><div class="hero" style="background:${P.couleurs[0].hex}">
+      <div class="h" style="${titleFont};color:${P.couleurs[1].hex}">${withItalic(P.accroche.titre, P.polices.titre.italique)}</div>
+      <div class="s">${esc(P.accroche.sousTitre)}</div><span class="btn" style="background:${P.accroche.boutonFond || P.couleurs[1].hex};color:${P.accroche.boutonTexte || P.couleurs[0].hex}">${esc(P.accroche.bouton)} ↗</span></div></div>
+  </div>
+  <div class="col">
+    <div class="block"><h3>Pages</h3><p class="pages">${P.pages.map(esc).join(" · ")}</p></div>
+    <div class="block"><h3>Page d'accueil, dans l'ordre</h3><ol>${P.sections.map((s) => `<li>${esc(s)}</li>`).join("")}</ol></div>
+    <div class="block"><h3>Animations</h3><p class="small">${esc(P.animations)}</p></div>
+  </div>
+</div>
+<footer>
+  <div><div class="eyebrow" style="margin-bottom:10px">Votre retour, en un seul message</div><div class="ask">${P.questions.map((q) => `<div>${esc(q)}</div>`).join("")}</div></div>
+  <div class="sign">Dès votre validation, nous construisons votre site.<br>${esc(P.contact)}</div>
+</footer>`;
+document.querySelectorAll("em").forEach((e) => (e.style.fontStyle = "italic"));
+</script>
+</body>
+</html>
