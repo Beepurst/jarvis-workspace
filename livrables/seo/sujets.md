@@ -9,7 +9,7 @@ Statuts : `à écrire` → `à relire` → `validé` → `publié`.
 
 | # | Requête visée | Angle | Famille | Statut | Fichier |
 |---|---|---|---|---|---|
-| 1 | site internet paiement en plusieurs fois | Comment ça marche, ce qu'il faut vérifier (propriété du site, engagement), exemple chiffré | Paiement | à écrire | |
+| 1 | site internet paiement en plusieurs fois | Comment ça marche, ce qu'il faut vérifier (propriété du site, engagement), exemple chiffré | Paiement | à relire | `articles/2026-10-21-site-internet-paiement-plusieurs-fois.md` |
 | 2 | combien coûte un site internet pour une entreprise | Fourchettes par type de site, ce qui fait varier le prix, les coûts annuels oubliés | Prix | à écrire | |
 | 3 | combien coûte un site internet par mois | Hébergement, domaine, maintenance : le vrai coût mensuel | Prix | à écrire | |
 | 4 | prix site internet artisan | Ce dont un artisan a besoin, ce qu'il peut éviter de payer | Prix / métier | à écrire | |
