@@ -10,7 +10,7 @@ URL="${1:-}"; TITRE="${2:-}"; FICHE=""
 [ -z "$URL" ] && { echo "Usage : preparer.sh <url> <texte-du-titre> [--fiche <id>]" >&2; exit 1; }
 set -a; . ./.env; set +a
 HUB_URL="${HUB_URL_ESSAI:-$HUB_URL}"
-D="/tmp/kleak-biblio/$(date +%Y-%m-%d-%H%M%S)"
+D="/tmp/kleak-biblio/$(date +%Y-%m-%d-%H%M%S)-$$"
 mkdir -p "$D"
 
 CODE=$(curl -sS -G -o "$D/doublons.json" -w "%{http_code}" -H "x-kleak-secret: $BIBLIO_AGENT_SECRET" --data-urlencode "url=$URL" "$HUB_URL/api/agent/bibliotheque") || { echo "Hub injoignable" >&2; exit 1; }
