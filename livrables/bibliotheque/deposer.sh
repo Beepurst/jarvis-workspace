@@ -1,7 +1,7 @@
 #!/bin/bash
 # Usage : deposer.sh <dossier> <champs.json> [--fiche <id>] [--dry-run]
 # champs.json : { titre, url_source, type_section, secteur, tags, outil }. Fiche technique : <dossier>/fiche.txt.
-# Sans --fiche : POST (creation). Avec : PATCH (retravailler). Jamais de note ni d'origine.
+# Sans --fiche : POST (creation). Avec : PATCH (retravailler). Note envoyee seulement en POST (si presente dans champs.json), jamais en PATCH; jamais d'origine.
 # Sortie : { code, id, titre }. Le secret n'est jamais affiche.
 set -u
 RACINE="$(cd "$(dirname "$0")/../.." && pwd)"
@@ -20,7 +20,7 @@ ARGS=(-sS -o "$D/depot.json" -w "%{http_code}" -H "x-kleak-secret: $BIBLIO_AGENT
   --form-string "secteur=$(champ secteur)" --form-string "tags=$(champ tags)" --form-string "outil=$(champ outil)"
   -F "fiche_technique=<$D/fiche.txt")
 if [ -n "$FICHE" ]; then METHODE=PATCH; CIBLE="$HUB_URL/api/agent/bibliotheque/$FICHE"
-else METHODE=POST; CIBLE="$HUB_URL/api/agent/bibliotheque"; ARGS+=(--form-string "url_source=$(champ url_source)"); fi
+else METHODE=POST; CIBLE="$HUB_URL/api/agent/bibliotheque"; ARGS+=(--form-string "url_source=$(champ url_source)"); N="$(champ note)"; [ -n "$N" ] && ARGS+=(--form-string "note=$N"); fi
 [ -f "$CAPTURE" ] && ARGS+=(-F "file=@$CAPTURE;type=image/jpeg")
 if [ $DRY -eq 1 ]; then
   printf 'curl -X %s' "$METHODE"; for a in "${ARGS[@]}"; do case "$a" in "x-kleak-secret: "*) a="x-kleak-secret: ***";; esac; printf " %q" "$a"; done; printf ' %q\n' "$CIBLE"; exit 0

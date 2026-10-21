@@ -52,8 +52,8 @@ là pour cette URL), `fiche` (RETRAVAILLER : `id`, `titre`, `type_section`, `cap
 `vignetteMobile` ou null, `resume`, `capture`). Si le texte n'est pas trouvé, `lister: true`,
 `section: null`, `fichiers` = `apercu` et `lister` (JSON des sections).
 `deposer.sh` lit `<dossier>/fiche.txt` et `champs.json`, et sort `{ code, id, titre }`.
-`champs.json` : `{ "titre", "url_source", "type_section", "secteur", "tags": ["…"], "outil" }`.
-Il n'envoie jamais `note` ni `origine`. Sans capture dans `section/`, il dépose sans image : dis-le.
+`champs.json` : `{ "titre", "url_source", "type_section", "secteur", "tags": ["…"], "outil", "note" }`.
+`note` n'est envoyée qu'à la création (jamais en `--fiche`), jamais `origine`. Sans capture dans `section/`, il dépose sans image : dis-le.
 
 - `type_section` : `hero`, `navigation`, `services`, `realisations`, `a_propos`, `chiffres`,
   `logos`, `etapes`, `temoignages`, `tarifs`, `faq`, `appel_action`, `contact`, `footer`,
@@ -64,7 +64,7 @@ Il n'envoie jamais `note` ni `origine`. Sans capture dans `section/`, il dépose
 ## Mode AJOUTER
 
 Entrée : URL, sections désignées, parfois une capture. Consigne d'Edgar en ajoutant (« j'aime la
-grille ») : la note n'est pas gérée par `deposer.sh`, signale-la dans ta réponse.
+grille ») : mets-la dans `note` de `champs.json`, sinon omets `note`.
 
 1. **Préparer** : `preparer.sh` avec un texte de la section (donné par Edgar ou lu sur sa capture).
    Sans texte, passe le nom du site : le plus souvent cela donne `lister`.
