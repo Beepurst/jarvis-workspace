@@ -133,11 +133,13 @@ cd /Users/ed/Desktop/jarvis-kleak && node livrables/bibliotheque/inspirer.mjs --
    proche du métier du client d'abord, jamais un `demo` null.
 3. **Planche de tri** : `--planche` sur ces 8, puis `sips -Z 1000 <dossier>/planche.jpg --out
    <dossier>/tri.jpg` et lis `tri.jpg` une seule fois. Elle montre le haut de page de chaque démo.
-4. **Retenir 4 ou 5** : fond accordé à `luminosite`, ambiance accordée aux `mots`, action
+4. **Retenir 4 ou 5**, seulement des démos qui servent vraiment le brief (structure, ton ou action
+   principale proches) : moins de 4 qui tiennent, livre-en 2 ou 3 et dis que le marketplace est
+   pauvre pour ce secteur, jamais de démo de remplissage. Critères : fond accordé à `luminosite`, ambiance accordée aux `mots`, action
    principale visible dès le haut de page (bouton d'appel, devis), photos de métier plutôt que
    décor générique. Varie les partis pris : pas 5 fois le même hero.
-   Moins de 4 démos sur le bon fond : complète avec les meilleures sur l'autre fond et dis lesquelles
-   sont « à retourner en clair » (ou en sombre).
+   Une démo utile sur l'autre fond compte, marquée « à retourner en clair » (ou en sombre) ; le
+   fond ne justifie jamais à lui seul de garder une démo hors sujet.
 5. **Planche finale** : `--planche` sur les retenus, `--sortie livrables/clients/<client> --nom
    inspirations.jpg` si le dossier du client existe, sinon dans `<dossier>`. Ne la relis pas.
 
