@@ -17,6 +17,18 @@ Format fixe d'une entrée :
 - **Leçon** : ce qu'on retient, avec son niveau de preuve (concluant, tendance, pas concluant)
 ```
 
+## 21/10/2026, test J K D : un élément de chaque type par pub, test prévu, pas lancé
+
+- **État** : campagne créée **en pause** depuis le hub par Edgar le 21/10. Pas encore activée. Elle n'apparaît pas dans la lecture agent tant qu'elle n'a pas d'impressions.
+
+- **Campagne** : inchangée, `Kleak | Test J K D | <date de création>`, 1 ensemble, 3 pubs (`j-avis-clients`, `k-devis-prix-fixe`, `d-avant-apres-appeler`), 7 € par jour pendant 7 jours.
+- **Changement** : chaque pub ne coche qu'**un texte, un titre et une description**. Avec plusieurs éléments, le hub n'envoie que le visuel 4:5, et Edgar veut la story : historiquement, ses formats story marchaient le mieux. Avec un seul élément de chaque type, le hub envoie les deux visuels, avec une règle par emplacement (le 4:5 dans le fil, le 9:16 en story).
+  - J : texte « Avant de nous confier votre site internet… », titre « Parlons de votre site internet », description « Noté 4,8/5 sur Google ».
+  - K : texte « Votre site vitrine One page coûte 699 €… », titre « Site vitrine One page, 699 € prix fixe », description « Devis valable 30 jours ».
+  - D : texte « Un site qui donne envie d'appeler… », titre « Un site qui donne envie d'appeler », description « Facile à contacter sur mobile ».
+- **Écarté** : séparer le fil et la story en 2 ensembles, qui couperait les 7 € par jour en deux. Une pub « story seule » dans le même ensemble ne marche pas non plus, parce que les emplacements se règlent sur l'ensemble.
+- **Leçon** : aucune encore. Les variantes non retenues ont été supprimées du hub à la demande d'Edgar : il ne reste qu'un texte, un titre et une description par pub.
+
 ## 21/10/2026, textes principaux de A et B réécrits courts, test prévu, pas lancé
 
 - **Campagne** : pas encore créée, A et B restent hors du test J K D prévu. Anciens textes
