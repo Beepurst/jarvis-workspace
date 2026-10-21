@@ -3,6 +3,123 @@
 > Tenu par l'agent `createur-creas`. Le plus récent en haut. On écrit ce qui a été écarté et
 > pourquoi, pas seulement ce qui a été retenu, pour ne pas refaire le même arbitrage.
 
+## B et D passées au One page (21/10/2026)
+
+Demande d'Edgar : B et D affichent l'offre la plus basse, le One page à 699 €, au lieu de
+l'Essentiel à 999 €. Même composition, seuls les textes et les chiffres changent. A n'a pas de
+prix et n'est pas touchée. Source : fiche offre, One page : 699 € (prix le plus bas des trois
+formules, donc « dès » reste juste), 1 page, « Livraison en 5 jours ouvrés après réception de vos
+contenus et du premier paiement », mentions légales, bandeau cookies et conformité RGPD inclus.
+
+- B : « en 7 jours* » devient « en 5 jours* », « dès 999 € » devient « dès 699 € », « 3 pages »
+  devient « 1 page » (« mentions légales et RGPD inclus » vaut aussi pour le One page, gardé).
+  Condition : « * 5 jours ouvrés après réception de vos contenus et du premier paiement.
+  Formule One page. » Fichier renommé `b-5-jours-699` (ex `b-7-jours-999`, PNG supprimés).
+  Si l'ancien B a été déposé dans le hub ou dans Meta, il faut l'y remplacer à la main.
+- D : la pastille passe à « dès 699 € · en 5 jours* » (nouveau paramètre `pastille` de
+  `avantApres`). Condition : « * 5 jours ouvrés après réception de vos contenus et du premier
+  paiement. Formule One page. Avant : illustration. » Elle tient sur une ligne sur le post et sur
+  deux sur la story.
+- Contrôles : planche story OK (rien sous la ligne des 400 px), planche feed OK.
+- Les textes d'annonce de B et D (TEXTES-ANNONCES.md, hub) parlent sans doute encore de
+  l'Essentiel : à faire revoir par `media-buyer`.
+
+## Série 5 (21/10/2026) : DA fine, une idée par créa
+
+Demande d'Edgar après l'écart de F, G, H et I : 2 créas plus raffinées, dans la DA des
+références Orbikal (`assets/references-da/`), une **sans aucun prix** et une **avec le prix
+comme seule idée**. Ses retours, valables pour la suite : le prix pas partout, beaucoup moins
+d'informations, une idée comprise en deux secondes, rien qui fasse « généré par IA ».
+
+**Ce qui rend les références fines (relevé avant de dessiner).** Une seule accroche en phrase
+normale, taille moyenne, semi-grasse, avec beaucoup de vide autour. Un seul objet réaliste et
+tactile (le ticket : dents, papier, code-barres, ombre, légère rotation), ou deux cartes en verre
+dont une seule mise en avant. Des détails discrets, la marque petite. À éviter : grilles de
+tuiles, pastilles répétées, chiffres géants partout, en-têtes « MARQUE · CATÉGORIE » en mono,
+titres ultra gras serrés, lueurs fortes.
+
+**La DA appliquée.** Fond `#0A0B0F`, halo brun chaud derrière l'objet, halo bleu Kleak discret en
+haut à droite, trame de points à 3,5 %. Accroche en Inter Tight 600 (62 px sur le post),
+approche -0,022 em, un mot en Instrument Serif italique. Marque : petit K de 40 px. Briques dans
+`build.mjs` : `FONTS_FIN`, `TITRE_FIN`, `italique`, `fondFin`, `marquePetite`, classes `.grain`
+(grain de papier) et `.encre` (tampon). Les briques de la série 4 sont retirées.
+
+| Id | Fichier | Angle | Statut |
+|---|---|---|---|
+| j | `j-avis-clients` | Preuve, sans prix : « Avant de nous confier votre site internet, lisez ce qu'en disent nos *clients*. » Carte en retrait : note Google 4,8/5. Carte en avant : avis de Laura Dias, mot pour mot | **Validée** (Edgar, 21/10). Post et story rendus, story contrôlée |
+| k | `k-devis-prix-fixe` | Prix, seule idée : « Le prix, vous le connaissez *avant* de commencer. » Devis papier plié en trois, « Site vitrine, formule One page, 1 page », total 699,00 €, « Valable 30 jours », tampon « Prix fixe ». Condition : « Formule One page, paiement en une fois. Maintenance en option, 49 €/mois, engagement 12 mois. TVA non applicable, article 293 B du CGI. » | **Validée** (Edgar, 21/10). Post et story rendus, story contrôlée |
+
+Écarté volontairement : le paiement en 6 fois (fiche à corriger), le délai, tout numéro de
+devis, nom de client ou date inventés, les avis de Méliné Grelet et Aurore Melis (texte
+inconnu), le nombre d'avis Google (inconnu), tout logo Google.
+
+**Finalisation de J et K (21/10).** Retours d'Edgar.
+- J : « on ne comprend pas forcément que c'est de la création de sites internet dès le premier
+  regard ». Entre les deux pistes proposées, j'ai pris l'accroche plutôt qu'une ligne en plus :
+  « Avant de nous confier votre site internet, lisez ce qu'en disent nos *clients*. ». Le
+  visuel n'est pas plus chargé, et le mot « site internet » est dans ce qu'on lit en premier.
+  Le quart du bas était vide : tout le bloc descend (marque à 170, titre à 290, cartes à 610 et
+  816 sur le post), et sur la story les cartes descendent de 100 px. Style inchangé.
+- K : la formule la moins chère, pour donner envie. One page 699 € (« 1 page ») à la place
+  d'Essentiel 999 €. Condition : « Maintenance en option, 49 €/mois, engagement 12 mois » à la
+  place de « Hors maintenance et hébergement ». J'ai ajouté l'engagement, qui est la condition
+  de la fiche pour la maintenance. La fiche ne dit pas « en option » mot pour mot : elle le
+  suppose (« Sans maintenance, le site est mis en ligne sur votre propre compte, dont
+  l'abonnement est réglé par vous »). Sur la story, le devis remonte de 30 px et passe de 640 à
+  610 px pour ne plus frôler la condition. Rien d'autre ne change.
+- Contrôle de la zone story : rien sous la ligne des 400 px, ni dans la bande du bas, pour J et K.
+
+
+## Série 4 (21/10/2026) : F et G en DA « verre sombre »
+
+Demande d'Edgar : refaire F et G dans une autre DA, sombre avec un effet « liquid glass »,
+d'après deux créas Orbikal (`assets/references-da/orbikal-ticket.png`,
+`orbikal-avant-apres.png`). On reprend la DA seule, ni le contenu ni la marque Orbikal. F et G
+sont gardées telles quelles.
+
+**La DA, notée pour la réutiliser.** Fond presque noir (`#07080C`), halo ambre en haut à gauche
+et halo bleu Kleak en bas à droite, trame de points à 7 % d'opacité. Cartes en verre : fond
+translucide sombre, bord fin lumineux, reflet en haut. La carte mise en avant a un bord
+bleuté et une lueur qui va de l'ambre au bleu. Titre en Inter Tight 800, approche serrée
+(-0,035 em), avec un seul mot en Instrument Serif italique. Libellés en JetBrains Mono,
+capitales espacées. Gros chiffres en Inter Tight, pastilles de statut bleu Kleak avec un point
+lumineux. Le K reste en haut, à gauche, suivi d'un libellé mono. L'orange et le logo Orbikal sont
+remplacés par le bleu `#0F2FD1` et le K. Briques dans `build.mjs` : `verreFond`, `carteVerre`,
+`libelleMono`, `pastilleStatut`, `GROT`, `MONO`, `SERIF`, `FONTS_VERRE`. La propriété `fonts`
+d'une créa remplace les polices par défaut, sans effet sur A, B et D.
+
+**Corrections de fond par rapport à F et G.**
+- H : la maintenance n'est plus « comprise ». D'après `livrables/offre/note-interne-offre.md`
+  (Encaissement), elle est obligatoire, démarre à la mise en ligne et s'ajoute aux versements.
+  Elle apparaît donc dans l'image (carte « + 90 €/mois ») et dans la condition (« Maintenance
+  obligatoire de 90 €/mois en plus, dès la mise en ligne, engagement 12 mois. »). La fiche offre
+  dit encore « La maintenance est comprise dans ce mode de paiement » : elle contredit la note
+  interne et doit être corrigée avant toute diffusion de H (règle : mot pour mot avec la fiche).
+  F garde l'ancienne condition et ne doit pas être diffusée en l'état.
+- I : aucune barre ni aucun graphique. Le rapport ne donne que les trois rubriques de la fiche,
+  chacune avec une pastille « Inclus ».
+
+| Id | Fichier | Angle | Statut |
+|---|---|---|---|
+| h | `h-6-fois-verre` | Paiement, DA verre : « Votre site vitrine en 6 fois, *sans* frais » · « Formule Essentiel, 3 pages, en ligne dès la livraison », carte 6 × 166,50 €, carte maintenance + 90 €/mois | Écartée (Edgar, 21/10) : « j'aime pas », « trop d'informations, on va perdre les visiteurs », « ça fait trop IA, ça se voit que c'est Claude qui les a faits, il faut plus raffiné, plus fin, comme les références », « on parle trop de prix ». Code commenté, PNG supprimés |
+| i | `i-suivi-verre` | Suivi, DA verre : « On s'occupe de votre site, même *après* la mise en ligne », carte « Rapport mensuel » 90 €/mois*, tuiles hébergement, mises à jour, 30 min | Écartée (Edgar, 21/10) : « j'aime pas », « trop d'informations, on va perdre les visiteurs », « ça fait trop IA, ça se voit que c'est Claude qui les a faits, il faut plus raffiné, plus fin, comme les références », « on parle trop de prix ». Code commenté, PNG supprimés |
+
+## Série 3 (21/10/2026) : paiement en 6 fois, suivi après la mise en ligne
+
+Demande d'Edgar : 2 créas, angles libres hors marque, prix et avant / après, liberté de
+composition dans la charte. Les lettres c et e restent prises (code commenté), d'où f et g.
+F tranche par un fond clair (seule créa claire), G par une fiche « Rapport mensuel » au
+centre. Toutes les valeurs viennent de la fiche offre (« Payer en une fois ou en 6 fois » pour
+F, « Maintenance et hébergement », colonne Essentiel et Pro, pour G), conditions recopiées en
+bas. Écarté : « 999 € au total » sur F (le total est ambigu puisque la maintenance est comprise
+dans le paiement en 6 fois), tout chiffre dans le rapport de G (barres vides, aucun visiteur ni
+demande inventés), Orbikal (en pause, absent de la fiche).
+
+| Id | Fichier | Angle | Statut |
+|---|---|---|---|
+| f | `f-6-fois-sans-frais` | Paiement : « Votre site vitrine en 6 fois sans frais » · « Formule Essentiel, 3 pages, en ligne dès la livraison », échéancier 6 × 166,50 € | Écartée (Edgar, 21/10) : « j'aime pas », « trop d'informations, on va perdre les visiteurs », « ça fait trop IA, ça se voit que c'est Claude qui les a faits, il faut plus raffiné, plus fin, comme les références », « on parle trop de prix ». Code commenté, PNG supprimés |
+| g | `g-suivi-chaque-mois` | Suivi : « On s'occupe de votre site après la mise en ligne » · « Hébergement, mises à jour, et un rapport chaque mois », pastille 90 € par mois* | Écartée (Edgar, 21/10) : « j'aime pas », « trop d'informations, on va perdre les visiteurs », « ça fait trop IA, ça se voit que c'est Claude qui les a faits, il faut plus raffiné, plus fin, comme les références », « on parle trop de prix ». Code commenté, PNG supprimés |
+
 ## Série 2 (18/10/2026) : avant / après
 
 Demande d'Edgar : une seule créa sur ce thème. L'« avant » est un site daté inventé en HTML
@@ -89,7 +206,7 @@ résultat mesuré, ce ne sont pas des « gagnantes ».
 | Id | Fichier | Angle | Statut |
 |---|---|---|---|
 | a | `a-un-kleak` | Marque : « Un site web en un Kleak », démo sur téléphone, 4,8/5 Google | **Validée (visuel)** le 18/10, retenue avec B et D pour le test de 50 €. Post et story rendus, story contrôlée (rien sous la ligne des 400 px) |
-| b | `b-7-jours-999` | Offre : « Votre site vitrine en 7 jours, dès 999 € », démo sur ordinateur, avis Laura Dias | **Validée (visuel)** le 18/10, retenue avec A et D pour le test de 50 €. Post et story rendus, story recontrôlée |
+| b | `b-5-jours-699` (ex `b-7-jours-999`) | Offre : « Votre site vitrine en 7 jours, dès 999 € », passée au One page le 21/10 (« en 5 jours, dès 699 € »), démo sur ordinateur, avis Laura Dias | **Validée (visuel)** le 18/10, retenue avec A et D pour le test de 50 €. Post et story rendus, story recontrôlée |
 
 Écarté des anciennes pubs : « 49 €/mois » (ne correspond plus à l'offre), « N°1 des agences
 Framer » et « +50 % de clients » (invérifiables), les boutons dessinés dans l'image.

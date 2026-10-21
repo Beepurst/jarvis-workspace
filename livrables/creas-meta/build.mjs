@@ -201,6 +201,33 @@ const SITE_DATE = `
     </div>
   </div>`;
 
+
+// --- Briques de la DA « fine » (série 5, créas j et k) -------------------------
+// Tirées des références Orbikal (assets/references-da/), la DA seule : une accroche
+// en phrase normale, semi-grasse, taille moyenne, beaucoup de vide ; un seul objet
+// réaliste ou deux cartes en verre dont une seule en avant ; marque petite.
+const FONTS_FIN = `
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;600&family=Instrument+Serif:ital@1&family=JetBrains+Mono:wght@400;500&family=Manrope:wght@500;600;700&display=swap" rel="stylesheet">`;
+const TITRE_FIN = `font-family:'Inter Tight',sans-serif;font-weight:600;letter-spacing:-.022em;color:#F3F4F7;`;
+const italique = (mot) => `<span style="font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;letter-spacing:0;font-size:1.1em;">${mot}</span>`;
+// Grain de papier (SVG feTurbulence), dans une classe pour éviter les guillemets imbriqués.
+const STYLE_FIN = `<style>
+  .grain { background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .35  0 0 0 0 .3  0 0 0 0 .22  0 0 0 .16 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>"); }
+ .encre { -webkit-mask-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='m'><feTurbulence type='fractalNoise' baseFrequency='1.4' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -2.2 2.1'/></filter><rect width='100%' height='100%' filter='url(%23m)'/></svg>"); }
+</style>`;
+// Fond presque noir, halo chaud derrière l'objet (cx, cy), halo bleu Kleak discret en haut à droite.
+const fondFin = (fmt, cx, cy) => `${STYLE_FIN}
+  <div style="position:absolute;inset:0;background:
+    radial-gradient(${fmt.W * .8}px ${fmt.W * .75}px at ${cx}px ${cy}px, rgba(118,62,24,.42), rgba(70,36,14,.16) 45%, transparent 72%),
+    radial-gradient(${fmt.W * .7}px ${fmt.W * .5}px at 92% 4%, rgba(15,47,209,.20), transparent 70%),
+    #0A0B0F;"></div>
+  <div style="position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.035) 1px, transparent 1.3px);
+    background-size:26px 26px;"></div>`;
+const marquePetite = (story) => `
+  <div style="display:flex;align-items:center;gap:14px;font-family:Manrope;font-weight:600;
+    font-size:${story ? 24 : 22}px;color:rgba(255,255,255,.62);">${icone(story ? 44 : 40)}Kleak Agency</div>`;
+
 const etoiles = (px) => `<span style="color:#FFC531;letter-spacing:.06em;font-size:${px}px;">★★★★★</span>`;
 
 // ---------------------------------------------------------------------------
@@ -303,12 +330,13 @@ const avantApres = (fmt, txt) => {
       <div style="position:absolute;left:${xApres - 60}px;width:${L.apresW + 120}px;top:${L.apres + hApres + (story ? 26 : 22)}px;
         text-align:center;line-height:1.25;${legende(txt, 1)}">${legendeApres}</div>
 
-      <!-- Pastille offre, conforme à la fiche (formule Essentiel) -->
+      <!-- Pastille offre, conforme à la fiche. txt.pastille = { prix, delai } ; par défaut
+           l'ancienne Essentiel (dès 999 €, en 7 jours*). -->
       <div style="position:absolute;left:${L.pastilleX}px;top:${L.apres + hApres * (story ? .52 : .5)}px;width:${story ? 262 : 250}px;height:${story ? 262 : 250}px;
         border-radius:50%;background:#fff;box-shadow:8px 10px 0 #000, 0 20px 50px rgba(0,0,0,.35);transform:rotate(-10deg);
         display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;">
-        <div style="${HOOK} color:${T.bleu};font-size:${story ? 56 : 52}px;line-height:.98;">dès<br>999 €</div>
-        <div style="${HOOK} color:#0A0A0A;font-size:${story ? 31 : 29}px;line-height:1.1;margin-top:8px;">en 7 jours*</div>
+        <div style="${HOOK} color:${T.bleu};font-size:${story ? 56 : 52}px;line-height:.98;">dès<br>${(txt.pastille && txt.pastille.prix) || '999 €'}</div>
+        <div style="${HOOK} color:#0A0A0A;font-size:${story ? 31 : 29}px;line-height:1.1;margin-top:8px;">${(txt.pastille && txt.pastille.delai) || 'en 7 jours*'}</div>
       </div>
 
       <div style="position:absolute;left:40px;right:40px;top:${L.note}px;text-align:center;font-family:Manrope;
@@ -357,7 +385,12 @@ const CREAS = {
   // client réel. L'astérisque renvoie à la condition de démarrage du délai,
   // recopiée de la fiche offre.
   b: {
-    key: 'b-7-jours-999',
+    // 21/10 : Edgar veut l'offre la plus basse. One page à la place d'Essentiel :
+    // 699 € (le prix le plus bas de la fiche, d'où « dès »), 5 jours ouvrés après
+    // réception des contenus et du premier paiement, 1 page. Mentions légales,
+    // bandeau cookies et RGPD sont aussi dans le One page. Composition inchangée.
+    // Fichier renommé (ex b-7-jours-999).
+    key: 'b-5-jours-699',
     html: (fmt) => {
       const story = fmt.key === 'story';
       return `
@@ -368,13 +401,13 @@ const CREAS = {
 
       <div style="position:absolute;left:0;right:0;top:${story ? 320 : 215}px;text-align:center;">
         <div style="${HOOK} color:#fff;font-size:${story ? 128 : 118}px;line-height:1;">Votre site vitrine</div>
-        <div style="${HOOK} color:#fff;font-size:${story ? 128 : 118}px;line-height:1;margin-top:6px;">en 7 jours<sup style="font-size:.4em;vertical-align:1.1em;">*</sup></div>
+        <div style="${HOOK} color:#fff;font-size:${story ? 128 : 118}px;line-height:1;margin-top:6px;">en 5 jours<sup style="font-size:.4em;vertical-align:1.1em;">*</sup></div>
         <div style="display:inline-block;margin-top:26px;background:#fff;border-radius:22px;padding:4px 34px 0;
           box-shadow:10px 12px 0 ${T.bleu};transform:rotate(-2deg);">
-          <div style="${HOOK} color:${T.bleu};font-size:${story ? 120 : 108}px;line-height:1.08;">dès 999 €</div>
+          <div style="${HOOK} color:${T.bleu};font-size:${story ? 120 : 108}px;line-height:1.08;">dès 699 €</div>
         </div>
         <div style="font-family:Manrope;color:rgba(255,255,255,.8);font-size:${story ? 36 : 34}px;font-weight:500;margin-top:28px;">
-          Prix fixe · 3 pages · mentions légales et RGPD inclus
+          Prix fixe · 1 page · mentions légales et RGPD inclus
         </div>
       </div>
 
@@ -393,7 +426,7 @@ const CREAS = {
       </div>
 
       <div style="position:absolute;left:50px;bottom:${story ? 420 : 34}px;font-family:Manrope;color:rgba(255,255,255,.55);
-        font-size:20px;font-weight:500;">* 7 jours ouvrés après réception de vos contenus et de l'acompte. Formule Essentiel.</div>`;
+        font-size:20px;font-weight:500;">* 5 jours ouvrés après réception de vos contenus et du premier paiement. Formule One page.</div>`;
     },
   },
 
@@ -442,7 +475,9 @@ const CREAS = {
         story: { apres: 760, apresW: 280, xApres: 485, avant: 855, avantW: 216, xAvant: 102, pastilleX: 769 },
       },
       fond: { haut: '#0A22B0', milieu: 55, halo: .38 },
-      note: "* 7 jours ouvrés après réception de vos contenus et de l'acompte. Formule Essentiel. Avant : illustration.",
+      // 21/10 : One page à la place d'Essentiel (offre la plus basse), même composition.
+      pastille: { prix: '699 €', delai: 'en 5 jours*' },
+      note: "* 5 jours ouvrés après réception de vos contenus et du premier paiement. Formule One page. Avant : illustration.",
     }),
   },
 
@@ -454,10 +489,434 @@ const CREAS = {
   //     sous: `Un site clair, <b style="font-weight:800">à votre image</b>, net sur téléphone`,
   //   }),
   // },
+
+  // F, G, H, I. ÉCARTÉES par Edgar le 21/10/2026, PNG supprimés. Ses mots : « j'aime
+  // pas », « trop d'informations, on va perdre les visiteurs », « ça fait trop IA, ça
+  // se voit que c'est Claude qui les a faits, il faut plus raffiné, plus fin, comme les
+  // références » et « on parle trop de prix ». F et G : série 3 (Anton, fond clair,
+  // échéancier en cases, fiche rapport). H et I : série 4, DA « verre sombre » trop
+  // chargée (tuiles, pastilles répétées, chiffres géants, en-têtes mono). Les briques
+  // de la série 4 (FONTS_VERRE, GROT, MONO, SERIF, libelleMono, pastilleStatut,
+  // verreFond, carteVerre) sont retirées du fichier : ce code commenté ne tourne plus.
+  // // F. Le paiement en 6 fois sans frais (série 3, 21/10/2026). Angle : le prix
+  // // fait peur d'un coup, pas en six fois. Composition nouvelle : fond clair (le seul
+  // // de la série, pour trancher dans le fil), accroche bleue, échéancier en 6 cases.
+  // // D'OÙ ÇA VIENT : fiche offre, « Payer en une fois ou en 6 fois » : Essentiel
+  // // 6 × 166,50 €, premier versement à la signature puis prélèvement automatique
+  // // chaque mois, maintenance comprise dans ce mode de paiement (démarre à la mise en
+  // // ligne), site à vous au dernier versement, mise en ligne à la livraison. La
+  // // condition est recopiée en bas, mot pour mot.
+  // // ÉCARTÉ VOLONTAIREMENT : « 999 € au total » (la maintenance comprise rend le total
+  // // ambigu, à trancher par Edgar), le délai de 7 jours (une idée par créa), One page
+  // // et Pro (une seule formule pour rester lisible), toute démo ou capture.
+  // f: {
+  //   key: 'f-6-fois-sans-frais',
+  //   html: (fmt) => {
+  //     const story = fmt.key === 'story';
+  //     // Story : tout au-dessus de y = 1520.
+  //     const L = story
+  //       ? { icone: 120, iconeT: 104, hook: 290, l1Px: 128, cartPx: 118, sous: 660, sousPx: 40,
+  //           grille: 790, caseH: 250, gap: 26, note: 1395, notePx: 22 }
+  //       : { icone: 60, iconeT: 96, hook: 200, l1Px: 116, cartPx: 96, sous: 530, sousPx: 36,
+  //           grille: 650, caseH: 236, gap: 24, note: 1192, notePx: 19 };
+  //     const cases = [
+  //       ['1er versement', 'à la signature'],
+  //       ['2e', 'prélèvement'],
+  //       ['3e', 'prélèvement'],
+  //       ['4e', 'prélèvement'],
+  //       ['5e', 'prélèvement'],
+  //       ['6e', 'le site est à vous'],
+  //     ];
+  //     const carte = ([rang, quand], i) => {
+  //       const fin = i === 5;
+  //       return `
+  //       <div style="height:${L.caseH}px;border-radius:26px;padding:26px 24px 0;text-align:left;
+  //         background:${fin ? T.bleu : '#fff'};color:${fin ? '#fff' : T.marine};
+  //         box-shadow:${fin ? '8px 10px 0 #000' : '0 14px 34px rgba(9,12,59,.12)'};
+  //         ${fin ? 'transform:rotate(-2deg);' : ''}">
+  //         <div style="font-family:Manrope;font-weight:800;font-size:${story ? 30 : 28}px;
+  //           color:${fin ? 'rgba(255,255,255,.85)' : 'rgba(9,12,59,.55)'};">${rang}</div>
+  //         <div style="${HOOK} font-size:${story ? 78 : 74}px;line-height:1.1;margin-top:10px;
+  //           color:${fin ? '#fff' : T.bleu};">166,50 €</div>
+  //         <div style="font-family:Manrope;font-weight:700;font-size:${story ? 29 : 27}px;margin-top:6px;">${quand}</div>
+  //       </div>`;
+  //     };
+  //     return `
+  //     <div style="position:absolute;inset:0;background:
+  //       radial-gradient(900px 700px at 50% 100%, rgba(61,168,255,.22), transparent 65%),
+  //       linear-gradient(180deg, #F3F5FF 0%, #E4E9FF 100%);"></div>
+  //     <div style="position:absolute;top:${L.icone}px;left:50%;transform:translateX(-50%);">${icone(L.iconeT)}</div>
+  //
+  //     <div style="position:absolute;left:0;right:0;top:${L.hook}px;text-align:center;">
+  //       <div style="${HOOK} color:${T.marine};font-size:${L.l1Px}px;line-height:1;">Votre site vitrine</div>
+  //       <div style="display:inline-block;margin-top:20px;background:${T.bleu};border-radius:22px;padding:4px 36px 0;
+  //         box-shadow:10px 12px 0 #000;transform:rotate(-2deg);">
+  //         <div style="${HOOK} color:#fff;font-size:${L.cartPx}px;line-height:1.08;">en 6 fois sans frais</div>
+  //       </div>
+  //     </div>
+  //     <div style="position:absolute;left:40px;right:40px;top:${L.sous}px;text-align:center;color:${T.marine};
+  //       font-family:Manrope;font-size:${L.sousPx}px;line-height:1.25;font-weight:500;">
+  //       Formule Essentiel, 3 pages, <b style="font-weight:800">en ligne dès la livraison</b></div>
+  //
+  //     <div style="position:absolute;left:70px;right:70px;top:${L.grille}px;display:grid;
+  //       grid-template-columns:repeat(3,1fr);gap:${L.gap}px;">
+  //       ${cases.map(carte).join('')}
+  //     </div>
+  //
+  //     <div style="position:absolute;left:30px;right:30px;top:${L.note}px;text-align:center;font-family:Manrope;
+  //       color:rgba(9,12,59,.65);font-size:${L.notePx}px;line-height:1.4;font-weight:500;">
+  //       Formule Essentiel. Premier versement à la signature, puis un prélèvement automatique chaque mois.<br>
+  //       La maintenance est comprise dans ce mode de paiement et démarre à la mise en ligne.<br>
+  //       Le site vous appartient au dernier versement.</div>`;
+  //   },
+  // },
+  //
+  // // G. Le suivi après la mise en ligne (série 3, 21/10/2026). Angle : le dirigeant
+  // // n'a pas à s'occuper de son site une fois livré. Composition nouvelle : fiche
+  // // « Rapport mensuel » blanche au centre, ce qui est inclus coché, pastille prix.
+  // // D'OÙ ÇA VIENT : fiche offre, « Maintenance et hébergement », colonne Essentiel et
+  // // Pro : 90 € par mois, hébergement inclus, mises à jour techniques et surveillance,
+  // // 30 minutes de petites modifications par mois, rapport mensuel « visiteurs, d'où
+  // // ils viennent, demandes reçues », engagement de 12 mois (dans la condition).
+  // // ÉCARTÉ VOLONTAIREMENT : tout chiffre dans le rapport (les lignes sont des
+  // // emplacements vides, aucun visiteur ni demande inventés), la capture d'Orbikal
+  // // (en pause, pas dans la fiche offre), la formule One page à 49 € (une seule ligne
+  // // de prix), le prix du site.
+  // g: {
+  //   key: 'g-suivi-chaque-mois',
+  //   html: (fmt) => {
+  //     const story = fmt.key === 'story';
+  //     // Story : tout au-dessus de y = 1520.
+  //     const L = story
+  //       ? { icone: 120, iconeT: 104, hook: 280, l1Px: 112, cartPx: 100, sous: 640, sousPx: 40,
+  //           carte: 770, carteW: 900, rowPx: 34, pastilleX: 760, pastilleY: 700, note: 1440, notePx: 22 }
+  //       : { icone: 54, iconeT: 92, hook: 170, l1Px: 100, cartPx: 90, sous: 528, sousPx: 35,
+  //           carte: 640, carteW: 880, rowPx: 32, pastilleX: 800, pastilleY: 600, note: 1296, notePx: 20 };
+  //     const coche = (fond) => `<span style="flex:none;width:${L.rowPx + 8}px;height:${L.rowPx + 8}px;border-radius:50%;
+  //       background:${fond};color:#fff;display:inline-flex;align-items:center;justify-content:center;
+  //       font-size:${L.rowPx * .8}px;font-weight:800;">✓</span>`;
+  //     const ligneRapport = (titre, w) => `
+  //       <div style="display:flex;align-items:center;gap:22px;padding:${story ? 20 : 16}px 0;border-top:2px solid #EEF0F7;">
+  //         <div style="width:${story ? 330 : 310}px;font-weight:700;font-size:${L.rowPx}px;color:${T.marine};">${titre}</div>
+  //         <div style="flex:1;height:18px;border-radius:99px;background:#EEF0F7;">
+  //           <div style="width:${w}%;height:100%;border-radius:99px;background:linear-gradient(90deg,#BFD0FF,#DCE4FF);"></div>
+  //         </div>
+  //       </div>`;
+  //     const inclus = (txt) => `
+  //       <div style="display:flex;align-items:center;gap:18px;font-weight:700;font-size:${L.rowPx}px;color:${T.marine};
+  //         margin-top:${story ? 20 : 16}px;">${coche(T.bleu)}<span>${txt}</span></div>`;
+  //     return `
+  //     <div style="position:absolute;inset:0;background:
+  //       radial-gradient(800px 700px at 50% 70%, rgba(61,168,255,.32), transparent 65%),
+  //       linear-gradient(170deg, ${T.bleuNuit} 0%, ${T.marine} 100%);"></div>
+  //     <div style="position:absolute;top:${L.icone}px;left:50%;transform:translateX(-50%);">${icone(L.iconeT)}</div>
+  //
+  //     <div style="position:absolute;left:0;right:0;top:${L.hook}px;text-align:center;">
+  //       <div style="${HOOK} color:#fff;font-size:${L.l1Px}px;line-height:1.02;">On s'occupe<br>de votre site</div>
+  //       <div style="display:inline-block;margin-top:16px;background:#fff;border-radius:22px;padding:4px 34px 0;
+  //         box-shadow:10px 12px 0 ${T.bleu};transform:rotate(-2deg);">
+  //         <div style="${HOOK} color:${T.bleu};font-size:${L.cartPx}px;line-height:1.08;">après la mise en ligne</div>
+  //       </div>
+  //     </div>
+  //     <div style="position:absolute;left:40px;right:40px;top:${L.sous}px;text-align:center;color:#fff;
+  //       font-family:Manrope;font-size:${L.sousPx}px;line-height:1.25;font-weight:500;">
+  //       Hébergement, mises à jour, <b style="font-weight:800">et un rapport chaque mois</b></div>
+  //
+  //     <div style="position:absolute;left:50%;top:${L.carte}px;width:${L.carteW}px;transform:translateX(-50%) rotate(-1.5deg);
+  //       background:#fff;border-radius:30px;padding:${story ? '40px 48px 44px' : '34px 44px 38px'};
+  //       box-shadow:0 30px 70px rgba(0,0,0,.45);font-family:Manrope;">
+  //       <div style="display:flex;align-items:center;gap:18px;margin-bottom:${story ? 18 : 14}px;">
+  //         ${icone(story ? 60 : 54)}
+  //         <div style="font-weight:800;font-size:${L.rowPx + 8}px;color:${T.marine};">Rapport mensuel</div>
+  //       </div>
+  //       ${ligneRapport('Visiteurs', 72)}
+  //       ${ligneRapport("D'où ils viennent", 54)}
+  //       ${ligneRapport('Demandes reçues', 38)}
+  //       <div style="border-top:2px solid #EEF0F7;margin-top:4px;padding-top:${story ? 8 : 4}px;">
+  //         ${inclus('Hébergement inclus')}
+  //         ${inclus('Mises à jour techniques et surveillance')}
+  //         ${inclus('30 minutes de petites modifications par mois')}
+  //       </div>
+  //     </div>
+  //
+  //     <div style="position:absolute;left:${L.pastilleX}px;top:${L.pastilleY}px;width:${story ? 230 : 210}px;height:${story ? 230 : 210}px;
+  //       border-radius:50%;background:${T.bleu};box-shadow:8px 10px 0 #000, 0 20px 50px rgba(0,0,0,.35);transform:rotate(-10deg);
+  //       display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;">
+  //       <div style="${HOOK} color:#fff;font-size:${story ? 74 : 68}px;line-height:1;">90 €</div>
+  //       <div style="${HOOK} color:#fff;font-size:${story ? 32 : 30}px;line-height:1.1;margin-top:4px;">par mois*</div>
+  //     </div>
+  //
+  //     <div style="position:absolute;left:40px;right:40px;top:${L.note}px;text-align:center;font-family:Manrope;
+  //       color:rgba(255,255,255,.7);font-size:${L.notePx}px;line-height:1.4;font-weight:500;">
+  //       * Maintenance des formules Essentiel et Pro. Engagement de 12 mois.</div>`;
+  //   },
+  // },
+  // // ---------------------------------------------------------------------------
+  // // DA « verre sombre » (série 4, 21/10/2026), demandée par Edgar à partir de deux
+  // // créas Orbikal (assets/references-da/orbikal-ticket.png et orbikal-avant-apres.png).
+  // // On reprend la DA seule, jamais le contenu ni la marque Orbikal : fond presque
+  // // noir, halo ambre d'un côté et bleu de l'autre, trame de points discrète, cartes
+  // // en verre (fond translucide, bord fin lumineux, reflet), lueur ambre vers bleu
+  // // autour de la carte mise en avant, titre en grotesque très gras avec un mot en
+  // // serif italique, libellés en mono capitales espacées, gros chiffres, pastilles.
+  // // Le bleu Kleak et le K remplacent l'orange et le logo Orbikal. Polices :
+  // // Inter Tight 800, Instrument Serif italique, JetBrains Mono (Google Fonts).
+  // // Briques : verreFond, carteVerre, libelleMono, pastilleStatut.
+  // // ---------------------------------------------------------------------------
+  //
+  // // H. Même angle et même contenu que F (paiement en 6 fois), en DA verre sombre.
+  // // CORRECTION par rapport à F : la condition ne dit plus « la maintenance est
+  // // comprise ». Source : livrables/offre/note-interne-offre.md (Encaissement) : la
+  // // maintenance est obligatoire, démarre à la mise en ligne et s'ajoute aux
+  // // versements. Elle est donc montrée dans l'image (carte « + 90 €/mois ») et dans
+  // // la condition. ÉCARTÉ : « 999 € au total » (faux une fois la maintenance
+  // // ajoutée), le délai (une idée par créa), One page et Pro.
+  // h: {
+  //   key: 'h-6-fois-verre',
+  //   fonts: FONTS_VERRE,
+  //   html: (fmt) => {
+  //     const story = fmt.key === 'story';
+  //     const s = story ? 1.06 : 1;
+  //     const etape = (n) => {
+  //       const fin = n === 6;
+  //       return `<div style="flex:1;text-align:center;">
+  //         <div style="height:12px;border-radius:99px;background:${fin ? T.bleu : 'rgba(255,255,255,.28)'};
+  //           ${fin ? `box-shadow:0 0 18px ${T.bleu};` : ''}"></div>
+  //         <div style="${MONO} font-size:${24 * s}px;color:${fin ? '#fff' : 'rgba(255,255,255,.75)'};margin-top:14px;">${n}</div>
+  //       </div>`;
+  //     };
+  //     return `
+  //     ${verreFond(fmt)}
+  //     <div style="position:absolute;left:${PAD}px;right:${PAD}px;top:${story ? 210 : 80}px;bottom:${story ? 400 : 60}px;
+  //       display:flex;flex-direction:column;gap:${story ? 46 : 36}px;">
+  //       <div style="display:flex;align-items:center;gap:20px;">
+  //         ${icone(story ? 84 : 76)}
+  //         ${libelleMono('Kleak Agency · sites vitrines', story ? 26 : 24)}
+  //       </div>
+  //       <div style="${GROT} font-size:${story ? 104 : 94}px;line-height:1.02;">
+  //         Votre site vitrine<br>en 6 fois, ${SERIF('sans')} frais</div>
+  //       <div style="font-family:Manrope;font-weight:500;font-size:${story ? 38 : 35}px;color:rgba(255,255,255,.85);margin-top:-${story ? 18 : 12}px;">
+  //         Formule Essentiel, 3 pages, <b style="font-weight:800;color:#fff;">en ligne dès la livraison</b></div>
+  //
+  //       ${carteVerre(`
+  //         <div style="display:flex;justify-content:space-between;align-items:center;">
+  //           ${libelleMono('6 versements', 24 * s)}
+  //           ${pastilleStatut('Chaque mois', 24 * s)}
+  //         </div>
+  //         <div style="${GROT} font-size:${150 * s}px;line-height:1;margin-top:${26 * s}px;">
+  //           6 × 166,50 €</div>
+  //         <div style="display:flex;gap:14px;margin-top:${34 * s}px;">${[1, 2, 3, 4, 5, 6].map(etape).join('')}</div>
+  //         <div style="display:flex;justify-content:space-between;margin-top:${14 * s}px;font-family:Manrope;font-weight:700;
+  //           font-size:${28 * s}px;color:rgba(255,255,255,.88);">
+  //           <span>1er versement à la signature</span><span>le site est à vous</span></div>
+  //       `, { lueur: true, pad: story ? 50 : 44 })}
+  //
+  //       ${carteVerre(`
+  //         <div style="display:flex;justify-content:space-between;align-items:center;gap:24px;">
+  //           <div>
+  //             ${libelleMono('Maintenance obligatoire', 24 * s)}
+  //             <div style="font-family:Manrope;font-weight:600;font-size:${28 * s}px;color:rgba(255,255,255,.82);margin-top:12px;line-height:1.3;">
+  //               Dès la mise en ligne, engagement 12 mois</div>
+  //           </div>
+  //           <div style="${GROT} font-size:${70 * s}px;white-space:nowrap;">+ 90 €<span style="font-family:Manrope;font-weight:700;letter-spacing:0;font-size:.4em;color:rgba(255,255,255,.78);margin-left:6px;">/mois</span></div>
+  //         </div>
+  //       `, { pad: story ? 40 : 34 })}
+  //     </div>
+  //     <div style="position:absolute;left:${PAD}px;right:${PAD}px;top:${story ? 1418 : 1212}px;font-family:Manrope;
+  //       color:rgba(255,255,255,.66);font-size:${story ? 22 : 20}px;line-height:1.45;font-weight:500;">
+  //       Formule Essentiel. Premier versement à la signature, puis un prélèvement automatique chaque mois.
+  //       Maintenance obligatoire de 90 €/mois en plus, dès la mise en ligne, engagement 12 mois.
+  //       Le site vous appartient au dernier versement.</div>`;
+  //   },
+  // },
+  //
+  // // I. Même angle et même contenu que G (le suivi), en DA verre sombre.
+  // // CORRECTION par rapport à G : plus aucune barre. Le rapport ne montre que des
+  // // libellés (les trois rubriques de la fiche offre) avec une pastille « Inclus »,
+  // // aucune valeur, aucune longueur, rien qui ressemble à des données.
+  // // Contenu identique à G, tiré de la fiche offre, colonne Essentiel et Pro.
+  // i: {
+  //   key: 'i-suivi-verre',
+  //   fonts: FONTS_VERRE,
+  //   html: (fmt) => {
+  //     const story = fmt.key === 'story';
+  //     const s = story ? 1.06 : 1;
+  //     const ligne = (t, premier) => `
+  //       <div style="display:flex;justify-content:space-between;align-items:center;padding:${20 * s}px 0;
+  //         ${premier ? '' : 'border-top:1px solid rgba(255,255,255,.12);'}">
+  //         <span style="font-family:Manrope;font-weight:700;font-size:${34 * s}px;color:#fff;">${t}</span>
+  //         ${pastilleStatut('Inclus', 22 * s)}
+  //       </div>`;
+  //     const tuile = (lib, gros, petit) => carteVerre(`
+  //         ${libelleMono(lib, 21 * s)}
+  //         <div style="${GROT} font-size:${54 * s}px;line-height:1.05;margin-top:${16 * s}px;">${gros}</div>
+  //         <div style="font-family:Manrope;font-weight:600;font-size:${25 * s}px;color:rgba(255,255,255,.8);margin-top:8px;">${petit}</div>
+  //       `, { pad: 28, flex: true });
+  //     return `
+  //     ${verreFond(fmt)}
+  //     <div style="position:absolute;left:${PAD}px;right:${PAD}px;top:${story ? 210 : 80}px;bottom:${story ? 400 : 60}px;
+  //       display:flex;flex-direction:column;gap:${story ? 44 : 32}px;">
+  //       <div style="display:flex;align-items:center;gap:20px;">
+  //         ${icone(story ? 84 : 76)}
+  //         ${libelleMono('Kleak Agency · maintenance', story ? 26 : 24)}
+  //       </div>
+  //       <div style="${GROT} font-size:${story ? 96 : 86}px;line-height:1.03;">
+  //         On s'occupe de<br>votre site, même<br>${SERIF('après')} la mise en ligne</div>
+  //
+  //       ${carteVerre(`
+  //         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:${10 * s}px;">
+  //           <div style="display:flex;align-items:center;gap:16px;">
+  //             ${icone(story ? 54 : 50)}
+  //             <span style="font-family:Manrope;font-weight:800;font-size:${36 * s}px;color:#fff;">Rapport mensuel</span>
+  //           </div>
+  //           <div style="${GROT} font-size:${64 * s}px;white-space:nowrap;">90 €<span style="font-family:Manrope;font-weight:700;letter-spacing:0;font-size:.4em;color:rgba(255,255,255,.78);margin-left:6px;">/mois*</span></div>
+  //         </div>
+  //         ${ligne('Visiteurs', true)}
+  //         ${ligne("D'où ils viennent")}
+  //         ${ligne('Demandes reçues')}
+  //       `, { lueur: true, pad: story ? 46 : 40 })}
+  //
+  //       <div style="display:flex;gap:20px;">
+  //         ${tuile('Hébergement', 'Inclus', 'hébergé par nous')}
+  //         ${tuile('Mises à jour', 'Incluses', 'et surveillance')}
+  //         ${tuile('Modifications', '30 min', 'par mois')}
+  //       </div>
+  //     </div>
+  //     <div style="position:absolute;left:${PAD}px;right:${PAD}px;top:${story ? 1440 : 1262}px;font-family:Manrope;
+  //       color:rgba(255,255,255,.66);font-size:${story ? 22 : 20}px;line-height:1.45;font-weight:500;">
+  //       * Maintenance des formules Essentiel et Pro. Engagement de 12 mois.</div>`;
+  //   },
+  // },
+  //
+  // J. La preuve, sans aucun prix (série 5, 21/10/2026). Une idée : avant de confier
+  // son site, on regarde ce que disent les clients. VALIDÉE par Edgar le 21/10, avec
+  // une retouche : « on ne comprend pas forcément que c'est de la création de sites
+  // internet ». L'accroche porte donc « votre site internet » (au lieu de « Avant de
+  // nous appeler »), sans ligne en plus, et le bloc est redescendu pour remplir le bas. Composition des références : deux cartes en
+  // verre, la note Google en retrait, l'avis en avant.
+  // D'OÙ ÇA VIENT : README, avis réels. Note 4,8/5 sur Google, avis de Laura Dias
+  // (Mega Content) recopié mot pour mot.
+  // ÉCARTÉ VOLONTAIREMENT : tout prix et tout délai, Méliné Grelet et Aurore Melis
+  // (texte de l'avis inconnu), le nombre d'avis (inconnu), tout logo Google.
+  j: {
+    key: 'j-avis-clients',
+    fonts: FONTS_FIN,
+    html: (fmt) => {
+      const story = fmt.key === 'story';
+      const L = story
+        ? { marque: 220, titre: 340, titrePx: 70, c1: 740, c2: 960, x: 90 }
+        : { marque: 170, titre: 290, titrePx: 62, c1: 610, c2: 816, x: 92 };
+      const verre = `background:linear-gradient(165deg, rgba(255,255,255,.075), rgba(255,255,255,.02) 50%), rgba(16,17,23,.72);`;
+      return `
+      ${fondFin(fmt, fmt.W * .5, L.c2 + 150)}
+      <div style="position:absolute;left:${L.x}px;top:${L.marque}px;">${marquePetite(story)}</div>
+      <div style="position:absolute;left:${L.x}px;right:${L.x + 40}px;top:${L.titre}px;${TITRE_FIN}
+        font-size:${L.titrePx}px;line-height:1.1;">Avant de nous confier votre site internet, lisez ce qu'en disent nos ${italique('clients.')}</div>
+
+      <div style="position:absolute;left:${L.x}px;right:${L.x}px;top:${L.c1}px;border-radius:26px;padding:30px 38px;
+        ${verre} border:1px solid rgba(255,255,255,.09);box-shadow:inset 0 1px 0 rgba(255,255,255,.06);
+        display:flex;align-items:center;justify-content:space-between;">
+        <div>
+          <div style="font-family:Manrope;font-weight:600;font-size:${story ? 24 : 22}px;color:rgba(255,255,255,.5);">Note Google</div>
+          <div style="font-family:'Inter Tight';font-weight:500;letter-spacing:-.02em;font-size:${story ? 72 : 64}px;color:rgba(255,255,255,.78);line-height:1.05;margin-top:4px;">
+            4,8<span style="font-size:.5em;color:rgba(255,255,255,.5);">/5</span></div>
+        </div>
+        <span style="color:rgba(255,197,49,.5);letter-spacing:.08em;font-size:${story ? 32 : 28}px;">★★★★★</span>
+      </div>
+
+      <div style="position:absolute;left:${L.x}px;right:${L.x}px;top:${L.c2}px;border-radius:28px;padding:${story ? '44px 46px 40px' : '40px 42px 36px'};
+        border:1.5px solid transparent;
+        background:linear-gradient(165deg, rgba(255,255,255,.07), rgba(255,255,255,.015) 55%) padding-box,
+          linear-gradient(#111218,#111218) padding-box,
+          linear-gradient(135deg, rgba(214,128,60,.85), rgba(255,255,255,.12) 45%, rgba(60,95,255,.95)) border-box;
+        box-shadow:0 30px 70px rgba(0,0,0,.55), -20px -10px 60px rgba(180,96,40,.13), 24px 26px 70px rgba(15,47,209,.28);">
+        <span style="color:#FFC531;letter-spacing:.08em;font-size:${story ? 32 : 28}px;">★★★★★</span>
+        <div style="font-family:'Inter Tight';font-weight:500;letter-spacing:-.01em;font-size:${story ? 39 : 35}px;line-height:1.36;
+          color:#F3F4F7;margin-top:18px;">« Un super prestataire pour nous ! Toujours réactif, ils ont su répondre à nos demandes sans aucun souci »</div>
+        <div style="height:1px;background:rgba(255,255,255,.1);margin:${story ? 32 : 28}px 0 ${story ? 24 : 20}px;"></div>
+        <div style="font-family:Manrope;font-size:${story ? 27 : 25}px;color:rgba(255,255,255,.62);font-weight:500;">
+          <b style="color:#fff;font-weight:700;">Laura Dias</b> · Mega Content</div>
+      </div>`;
+    },
+  },
+
+  // K. Le prix, et rien d'autre (série 5, 21/10/2026). Une idée : le prix est fixé et
+  // écrit avant de commencer. Un seul objet, comme le ticket des références : un devis
+  // papier (grain, ombre, légère rotation) avec une ligne et un total, et un tampon
+  // « Prix fixe » à l'encre bleu Kleak.
+  // D'OÙ ÇA VIENT : fiche offre, One page 699 € (1 page), « Un devis à prix fixe,
+  // valable 30 jours », maintenance One page 49 € par mois avec engagement de 12 mois,
+  // « TVA non applicable, article 293 B du CGI ». VALIDÉE par Edgar le 21/10 avec une
+  // retouche : la formule la moins chère (One page 699 €) à la place de l'Essentiel
+  // 999 €, et « Maintenance en option, 49 €/mois » à la place de « Hors maintenance et
+  // hébergement ». Le reste du visuel est inchangé.
+  // ÉCARTÉ VOLONTAIREMENT : le paiement en 6 fois (fiche à corriger), le délai, tout
+  // numéro de devis, nom de client ou date inventés, la liste des contenus.
+  k: {
+    key: 'k-devis-prix-fixe',
+    fonts: FONTS_FIN,
+    html: (fmt) => {
+      const story = fmt.key === 'story';
+      const L = story
+        ? { titre: 290, titrePx: 70, devis: 530, devisW: 610, note: 1440, x: 90 }
+        : { titre: 160, titrePx: 62, devis: 440, devisW: 540, note: 1262, x: 92 };
+      const sc = L.devisW / 640;
+      const pointilles = `<div style="height:0;border-top:2px dotted rgba(40,34,26,.28);margin:${30 * sc}px 0;"></div>`;
+      return `
+      ${fondFin(fmt, fmt.W * .5, L.devis + 330 * sc)}
+      <div style="position:absolute;left:${L.x}px;right:${L.x + 60}px;top:${L.titre}px;${TITRE_FIN}
+        font-size:${L.titrePx}px;line-height:1.1;">Le prix, vous le connaissez ${italique('avant')} de commencer.</div>
+
+      <div style="position:absolute;left:${(fmt.W - L.devisW) / 2}px;top:${L.devis}px;width:${L.devisW}px;transform:rotate(-4deg);">
+        <div style="position:relative;border-radius:6px;padding:${54 * sc}px ${54 * sc}px ${60 * sc}px;
+          aspect-ratio:1/1.32;
+          background:
+            linear-gradient(180deg, transparent 32.8%, rgba(0,0,0,.05) 33.3%, rgba(255,255,255,.35) 33.8%, transparent 35%),
+            linear-gradient(180deg, transparent 65.8%, rgba(0,0,0,.05) 66.3%, rgba(255,255,255,.35) 66.8%, transparent 68%),
+            linear-gradient(115deg,#FAF7F0 0%,#EFEADF 55%,#E3DCCC 100%);
+          box-shadow:0 50px 90px rgba(0,0,0,.65), 0 12px 24px rgba(0,0,0,.35), inset 0 0 0 1px rgba(255,255,255,.5);">
+          <div class="grain" style="position:absolute;inset:0;border-radius:6px;"></div>
+          <div style="position:relative;color:#1E1B16;font-family:Manrope;">
+            <div style="display:flex;justify-content:space-between;align-items:center;">
+              <div style="display:flex;align-items:center;gap:${12 * sc}px;font-weight:700;font-size:${21 * sc}px;">${icone(38 * sc)}Kleak Agency</div>
+              <div style="font-family:'Instrument Serif',serif;font-style:italic;font-size:${40 * sc}px;color:#1E1B16;">Devis</div>
+            </div>
+            ${pointilles}
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:20px;">
+              <div>
+                <div style="font-weight:600;font-size:${25 * sc}px;">Site vitrine, formule One page</div>
+                <div style="font-weight:500;font-size:${21 * sc}px;color:#7A7266;margin-top:6px;">1 page</div>
+              </div>
+              <div style="font-family:'JetBrains Mono',monospace;font-size:${25 * sc}px;white-space:nowrap;">699,00 €</div>
+            </div>
+            ${pointilles}
+            <div style="display:flex;justify-content:space-between;align-items:baseline;">
+              <div style="font-weight:700;font-size:${24 * sc}px;">Total</div>
+              <div style="font-family:'JetBrains Mono',monospace;font-weight:500;font-size:${58 * sc}px;letter-spacing:-.02em;">699,00 €</div>
+            </div>
+            <div style="font-weight:500;font-size:${19 * sc}px;color:#7A7266;margin-top:${26 * sc}px;">Valable 30 jours</div>
+            <div style="margin-top:${70 * sc}px;display:flex;flex-direction:column;gap:${14 * sc}px;">
+              ${[88, 94, 72, 0, 60, 40].map((w) => `<div style="height:${8 * sc}px;width:${w}%;border-radius:4px;background:rgba(40,34,26,${w ? .1 : 0});"></div>`).join('')}
+            </div>
+          </div>
+          <div class="encre" style="position:absolute;right:${56 * sc}px;bottom:${120 * sc}px;transform:rotate(-12deg);
+            border:${4 * sc}px solid rgba(15,47,209,.8);border-radius:${10 * sc}px;padding:${5 * sc}px;mix-blend-mode:multiply;">
+            <div style="border:${1.5 * sc}px solid rgba(15,47,209,.7);border-radius:${6 * sc}px;padding:${10 * sc}px ${24 * sc}px ${8 * sc}px;
+              font-family:'Inter Tight';font-weight:600;font-size:${30 * sc}px;letter-spacing:.14em;text-transform:uppercase;color:rgba(15,47,209,.82);">Prix fixe</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="position:absolute;left:${L.x}px;right:${L.x}px;top:${L.note}px;font-family:Manrope;
+        color:rgba(255,255,255,.55);font-size:${story ? 22 : 20}px;line-height:1.45;font-weight:500;">
+        Formule One page, paiement en une fois. Maintenance en option.</div>`;
+    },
+  },
+
 };
 
 function page(fmt, crea) {
-  return `<!doctype html><html><head><meta charset="utf-8">${FONTS}<style>
+  return `<!doctype html><html><head><meta charset="utf-8">${crea.fonts || FONTS}<style>
     * { margin:0; padding:0; box-sizing:border-box; }
     body { width:${fmt.W}px; height:${fmt.H}px; position:relative; overflow:hidden; background:${T.noir}; }
   </style></head><body>${crea.html(fmt)}</body></html>`;
