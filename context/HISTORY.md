@@ -9,6 +9,13 @@
 
 ## 2026-10-22
 
+### IONOS débloqué, site Kleak gardé sur son compte Framer
+
+- **Problème IONOS réglé** par Edgar : boîte mail, domaine et accès au Framer du site de Kleak rétablis.
+- **Décision** : le site de Kleak **reste sur le compte Framer lié à la boîte IONOS**, qui porte l'abonnement. Pas de transfert vers `kleakagency@gmail.com`, qui héberge toujours les sites clients.
+- **Débloqué** : DMARC et Brevo (alerte et message au lead), Cal.com à la place de Calendly, politique de confidentialité, bandeau cookies, page tarifs, publication des articles SEO.
+- **Lancé ensuite** : DMARC chez IONOS et branchement de Brevo.
+
 ### Blocage IONOS : Framer de Kleak inaccessible, sites clients sur Gmail
 
 - **Cause du blocage IONOS** : compte coupé pour une facture en retard, réglée vers le 19/10, déblocage en cours avec IONOS. Boîte mail, DNS et accès au Framer du site de Kleak (connexion par lien envoyé sur la boîte IONOS) sont bloqués. Le site reste en ligne.
@@ -33,12 +40,13 @@
 - **Prix : 190 €/mois**, dans le bas de ce que facturent les agences pour maintenance et gestion de fiche réunies (environ 180 à 250 € HT, d'après des pages d'agences, pas une grille de marché). Temps estimé : 1 h à 1 h 30 par client et par mois.
 - **Avant-goût offert** : le message de demande d'avis et le QR code sont remis à chaque livraison.
 - **Règle** : les avis sont demandés à tous les clients, sans contrepartie, et on n'écrit jamais d'avis à la place de qui que ce soit (règles Google, pratique commerciale trompeuse). Cette règle est à écrire dans les CGV.
+- **API Google Business Profile** : la demande d'accès au nom de Kleak a été refusée tout de suite. On passe par le **projet Google Cloud d'Orbikal**, où l'API (quota de 300 requêtes par minute) et l'écran d'autorisation sont validés. Orbikal reste en pause, mais ce projet ne doit pas disparaître.
+- **Script d'appel découverte** écrit, avec le Suivi avis intégré (`livrables/closing/script-appel-decouverte.md`, et sa version PDF).
 - **Mis à jour** : `livrables/offre/fiche-offre.md`, `livrables/offre/note-interne-offre.md`, `context/CONTEXT.md`.
 - **Reste à faire** :
-  - demander l'accès à l'API Google Business Profile ;
   - construire le bilan mensuel dans n8n ;
   - ajouter le Suivi avis au catalogue du hub (`offre.ts`) ;
-  - le mettre dans le script de RDV et dans les CGV.
+  - le mettre dans les CGV.
 
 ---
 

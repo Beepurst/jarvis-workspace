@@ -9,6 +9,8 @@ const shots = [
   { name: 'demo-v1-mobile', url: 'https://massive-account-916652.framer.app/atelier-hauteville', w: 390, h: 844 },
   // Vraie réalisation Kleak (Framer, crédit Kleak en pied de page), montrée dans la créa D.
   { name: 'asa-mobile', url: 'https://accueilseniorassistance.com/', w: 390, h: 844 },
+  // Démo Garnier Plomberie V2 (entreprise fictive, bandeau visible), montrée dans la créa L (série BTP, 22/10).
+  { name: 'garnier-v2-mobile', url: 'https://massive-account-916652.framer.app/garnier-v2', w: 390, h: 844 },
 ];
 // `node _capture.mjs asa-mobile` ne refait que les captures nommées.
 const filtre = process.argv.slice(2);

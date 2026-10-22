@@ -3,6 +3,29 @@
 > Tenu par l'agent `createur-creas`. Le plus récent en haut. On écrit ce qui a été écarté et
 > pourquoi, pas seulement ce qui a été retenu, pour ne pas refaire le même arbitrage.
 
+## Série BTP (22/10/2026) : artisans du bâtiment, One page
+
+Commande de `media-buyer` (`livrables/media-buying/commande-creas-btp.md`), campagne
+« Kleak | BTP One page ». Cible : artisans du bâtiment ; c'est l'image qui fait le ciblage,
+donc « artisan » ou « chantiers » est dans l'accroche. DA fine de la série 5, une idée par
+créa, le prix sur N seulement. Posts rendus, stories codées mais ni rendues ni contrôlées.
+
+- Nouvelle capture : `_captures/garnier-v2-mobile.png` (`node _capture.mjs garnier-v2-mobile`,
+  démo V2 publiée sur `/garnier-v2`). Le bandeau « entreprise fictive » du site est en haut de
+  l'écran, doublé de la légende « Démo Kleak · entreprise fictive ».
+- Vignettes de M : photos Unsplash de la planche Garnier, copiées dans `assets/garnier/`.
+
+| Id | Fichier | Angle | Statut |
+|---|---|---|---|
+| l | `l-demo-artisan` | Démo métier, sans prix : « Un site d'artisan sur une seule page, avec vos services et votre zone *d'intervention.* » Un téléphone, démo Garnier Plomberie V2, légende « Démo Kleak · entreprise fictive » | Proposée |
+| m | `m-15-minutes-chantiers` | Le peu de temps, sans prix : « Vous êtes sur les chantiers. Pour votre site, comptez 15 minutes de *questionnaire.* » Carte en verre « Questionnaire · 15 minutes » (rubriques de la fiche : ambiance et couleurs, sites que vous aimez, logo, photos de vos chantiers). Ligne du bas : « Questionnaire en ligne, envoyé à la signature. Textes, photos et logo sont fournis par vous. » | Proposée |
+| n | `n-devis-artisan-699` | Prix fixe pour l'artisan : « Votre site d'artisan, à prix *fixe.* » Devis papier (traitement de K) : « Site internet, One page », 699,00 €, « 1 page qui réunit tout : » et les cinq rubriques, total 699,00 €, « Valable 30 jours », tampon « Prix fixe ». Condition : « Formule One page, paiement en une fois. Maintenance en option. » | Proposée |
+
+Écarté volontairement : le prix et « One page » sur L et M, « réalisation » et « client » pour
+la démo, tout cadrage sur les avis ou le numéro de la démo, « on écrit tout » ou « rien à
+faire » (contenus fournis par le client, rédaction sur devis), la frise des 7 étapes, le délai
+(une idée par créa), la TVA, toute durée d'engagement de la maintenance, tout prénom.
+
 ## B et D passées au One page (21/10/2026)
 
 Demande d'Edgar : B et D affichent l'offre la plus basse, le One page à 699 €, au lieu de

@@ -148,7 +148,7 @@ sources:
 - Ne jamais inventer un chiffre, un volume de recherche ou une source. Estimation annoncée comme
   telle, ou rien.
 - Ne jamais publier ni toucher au site Framer. Tu prépares, la session principale publie après
-  validation d'Edgar, et seulement une fois le problème IONOS réglé.
+  validation d'Edgar.
 - Ne jamais écrire de pages recopiées où seul un métier ou une ville change.
 - Ne jamais modifier les 22 anciens articles du blog.
 - Ne jamais afficher le contenu de `livrables/hub-agence/.env.local`.

@@ -913,6 +913,189 @@ const CREAS = {
     },
   },
 
+  // ---------------------------------------------------------------------------
+  // Série BTP (22/10/2026), commande de media-buyer
+  // (livrables/media-buying/commande-creas-btp.md). Cible : artisans du bâtiment.
+  // C'est l'image qui fait le ciblage : « artisan » ou « chantiers » est dans ce
+  // qu'on lit en premier. DA fine de la série 5 (FONTS_FIN, TITRE_FIN, fondFin,
+  // italique). Une idée par créa, le prix sur N seulement.
+  // ---------------------------------------------------------------------------
+
+  // L. La démo métier, sans prix. Une idée : voilà à quoi ressemble un site d'artisan
+  // fait par Kleak. Un seul téléphone, la démo Garnier Plomberie V2 à l'écran
+  // (_captures/garnier-v2-mobile.png, `node _capture.mjs garnier-v2-mobile`), beaucoup
+  // de vide autour.
+  // D'OÙ ÇA VIENT : fiche offre, One page, « 1 page qui réunit tout : présentation,
+  // services, avis, zone d'intervention, contact ». Accroche d'après la piste de la
+  // commande. La démo garde son bandeau « Site de démonstration… entreprise fictive »
+  // en haut de l'écran, doublé de la légende « Démo Kleak · entreprise fictive ».
+  // ÉCARTÉ VOLONTAIREMENT : « One page » et le prix (une idée par créa), « réalisation »
+  // et « client » (la démo est fictive), tout cadrage sur les avis ou le numéro de la
+  // démo (le téléphone montre l'écran d'accueil tel quel, sans zoom).
+  l: {
+    key: 'l-demo-artisan',
+    fonts: FONTS_FIN,
+    html: (fmt) => {
+      const story = fmt.key === 'story';
+      const L = story
+        ? { marque: 200, titre: 310, titrePx: 68, tel: 640, telW: 360, x: 90 }
+        : { marque: 96, titre: 196, titrePx: 58, tel: 452, telW: 352, x: 92 };
+      const hTel = L.telW * 844 / 390;
+      return `
+      ${fondFin(fmt, fmt.W * .5, L.tel + hTel * .45)}
+      <div style="position:absolute;left:${L.x}px;top:${L.marque}px;">${marquePetite(story)}</div>
+      <div style="position:absolute;left:${L.x}px;right:${L.x + 20}px;top:${L.titre}px;${TITRE_FIN}
+        font-size:${L.titrePx}px;line-height:1.1;">Un site d'artisan sur une seule page, avec vos services et votre zone ${italique("d'intervention.")}</div>
+
+      <div style="position:absolute;left:${(fmt.W - L.telW) / 2}px;top:${L.tel}px;
+        filter:drop-shadow(0 40px 60px rgba(0,0,0,.55));">${telephone(L.telW, IMG('_captures/garnier-v2-mobile.png'), '#14243A')}</div>
+      <div style="position:absolute;left:0;right:0;top:${L.tel + hTel + (story ? 34 : 24)}px;text-align:center;
+        font-family:Manrope;font-weight:600;font-size:${story ? 32 : 30}px;color:rgba(255,255,255,.82);">
+        Démo Kleak · entreprise fictive</div>`;
+    },
+  },
+
+  // M. Le peu de temps que ça demande, sans prix. Une idée : l'artisan est sur les
+  // chantiers ; pour son site, on lui demande un questionnaire de 15 minutes et ses
+  // contenus. Un seul objet : une carte en verre « Questionnaire », dont la ligne
+  // « Photos de vos chantiers » est mise en avant avec trois vignettes.
+  // D'OÙ ÇA VIENT : fiche offre, « Comment ça se passe », étape 3 : « un questionnaire
+  // en ligne (15 minutes). Vous y décrivez vos goûts (ambiance, couleurs, styles
+  // d'écriture, sites que vous aimez) et vous y déposez vos contenus (logo, photos,
+  // textes) ». Les rubriques de la carte sont celles-là, rien d'autre. « Bon à savoir » :
+  // les contenus sont fournis par le client, d'où la ligne du bas. Vignettes : photos
+  // Unsplash de la planche Garnier (assets/garnier/), pas d'image générée.
+  // ÉCARTÉ VOLONTAIREMENT : « on écrit tout », « vous n'avez rien à faire », « zéro
+  // effort » (faux : textes, photos, logo viennent du client, rédaction sur devis),
+  // « 15 minutes » appliqué à autre chose que le questionnaire, la frise des 7 étapes,
+  // le délai et le prix.
+  m: {
+    key: 'm-15-minutes-chantiers',
+    fonts: FONTS_FIN,
+    html: (fmt) => {
+      const story = fmt.key === 'story';
+      const L = story
+        ? { titre: 260, titrePx: 68, carte: 640, note: 1400, x: 90, s: 1.06 }
+        : { titre: 150, titrePx: 60, carte: 490, note: 1240, x: 92, s: 1 };
+      const s = L.s;
+      const photo = (id) => `<div style="width:${132 * s}px;height:${132 * s}px;border-radius:${14 * s}px;flex:none;
+        background:url(data:image/jpeg;base64,${b64(`assets/garnier/${id}.jpg`)}) center / cover;
+        box-shadow:0 8px 20px rgba(0,0,0,.4), inset 0 0 0 1px rgba(255,255,255,.12);"></div>`;
+      const coche = `<span style="flex:none;width:${34 * s}px;height:${34 * s}px;border-radius:50%;
+        background:rgba(15,47,209,.9);color:#fff;display:inline-flex;align-items:center;justify-content:center;
+        font-family:Manrope;font-weight:800;font-size:${19 * s}px;">✓</span>`;
+      const ligne = (t, premier) => `
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:${22 * s}px 0;
+          ${premier ? '' : 'border-top:1px solid rgba(255,255,255,.09);'}">
+          <span style="font-family:Manrope;font-weight:600;font-size:${30 * s}px;color:rgba(255,255,255,.62);">${t}</span>${coche}
+        </div>`;
+      return `
+      ${fondFin(fmt, fmt.W * .5, L.carte + 380)}
+      <div style="position:absolute;left:${L.x}px;right:${L.x}px;top:${L.titre}px;${TITRE_FIN}
+        font-size:${L.titrePx}px;line-height:1.1;">Vous êtes sur les chantiers. Pour votre site, comptez 15 minutes de ${italique('questionnaire.')}</div>
+
+      <div style="position:absolute;left:${L.x + 30}px;right:${L.x + 30}px;top:${L.carte}px;border-radius:30px;
+        padding:${story ? '40px 46px 44px' : '36px 42px 40px'};border:1.5px solid transparent;
+        background:linear-gradient(165deg, rgba(255,255,255,.07), rgba(255,255,255,.015) 55%) padding-box,
+          linear-gradient(#111218,#111218) padding-box,
+          linear-gradient(135deg, rgba(214,128,60,.85), rgba(255,255,255,.12) 45%, rgba(60,95,255,.95)) border-box;
+        box-shadow:0 30px 70px rgba(0,0,0,.55), -20px -10px 60px rgba(180,96,40,.13), 24px 26px 70px rgba(15,47,209,.28);
+        transform:rotate(-1.5deg);">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:${14 * s}px;">
+          <div style="display:flex;align-items:center;gap:${16 * s}px;">${icone(46 * s)}
+            <span style="font-family:'Inter Tight';font-weight:600;font-size:${36 * s}px;letter-spacing:-.01em;color:#F3F4F7;">Questionnaire</span></div>
+          <span style="font-family:Manrope;font-weight:600;font-size:${25 * s}px;color:rgba(255,255,255,.55);">15 minutes</span>
+        </div>
+        ${ligne('Ambiance et couleurs', true)}
+        ${ligne('Sites que vous aimez')}
+        ${ligne('Votre logo')}
+        <div style="border-top:1px solid rgba(255,255,255,.09);padding-top:${24 * s}px;">
+          <div style="font-family:Manrope;font-weight:700;font-size:${32 * s}px;color:#fff;">Photos de vos chantiers</div>
+          <div style="display:flex;gap:${16 * s}px;margin-top:${20 * s}px;">
+            ${photo('1694827893591-af9b80361599')}${photo('1518276779712-dfdcb9daa7a1')}${photo('1584622650111-993a426fbf0a')}
+            <div style="width:${132 * s}px;height:${132 * s}px;border-radius:${14 * s}px;flex:none;border:2px dashed rgba(255,255,255,.22);
+              display:flex;align-items:center;justify-content:center;font-family:Manrope;font-weight:500;font-size:${48 * s}px;color:rgba(255,255,255,.4);">+</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="position:absolute;left:${L.x}px;right:${L.x}px;top:${L.note}px;font-family:Manrope;
+        color:rgba(255,255,255,.55);font-size:${story ? 22 : 20}px;line-height:1.45;font-weight:500;">
+        Questionnaire en ligne, envoyé à la signature. Textes, photos et logo sont fournis par vous.</div>`;
+    },
+  },
+
+  // N. Le prix fixe, dans les mots d'un artisan. Une idée : un artisan fait des devis
+  // toute la semaine ; voici le sien pour son site, 699 €, prix fixe. Même traitement
+  // papier que K (grain, plis, tampon), mais l'accroche parle à l'artisan et le corps
+  // du devis détaille les cinq rubriques de la page.
+  // D'OÙ ÇA VIENT : fiche offre, One page 699 €, « 1 page qui réunit tout :
+  // présentation, services, avis, zone d'intervention, contact », « Un devis à prix
+  // fixe, valable 30 jours ». Condition reprise de K : « Formule One page, paiement en
+  // une fois. Maintenance en option. »
+  // ÉCARTÉ VOLONTAIREMENT : la TVA, le prix de la maintenance et toute durée
+  // d'engagement, le délai (une idée par créa), le paiement en 6 fois, tout numéro de
+  // devis, nom de client ou date inventés.
+  n: {
+    key: 'n-devis-artisan-699',
+    fonts: FONTS_FIN,
+    html: (fmt) => {
+      const story = fmt.key === 'story';
+      const L = story
+        ? { titre: 290, titrePx: 72, devis: 500, devisW: 640, note: 1440, x: 90 }
+        : { titre: 150, titrePx: 66, devis: 360, devisW: 590, note: 1262, x: 92 };
+      const sc = L.devisW / 640;
+      const pointilles = `<div style="height:0;border-top:2px dotted rgba(40,34,26,.28);margin:${26 * sc}px 0;"></div>`;
+      const rubrique = (t) => `<div style="display:flex;align-items:center;gap:${14 * sc}px;font-weight:500;
+        font-size:${23 * sc}px;color:#3A342B;margin-top:${12 * sc}px;"><span style="width:${7 * sc}px;height:${7 * sc}px;
+        border-radius:50%;background:#9A9285;flex:none;"></span>${t}</div>`;
+      return `
+      ${fondFin(fmt, fmt.W * .5, L.devis + 380 * sc)}
+      <div style="position:absolute;left:${L.x}px;right:${L.x}px;top:${L.titre}px;${TITRE_FIN}
+        font-size:${L.titrePx}px;line-height:1.1;">Votre site d'artisan, à prix ${italique('fixe.')}</div>
+
+      <div style="position:absolute;left:${(fmt.W - L.devisW) / 2}px;top:${L.devis}px;width:${L.devisW}px;transform:rotate(3deg);">
+        <div style="position:relative;border-radius:6px;padding:${50 * sc}px ${54 * sc}px ${56 * sc}px;
+          aspect-ratio:1/1.32;
+          background:
+            linear-gradient(180deg, transparent 32.8%, rgba(0,0,0,.05) 33.3%, rgba(255,255,255,.35) 33.8%, transparent 35%),
+            linear-gradient(180deg, transparent 65.8%, rgba(0,0,0,.05) 66.3%, rgba(255,255,255,.35) 66.8%, transparent 68%),
+            linear-gradient(115deg,#FAF7F0 0%,#EFEADF 55%,#E3DCCC 100%);
+          box-shadow:0 50px 90px rgba(0,0,0,.65), 0 12px 24px rgba(0,0,0,.35), inset 0 0 0 1px rgba(255,255,255,.5);">
+          <div class="grain" style="position:absolute;inset:0;border-radius:6px;"></div>
+          <div style="position:relative;color:#1E1B16;font-family:Manrope;">
+            <div style="display:flex;justify-content:space-between;align-items:center;">
+              <div style="display:flex;align-items:center;gap:${12 * sc}px;font-weight:700;font-size:${21 * sc}px;">${icone(38 * sc)}Kleak Agency</div>
+              <div style="font-family:'Instrument Serif',serif;font-style:italic;font-size:${40 * sc}px;">Devis</div>
+            </div>
+            ${pointilles}
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:20px;">
+              <div style="font-weight:700;font-size:${25 * sc}px;white-space:nowrap;">Site internet, One page</div>
+              <div style="font-family:'JetBrains Mono',monospace;font-size:${25 * sc}px;white-space:nowrap;">699,00 €</div>
+            </div>
+            <div style="font-weight:500;font-size:${21 * sc}px;color:#7A7266;margin:${8 * sc}px 0 ${6 * sc}px;">1 page qui réunit tout :</div>
+            ${['Présentation', 'Services', 'Avis', "Zone d'intervention", 'Contact'].map(rubrique).join('')}
+            ${pointilles}
+            <div style="display:flex;justify-content:space-between;align-items:baseline;">
+              <div style="font-weight:700;font-size:${24 * sc}px;">Total</div>
+              <div style="font-family:'JetBrains Mono',monospace;font-weight:500;font-size:${58 * sc}px;letter-spacing:-.02em;">699,00 €</div>
+            </div>
+            <div style="font-weight:500;font-size:${19 * sc}px;color:#7A7266;margin-top:${18 * sc}px;">Valable 30 jours</div>
+          </div>
+          <div class="encre" style="position:absolute;right:${50 * sc}px;bottom:${56 * sc}px;transform:rotate(-10deg);
+            border:${4 * sc}px solid rgba(15,47,209,.8);border-radius:${10 * sc}px;padding:${5 * sc}px;mix-blend-mode:multiply;">
+            <div style="border:${1.5 * sc}px solid rgba(15,47,209,.7);border-radius:${6 * sc}px;padding:${10 * sc}px ${24 * sc}px ${8 * sc}px;
+              font-family:'Inter Tight';font-weight:600;font-size:${30 * sc}px;letter-spacing:.14em;text-transform:uppercase;color:rgba(15,47,209,.82);">Prix fixe</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="position:absolute;left:${L.x}px;right:${L.x}px;top:${L.note}px;font-family:Manrope;
+        color:rgba(255,255,255,.55);font-size:${story ? 22 : 20}px;line-height:1.45;font-weight:500;">
+        Formule One page, paiement en une fois. Maintenance en option.</div>`;
+    },
+  },
+
 };
 
 function page(fmt, crea) {

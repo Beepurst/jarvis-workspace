@@ -89,8 +89,7 @@ n'est connu avant publication**, et l'agent n'en cite jamais un.
 - Statuts d'un article dans `sujets.md` : `à écrire` → `à relire` → `validé` → `publié`.
 - L'agent rédige, Edgar relit dans la conversation. Rien n'est publié sans sa validation.
 - **Publication** : par la session principale de Claude Code, avec la skill `framer`, dans la
-  collection Blog du CMS Framer de kleakagency.fr. **Bloquée tant que le problème IONOS n'est pas
-  réglé** : les articles validés attendent en file. À la première publication, relever les
+  collection Blog du CMS Framer de kleakagency.fr. Débloquée le 22/10 (IONOS réglé). À la première publication, relever les
   champs de la collection Blog et les noter ici.
 
 ## Mesure

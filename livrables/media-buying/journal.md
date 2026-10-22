@@ -17,6 +17,90 @@ Format fixe d'une entrée :
 - **Leçon** : ce qu'on retient, avec son niveau de preuve (concluant, tendance, pas concluant)
 ```
 
+## 22/10/2026, campagne focus BTP, test prévu : PRÉPARÉE, À LANCER APRÈS J K D
+
+> Ne pas lancer avant le bilan du test J K D (lancement prévu vers le 25/10, 7 jours). Ne
+> remplace rien dans J K D. **Mise à jour du 22/10** : créas L (`l-demo-artisan`), M
+> (`m-15-minutes-chantiers`) et N (`n-devis-artisan-699`) retenues par Edgar, importées dans
+> le hub en post et en story (stories contrôlées). Textes validés par Edgar et déposés, offre
+> `one-page`, 1 texte, 1 titre, 1 description par pub (201, 3 créés chacun, seul avertissement :
+> textes de 222 à 248 caractères). Campagne pas encore créée.
+
+- **Campagne** : `Kleak | BTP One page | AAAA-MM-JJ`, créée en pause depuis le hub. Objectif
+  Prospects, formulaire instantané (le même que J K D, ou une copie avec une question métier,
+  à trancher par Edgar). **1 ensemble, 3 pubs au plus** (`regles.md`, section 6), les créas
+  retenues par Edgar parmi la commande : démo métier sans prix (Garnier Plomberie, démo
+  fictive affichée comme telle), « 15 minutes de questionnaire » sans prix, prix fixe One page
+  699 €. Post et story, un texte, un titre et une description par pub (comme J K D, pour que
+  le hub envoie les deux formats).
+- **Ciblage** : France, 25 à 65 ans et plus, audience Advantage+ coupée, placements Advantage+,
+  **identique à J K D**, pour que la seule chose qui change soit la créa. Meta ne permet pas de
+  viser les métiers du bâtiment de façon fiable (ciblage par intitulé de poste et une partie
+  des centres d'intérêt retirés ces dernières années, d'après ce que je sais, pas vérifié
+  aujourd'hui sur une source Meta). Le levier est donc la créa et le texte qui nomment le
+  métier. Centres d'intérêt possibles (« Bâtiment », « Plomberie », « Artisan »…) : à relever
+  par Edgar dans le Gestionnaire avec la taille d'audience estimée, et à garder pour un test
+  suivant, un test = une question. Zone : France entière, une région réduirait l'audience sans
+  donnée qui le justifie.
+- **Formule** : One page 699 €, seule offre citée. Aucune raison chiffrée de pousser
+  l'Essentiel (aucune dépense sur le compte au 22/10). Son contenu colle au BTP mot pour mot :
+  « services, avis, zone d'intervention, contact ».
+- **Hypothèse** : une créa qui nomme le métier amène des leads d'artisans du bâtiment qui
+  prennent RDV, à un CPL proche de `cplCible` (5 €). Mesures : CPL de la campagne, taux de RDV,
+  part des leads qui sont du bâtiment (seulement si le formulaire pose la question, sinon à
+  relever à la main dans le CRM), budgets déclarés sous 699 €.
+- **Budget et durée** : 6,60 € par jour pendant 14 jours, date de fin de l'ensemble à J+14
+  dans le Gestionnaire, soit 92,40 € au plus, sur les 200 € de novembre. **Seule campagne
+  active pendant ces 14 jours** (J K D terminé), sinon les 6,60 € se partagent. Le reste de
+  novembre (environ 107 €) se décide au bilan.
+- **Critère de fin** (`regles.md`, section 6) : chaque pub au volume minimum, ou 14 jours, ou
+  toutes sauf une coupées. Coupures en cours de test : seulement refus ou 15 € sans lead sur
+  une pub, pas avant J+3.
+- **Ce que le test pourra conclure** (estimation : à 5 € le lead, 92 € donnent de l'ordre de
+  18 leads, à 10 € le lead de l'ordre de 9) : le CPL de la campagne BTP dans son ensemble si
+  elle dépasse 10 leads, et la part de leads du bâtiment. **Ce qu'il ne pourra pas conclure** :
+  quelle créa BTP est la meilleure (environ 6 leads par pub au mieux), ni que le focus BTP fait
+  mieux que les créas généralistes (périodes différentes, novembre plus cher) : ce sera une
+  tendance.
+- **Conditions de déclenchement, lues au bilan J K D** :
+  1. CPL J K D ≤ 10 € (2 × `cplCible`) et parcours qui marche (bouton de réservation vu en fin
+     de formulaire) : lancer le plan tel quel.
+  2. CPL J K D au-dessus de 10 €, ou moins de 3 leads pour 49 € : regarder où ça casse avant
+     de lancer. CTR lien correct mais peu de leads par clic : c'est le formulaire, les créas
+     BTP n'y changeront rien, corriger le formulaire d'abord. CTR bas sur les trois pubs : c'est
+     l'accroche, le plan BTP se lance (c'est justement une autre accroche).
+  3. Angle (tendance seulement) : si K (prix) amène le plus de leads ou de RDV, garder la créa
+     prix BTP ; si c'est D (téléphone, démo), garder la démo métier ; si c'est J (preuve), en
+     parler avec Edgar, il n'existe aucun avis réel d'artisan à citer aujourd'hui.
+  4. Budgets déclarés : si la majorité des leads J K D déclare moins de 699 €, revoir la
+     question de budget du formulaire avant de lancer.
+  5. Capacité (`regles.md`, section 5) : si J K D a déjà rempli le calendrier de production
+     d'Edgar, décaler le lancement.
+  6. Si une pub J K D est au CPL cible et qu'Edgar veut la garder, l'ajouter comme 3e pub
+     témoin dans l'ensemble BTP (2 créas BTP plus le témoin) plutôt qu'ouvrir une 2e campagne.
+- **Pistes de textes d'annonce** (pas validées, pas déposées, à reprendre une fois les créas
+  choisies) :
+  - Démo : « Plombier, électricien, couvreur, maçon : vos clients vous appellent depuis leur
+    téléphone. Nous faisons des sites d'une page avec vos services, votre zone d'intervention
+    et vos avis. Remplissez le formulaire et choisissez votre créneau d'appel. » (244
+    caractères)
+  - Temps : « Vous êtes sur les chantiers toute la journée. Pour votre site, vous remplissez un
+    questionnaire de 15 minutes et vous nous envoyez vos photos. Nous construisons la page,
+    vous la validez. Remplissez le formulaire et choisissez votre créneau d'appel. » (248)
+  - Prix : « Votre site d'artisan sur une page coûte 699 €, prix fixe : services, zone
+    d'intervention, avis et formulaire de contact. Livraison en 5 jours ouvrés après réception
+    de vos contenus et du premier paiement. Remplissez le formulaire et choisissez votre
+    créneau d'appel. » (266)
+  - Titres : « Site vitrine pour artisans » (26), « Un site d'une page pour votre métier »
+    (36), « Votre site d'artisan, 699 € prix fixe » (37, créa prix seulement). Descriptions :
+    « Zone d'intervention incluse » (27), « Questionnaire de 15 minutes » (27), « Mentions
+    légales, RGPD inclus » (29).
+- **Chiffres** : aucun. Lecture du hub du 22/10 (période 22/09 au 21/10) : `depenseMois` 0,
+  aucune campagne diffusée, aucune alerte, lecture Meta « ok », aucun avertissement.
+- **Décision** : rien dans le Gestionnaire. Edgar lance la commande de créas, choisit, puis
+  `media-buyer` écrit et dépose les textes. Lancement après le bilan J K D.
+- **Leçon** : aucune encore.
+
 ## 21/10/2026, test J K D : un élément de chaque type par pub, test prévu, pas lancé
 
 - **État** : campagne créée **en pause** depuis le hub par Edgar le 21/10. Pas encore activée. Elle n'apparaît pas dans la lecture agent tant qu'elle n'a pas d'impressions.
