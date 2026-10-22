@@ -9,6 +9,8 @@
 
 Session de construction pour **$ARGUMENTS**. Ne lis **aucun** fichier de contexte de l'agence (ni `context/CONTEXT.md`, ni `context/HISTORY.md`, ni autre chose) : tout ce qu'il faut arrive avec le prompt copié depuis le hub.
 
+Le prompt de construction vient désormais du brief du hub (étape Construction, bouton « Copier le prompt de construction »). Claude peut lire un brief et valider ses étapes via `GET/POST /api/agent/briefs` avec `BRIEF_AGENT_SECRET` du `.env` (`HUB_URL` du `.env`).
+
 ### Étape 1 : Outil
 
 Framer avec `@framer/agent`. Lance une fois `npx @framer/agent@latest setup`, attends la fin, puis charge la skill `framer` et suis ce qu'elle demande.
