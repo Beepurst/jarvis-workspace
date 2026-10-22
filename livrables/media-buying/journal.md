@@ -25,6 +25,12 @@ Format fixe d'une entrée :
 > le hub en post et en story (stories contrôlées). Textes validés par Edgar et déposés, offre
 > `one-page`, 1 texte, 1 titre, 1 description par pub (201, 3 créés chacun, seul avertissement :
 > textes de 222 à 248 caractères). Campagne pas encore créée.
+> **22/10, centres d'intérêt** : réglables depuis le hub à la création (liste « Artisans du
+> bâtiment », audience estimée affichée). Décision d'Edgar de cibler les artisans par centres
+> d'intérêt : le test BTP ne compare donc plus seulement les créas à J K D, le ciblage change
+> aussi. Proposition de centres à cocher : Plomberie (construction), Rénovation (construction),
+> Maçonnerie, Terrassement, Chauffage central, Pompe à chaleur, Isolation thermique,
+> Construction (industrie).
 
 - **Campagne** : `Kleak | BTP One page | AAAA-MM-JJ`, créée en pause depuis le hub. Objectif
   Prospects, formulaire instantané (le même que J K D, ou une copie avec une question métier,

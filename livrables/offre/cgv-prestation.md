@@ -1,15 +1,15 @@
 # CGV de prestation, Kleak Agency
 
-> **Projet à valider par Edgar et à faire relire.** Rédigé le 22/10/2026 pour le devis automatique du Hub Agence. Une fois validé, le texte à partir de « Conditions générales de vente » est collé dans `reglages_devis.cgv` et part en annexe de chaque devis.
+> **Validées par Edgar le 22/10/2026**, relecture par un juriste conseillée avant le premier client. Le texte à partir de « Conditions générales de vente » se colle dans Réglages, section Devis, champ CGV, et part en annexe de chaque devis.
 >
-> Points à trancher avant validation (choix posés par défaut, à confirmer) :
+> Choix confirmés le 22/10 :
 > 1. Suspension du site en cas d'impayé : 15 jours après l'échéance, après une relance écrite.
 > 2. Projet en pause à J+10 sans contenus : au-delà de 60 jours de pause, Kleak peut clore le projet et les sommes versées restent acquises.
-> 3. Taux des pénalités de retard : trois fois le taux d'intérêt légal (minimum légal).
+> 3. Pénalités de retard : trois fois le taux d'intérêt légal (minimum légal).
 > 4. Droit de citer le site comme réalisation, sauf refus écrit du client.
 > 5. Responsabilité plafonnée au montant payé pour la prestation.
-> 6. Tribunal : pas de clause d'attribution de compétence (elle n'est valable qu'entre commerçants), le tribunal compétent selon les règles de droit commun.
-> 7. Maintenance en paiement en 6 fois : obligatoire jusqu'au dernier versement, puis sans engagement avec un préavis de 2 mois (même phrase sur le devis).
+> 6. Tribunal : pas de clause d'attribution de compétence, règles de droit commun.
+> 7. Maintenance en paiement en 6 fois : obligatoire jusqu'au dernier versement, puis sans engagement avec un préavis de 2 mois.
 
 ---
 
