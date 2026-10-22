@@ -17,6 +17,28 @@ Format fixe d'une entrée :
 - **Leçon** : ce qu'on retient, avec son niveau de preuve (concluant, tendance, pas concluant)
 ```
 
+## 22/10/2026, textes principaux de J, K, D : email immédiat (Brevo), test prévu, pas lancé
+
+- **Campagne** : `Kleak | Test J K D`, créée en pause le 21/10, pas activée (lecture du 22/10,
+  période 22/09 au 21/10 : aucune campagne diffusée, `depenseMois` 0, aucune alerte, lecture
+  Meta « ok », aucun avertissement). Brevo branché et testé de bout en bout le 22/10 : le lead
+  reçoit dans la seconde un email pour réserver son appel sur Cal.com, puis des relances. La
+  règle « pas de promesse de message immédiat » est levée, **pour l'email seulement** (ni appel
+  immédiat, ni WhatsApp automatique).
+- **Changement** : seule la fin du texte principal change sur J, K et D. « Remplissez le
+  formulaire et choisissez votre créneau d'appel. » devient « Remplissez le formulaire et vous
+  recevez tout de suite un email pour choisir votre créneau d'appel. » Titres et descriptions
+  inchangés. Dépôts : J (`kleak`), K et D (`one-page`), 201, 1 créé et 1 déjà là chacun (le titre
+  existant joint au lot). Seul avertissement : textes de plus de 125 caractères (J 218, K 193,
+  D 269). L'API agent ne supprime pas : les anciens textes principaux restent dans le hub, à
+  supprimer par Edgar. La campagne déjà créée en pause porte les anciens textes : à corriger
+  dans le Gestionnaire ou à recréer depuis le hub avant l'activation.
+- **Hypothèse** : inchangée. Pas un test de texte : un seul texte par pub.
+- **Chiffres** : aucun, rien n'est diffusé.
+- **Décision** : textes BTP (L, M, N) laissés tels quels, même fin « choisissez votre créneau
+  d'appel », à aligner si Edgar le veut avant leur lancement.
+- **Leçon** : aucune sur les performances. Le texte suit le parcours réel du jour de diffusion.
+
 ## 22/10/2026, campagne focus BTP, test prévu : PRÉPARÉE, À LANCER APRÈS J K D
 
 > Ne pas lancer avant le bilan du test J K D (lancement prévu vers le 25/10, 7 jours). Ne
@@ -31,6 +53,11 @@ Format fixe d'une entrée :
 > aussi. Proposition de centres à cocher : Plomberie (construction), Rénovation (construction),
 > Maçonnerie, Terrassement, Chauffage central, Pompe à chaleur, Isolation thermique,
 > Construction (industrie).
+> **22/10, campagne créée en pause** depuis le hub par Edgar, avec les centres d'intérêt
+> Plomberie (construction), Rénovation (construction), Maçonnerie, Chauffage central, Pompe à
+> chaleur, Construction (industrie). Premier essai refusé par Meta : Terrassement et Isolation
+> thermique sont des centres retirés (correctif du hub sur la branche `interets-valides`). Pas
+> activée : à activer après le bilan J K D, date de fin de l'ensemble à J+14.
 
 - **Campagne** : `Kleak | BTP One page | AAAA-MM-JJ`, créée en pause depuis le hub. Objectif
   Prospects, formulaire instantané (le même que J K D, ou une copie avec une question métier,
