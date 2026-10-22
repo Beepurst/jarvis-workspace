@@ -12,7 +12,46 @@
 | Sections bibliothèque sur la V2 | 22/10 | | Comparatif avec / sans (interrupteur dans le titre) après « Pourquoi », FAQ en panneau de 6 questions à la place de l'ancienne. Clics testés sur la page publiée. De 11 h 31 à 12 h 45 environ. Puis À propos (accroche gris → noir au scroll en composant code, grille de 4 chiffres et 2 photos) après le comparatif, et process en 4 étapes (fond clair) après les Services. Ménage des fondus : 5 au total |
 | Validation de la V2 par Edgar | 22/10 | 2 | Site validé tel quel (« site validé, c'est un site de test »). Allers-retours : 1 pour les deux premières sections de la bibliothèque, 1 pour les deux suivantes. Aucune retouche visuelle demandée |
 | Checklist qualité et PageSpeed | 22/10 | | Lighthouse local (quota de l'API PageSpeed épuisé), sur `.framer.app`. Bureau : 88, 94, 94. Mobile : 63, 63, 83 avec la barre d'édition de Framer (4,1 Mo), 70, 83, 77 sans elle (site : 840 Ko, accroche mobile 74 Ko). Accessibilité 100 après correction de 4 contrastes, bonnes pratiques 96, SEO 69 (blocage d'indexation de `.framer.app` seul en cause). Ajoutés : données structurées `Plumber`, image de partage, pages mentions légales et confidentialité (exemples marqués fictifs) reliées au pied de page et au formulaire. Restent : envoi test du formulaire, favicon (réglage du site entier, partagé avec les autres démos), badge Framer (plan payant), remesure sur un vrai domaine |
-| Livraison | | | |
+| Copie « site client » et formulaire | 22/10 | | Copie du projet par Edgar (la copie et le transfert ne passent pas par l'API), `/garnier-v2` en accueil, sur https://angelic-fabric-749963.framer.app/. Ménage par Claude : 16 composants et 109 styles des autres démos supprimés, 2 composants code Kleak retirés, titre du site et favicon mis à Garnier. Formulaire vers kleakagency@gmail.com (réglé par Edgar) ; envoi test le 22/10 à 18 h, message de succès affiché, mail reçu par Edgar dans sa boîte principale (pas en spam) |
+| Transfert du projet | 22/10 | | Fait par Edgar vers un second compte, en restant éditeur. Côté destinataire : un seul bouton « Confirm transfer », aucun message sur le plan ni la facturation (projet sans plan payant). L'adresse `.framer.app` a continué de répondre après l'acceptation |
+| Livraison | 22/10 | | Test terminé. Domaine, plan payant et facture de solde non testés (site fictif) |
+
+## Procédure de transfert (testée le 22/10)
+
+1. **Un projet Framer par client, dès le départ.** Le transfert porte sur le projet entier : un projet qui mélange plusieurs sites oblige à dupliquer puis à nettoyer (16 composants et 109 styles à supprimer ici).
+2. Avant le transfert, dans le projet du client :
+   - le titre et le favicon du site sont à son nom ;
+   - les composants, styles et fichiers de code non utilisés sont supprimés ;
+   - le formulaire est envoyé à l'adresse du client, avec un envoi test reçu ;
+   - le site est publié.
+3. Transfert : menu Framer, puis **File**, puis **Transfer Project** (ou **Share**, puis **Transfer Project**). Indiquer l'email du compte du client et **cocher « rester éditeur »**, sinon l'agence perd l'accès, maintenance comprise.
+4. Le client se connecte ou crée son compte Framer, puis clique sur « Confirm transfer ». Le site reste en ligne pendant le transfert.
+5. **Non testé, à vérifier au premier client payant :** selon l'aide Framer, un plan déjà payé est résilié au transfert, la part non utilisée est créditée à l'agence, et le client doit prendre son propre plan. Le domaine personnalisé reste branché. À écrire dans la fiche de maintenance et à annoncer au client avant le transfert.
+
+## Bilan du test (22/10)
+
+- **Temps passé par Claude (estimation, d'après les heures notées) :**
+  - construction V2 : 1 h 40, dont environ 45 min perdues sur l'outil ;
+  - 4 sections de la bibliothèque : environ 2 h 15 ;
+  - checklist et PageSpeed : environ 1 h 30 ;
+  - copie et transfert : environ 30 min.
+
+  Soit environ 6 h depuis la maquette validée. Brief, planche, V1 et maquette HTML ne sont pas comptés. La cible de 7 à 9 h pour un One page est tenable si l'outil ne plante pas, mais la marge est faible.
+- **Allers-retours :**
+  - 3 sur la maquette ;
+  - 0 retouche visuelle sur la V2 construite ;
+  - 2 pour les sections de la bibliothèque.
+
+  L'objectif de 2 ou 3 allers-retours est tenu à partir de la maquette validée.
+- **Qualité, mesurée sur `.framer.app` :**
+  - accessibilité 100, bonnes pratiques 96 à 100 ;
+  - bureau 88 à 94 ;
+  - mobile 63 à 83 avec la barre d'édition de Framer, 70 à 83 sans elle ;
+  - SEO 69, plafonné par l'adresse de test.
+
+  La note mobile n'est fiable que sur un vrai domaine.
+- **Ce qui a marché :** maquette HTML validée en amont puis reproduite, composants à variantes (interrupteur, accordéons), composant code pour l'accroche révélée au scroll, contrôle sur la page publiée avec Playwright plutôt qu'avec les captures Framer.
+- **Ce qui coûte :** les délais de l'API, les fonctions qui échouent (import SVG, icône par instance, listes en instance, captures de page, publication par l'agent), les sessions restées ouvertes. Et une erreur de ciblage, qui a touché la V1 puis a été réparée : `getNodesOfTypes` renvoie des nœuds de toutes les pages, il faut toujours partir de l'arbre de la page.
 
 ## Constats pour le process
 

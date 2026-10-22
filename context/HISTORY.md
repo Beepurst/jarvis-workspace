@@ -9,6 +9,17 @@
 
 ## 2026-10-22
 
+### Test de production Garnier terminé, de la maquette au transfert
+
+- **V2 Framer** construite d'après la maquette HTML validée, puis 4 sections de la bibliothèque ajoutées : comparatif avec interrupteur, FAQ en panneau, À propos à accroche révélée au scroll, process en 4 étapes. Edgar a validé le site sans retouche visuelle.
+- **Checklist** passée :
+  - mesures Lighthouse : bureau 88 à 94, mobile 70 à 83 sans la barre d'édition de Framer, accessibilité 100 ;
+  - ajouts : données structurées, image de partage, pages légales types.
+- **Livraison testée** : copie du projet nettoyée, formulaire reçu sur `kleakagency@gmail.com`, transfert vers un second compte (un clic « Confirm transfer », site resté en ligne).
+- **Décision** : un projet Framer par client dès le départ.
+- **Process mis à jour** : section 10 « Livraison et transfert » dans la checklist, pièges de l'outil et fermeture des sessions dans `/site`.
+- **Bilan** : environ 6 h de travail de Claude depuis la maquette validée ; à revérifier au premier client, le plan payant au transfert.
+
 ### IONOS débloqué, site Kleak gardé sur son compte Framer
 
 - **Problème IONOS réglé** par Edgar : boîte mail, domaine et accès au Framer du site de Kleak rétablis.

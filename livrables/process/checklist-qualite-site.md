@@ -12,6 +12,17 @@
 - [ ] **Maquette HTML de la page entière** au style maison (`style-maison.md`), une section de référence par partie du site, relue en bureau et en mobile puis **validée par Edgar** avant toute construction Framer
 - [ ] Le prompt de construction demande de **reproduire** la maquette, pas de concevoir
 - [ ] Contrôle « niveau Framer » (`style-maison.md`, section 8) passé sur les captures avant de montrer le site
+- [ ] **Un projet Framer par client**, jamais un site client dans un projet partagé : le transfert porte sur le projet entier (test Garnier, 22/10)
+
+## 10. Livraison et transfert (testé le 22/10 sur Garnier)
+
+- [ ] Titre du site, favicon (180 px) et image de partage au nom du client
+- [ ] Composants, styles et fichiers de code non utilisés supprimés
+- [ ] Pages mentions légales et confidentialité reliées au pied de page et au formulaire, avec les informations fournies par le client
+- [ ] Données structurées `LocalBusiness` (ou le type du métier) posées sur la page, sans note d'avis auto-déclarée
+- [ ] Formulaire envoyé vers l'email du client, **envoi test reçu** (vérifier aussi les spams)
+- [ ] Transfert : menu Framer, **File** puis **Transfer Project**, email du client, **« rester éditeur » coché**. Le client confirme d'un clic. Procédure complète dans `livrables/clients/test-garnier-plomberie/suivi-test.md`
+- [ ] Avant un transfert avec plan payant : prévenir le client que le plan passe à sa charge (à vérifier au premier cas réel)
 
 ## 1. Contrôle visuel (non négociable)
 
@@ -78,6 +89,8 @@
 - [ ] Rien n'est masqué tant que les animations n'ont pas démarré, surtout pas l'accroche
 - [ ] Contrôle PageSpeed Insights sur mobile, viser plus de 80
 - [ ] Contrôle fait sur le domaine final, pas sur un sous-domaine de test (`.framer.app` est bloqué à l'indexation, le SEO y plafonne à 69)
+- [ ] Si l'API PageSpeed est à court de quota : Lighthouse en local, 3 passages mobile et bureau. Sur `.framer.app`, mesurer aussi en bloquant `app.framerstatic.com` (barre d'édition, 4 Mo) pour approcher le score du domaine final (Garnier, 22/10 : mobile 63-83 avec la barre, 70-83 sans)
+- [ ] Contraste des petits textes gris vérifié par Lighthouse : rien sous 4,5:1 (gris à 0,55 ou moins sur blanc : refusé)
 
 > **La performance est un argument de vente de l'agence.** Elle passe avant les grosses animations. Chaque site est mesuré (Lighthouse ou PageSpeed, mobile et bureau, 3 passages) avant d'être présenté, et chaque livraison s'accompagne de la liste des réglages à faire à la main dans Framer (voir plus bas).
 

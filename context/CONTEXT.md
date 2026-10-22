@@ -128,7 +128,12 @@ Lancer le premier test Meta, visé vers le 25 octobre : **J, K et D**, 7 € par
 - **Les pubs vendent le One page en premier** (B et D passées de l'Essentiel 999 € au One page 699 € le 21/10).
 - **Règles des pubs** (décisions du 21/10) : textes courts, à l'essentiel ; jamais « Je m'appelle Edgar » ni rien qui dise qui est derrière l'agence ; aucune mention de TVA ni de l'article 293 B dans les pubs (elle reste sur les devis et factures) ; aucun engagement de 12 mois.
 - **Reste avant d'activer :** un lead de test ; prévenir Accueil Sénior Assistance (D montre leur site) ; la politique de confidentialité (Brevo, Cal.com, WhatsApp). Brevo est en cours de branchement (DMARC chez IONOS, IONOS débloqué le 22/10) ; tant qu'il ne tourne pas, les textes ne promettent pas de message immédiat.
-- **Test de production en cours** (`livrables/clients/test-garnier-plomberie/`) : maquette HTML validée le 21/10, construction Framer V2 à lancer avec `prompt-construction-v2.md`, puis checklist, PageSpeed et bilan (allers-retours, temps réel face aux 5 jours vendus à 699 €). Ensuite : bibliothèque du hub remplie avec les sections retenues, brief du hub capable de porter questionnaire, planche et textes, colonne One page dans le questionnaire de cadrage.
+- **Test de production terminé le 22/10** (`livrables/clients/test-garnier-plomberie/`, bilan et procédure de transfert dans `suivi-test.md`). Le process complet a été passé de bout en bout : maquette, V2 Framer, 4 sections de la bibliothèque, checklist, copie « site client », formulaire et transfert.
+  - Résultats : V2 validée sans retouche visuelle ; environ 6 h de travail de Claude depuis la maquette validée, donc la cible de 7 à 9 h tient avec peu de marge.
+  - Mesures sur `.framer.app` : bureau 88 à 94, mobile 70 à 83 sans la barre d'édition, accessibilité 100.
+  - **Règle posée : un projet Framer par client**, car le transfert porte sur le projet entier.
+  - Reste à vérifier au premier client payant : le sort du plan payant au transfert.
+  - Ensuite : brief du hub capable de porter questionnaire, planche et textes, colonne One page dans le questionnaire de cadrage.
 - **En parallèle :** le script d'appel découverte et la fiche de RDV (`livrables/closing/`), les coordonnées sur la fiche offre, les CGV de prestation (préavis de 2 mois sur la maintenance).
 - **Module devis du hub, à construire avant le premier RDV** (spec `docs/superpowers/specs/2026-10-21-devis-automatiques-design.md`, plan `docs/superpowers/plans/2026-10-21-devis-automatiques.md`) : transcription du RDV, résumé par Groq (gratuit) avec points d'attention, devis prérempli, brouillon Gmail, relances email J+3 et J+7 automatiques et WhatsApp en un geste, devis signé → vente → factures Stripe.
 ---

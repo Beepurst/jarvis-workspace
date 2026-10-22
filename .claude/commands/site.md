@@ -13,6 +13,19 @@ Session de construction pour **$ARGUMENTS**. Ne lis **aucun** fichier de context
 
 Framer avec `@framer/agent`. Lance une fois `npx @framer/agent@latest setup`, attends la fin, puis charge la skill `framer` et suis ce qu'elle demande.
 
+- **Ferme d'abord les anciennes sessions** (`session list`, puis `session destroy` sur chacune) : des sessions restées ouvertes ralentissent tous les appels au-delà du délai de 2 min (test Garnier, 22/10).
+- **Un projet Framer par client**, ouvert avec `session new` sur ce projet seul, jamais un projet partagé entre plusieurs sites : le transfert au client porte sur le projet entier.
+
+### Pièges de l'outil (test Garnier, 21-22/10)
+
+- Passe toujours `{ pagePath }` à `applyChanges` et aux lectures. Pour retrouver un élément, pars de l'arbre de la page (`serialize` sur la page) : `getNodesOfTypes` renvoie aussi les nœuds des autres pages.
+- Identifiants temporaires uniques sur toute la session (un « ph » réutilisé a modifié un bloc existant).
+- Un appel qui dépasse son délai est souvent passé quand même : relis avant de le relancer. Un lot en erreur peut n'être appliqué qu'en partie, donc vérifie chaque lot.
+- Ne marchent pas : `framer.addSVG` (importe le SVG en image avec `uploadImage`), le choix d'une icône par instance (fixe l'icône par variante), les listes (variables tableau) sur une instance, les écarts négatifs. Une variable ou un réglage de composant créé dans la session n'apparaît parfois qu'après une nouvelle session.
+- Composant dans un composant : lie ses réglages avec la forme `{"from":"var(--variable-…)"}`, pas `var(--variable-…)` seul.
+- Un texte masqué (`visible="false"`) dans la variante principale d'un composant cache son réglage : utilise une hauteur nulle avec `overflow="clip"`.
+- Captures et publication par l'agent en échec : publie avec `framer.publish()` et contrôle la page publiée avec Playwright (`livrables/creas-meta` a Playwright).
+
 ### Étape 2 : Règles de construction (checklist section 9)
 
 1. Aucun effet d'apparition au-dessus de la ligne de flottaison, aucun effet de texte mot par mot.
@@ -31,6 +44,10 @@ Détail : `/Users/ed/Desktop/jarvis-kleak/livrables/process/checklist-qualite-si
 - Animations : reproduis exactement la recette de la rubrique « Animations » de la fiche (élément, effet, depuis → vers, déclencheur, délai, durée, cascade, blocs collants, survols), dans la version permise (« à alléger » allégée comme écrit, « à proscrire » non reproduite). Ne construis jamais statique une section dont la fiche décrit une animation.
 - Pour voir l'animation, sans Chrome : `node /Users/ed/Desktop/jarvis-kleak/livrables/bibliotheque/capturer.mjs <url> --titre "<un titre de la section, lu sur la capture>"` donne son numéro `n`, puis `node /Users/ed/Desktop/jarvis-kleak/livrables/bibliotheque/capturer.mjs <url> --section <n> --sortie /tmp/kleak-biblio/site-<section>` écrit `animation.jpg` (6 images légendées) et `resume.json` (`animations` : mesures) ; lis les deux une fois. Chrome seulement s'il est déjà connecté et que la planche ne suffit pas : au plus 2 captures de la section réduites à 1000 px, rien d'autre du site.
 - Ne relis pas un fichier déjà lu dans la session.
+
+### Fin de construction
+
+Quand Edgar valide le site : checklist qualité, section 9 (Lighthouse en local si l'API PageSpeed est à court) puis section 10 (livraison et transfert). Ferme les sessions Framer en fin de séance.
 
 ### Étape 4 : Attendre
 
