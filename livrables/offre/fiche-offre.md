@@ -77,6 +77,22 @@ Votre site est hébergé et surveillé par nous, il reste à jour, et vous savez
 
 Sans engagement de durée : vous arrêtez quand vous voulez, avec un préavis de 2 mois. Nous transférons alors le site sur votre propre compte.
 
+### Suivi avis · 190 € par mois
+
+À la place de la maintenance, pour toutes les formules. Vous récoltez plus d'avis Google, ils reçoivent tous une réponse, et vous n'avez rien à gérer.
+
+- Tout ce que comprend la maintenance Essentiel et Pro
+- **Demande d'avis prête à l'emploi** : un message à envoyer à vos clients après chaque chantier, un QR code à imprimer, et un rappel chaque mois pour ne pas oublier de demander
+- **Réponse à tous vos avis**, positifs comme négatifs, en votre nom
+- **2 à 4 publications par mois sur votre fiche Google**, à partir des photos de chantiers que vous nous envoyez
+- **Un bilan mensuel d'une page** : avis reçus, note moyenne, visites et demandes venues du site, appels depuis votre fiche Google
+
+Sans engagement de durée, avec un préavis de 2 mois, comme la maintenance.
+
+Les avis sont demandés à tous vos clients, sans remise ni cadeau en échange, comme l'exigent les règles de Google. Nous n'écrivons jamais d'avis à la place de qui que ce soit.
+
+**À la livraison de chaque site**, quelle que soit la formule, vous recevez le message de demande d'avis et le QR code, sans frais.
+
 ---
 
 ## Payer en une fois ou en 6 fois
@@ -88,7 +104,7 @@ Sans engagement de durée : vous arrêtez quand vous voulez, avec un préavis de
 | Pro | 1 800 € | 6 × 300 € |
 
 - **En une fois** : 50 % à la signature, 50 % avant la mise en ligne.
-- **En 6 fois** : le premier versement à la signature, puis un prélèvement automatique chaque mois. La maintenance est obligatoire dans ce mode de paiement : elle démarre le mois de la mise en ligne et s'ajoute aux versements. Le site vous appartient au dernier versement.
+- **En 6 fois** : le premier versement à la signature, puis un prélèvement automatique chaque mois. La maintenance est obligatoire dans ce mode de paiement : elle démarre le mois de la mise en ligne et s'ajoute aux versements. Le site vous appartient au dernier versement. Si vous choisissez le Suivi avis, il démarre le mois qui suit le dernier versement : pendant les 6 versements, c'est la maintenance qui s'applique.
 
 ---
 

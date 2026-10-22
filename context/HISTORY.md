@@ -7,7 +7,50 @@
 
 ---
 
+## 2026-10-22
+
+### Blocage IONOS : Framer de Kleak inaccessible, sites clients sur Gmail
+
+- **Cause du blocage IONOS** : compte coupé pour une facture en retard, réglée vers le 19/10, déblocage en cours avec IONOS. Boîte mail, DNS et accès au Framer du site de Kleak (connexion par lien envoyé sur la boîte IONOS) sont bloqués. Le site reste en ligne.
+- **Brevo avec Gmail** : écarté, Brevo n'accepte pas d'expéditeur en adresse gratuite. Pour démarrer, relances et prise de RDV depuis `kleakagency@gmail.com`, Brevo après le réglage du DMARC.
+- **Décision** : les sites clients seront hébergés sur le compte Framer `kleakagency@gmail.com` (celui des tests), et le site de Kleak y sera transféré dès l'accès récupéré.
+- **Reste à faire** : obtenir la date de rétablissement de la messagerie IONOS, écrire au support Framer, vérifier la carte de l'abonnement Framer du site, puis transférer le site.
+
+### Upsell : Suivi avis à 190 € par mois
+
+- **Point de départ** : Edgar voulait un suivi premium « dans le délire d'Orbikal » (fiche Google, maintenance, hébergement, 5 articles SEO automatisés par mois, plateforme de suivi des avis, de Search Console et de GA4).
+- **Décisions d'Edgar** :
+  - le pack tient sur deux promesses : plus d'avis Google, tous répondus, et rien à faire pour le client ;
+  - il est proposé dès la signature, en face de la maintenance à 90 € ;
+  - en paiement en 6 fois, il démarre après le dernier versement.
+- **Contenu** :
+  - la maintenance ;
+  - la demande d'avis (message type, QR code, rappel mensuel) ;
+  - la réponse à tous les avis ;
+  - 2 à 4 publications par mois sur la fiche Google ;
+  - un bilan mensuel d'une page.
+- **Écartés pour l'instant** : les articles SEO automatisés (risque de contenu de masse, aucune preuve sur le blog de Kleak) et la plateforme façon Orbikal (à partir de 5 clients).
+- **Prix : 190 €/mois**, dans le bas de ce que facturent les agences pour maintenance et gestion de fiche réunies (environ 180 à 250 € HT, d'après des pages d'agences, pas une grille de marché). Temps estimé : 1 h à 1 h 30 par client et par mois.
+- **Avant-goût offert** : le message de demande d'avis et le QR code sont remis à chaque livraison.
+- **Règle** : les avis sont demandés à tous les clients, sans contrepartie, et on n'écrit jamais d'avis à la place de qui que ce soit (règles Google, pratique commerciale trompeuse). Cette règle est à écrire dans les CGV.
+- **Mis à jour** : `livrables/offre/fiche-offre.md`, `livrables/offre/note-interne-offre.md`, `context/CONTEXT.md`.
+- **Reste à faire** :
+  - demander l'accès à l'API Google Business Profile ;
+  - construire le bilan mensuel dans n8n ;
+  - ajouter le Suivi avis au catalogue du hub (`offre.ts`) ;
+  - le mettre dans le script de RDV et dans les CGV.
+
+---
+
 ## 2026-10-21
+
+### Parcours de vente analysé, module devis conçu
+
+- **Analyse du parcours de la pub à la livraison** (`livrables/process/parcours-client-analyse.md`) : le haut (pubs, formulaire, CRM) est prêt, tout ce qui suit le lead l'est le moins. Points clés : aucune alerte quand un lead arrive (Brevo bloqué, le hub ne prévient que des RDV), pas de rappel de RDV, pas de devis, CGV ni paiement prêts, questionnaire de démarrage non construit, construction Framer encore fragile, pubs qui vendent le One page alors que l'objectif demande d'orienter vers l'Essentiel.
+- **Réponses d'Edgar** : RDV en visio ; aucun rappel Cal.com réglé ; des sites de l'ancienne agence sont en ligne ; outil de devis à décider ensemble.
+- **Décisions** : devis générés par le hub après le RDV (Tiime écarté, saisie à la main) ; visio **Cal Video** avec transcription automatique, tl;dv Pro en plan B (compte tl;dv gratuit, pas de webhook) ; résumé par une IA **gratuite**, Groq retenu ; brouillon Gmail depuis `kleakagency@gmail.com` (même compte Google que le projet Cloud), envoi à la main ; le client renvoie le devis signé ; **factures créées par le hub dans Stripe**, nouvelle série avec premier numéro élevé ; relances email J+3 et J+7 automatiques, WhatsApp semi-automatique (l'API WhatsApp Business est payante et lourde) ; tout construit avant le premier RDV, par sous-agents.
+- Spec `docs/superpowers/specs/2026-10-21-devis-automatiques-design.md`, plan `docs/superpowers/plans/2026-10-21-devis-automatiques.md` (12 tâches).
+
 
 ### Test de production One page : style maison et maquette avant Framer
 

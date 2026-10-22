@@ -296,6 +296,27 @@ facture doivent donc rester dans Stripe**, sinon le hub ne voit rien sans dével
   est en lecture seule par choix : il faudrait une clé qui écrit. La conformité des factures
   serait à porter par toi.
 
+**D. Devis dans un logiciel (Tiime ou autre), factures et paiements dans Stripe** (proposée par
+Edgar le 21/10)
+
+- **Pour :** devis propres, numérotés, avec acceptation en ligne et suivi, sans rien développer.
+  Le hub continue de tout voir, puisque les factures restent dans Stripe.
+- **Contre :** chaque client et chaque montant est saisi deux fois (logiciel puis Stripe). Il y
+  a deux outils à tenir. Et le logiciel ne doit jamais émettre de facture, sinon tu as deux séries
+  de numéros, ce qui pose un problème au moindre contrôle.
+- **Conditions pour que ça tienne :**
+  1. aucune facture ni facture d'acompte dans le logiciel, la transformation du devis en facture
+     n'est jamais utilisée ;
+  2. le numéro du devis est repris sur la facture Stripe (champ personnalisé « Devis n° ») ;
+  3. même raison sociale, même adresse et même SIRET dans les deux outils ;
+  4. les CGV sont jointes au devis, et l'échéancier y est écrit en toutes lettres si le client
+     paie en 6 fois, maintenance comprise ;
+  5. la facture d'acompte Stripe part le jour de l'acceptation du devis.
+- **À vérifier dans Tiime avant de choisir :** ce que le plan gratuit permet (acceptation en
+  ligne, signature, modèles), si la transformation en facture peut être évitée, et si Tiime fait
+  partie des plateformes agréées pour la facture électronique. Ce dernier point compte pour 2027,
+  pas pour maintenant.
+
 ### Mon avis
 
 **A maintenant, C plus tard si le volume le justifie.** Le cash passe avant l'outil : il faut un
