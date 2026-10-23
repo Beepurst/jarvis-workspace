@@ -9,6 +9,13 @@
 
 ## 2026-10-23
 
+### Module devis et Suivi avis en production dans le hub
+
+- **Branche `devis` fusionnée dans `main`** (commit `190ec63`) et déployée : transcription et résumé du RDV, devis prérempli avec PDF et CGV, brouillon Gmail, relances automatiques, devis signé → vente → factures Stripe. Schéma `supabase/devis.sql` appliqué, variables Vercel en place (vérifié).
+- **Catalogue du hub aligné sur l'offre** : Suivi avis à 190 €/mois (`SUIVI_AVIS_CENTIMES`), qui démarre le mois qui suit le 6e versement en paiement en 6 fois ; `ENGAGEMENT_MOIS = 12` remplacé par le préavis de 2 mois (`PREAVIS_MAINTENANCE_MOIS`), avec arrêt de maintenance daté sur la fiche client.
+- Le cron quotidien des relances enchaîne CRM, formulaires clients, relances de devis puis reprise des transcriptions, chacun isolé.
+- Tests : 1 057 sur 1 058, le seul échec est un PNG de créa manquant, sans rapport. La branche `devis` peut être supprimée.
+
 ### Kit de demande d'avis
 
 - **Kit prêt** dans `livrables/process/demande-avis/` : messages types (SMS ou WhatsApp, email, une relance, phrase orale, formulations interdites par Google), carte QR aux couleurs du client (PDF A4 de 4 cartes A6 et PNG d'une carte, via `exporter.sh`), mode d'emploi. Exemple sur Garnier avec un lien fictif, QR vérifié par décodage.
@@ -23,6 +30,8 @@
   2. page apporteur refaite avec un formulaire ;
   3. blog refait sur la structure du modèle Agnos.
 - **Page site vitrine publiée** (`/creation-site-vitrine`, ancienne adresse en 404 faute de redirections dans le plan Framer). **Page apporteur refaite** avec formulaire de recommandation ; règles ajoutées : versement sous 15 jours après chaque paiement, recommandation valable 6 mois, rien si l'entreprise était déjà en contact, contrat avant le premier versement.
+- **Page supplémentaire à 200 € confirmée**, vendable comme page de campagne sur un site Kleak ; pas de landing page seule au catalogue.
+- **Blog basculé** : nouvelles pages en `/blog` et `/blog/:Articles`, 4 articles validés (paiement en plusieurs fois, prix d'un site, coût par mois, vitrine ou landing page), anciens articles Framer et ancienne collection supprimés, liens Wordpress/Webflow VS FRAMER retirés du pied de page. Publication par Edgar.
 - **Nouveau blog construit en brouillon** (structure Agnos) : collection Framer « Articles » (catégories Prix, Paiement, Choisir son site ; auteur affiché Kleak Agency), pages `/blog-nouveau` et `/articles/:Articles`. Ouverture quand 4 ou 5 vrais articles seront prêts. Procédure dans `livrables/site-kleak/blog-bascule.md`.
 - **Cible du site et du SEO : les PME, on ne parle plus des artisans.** Corrigé dans CONTEXT, CLAUDE.md, la stratégie SEO, la liste des sujets (sujet 4 devenu « prix site vitrine PME ») et l'agent `redacteur-seo`.
 - **Search Console sur 90 jours** : aucun clic sur les 21 anciens articles Framer, 1 clic sur la page création. Les anciens articles restent en ligne jusqu'à ce que le nouveau blog ait 4 ou 5 articles, puis ils sont supprimés.

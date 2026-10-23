@@ -45,7 +45,7 @@ Deuxième niveau de suivi, proposé **dès la signature**, en face de la mainten
 À faire :
 - ~~demander l'accès à l'API Google Business Profile~~ : demande de Kleak refusée le 22/10 (critères non remplis). **On passe par le projet Google Cloud d'Orbikal**, où l'API et l'écran d'autorisation sont validés (vérifié par Edgar le 22/10). Le Suivi avis dépend donc de ce projet : il ne faut ni le supprimer ni le laisser expirer, même si Orbikal reste en pause ;
 - construire le bilan mensuel dans n8n ;
-- ajouter le Suivi avis au catalogue du hub (`src/lib/offre.ts`) avec le départ décalé après le 6e versement ;
+- ~~ajouter le Suivi avis au catalogue du hub (`src/lib/offre.ts`) avec le départ décalé après le 6e versement~~ : en production le 23/10 ;
 - mettre le Suivi avis dans le script de RDV.
 
 ## Capacité
