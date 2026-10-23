@@ -132,4 +132,18 @@ Le délai de livraison démarre à la réception du questionnaire complet et du 
 
 ---
 
+## Programme apporteur d'affaires
+
+Vous recommandez Kleak à une entreprise qui signe : vous touchez **15 % du prix de la création du site**. La maintenance et le Suivi avis n'ouvrent pas droit à commission.
+
+| Formule signée | Commission |
+|---|---|
+| One page | 105 € |
+| Essentiel | 150 € |
+| Pro | 270 € |
+
+La commission est versée à l'encaissement : en une fois quand le client a payé, ou au fil de ses versements s'il paie en 6 fois.
+
+---
+
 **Parlons de votre projet :** [email] · [téléphone]
