@@ -6,6 +6,8 @@
 > Durée annoncée : 15 minutes. Le client peut enregistrer et reprendre plus tard.
 > Visuels des choix en images : `livrables/process/questionnaire-visuels/`.
 
+> **Qui remplit quoi.** La partie client est remplie par le client sur `/formulaire/<lien>` (4 écrans, enregistrement automatique). La partie « appel » (activite, services, client_ideal, differences, action_principale, action_autre, questions_clients, pages, pages_autre, sections_souhaitees) est remplie par Edgar ou Claude à partir de l'appel de découverte.
+
 ---
 
 ## Conventions
