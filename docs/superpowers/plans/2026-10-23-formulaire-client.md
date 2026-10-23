@@ -24,7 +24,7 @@
 - Le client n'écrit que les clés de ses 4 écrans (liste blanche), toujours par `fusionnerReponses`, champ par champ, et la dernière écriture gagne.
 - Jeton :
   - 32 octets aléatoires, en base64url dans l'URL ;
-  - seule l'empreinte SHA-256 est stockée, comparée en temps constant ;
+  - stocké deux fois : l'empreinte SHA-256 (recherche, comparée en temps constant) et le jeton chiffré en AES-256-GCM avec la clé serveur `FORMULAIRE_CLE` (32 octets en base64, dans `.env.local` et Vercel), pour renvoyer le même lien dans les relances ;
   - « Recréer » invalide l'ancien lien, « Désactiver » le coupe ;
   - expiration à la validation de l'étape Maquette.
 - Fichiers :
@@ -150,13 +150,16 @@
 - Produces :
   - `genererJeton(): { jeton: string; empreinte: string }` (base64url, 32 octets ; empreinte SHA-256 en hex) ;
   - `empreinteJeton(jeton: string): string | null` (`null` si le format est invalide) ;
-  - `memeEmpreinte(a: string, b: string): boolean` (temps constant).
+  - `memeEmpreinte(a: string, b: string): boolean` (temps constant) ;
+  - `chiffrerJeton(jeton: string, cle: string): string` et `dechiffrerJeton(chiffre: string, cle: string): string | null` (AES-256-GCM, `null` si altéré).
 
 - [ ] **Step 1 : tests :**
   - deux jetons diffèrent ;
   - `empreinteJeton(jeton) === empreinte` ;
   - `empreinteJeton("../x")` → `null` ;
-  - `memeEmpreinte` faux pour des longueurs différentes.
+  - `memeEmpreinte` faux pour des longueurs différentes ;
+  - `dechiffrerJeton(chiffrerJeton(j, cle), cle) === j` ;
+  - un chiffré altéré ou une autre clé → `null`.
 - [ ] **Step 2 à 4 :** FAIL, implémenter avec `node:crypto`, PASS.
 - [ ] **Step 5 : commit** `Formulaire : jeton du lien client`.
 
@@ -172,6 +175,7 @@
 create table if not exists brief_formulaires (
   brief_id uuid primary key references briefs(id) on delete cascade,
   jeton_empreinte text,
+  jeton_chiffre text,
   actif boolean not null default false,
   cree_le timestamptz,
   envoye_whatsapp_le timestamptz,
@@ -207,7 +211,8 @@ insert into storage.buckets (id, name, public) values ('briefs-client', 'briefs-
   - `confirmerFichier(briefId, id)` ;
   - `retirerFichier(briefId, id)` (supprime l'objet et la ligne) ;
   - `listerFichiers(briefId, { signerLecture: boolean })` (miniatures signées 10 min pour les images affichables, jamais pour svg, ai et eps) ;
-  - `creerLien(briefId): Promise<{ jeton }>` (nouvelle empreinte, `actif = true`) ;
+  - `creerLien(briefId): Promise<{ jeton }>` (nouveau jeton, empreinte et chiffré, `actif = true`) ;
+  - `lienActuel(briefId): Promise<string | null>` (déchiffre le jeton actif, `null` si aucun) ;
   - `desactiverLien(briefId)` ;
   - `noterEnvoi(briefId, canal: "whatsapp" | "email")` ;
   - `marquerEnContact(briefId, v: boolean)` ;
@@ -277,7 +282,7 @@ insert into storage.buckets (id, name, public) values ('briefs-client', 'briefs-
     - refuse un fixe (raison « Numéro fixe : envoie le lien par email ou saisis un mobile. ») ;
     - renvoie l'URL `lienWhatsApp(...)` et appelle `noterEnvoi`.
   - `email` : `envoyerModele` avec le modèle lien et `contact_email`, puis `noterEnvoi`. Refus avec raison si Brevo ou le modèle n'est pas configuré.
-- [ ] **Step 2 :** le jeton n'est connu qu'au moment de `creer`. Pour WhatsApp ou email ensuite, la route recrée le lien si le jeton en clair n'est plus disponible. Décision : `creer` et l'envoi se font en une seule action, « Envoyer par WhatsApp » et « Envoyer par email » créent ou recréent le lien. L'écran prévient : « Un nouveau lien remplace le précédent. »
+- [ ] **Step 2 :** « Envoyer par WhatsApp » et « Envoyer par email » réutilisent le lien actif (`lienActuel`), ou en créent un s'il n'y en a pas. Seul « Recréer » change le lien, avec confirmation (« L'ancien lien ne marchera plus. »).
 - [ ] **Step 3 :** le bloc affiche :
   - l'état du lien (jamais envoyé, envoyé par WhatsApp le …, par email le …) ;
   - les boutons WhatsApp et Email, puis Désactiver ;
@@ -308,7 +313,7 @@ insert into storage.buckets (id, name, public) values ('briefs-client', 'briefs-
 
 - [ ] **Step 1 : tests.** Extraire la construction de l'`EtatRelance` d'un brief en fonction pure `etatRelancePour(ligne, production, nbManquants)`, testée.
 - [ ] **Step 2 :** `relancerFormulaires`. Pour chaque lien actif avec un envoi noté, calculer `ceQuiManque` et `decisionRelance`.
-  - Sur `relance` : un nouveau jeton est nécessaire, puisque le lien de la relance doit marcher. Donc `creerLien` puis `envoyerModele` (modèle relance, `manquantsHtml`). On ajoute `{ le, numero, manquants }` à `relances`.
+  - Sur `relance` : `envoyerModele` (modèle relance, lien `lienActuel`, `manquantsHtml`), puis ajout de `{ le, numero, manquants }` à `relances`. Sans `FORMULAIRE_CLE` ou sans lien déchiffrable : pas de relance, erreur notée.
   - Sur `alerte_fin` : `sendPush({ title: "Questionnaire sans réponse", body: "Appeler <entreprise>", url: "/briefs/<id>", tag: "formulaire-<id>" })` et `fin_alertee_le`.
   - Une erreur sur un brief ne bloque pas les autres.
 - [ ] **Step 3 :** rédiger `modeles-brevo-formulaire.md`, sobre, sans formules typées IA. Le soumettre à Edgar dans le rapport.
@@ -320,6 +325,6 @@ insert into storage.buckets (id, name, public) values ('briefs-client', 'briefs-
 
 - [ ] **Step 1 :** écrire et committer à la racine.
 - [ ] **Step 2 :** pousser la branche `formulaire-client`, puis donner l'aperçu Vercel (vérifié par `githubCommitRef`). **Ne pas fusionner.**
-- [ ] **Step 3 : arrêt contrôleur.** Demander à Edgar :
+- [ ] **Step 3 : arrêt contrôleur.** Générer `FORMULAIRE_CLE` (écrite dans les `.env.local` sans l'afficher, posée dans Vercel avec Edgar), puis demander à Edgar :
   - de créer les 2 modèles dans Brevo à partir de `modeles-brevo-formulaire.md` ;
   - de poser `BREVO_TEMPLATE_FORMULAIRE_LIEN` et `BREVO_TEMPLATE_FORMULAIRE_RELANCE` dans `.env.local` et dans Vercel, avec lui.

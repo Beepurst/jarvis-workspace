@@ -144,7 +144,7 @@ Quand la seconde relance reste sans réponse 3 jours ouvrés, aucune nouvelle re
    - Edgar peut toujours saisir un autre numéro pour l'envoi.
 10. **Brevo.** Un paramètre `manquants` en texte déjà rédigé (liste à puces en HTML simple), plus `prenom` et `lien`. Claude donne à Edgar le texte des deux modèles à créer dans Brevo.
 11. **Jeton.**
-    - 32 octets aléatoires. Seule son empreinte (SHA-256) est stockée, et elle est comparée en temps constant.
+    - 32 octets aléatoires. On stocke son empreinte (SHA-256, pour le retrouver, comparée en temps constant) et le jeton chiffré (AES-256-GCM, clé serveur `FORMULAIRE_CLE`), pour que les relances renvoient le même lien que le message WhatsApp.
     - « Recréer » invalide l'ancien lien immédiatement. « Désactiver » le coupe.
     - Le jeton expire de lui-même à la validation de l'étape Maquette.
 12. **`sites_aimes`** : 1 lien facultatif pour One page et Essentiel ; en Pro, 1 à 3 liens, dont 1 obligatoire, comme dans le questionnaire de cadrage.
