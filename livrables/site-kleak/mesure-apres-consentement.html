@@ -1,0 +1,35 @@
+<!-- Mesure Kleak : Google Analytics et pixel Meta (Kleak Pub), chargés seulement après accord dans le bandeau cookies -->
+<script>
+(function () {
+  var GA = 'G-CHQ4FYE4Q8', PIXEL = '1220146052806265';
+  var gaFait = false, pixelFait = false;
+  function choix() {
+    try { return JSON.parse(localStorage.getItem('framerCookiesConsentMode') || '{}'); } catch (e) { return {}; }
+  }
+  function chargerGA() {
+    if (gaFait) return; gaFait = true;
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = window.gtag || function () { window.dataLayer.push(arguments); };
+    window.gtag('js', new Date());
+    window.gtag('config', GA);
+    var s = document.createElement('script'); s.async = true;
+    s.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA;
+    document.head.appendChild(s);
+  }
+  function chargerPixel() {
+    if (pixelFait) return; pixelFait = true;
+    !function (f, b, e, v, n, t, s) { if (f.fbq) return; n = f.fbq = function () { n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments) }; if (!f._fbq) f._fbq = n; n.push = n; n.loaded = !0; n.version = '2.0'; n.queue = []; t = b.createElement(e); t.async = !0; t.src = v; s = b.getElementsByTagName(e)[0]; s.parentNode.insertBefore(t, s) }(window, document, 'script', 'https://connect.facebook.net/en_US/fbevents.js');
+    window.fbq('init', PIXEL);
+    window.fbq('track', 'PageView');
+  }
+  function verifier() {
+    var c = choix();
+    if (c.analytics === true) chargerGA();
+    if (c.marketing === true) chargerPixel();
+    return gaFait && pixelFait;
+  }
+  if (!verifier()) {
+    var n = 0, t = setInterval(function () { if (verifier() || ++n > 900) clearInterval(t); }, 1000);
+  }
+})();
+</script>

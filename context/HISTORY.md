@@ -7,7 +7,33 @@
 
 ---
 
+## 2026-10-23
+
+### Commission des apporteurs d'affaires, refonte de pages du site
+
+- **Commission apporteur fixée** : 15 % du prix de la création du site uniquement (105 €, 150 € ou 270 € selon la formule), rien sur la maintenance, versée à l'encaissement (au prorata des échéances en 6 fois). Notée dans `context/CONTEXT.md` et `livrables/offre/fiche-offre.md`.
+- **Site kleakagency.fr, chantier décidé**, dans cet ordre :
+  1. `/création-de-site-framer` n'est pas supprimée mais refaite en page « création de site vitrine pour PME » (sans parler des artisans) ;
+  2. page apporteur refaite avec un formulaire ;
+  3. blog refait sur la structure du modèle Agnos.
+- **Search Console sur 90 jours** : aucun clic sur les 21 anciens articles Framer, 1 clic sur la page création. Les anciens articles restent en ligne jusqu'à ce que le nouveau blog ait 4 ou 5 articles, puis ils sont supprimés.
+
+---
+
 ## 2026-10-22
+
+### Site kleakagency.fr prêt pour les pubs
+
+- **CGV validées** par Edgar (suspension à 15 jours, clôture à 60 jours, pénalités légales, citation du site sauf refus, responsabilité plafonnée au montant payé, pas de clause de tribunal, maintenance obligatoire en 6 fois). Relecture juriste conseillée.
+- **Politique de confidentialité** réécrite et publiée : ajouts du 19/10 et des devis, version mobile corrigée (mauvaise adresse et mauvais numéro), droit de réclamation CNIL.
+- **Mesure et cookies** : Tag Manager supprimé (il contenait un doublon GA4, un écouteur Calendly et deux scripts d'alerte de test) ; deux pixels Meta trouvés, seul `1220146052806265` appartient à Kleak Pub ; GA4 et ce pixel ne se chargent plus qu'après accord (testé : rien avant accord ni après refus). Lien du bandeau cookies corrigé (il pointait vers la politique de Framer).
+- **Vitesse** : cause principale, le titre d'accueil caché par une animation d'apparition ; corrigé, plus images retaillées (1,8 Mo → 0,47 Mo) et animations allégées sur téléphone seulement. PageSpeed mobile 35 → 61-97, bureau 56 → 99, accessibilité 80 → 90. La variance restante vient du chargement de la police sur 4G lente.
+- **RDV** : Cal.com intégré sur `/calendly` (le plan Framer n'a pas de redirections, adresse gardée), boutons calendly.com repointés.
+
+- **Audits copywriting et SEO** (agents, rapports dans `livrables/site-kleak/`) : le site parlait aux startups « Framer », pas aux clients des pubs ; 22 articles avec le même titre SEO ; aucune donnée structurée ; Search Console : 1 032 impressions sur des requêtes de designers, 0 clic hors marque.
+- **Textes de l'accueil refaits** avec Edgar : pastille « Création de sites internet » (les sites sont pour tout le monde, pas seulement PME et artisans), titre « Votre site internet à 699 €, en ligne en 5 jours », sous-titre « Un site captivant, pensé pour transformer vos visiteurs en clients », boutons « Réserver un appel gratuit », bloc de prix en trois cartes avec interrupteur une fois / 6 fois sur le modèle de qarin.framer.website (Essentiel mis en avant). Faux avis, anglais, promesses non fondées et compteur retirés, `/pricing` en brouillon. Pas de note Google affichée. LCL confirmé client.
+- **Page de RDV renommée `/rdv`** (hors de cette session) : `/calendly` en 404, étape de réservation du hub à mettre à jour.
+- **SEO de fond** : titres et descriptions Google refaits sur 7 pages (sans « Expert Framer »), modèle d'article du blog relié au titre de chaque article (champ « Description » ajouté au CMS, non utilisable dans le modèle par l'API : description construite sur le titre), `/newsletter` en noindex, FAQ de 6 questions à la place du comparatif sur l'accueil, fautes corrigées et chiffres sans source masqués sur `/création-de-site-framer` et `/seo`, promesse de retouches illimitées alignée sur l'offre. Données structurées prêtes à coller (`livrables/site-kleak/donnees-structurees.html`). Étape de réservation du hub passée à `/rdv` sur la branche `reservation-rdv` (à fusionner).
 
 ### Test de production Garnier terminé, de la maquette au transfert
 
