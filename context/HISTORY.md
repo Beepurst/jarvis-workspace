@@ -9,6 +9,12 @@
 
 ## 2026-10-23
 
+### Kit de demande d'avis
+
+- **Kit prêt** dans `livrables/process/demande-avis/` : messages types (SMS ou WhatsApp, email, une relance, phrase orale, formulations interdites par Google), carte QR aux couleurs du client (PDF A4 de 4 cartes A6 et PNG d'une carte, via `exporter.sh`), mode d'emploi. Exemple sur Garnier avec un lien fictif, QR vérifié par décodage.
+- Remis à chaque livraison, toutes formules, et base du Suivi avis. Étape ajoutée à la section 10 de la checklist qualité. Temps estimé à environ 20 minutes par client (au lieu de 1 h), noté dans la note interne de l'offre.
+- Rappel mensuel du Suivi avis pas encore fait : il dépend du bilan n8n.
+
 ### Commission des apporteurs d'affaires, refonte de pages du site
 
 - **Commission apporteur fixée** : 15 % du prix de la création du site uniquement (105 €, 150 € ou 270 € selon la formule), rien sur la maintenance, versée à l'encaissement (au prorata des échéances en 6 fois). Notée dans `context/CONTEXT.md` et `livrables/offre/fiche-offre.md`.

@@ -22,6 +22,7 @@
 - [ ] Données structurées `LocalBusiness` (ou le type du métier) posées sur la page, sans note d'avis auto-déclarée
 - [ ] Formulaire envoyé vers l'email du client, **envoi test reçu** (vérifier aussi les spams)
 - [ ] Transfert : menu Framer, **File** puis **Transfer Project**, email du client, **« rester éditeur » coché**. Le client confirme d'un clic. Procédure complète dans `livrables/clients/test-garnier-plomberie/suivi-test.md`
+- [ ] Kit de demande d'avis remis (messages adaptés, PDF des 4 cartes QR, PNG), QR scanné avec un vrai téléphone : `livrables/process/demande-avis/README.md`
 - [ ] Avant un transfert avec plan payant : prévenir le client que le plan passe à sa charge (à vérifier au premier cas réel)
 
 ## 1. Contrôle visuel (non négociable)

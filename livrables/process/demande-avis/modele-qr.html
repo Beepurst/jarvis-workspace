@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Carte avis Google</title>
+<!--
+  Carte de demande d'avis, à imprimer.
+  Ne pas remplir ce fichier : le copier en avis-<client>.html dans livrables/clients/<client>/,
+  puis remplir uniquement l'objet AVIS ci-dessous (voir README.md).
+  Rendu : A4 avec 4 cartes A6 à découper (PDF), ou une carte seule avec ?carte=1 (PNG).
+-->
+<script>
+const AVIS = {
+  entreprise: "Nom de l'entreprise",
+  lien: "https://g.page/r/XXXXXXXXXXXX/review",
+  // Lien affiché en clair sous le code, pour qui ne peut pas scanner. Laisser vide pour le masquer.
+  lienAffiche: "g.page/r/XXXXXXXXXXXX/review",
+  titre: "Laissez-nous un avis sur Google",
+  consigne: "Scannez le code avec l'appareil photo de votre téléphone.",
+  // Facultatif : chemin d'un logo (SVG ou PNG fond transparent), relatif à ce fichier. Vide = nom en texte.
+  logo: "",
+  couleurs: {
+    fond: "#F4F1EA",    // fond de la carte
+    sombre: "#1A1A17",  // texte et code
+    accent: "#C9A46A",  // étoiles et filet
+  },
+  police: "Plus Jakarta Sans", // police de titre du site du client, chargée depuis Google Fonts
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script>
+<style>
+  @page { size: A4; margin: 0; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: #fff; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  body { font-family: Inter, system-ui, sans-serif; }
+
+  .feuille { width: 210mm; height: 297mm; display: grid; grid-template-columns: 105mm 105mm; grid-template-rows: 148.5mm 148.5mm; position: relative; }
+  /* Repères de coupe au centre de la feuille */
+  .feuille::before, .feuille::after { content: ""; position: absolute; background: rgba(0,0,0,.18); }
+  .feuille::before { left: 105mm; top: 0; bottom: 0; width: .2mm; }
+  .feuille::after { top: 148.5mm; left: 0; right: 0; height: .2mm; }
+
+  .carte {
+    width: 105mm; height: 148.5mm; padding: 11mm 10mm 9mm;
+    background: var(--fond); color: var(--sombre);
+    display: flex; flex-direction: column; align-items: center; text-align: center;
+  }
+  .entreprise { font: 700 13pt/1.15 var(--police), sans-serif; letter-spacing: -.01em; max-width: 80mm; }
+  .logo { max-height: 14mm; max-width: 60mm; object-fit: contain; }
+  .filet { width: 14mm; height: .6mm; background: var(--accent); border-radius: 1mm; margin: 5mm 0 6mm; }
+  .titre { font: 700 17pt/1.12 var(--police), sans-serif; letter-spacing: -.03em; max-width: 78mm; text-wrap: balance; }
+  .etoiles { display: flex; gap: 1.6mm; margin: 4.5mm 0 6mm; }
+  .etoiles svg { width: 5mm; height: 5mm; fill: var(--accent); }
+  .code { background: #fff; border-radius: 4mm; padding: 4mm; }
+  .code svg { display: block; width: 52mm; height: 52mm; }
+  .consigne { font: 400 9.5pt/1.4 Inter, sans-serif; opacity: .72; margin-top: 5mm; max-width: 70mm; }
+  .lien { font: 500 7.5pt/1.3 Inter, sans-serif; opacity: .55; margin-top: auto; word-break: break-all; }
+
+  /* Carte seule, pour le PNG */
+  body.seule .feuille { display: block; width: 105mm; height: 148.5mm; }
+  body.seule .feuille::before, body.seule .feuille::after { display: none; }
+</style>
+</head>
+<body>
+<div class="feuille" id="feuille"></div>
+<script>
+  const r = document.documentElement.style;
+  r.setProperty("--fond", AVIS.couleurs.fond);
+  r.setProperty("--sombre", AVIS.couleurs.sombre);
+  r.setProperty("--accent", AVIS.couleurs.accent);
+  r.setProperty("--police", `"${AVIS.police}"`);
+
+  const fonts = document.createElement("link");
+  fonts.rel = "stylesheet";
+  fonts.href = `https://fonts.googleapis.com/css2?family=${encodeURIComponent(AVIS.police)}:wght@700&family=Inter:wght@400;500&display=block`;
+  document.head.appendChild(fonts);
+
+  // Code en correction d'erreur M : lisible même un peu abîmé, sans trop de modules
+  const qr = qrcode(0, "M");
+  qr.addData(AVIS.lien);
+  qr.make();
+  const n = qr.getModuleCount(), marge = 2;
+  let d = "";
+  for (let y = 0; y < n; y++) for (let x = 0; x < n; x++) if (qr.isDark(y, x)) d += `M${x + marge} ${y + marge}h1v1h-1z`;
+  const t = n + marge * 2;
+  const codeSvg = `<svg viewBox="0 0 ${t} ${t}" shape-rendering="crispEdges"><path d="${d}" fill="${AVIS.couleurs.sombre}"/></svg>`;
+
+  const etoile = `<svg viewBox="0 0 24 24"><path d="M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.5L12 17.3l-5.9 3.2 1.3-6.5L2.5 9.4l6.6-.8z"/></svg>`;
+  const echapper = (s) => s.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  const tete = AVIS.logo
+    ? `<img class="logo" src="${echapper(AVIS.logo)}" alt="${echapper(AVIS.entreprise)}">`
+    : `<div class="entreprise">${echapper(AVIS.entreprise)}</div>`;
+
+  const carte = `
+    <div class="carte">
+      ${tete}
+      <div class="filet"></div>
+      <div class="titre">${echapper(AVIS.titre)}</div>
+      <div class="etoiles">${etoile.repeat(5)}</div>
+      <div class="code">${codeSvg}</div>
+      <div class="consigne">${echapper(AVIS.consigne)}</div>
+      ${AVIS.lienAffiche ? `<div class="lien">${echapper(AVIS.lienAffiche)}</div>` : ""}
+    </div>`;
+
+  const seule = new URLSearchParams(location.search).has("carte");
+  document.body.classList.toggle("seule", seule);
+  document.getElementById("feuille").innerHTML = seule ? carte : carte.repeat(4);
+  document.title = `Carte avis ${AVIS.entreprise}`;
+</script>
+</body>
+</html>
