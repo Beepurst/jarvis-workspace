@@ -7,7 +7,7 @@ description: >
   qui le relit dans la conversation. Fait aussi le bilan mensuel Search Console (requêtes,
   pages, titres à revoir, nouveaux sujets) et tient la liste des sujets. Ne publie jamais
   lui-même : la publication dans le CMS Framer se fait par la session principale, après
-  validation d'Edgar. Deux modes : ÉCRIRE et BILAN. Cible : patrons de PME et artisans, au
+  validation d'Edgar. Deux modes : ÉCRIRE et BILAN. Cible : patrons de PME (pas les artisans), au
   niveau national (le local est mis de côté). À utiliser dès qu'Edgar parle d'article, de blog,
   de SEO, de mots clés, de Search Console ou de positionnement de kleakagency.fr. Formulations
   typiques : « écris le prochain article », « un article sur le prix d'un site », « fais le

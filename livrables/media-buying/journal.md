@@ -17,6 +17,34 @@ Format fixe d'une entrée :
 - **Leçon** : ce qu'on retient, avec son niveau de preuve (concluant, tendance, pas concluant)
 ```
 
+## 23/10/2026, test J K D, test lancé
+
+- **Campagne** (vérifiée dans Meta le 23/10 à 12 h) : `Kleak | multi | 2026-10-22`, ensemble
+  `Kleak | multi | 2026-10-22 | Prospection` (id 120251881595790751), statut ACTIVE, activé par
+  Edgar le 23/10 vers 12 h. 3 pubs : `d-avant-apres-appeler`, `j-avis-clients`,
+  `k-devis-prix-fixe`, avec les nouveaux textes (email immédiat, entrée du 22/10). Formulaire
+  « Kleak | Appel découverte | 2026-10 », bouton « Obtenir un devis ». France, 25 à 65 ans et
+  plus, ciblage large. 7 € par jour, date de fin de l'ensemble le 30/10 à 23 h 59, soit environ
+  7,5 jours et de l'ordre de 50 € au plus (estimation).
+- **Contexte du lancement** : Brevo branché et testé de bout en bout le 22/10 (lead Meta de test
+  arrivé dans le hub en 16 s, invitation délivrée). Un contrôle avant l'activation, noté plus tôt
+  ici, donnait aussi : lead dans le hub en 17 s, notification push « Nouveau lead » en moins d'une
+  minute, lien Cal.com rattaché à la fiche, notification « Nouveau RDV », planning Cal.com corrigé
+  (il proposait des créneaux dès 3 h du matin). Une première création depuis le hub a échoué :
+  Meta refuse le bouton « Nous contacter » avec un formulaire instantané (bouton retiré du hub).
+  L'ancienne campagne J K D créée en pause le 21/10 (anciens textes) a été supprimée par Edgar.
+- **Autre campagne sur le compte** : `Kleak | TEST BTP | 2026-10-22` (L, M, N), 5 € par jour,
+  23 à 55 ans, **en pause, jamais lancée**, avec les anciens textes (« choisissez votre créneau
+  d'appel »). Ne pas l'activer pendant le test J K D (les deux se partageraient le compte et
+  brouilleraient la lecture).
+- **Hypothèse** : inchangée (entrée du 21/10) : remesurer le CPL du compte face à `cplCible`
+  (5 €). Angle (preuve, prix, avant / après) en tendance seulement.
+- **Chiffres** : aucun encore.
+- **Décision** : rien à modifier avant le 26/10 (J+3, `regles.md` section 3), sauf refus ou
+  15 € sans lead sur une pub. Point d'étape le 26/10, bilan après la fin le 30/10 (lecture du
+  23/10 au 30/10), taux de RDV relu à J+14 (06/11). Campagne BTP décidée au bilan.
+- **Leçon** : à écrire au bilan.
+
 ## 22/10/2026, textes principaux de J, K, D : email immédiat (Brevo), test prévu, pas lancé
 
 - **Campagne** : `Kleak | Test J K D`, créée en pause le 21/10, pas activée (lecture du 22/10,
@@ -58,6 +86,11 @@ Format fixe d'une entrée :
 > chaleur, Construction (industrie). Premier essai refusé par Meta : Terrassement et Isolation
 > thermique sont des centres retirés (correctif du hub sur la branche `interets-valides`). Pas
 > activée : à activer après le bilan J K D, date de fin de l'ensemble à J+14.
+> **23/10, état vérifié dans Meta** : `Kleak | TEST BTP | 2026-10-22`, en pause, jamais lancée,
+> 5 € par jour, 23 à 55 ans, anciens textes. J K D lancé le 23/10 (fin le 30/10) : lancement
+> BTP au plus tôt après le bilan J K D. Écarts avec ce plan à trancher avec Edgar avant
+> l'activation : budget (5 € au lieu de 6,60 €), âge (23 à 55 au lieu de 25 à 65 et plus),
+> textes à aligner sur l'email immédiat.
 
 - **Campagne** : `Kleak | BTP One page | AAAA-MM-JJ`, créée en pause depuis le hub. Objectif
   Prospects, formulaire instantané (le même que J K D, ou une copie avec une question métier,

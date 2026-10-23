@@ -142,7 +142,7 @@ Vous recommandez Kleak à une entreprise qui signe : vous touchez **15 % du prix
 | Essentiel | 150 € |
 | Pro | 270 € |
 
-La commission est versée à l'encaissement : en une fois quand le client a payé, ou au fil de ses versements s'il paie en 6 fois.
+La commission est versée sous 15 jours après chaque paiement du client : en une fois s'il paie en une fois, au fil de ses versements s'il paie en 6 fois. La recommandation reste valable 6 mois. Pas de commission si l'entreprise était déjà en contact avec Kleak. Un contrat d'apporteur d'affaires est signé avant le premier versement.
 
 ---
 

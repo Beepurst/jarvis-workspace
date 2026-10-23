@@ -12,7 +12,7 @@ Statuts : `à écrire` → `à relire` → `validé` → `publié`.
 | 1 | site internet paiement en plusieurs fois | Comment ça marche, ce qu'il faut vérifier (propriété du site, engagement), exemple chiffré | Paiement | à relire | `articles/2026-10-21-site-internet-paiement-plusieurs-fois.md` |
 | 2 | combien coûte un site internet pour une entreprise | Fourchettes par type de site, ce qui fait varier le prix, les coûts annuels oubliés | Prix | à écrire | |
 | 3 | combien coûte un site internet par mois | Hébergement, domaine, maintenance : le vrai coût mensuel | Prix | à écrire | |
-| 4 | prix site internet artisan | Ce dont un artisan a besoin, ce qu'il peut éviter de payer | Prix / métier | à écrire | |
+| 4 | prix site vitrine PME | Ce dont une PME a besoin, ce qu'elle peut éviter de payer | Prix | à écrire | |
 | 5 | site vitrine ou landing page | Différence, quand choisir l'un ou l'autre | Choix | à écrire | |
 | 6 | maintenance site internet prix | Ce que couvre une maintenance, ce qu'elle doit coûter, quand elle ne sert à rien | Prix | à écrire | |
 | 7 | refonte site internet prix | Signes qu'il faut refaire son site, coût, déroulé | Prix | à écrire | |

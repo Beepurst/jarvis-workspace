@@ -14,7 +14,7 @@
 
 ## Cible
 
-**Patrons de PME, artisans et indépendants, partout en France**, qui préparent l'achat d'un site
+**Patrons de PME, partout en France** (on ne parle pas des artisans, décision d'Edgar du 23/10), qui préparent l'achat d'un site
 vitrine : ils cherchent un prix, comparent des options, se demandent si ça vaut le coup. Ce ne
 sont ni des développeurs ni des utilisateurs de Framer.
 
@@ -28,7 +28,7 @@ sont ni des développeurs ni des utilisateurs de Framer.
 
 ## Les 4 familles de sujets
 
-1. **Le prix** : ce que coûte un site, par mois, pour un artisan, une refonte, la maintenance.
+1. **Le prix** : ce que coûte un site, par mois, pour une PME, une refonte, la maintenance.
    L'atout de Kleak : des prix publics et fixes là où les concurrents répondent « ça dépend ».
 2. **Le paiement en plusieurs fois** : très peu traité, et c'est la formule en 6 fois de Kleak.
 3. **Les choix avant l'achat** : site vitrine ou landing page, vitrine ou e-commerce, one page

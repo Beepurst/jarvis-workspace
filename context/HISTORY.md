@@ -16,11 +16,30 @@
   1. `/création-de-site-framer` n'est pas supprimée mais refaite en page « création de site vitrine pour PME » (sans parler des artisans) ;
   2. page apporteur refaite avec un formulaire ;
   3. blog refait sur la structure du modèle Agnos.
+- **Page site vitrine publiée** (`/creation-site-vitrine`, ancienne adresse en 404 faute de redirections dans le plan Framer). **Page apporteur refaite** avec formulaire de recommandation ; règles ajoutées : versement sous 15 jours après chaque paiement, recommandation valable 6 mois, rien si l'entreprise était déjà en contact, contrat avant le premier versement.
+- **Nouveau blog construit en brouillon** (structure Agnos) : collection Framer « Articles » (catégories Prix, Paiement, Choisir son site ; auteur affiché Kleak Agency), pages `/blog-nouveau` et `/articles/:Articles`. Ouverture quand 4 ou 5 vrais articles seront prêts. Procédure dans `livrables/site-kleak/blog-bascule.md`.
+- **Cible du site et du SEO : les PME, on ne parle plus des artisans.** Corrigé dans CONTEXT, CLAUDE.md, la stratégie SEO, la liste des sujets (sujet 4 devenu « prix site vitrine PME ») et l'agent `redacteur-seo`.
 - **Search Console sur 90 jours** : aucun clic sur les 21 anciens articles Framer, 1 clic sur la page création. Les anciens articles restent en ligne jusqu'à ce que le nouveau blog ait 4 ou 5 articles, puis ils sont supprimés.
 
----
+### Premier test Meta lancé, parcours du lead testé
+
+- **Campagne « Kleak | multi | 2026-10-22 » activée** par Edgar le 23/10 vers 12 h (ensemble `120251881595790751`) : J, K et D, 7 € par jour, France, 25 à 65 ans et plus, ciblage large, bouton « Obtenir un devis », fin de l'ensemble le 30/10 à 23 h 59. Textes alignés sur l'email immédiat par `media-buyer` (anciens textes supprimés du hub), Accueil Sénior Assistance prévenu, politique de confidentialité publiée. L'ancienne campagne J K D du 21/10, créée avec les anciens textes, a été supprimée.
+- **Bouton « Nous contacter » retiré du hub** : une première création a échoué, Meta refuse le bouton `CONTACT_US` avec un formulaire instantané. Rien n'est resté dans Meta (le hub a tout annulé), correctif fusionné et en production.
+- **Campagne « Kleak | TEST BTP | 2026-10-22 »** (L, M, N) créée en pause, non lancée : anciens textes, 5 € par jour, 23 à 55 ans, écarts relevés par `media-buyer` dans son journal.
+- **Alerte « Nouveau lead »** ajoutée au hub (nom, entreprise, budget, site existant, téléphone ; une fois par lead, jamais pour un ancien lead), fusionnée et en production.
+- **Notifications push réparées** : les clés VAPID n'avaient jamais été posées, aucune notification du hub ne partait (RDV et alertes Ads compris). Clés générées et posées sur Vercel, Mac et iPhone abonnés.
+- **Lead de test** (outil de test de Meta) : hub 17 s après l'envoi, notification en moins d'une minute, email Brevo délivré, lien Cal.com rattaché à la fiche, notification « Nouveau RDV » reçue. Fiche de test supprimée.
+- **Cal.com** : le planning proposait des créneaux dès 3 h du matin (heure de Paris). Corrigé par Edgar : 9 h à 12 h et 15 h à 18 h, du lundi au samedi.
+- **Demande d'Edgar** : envoyer au lead un message WhatsApp en plus de l'email pour choisir son créneau (« WhatsApp marche bien »). À concevoir.
 
 ## 2026-10-22
+
+### Brevo branché et testé
+
+- **Domaine `kleakagency.fr` authentifié** dans Brevo, DMARC compris (il manquait la balise `rua`).
+- **Webhook** « Hub Agence - événements emails » actif sur 11 événements des emails transactionnels (délivré, ouvert, première ouverture, cliqué, rejets, plainte, désinscrit). « Chargé par proxy » et « Ouverture unique » laissés de côté, car ils faussent les statistiques.
+- **7 variables Brevo** posées dans Vercel, expéditeur « Edgar de Kleak », fusionné et déployé.
+- **Test avec l'adresse d'Edgar** : invitation reçue, délivré et clic remontés sur la fiche en moins d'une minute. L'ouverture n'est pas remontée, probablement parce que Gmail charge les images par son serveur et que Brevo classe alors l'ouverture « par proxy » : sur des leads Gmail, le hub verra surtout les clics. Comptes de test supprimés.
 
 ### Site kleakagency.fr prêt pour les pubs
 
