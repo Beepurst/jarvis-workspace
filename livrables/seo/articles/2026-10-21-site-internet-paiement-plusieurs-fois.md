@@ -3,9 +3,13 @@ requete: site internet paiement en plusieurs fois
 titre_seo: Site internet en plusieurs fois : comment payer sans piège
 description: Payer la création de son site en plusieurs fois : les formules, ce qu'il faut lire dans le contrat avant de signer, et un exemple chiffré mois par mois.
 adresse: /blog/site-internet-paiement-plusieurs-fois
-statut: à relire
+slug: site-internet-paiement-plusieurs-fois
+categorie: Paiement
+date: 2026-10-21
+temps_de_lecture: 7
+statut: validé
 liens_internes:
-  - https://kleakagency.fr/
+  - https://kleakagency.fr/creation-site-vitrine#formules
   - https://cal.com/kleak-agency/appel-decouverte?canal=site
 sources:
   - https://www.lemondedudroit.fr/affaires/272-contrats/60586-droit-de-retraction-un-professionnel-peut-sen-prevaloir-si-lobjet-du-contrat-ne-concerne-pas-son-activite-principale.html
@@ -53,11 +57,11 @@ Voici comment se passe un paiement en 6 fois chez Kleak Agency, avec la formule 
 - **Environ 7 jours ouvrés après réception de vos contenus** : le site est livré et mis en ligne. La maintenance démarre le mois de la mise en ligne, à 90 € par mois, et s'ajoute aux versements. Elle comprend l'hébergement, les mises à jour techniques, 30 minutes de petites modifications par mois et un rapport mensuel.
 - **Du mois de la mise en ligne jusqu'au 6e versement** : 166,50 € pour le site, plus 90 € de maintenance, soit 256,50 € par mois.
 - **Au 6e versement** : le site vous appartient. Vous avez payé 999 € pour le site, exactement le même prix qu'en une fois.
-- **Ensuite** : il ne reste que la maintenance, 90 € par mois, jusqu'à la fin de l'engagement de 12 mois.
+- **Ensuite** : il ne reste que la maintenance, 90 € par mois. Elle est sans engagement de durée : vous pouvez l'arrêter quand vous voulez, avec un préavis de 2 mois.
 
-Sur la première année, le total est de 999 € pour le site et 1 080 € de maintenance, soit 2 079 €. C'est la même somme que si vous payiez le site en une fois en prenant la même maintenance.
+Si vous gardez la maintenance toute la première année, le total est de 999 € pour le site et 1 080 € de maintenance, soit 2 079 €. C'est la même somme que si vous payiez le site en une fois en prenant la même maintenance.
 
-À la fin des 12 mois, vous renouvelez la maintenance, ou nous transférons le site sur votre propre compte.
+Si vous arrêtez la maintenance après le dernier versement, nous transférons le site sur votre propre compte à la fin du préavis. Vous réglez alors directement l'abonnement d'hébergement, et le nom de domaine reste à votre nom.
 
 Pour les autres formules, le principe est le même :
 
@@ -105,4 +109,4 @@ Cela dépend du contrat, d'où l'intérêt de le lire avant de signer. Chez Klea
 
 ## Parlons de votre projet
 
-Vous voulez savoir quelle formule correspond à votre activité, et combien vous paierez chaque mois ? [Réservez un appel de 30 minutes](https://cal.com/kleak-agency/appel-decouverte?canal=site). Vous repartez avec un prix fixe et l'échéancier détaillé. Les formules et leur contenu sont sur [kleakagency.fr](https://kleakagency.fr/).
+Vous voulez savoir quelle formule correspond à votre activité, et combien vous paierez chaque mois ? [Réservez un appel de 30 minutes](https://cal.com/kleak-agency/appel-decouverte?canal=site). Vous repartez avec un prix fixe et l'échéancier détaillé. Les formules et leur contenu sont sur la page [création de site vitrine](https://kleakagency.fr/creation-site-vitrine#formules).

@@ -36,7 +36,11 @@
 - **Notifications push réparées** : les clés VAPID n'avaient jamais été posées, aucune notification du hub ne partait (RDV et alertes Ads compris). Clés générées et posées sur Vercel, Mac et iPhone abonnés.
 - **Lead de test** (outil de test de Meta) : hub 17 s après l'envoi, notification en moins d'une minute, email Brevo délivré, lien Cal.com rattaché à la fiche, notification « Nouveau RDV » reçue. Fiche de test supprimée.
 - **Cal.com** : le planning proposait des créneaux dès 3 h du matin (heure de Paris). Corrigé par Edgar : 9 h à 12 h et 15 h à 18 h, du lundi au samedi.
-- **Demande d'Edgar** : envoyer au lead un message WhatsApp en plus de l'email pour choisir son créneau (« WhatsApp marche bien »). À concevoir.
+- **Rappel WhatsApp au lead** (demande d'Edgar, « WhatsApp marche bien ») :
+  - **API écartée pour l'instant** : garder le numéro WhatsApp Business sur l'iPhone suppose la coexistence de Meta, réservée aux prestataires agréés (YCloud, 360dialog), et Brevo ne la propose pas ;
+  - **choix d'Edgar : semi-automatique**. 15 min après un lead sans RDV, notification « Envoyer le WhatsApp », page du hub avec le message, bouton qui ouvre WhatsApp Business avec le texte écrit ;
+  - message : « Bonjour <prénom>, c'est Edgar de Kleak… », lien Cal.com marqué WhatsApp, possibilité de répondre avec ses disponibilités ;
+  - en production, testé de bout en bout avec un vrai numéro, fiche de test supprimée.
 
 ## 2026-10-22
 
