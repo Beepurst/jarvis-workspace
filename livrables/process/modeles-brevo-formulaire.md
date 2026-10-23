@@ -8,7 +8,7 @@ Paramètres disponibles dans les deux modèles :
 - `{{ params.lien }}` : lien personnel du questionnaire
 - `{{ params.manquants }}` : liste de ce qui manque, **déjà en HTML** (`<ul><li>…</li></ul>`)
 
-À vérifier dans Brevo : comme `params.manquants` contient du HTML, il faut qu'il soit inséré tel quel. Si l'envoi de test affiche les balises `<ul>` et `<li>` en clair, utiliser `{{ params.manquants | safe }}` à la place de `{{ params.manquants }}`. Les libellés sont déjà échappés côté Hub.
+**Toujours écrire `{{ params.manquants | safe }}`** : sans `| safe`, Brevo recode le HTML et le client voit les balises `<ul>` `<li>` en clair (constaté au test du 23/10, corrigé dans les modèles 5 et 6). Les libellés sont déjà échappés côté Hub.
 
 Prénom vide : l'objet et la formule d'appel ne doivent pas casser. Le corps ci-dessous commence par « Bonjour {{ params.prenom }}, » : si le prénom est vide, cela donne « Bonjour , ». Option propre dans Brevo : `Bonjour{% if params.prenom %} {{ params.prenom }}{% endif %},` (à tester, c'est la syntaxe Jinja de Brevo).
 
