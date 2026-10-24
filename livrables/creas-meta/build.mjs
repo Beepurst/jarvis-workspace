@@ -255,7 +255,7 @@ const pastillePrix = (fmt, x, top) => {
 // false, et ne s'en sert QUE pour poser ou non pastillePrix().
 const testPrix = (id, slug, html) => ({
   [`${id}-p`]: { key: `${id}-${slug}-p`, fonts: FONTS_FIN, html: (fmt) => html(fmt, true) },
-  [`${id}-s`]: { key: `${id}-${slug}-s`, fonts: FONTS_FIN, html: (fmt) => html(fmt, false) },
+  [`${id}-s`]: { key: `${id}-${slug}-s`, fonts: FONTS_FIN, html: (fmt) => html(fmt, false), base: html },
 });
 // Carte en verre mise en avant (bord ambre vers bleu), reprise de J et M.
 const VERRE_AVANT = `border:1.5px solid transparent;
@@ -1147,6 +1147,8 @@ const CREAS = {
   // mais chaque créa a ses positions story (rien sous y = 1520).
   // ---------------------------------------------------------------------------
 
+  // RETENUE (Edgar, 24/10) : la version S seule (o-site-captivant-s). La version P est
+  // abandonnée (plus aucun prix dans cette campagne), son PNG reste mais ne sert plus.
   // O. La promesse de Kleak : un site captivant qui amène des contacts. Un seul objet :
   // la notification d'un nouveau message reçu depuis le site, en carte de verre mise en
   // avant, une seconde carte vide en retrait pour la profondeur.
@@ -1158,7 +1160,7 @@ const CREAS = {
   // message est fait de lignes grises, rien n'est prêté à un vrai client), tout nombre
   // de demandes, les intitulés de champs (« Nom », « Message ») qui feraient croire que
   // la pub mène à un formulaire, le délai.
-  ...testPrix('o', 'site-captivant', (fmt, prix) => {
+  ...testPrix('o', 'site-captivant', (fmt, prix, txt = {}) => {
     const story = fmt.key === 'story';
     const L = story
       ? { marque: 220, titre: 330, titrePx: 70, fond: 680, carte: 730, legende: 1220, prix: 1340, x: 90, s: 1.18 }
@@ -1174,7 +1176,7 @@ const CREAS = {
     ${fondFin(fmt, fmt.W * .5, L.carte + 200)}
     <div style="position:absolute;left:${L.x}px;top:${L.marque}px;">${marquePetite(story)}</div>
     <div style="position:absolute;left:${L.x}px;right:${L.x + 30}px;top:${L.titre}px;${TITRE_FIN}
-      font-size:${L.titrePx}px;line-height:1.1;">Un site captivant, pensé pour que vos visiteurs vous ${italique('contactent.')}</div>
+      font-size:${L.titrePx}px;line-height:1.1;">${txt.titre || `Un site captivant, pensé pour que vos visiteurs vous ${italique('contactent.')}`}</div>
 
     <div style="position:absolute;left:${L.x + 60}px;right:${L.x + 60}px;top:${L.fond}px;height:${200 * s}px;border-radius:26px;
       background:linear-gradient(165deg, rgba(255,255,255,.06), rgba(255,255,255,.015) 50%), rgba(16,17,23,.6);
@@ -1198,10 +1200,12 @@ const CREAS = {
 
     <div style="position:absolute;left:${L.x}px;right:${L.x}px;top:${L.legende}px;font-family:Manrope;
       color:rgba(255,255,255,.62);font-size:${story ? 29 : 27}px;line-height:1.4;font-weight:500;">
-      Chaque demande arrive directement dans votre boîte mail.</div>
+      ${txt.legende || 'Chaque demande arrive directement dans votre boîte mail.'}</div>
     ${prix ? pastillePrix(fmt, L.x, L.prix) : ''}`;
   }),
 
+  /* ÉCARTÉE (Edgar, 24/10) : P abandonnée, plus aucun prix dans cette campagne, et l'idée
+     n'est pas retenue. Les PNG p-mentions-legales-p/-s restent dans rendus/post/ mais ne servent plus.
   // P. La conformité, incluse. Un seul objet : la page « Mentions légales » du site,
   // en papier (traitement de K et N), avec ses rubriques et des lignes grises.
   // D'OÙ ÇA VIENT : fiche offre, One page, Essentiel et Pro : « Mentions légales,
@@ -1243,7 +1247,10 @@ const CREAS = {
     </div>
     ${prix ? pastillePrix(fmt, L.x, L.prix) : ''}`;
   }),
+  */
 
+  /* ÉCARTÉE (Edgar, 24/10) : Q abandonnée, plus aucun prix dans cette campagne, et l'idée
+     n'est pas retenue. Les PNG q-planche-direction-p/-s restent dans rendus/post/ mais ne servent plus.
   // Q. On valide avant de construire. Un seul objet : la planche de direction, une
   // feuille à l'horizontale avec ses quatre rubriques (structure, couleurs, polices,
   // photos), sans contenu de client.
@@ -1313,8 +1320,229 @@ const CREAS = {
     </div>
     ${prix ? pastillePrix(fmt, L.x, L.prix) : ''}`;
   }),
+  */
+
+  // R. Avant / après, idée d'Edgar (24/10/2026). Deux photos de vraies personnes côte à
+  // côte : à gauche, une dirigeante agacée devant son téléphone, notification « Aucune
+  // nouvelle demande » ; à droite, une personne contente devant son téléphone,
+  // notification « 12 nouvelles demandes ». Sans prix (décision du 24/10 : la pub mène
+  // à une landing page avec réservation Cal.com, les tarifs sont présentés au RDV).
+  // D'OÙ ÇA VIENT : l'idée et le principe des deux notifications sont d'Edgar. Photos
+  // Pexels (licence Pexels : usage commercial gratuit, sans attribution obligatoire),
+  // copiées dans assets/personnes/ : pexels-5999828 (gauche) et pexels-10375885
+  // (droite). Aucune image générée. « Reçues depuis votre site internet » reprend la
+  // fiche offre (« chaque demande arrive directement dans votre boîte mail »).
+  // Le chiffre 12 est une ILLUSTRATION, dit en bas de l'image : « Illustration. Le
+  // nombre de demandes dépend de chaque activité. » Pas de période, pas de « en moyenne »,
+  // pas de « nos clients ».
+  // ÉCARTÉ VOLONTAIREMENT : « garanti », toute période (« par semaine ») qui ferait du 12
+  // une promesse, tout nom de personne ou d'entreprise, tout contenu de message, toute
+  // mention d'un formulaire, le prix et le délai, les étiquettes « Avant » / « Après »
+  // (les deux notifications suffisent à lire le sens).
+  r: {
+    key: 'r-avant-apres-demandes',
+    fonts: FONTS_FIN,
+    html: (fmt, txt = {}) => {
+      const story = fmt.key === 'story';
+      const L = story
+        ? { marque: 200, titre: 310, titrePx: 68, photos: 600, photoH: 760, gap: 30, legende: 1420, x: 90, s: 1.06 }
+        : { marque: 96, titre: 196, titrePx: 60, photos: 410, photoH: 730, gap: 28, legende: 1180, x: 92, s: 1 };
+      const s = L.s;
+      const photoW = (fmt.W - 2 * L.x - L.gap) / 2;
+      const JPG = (f) => `data:image/jpeg;base64,${b64(f)}`;
+      const photo = (src, pos, filtre, notif, avant) => `
+        <div style="position:relative;width:${photoW}px;height:${L.photoH}px;">
+          <div style="position:absolute;inset:0;border-radius:28px;overflow:hidden;
+            box-shadow:0 30px 70px rgba(0,0,0,.55);${avant ? '' : 'outline:1.5px solid rgba(255,255,255,.12);'}">
+            <div style="position:absolute;inset:0;background:url(${src}) ${pos} / cover no-repeat;filter:${filtre};"></div>
+            <div style="position:absolute;inset:0;background:linear-gradient(180deg, transparent 50%, rgba(8,9,12,.55) 100%);"></div>
+          </div>
+          <div style="position:absolute;left:18px;right:18px;bottom:22px;">${notif}</div>
+        </div>`;
+      const icone = (actif) => `<div style="flex:none;width:${50 * s}px;height:${50 * s}px;border-radius:${13 * s}px;
+        background:${actif ? `linear-gradient(160deg,#2F6BFF,${T.bleu})` : 'rgba(255,255,255,.14)'};
+        display:flex;align-items:center;justify-content:center;">
+        <svg width="${26 * s}" height="${26 * s}" viewBox="0 0 24 24" fill="none" stroke="${actif ? '#fff' : 'rgba(255,255,255,.6)'}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="M3.5 6.5 L12 13 L20.5 6.5"/></svg></div>`;
+      const notif = (actif, titre, sous) => `
+        <div style="display:flex;align-items:center;gap:${16 * s}px;padding:${18 * s}px ${20 * s}px;border-radius:${22 * s}px;
+          ${actif ? VERRE_AVANT : 'background:rgba(22,23,28,.72);border:1px solid rgba(255,255,255,.1);box-shadow:0 20px 40px rgba(0,0,0,.4);'}
+          backdrop-filter:blur(14px);">
+          ${icone(actif)}
+          <div style="min-width:0;">
+            <div style="font-family:'Inter Tight';font-weight:600;letter-spacing:-.01em;font-size:${29 * s}px;line-height:1.15;
+              color:${actif ? '#F3F4F7' : 'rgba(255,255,255,.62)'};">${titre}</div>
+            <div style="font-family:Manrope;font-weight:500;font-size:${21 * s}px;line-height:1.3;margin-top:4px;color:rgba(255,255,255,.5);">${sous}</div>
+          </div>
+        </div>`;
+      return `
+      ${fondFin(fmt, fmt.W * .72, L.photos + L.photoH * .6)}
+      <div style="position:absolute;left:${L.x}px;top:${L.marque}px;">${marquePetite(story)}</div>
+      <div style="position:absolute;left:${L.x}px;right:${L.x + 40}px;top:${L.titre}px;${TITRE_FIN}
+        font-size:${L.titrePx}px;line-height:1.1;">${txt.titre || `Votre site internet devrait vous apporter des ${italique('demandes.')}`}</div>
+
+      <div style="position:absolute;left:${L.x}px;top:${L.photos}px;display:flex;gap:${L.gap}px;">
+        ${photo(JPG('assets/personnes/pexels-5999828.jpg'), '62% 30%', 'grayscale(.55) brightness(.78) contrast(1.05)',
+          notif(false, 'Aucune nouvelle demande', 'Boîte de réception'), true)}
+        ${photo(JPG('assets/personnes/pexels-10375885.jpg'), '50% 30%', 'saturate(1.05) brightness(.98)',
+          notif(true, '12 nouvelles demandes', 'Reçues depuis votre site internet'), false)}
+      </div>
+
+      <div style="position:absolute;left:${L.x}px;right:${L.x}px;top:${L.legende}px;font-family:Manrope;
+        color:rgba(255,255,255,.5);font-size:${story ? 24 : 22}px;line-height:1.4;font-weight:500;">
+        ${txt.legende || 'Illustration. Le nombre de demandes dépend de chaque activité.'}</div>`;
+    },
+  },
+
+  // ABANDONNÉE (Edgar, 24/10) : idée trop rassurante, pas assez forte pour donner envie de
+  // cliquer. Code gardé (non commenté pour pouvoir la rendre), PNG gardé mais inutilisé.
+  // S. Le nom de domaine à votre nom (24/10/2026), sans prix. Une idée : votre site est
+  // en ligne à votre adresse, et cette adresse vous appartient. Un seul objet : une
+  // fenêtre de navigateur en verre, sa barre d'adresse au premier plan (cadenas,
+  // « votre-entreprise.fr »), la page en dessous réduite à des blocs gris.
+  // D'OÙ ÇA VIENT : fiche offre, les trois formules : « Mise en ligne sur votre nom de
+  // domaine » ; « Bon à savoir » : « Le nom de domaine est à votre nom. », recopié en
+  // légende. « votre-entreprise.fr » est un gabarit, comme « VOTRE ENTREPRISE » de D.
+  // ÉCARTÉ VOLONTAIREMENT : « le site vous appartient » (vrai en une fois, mais au dernier
+  // versement en 6 fois : il faudrait une condition), tout vrai nom de domaine ou
+  // d'hébergeur, toute promesse d'être trouvé sur Google, le prix et le délai, toute
+  // comparaison nommée avec un concurrent.
+  s: {
+    key: 's-nom-de-domaine',
+    fonts: FONTS_FIN,
+    html: (fmt) => {
+      const story = fmt.key === 'story';
+      const L = story
+        ? { marque: 220, titre: 330, titrePx: 70, fenetre: 720, fenetreH: 560, legende: 1360, x: 90, s: 1.1 }
+        : { marque: 110, titre: 210, titrePx: 62, fenetre: 520, fenetreH: 520, legende: 1150, x: 92, s: 1 };
+      const s = L.s;
+      const bloc = (h, w = 100, op = .07) => `<div style="height:${h}px;width:${w}%;border-radius:10px;background:rgba(255,255,255,${op});"></div>`;
+      const point = (c) => `<span style="width:${15 * s}px;height:${15 * s}px;border-radius:50%;background:${c};opacity:.75;"></span>`;
+      return `
+      ${fondFin(fmt, fmt.W * .5, L.fenetre + 120)}
+      <div style="position:absolute;left:${L.x}px;top:${L.marque}px;">${marquePetite(story)}</div>
+      <div style="position:absolute;left:${L.x}px;right:${L.x + 40}px;top:${L.titre}px;${TITRE_FIN}
+        font-size:${L.titrePx}px;line-height:1.1;">Votre site internet, en ligne sur votre propre nom de ${italique('domaine.')}</div>
+
+      <div style="position:absolute;left:${L.x + 40}px;right:${L.x + 40}px;top:${L.fenetre}px;height:${L.fenetreH}px;border-radius:26px;
+        background:linear-gradient(165deg, rgba(255,255,255,.06), rgba(255,255,255,.012) 50%), rgba(16,17,23,.66);
+        border:1px solid rgba(255,255,255,.08);box-shadow:0 40px 80px rgba(0,0,0,.5);overflow:hidden;">
+        <div style="display:flex;gap:${10 * s}px;padding:${24 * s}px ${28 * s}px;">${point('#E36A5D')}${point('#E5B34B')}${point('#5DBB6B')}</div>
+        <div style="padding:${130 * s}px ${44 * s}px 0;display:flex;flex-direction:column;gap:${18 * s}px;">
+          ${bloc(26 * s, 58, .1)}${bloc(26 * s, 40, .1)}
+          <div style="height:${14 * s}px;"></div>
+          <div style="display:flex;gap:${18 * s}px;">
+            <div style="flex:1">${bloc(150 * s)}</div><div style="flex:1">${bloc(150 * s)}</div><div style="flex:1">${bloc(150 * s)}</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="position:absolute;left:${L.x}px;right:${L.x}px;top:${L.fenetre + 70 * s}px;border-radius:${24 * s}px;
+        padding:${26 * s}px ${34 * s}px;${VERRE_AVANT} display:flex;align-items:center;gap:${22 * s}px;">
+        <svg width="${34 * s}" height="${34 * s}" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.75)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex:none;">
+          <rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>
+        <div style="font-family:'Inter Tight';font-weight:500;letter-spacing:-.015em;font-size:${44 * s}px;color:#F3F4F7;">
+          votre-entreprise<span style="color:rgba(255,255,255,.55);">.fr</span><span style="display:inline-block;width:3px;height:${44 * s}px;
+          background:#3D6BFF;margin-left:6px;vertical-align:-${8 * s}px;box-shadow:0 0 10px rgba(61,107,255,.8);"></span></div>
+      </div>
+
+      <div style="position:absolute;left:${L.x}px;right:${L.x}px;top:${L.legende}px;font-family:Manrope;
+        color:rgba(255,255,255,.62);font-size:${story ? 29 : 27}px;line-height:1.4;font-weight:500;">
+        Le nom de domaine est à votre nom.</div>`;
+    },
+  },
+
+  // T. Le rendez-vous lui-même (24/10/2026), sans prix. Une idée : ce qu'on obtient en
+  // cliquant, un appel de 30 minutes pour parler de son site, au créneau qu'on choisit.
+  // La destination est une landing page avec calendrier Cal.com : la créa montre ce
+  // calendrier, l'image et la page disent la même chose. Un seul objet : une carte en
+  // verre « Appel de 30 minutes », une semaine et quelques créneaux, un seul mis en avant.
+  // D'OÙ ÇA VIENT : fiche offre, « Comment ça se passe », étape 1 : « Un appel de 30
+  // minutes pour comprendre votre activité et vos objectifs. » Les jours et les heures
+  // sont un exemple d'agenda, sans date.
+  // RETENUE (Edgar, 24/10) avec deux corrections : les créneaux sont ceux du Cal.com
+  // réel (9 h à 12 h et 15 h à 18 h : 9:30, 10:30, 11:00, 15:30, 16:30, 17:30, 10:30 mis
+  // en avant), et « gratuit » entre dans l'accroche, validé par Edgar (tous les boutons de
+  // la landing page disent « Réserver un appel gratuit »). « futur » est retiré.
+  // ÉCARTÉ VOLONTAIREMENT (avant correction) : « gratuit » et « sans engagement » (la fiche ne le dit pas de
+  // l'appel), tout bouton « Réserver » ou « Confirmer » (le bouton est celui de Meta),
+  // toute date réelle, tout nom, le prix, le délai, le devis (une idée par créa).
+  t: {
+    key: 't-appel-30-minutes',
+    fonts: FONTS_FIN,
+    html: (fmt, txt = {}) => {
+      const story = fmt.key === 'story';
+      const L = story
+        ? { marque: 220, titre: 330, titrePx: 70, carte: 720, legende: 1360, x: 90, s: 1.1 }
+        : { marque: 110, titre: 210, titrePx: 62, carte: 510, legende: 1120, x: 92, s: 1 };
+      const s = L.s;
+      const jours = [['Lun', false], ['Mar', false], ['Mer', true], ['Jeu', false], ['Ven', false]];
+      const jour = ([j, actif]) => `<div style="flex:1;text-align:center;padding:${16 * s}px 0;border-radius:${16 * s}px;
+        font-family:Manrope;font-weight:600;font-size:${24 * s}px;
+        ${actif ? 'background:rgba(61,107,255,.16);color:#F3F4F7;box-shadow:inset 0 0 0 1.5px rgba(61,107,255,.7);' : 'color:rgba(255,255,255,.45);'}">${j}</div>`;
+      const creneau = (h, actif) => `<div style="padding:${20 * s}px 0;border-radius:${16 * s}px;text-align:center;
+        font-family:'Inter Tight';font-weight:${actif ? 600 : 500};letter-spacing:-.01em;font-size:${30 * s}px;
+        ${actif ? `background:linear-gradient(160deg,#2F6BFF,${T.bleu});color:#fff;box-shadow:0 12px 30px rgba(15,47,209,.45), inset 0 1px 0 rgba(255,255,255,.3);`
+          : 'color:rgba(255,255,255,.62);border:1px solid rgba(255,255,255,.1);'}">${h}</div>`;
+      return `
+      ${fondFin(fmt, fmt.W * .5, L.carte + 260)}
+      <div style="position:absolute;left:${L.x}px;top:${L.marque}px;">${marquePetite(story)}</div>
+      <div style="position:absolute;left:${L.x}px;right:${L.x + 40}px;top:${L.titre}px;${TITRE_FIN}
+        font-size:${L.titrePx}px;line-height:1.1;">${txt.titre || `Un appel gratuit de 30 minutes pour parler de votre ${italique('site.')}`}</div>
+
+      <div style="position:absolute;left:${L.x + 50}px;right:${L.x + 50}px;top:${L.carte - 40}px;height:${200 * s}px;border-radius:26px;
+        background:linear-gradient(165deg, rgba(255,255,255,.05), rgba(255,255,255,.012) 50%), rgba(16,17,23,.6);
+        border:1px solid rgba(255,255,255,.07);transform:rotate(2deg);"></div>
+
+      <div style="position:absolute;left:${L.x}px;right:${L.x}px;top:${L.carte}px;border-radius:30px;
+        padding:${40 * s}px ${44 * s}px ${44 * s}px;${VERRE_AVANT} transform:rotate(-1.2deg);">
+        <div style="display:flex;align-items:center;gap:${20 * s}px;">
+          ${icone(64 * s)}
+          <div>
+            <div style="font-family:'Inter Tight';font-weight:600;letter-spacing:-.01em;font-size:${36 * s}px;color:#F3F4F7;">Appel de 30 minutes</div>
+            <div style="font-family:Manrope;font-weight:500;font-size:${24 * s}px;color:rgba(255,255,255,.55);margin-top:4px;">Votre activité, vos objectifs, votre site</div>
+          </div>
+        </div>
+        <div style="height:1px;background:rgba(255,255,255,.1);margin:${32 * s}px 0 ${28 * s}px;"></div>
+        <div style="display:flex;gap:${12 * s}px;">${jours.map(jour).join('')}</div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:${14 * s}px;margin-top:${24 * s}px;">
+          ${creneau('9:30')}${creneau('10:30', true)}${creneau('11:00')}
+          ${creneau('15:30')}${creneau('16:30')}${creneau('17:30')}
+        </div>
+      </div>
+
+      <div style="position:absolute;left:${L.x}px;right:${L.x}px;top:${L.legende}px;font-family:Manrope;
+        color:rgba(255,255,255,.62);font-size:${story ? 29 : 27}px;line-height:1.4;font-weight:500;">
+        ${txt.legende || "Vous choisissez le jour et l'heure."}</div>`;
+    },
+  },
 
 };
+
+// --- Variantes d'accroche (24/10/2026) -----------------------------------------
+// Demande d'Edgar : o-S, r et t sont retenues ; pour chacune, même visuel, 2 accroches de
+// plus (-v2, -v3), chacune avec un autre bénéfice ou un autre point d'entrée. La légende
+// ne change que si elle répétait l'accroche. Aucun prix, aucun chiffre de résultat.
+const VARIANTES = {
+  // o v2 : la rapidité de réception (le visuel dit « à l'instant »). Légende gardée.
+  'o-s-v2': ['o-s', 'o-site-captivant-s-v2', { titre: `Quand un visiteur vous écrit depuis votre site, vous le recevez tout de ${italique('suite.')}` }],
+  // o v3 : la facilité de contact pour le visiteur. Légende gardée.
+  'o-s-v3': ['o-s', 'o-site-captivant-s-v3', { titre: `Un site où vos visiteurs trouvent tout de suite comment vous ${italique('joindre.')}` }],
+  // r v2 : le point d'entrée est la douleur (la photo de gauche). Légende gardée.
+  'r-v2': ['r', 'r-avant-apres-demandes-v2', { titre: `Votre site est en ligne, mais personne ne vous ${italique('contacte ?')}` }],
+  // r v3 : la promesse Kleak, mots d'Edgar (« site captivant qui convertit »). Légende gardée.
+  'r-v3': ['r', 'r-avant-apres-demandes-v3', { titre: `Un site captivant, qui convertit vos visiteurs en ${italique('demandes.')}` }],
+  // t v2 : ce qu'on fait pendant l'appel (fiche, étape 1). Légende gardée.
+  't-v2': ['t', 't-appel-30-minutes-v2', { titre: `On prend 30 minutes pour comprendre votre activité et vos ${italique('objectifs.')}` }],
+  // t v3 : le choix du moment. La légende disait déjà « Vous choisissez le jour et
+  // l'heure » : elle devient « Appel gratuit de 30 minutes, pour parler de votre site. »
+  't-v3': ['t', 't-appel-30-minutes-v3', { titre: `Réservez 30 minutes avec nous, au moment qui vous ${italique('arrange.')}`,
+    legende: 'Appel gratuit de 30 minutes, pour parler de votre site.' }],
+};
+for (const [id, [src, key, txt]] of Object.entries(VARIANTES)) {
+  const c = CREAS[src];
+  CREAS[id] = { key, fonts: c.fonts, html: c.base ? (fmt) => c.base(fmt, false, txt) : (fmt) => c.html(fmt, txt) };
+}
 
 function page(fmt, crea) {
   return `<!doctype html><html><head><meta charset="utf-8">${crea.fonts || FONTS}<style>
@@ -1324,14 +1552,18 @@ function page(fmt, crea) {
 }
 
 // --- Rendu -----------------------------------------------------------------
-const arg = process.argv[2];
-if (arg && !CREAS[arg]) {
-  console.error(`Créa inconnue : ${arg}. Attendu : ${Object.keys(CREAS).join(' | ')}`);
+// node build.mjs r s --post -> plusieurs créas, post seul (pas de story).
+const args = process.argv.slice(2);
+const postSeul = args.includes('--post');
+const ids = args.filter((a) => a !== '--post');
+const inconnue = ids.find((a) => !CREAS[a]);
+if (inconnue) {
+  console.error(`Créa inconnue : ${inconnue}. Attendu : ${Object.keys(CREAS).join(' | ')}`);
   process.exit(1);
 }
-const choix = arg ? [CREAS[arg]] : Object.values(CREAS);
+const choix = ids.length ? ids.map((a) => CREAS[a]) : Object.values(CREAS);
 // Tant que la créa n'est pas validée, on ne rend que le post.
-const formats = arg ? FORMATS : FORMATS.filter((f) => f.key === 'post');
+const formats = ids.length && !postSeul ? FORMATS : FORMATS.filter((f) => f.key === 'post');
 
 const browser = await chromium.launch({ channel: 'chromium' });
 let ecrits = 0;

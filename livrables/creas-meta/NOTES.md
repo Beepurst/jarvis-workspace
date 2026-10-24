@@ -3,6 +3,56 @@
 > Tenu par l'agent `createur-creas`. Le plus récent en haut. On écrit ce qui a été écarté et
 > pourquoi, pas seulement ce qui a été retenu, pour ne pas refaire le même arbitrage.
 
+## Série 7 (24/10/2026) : sans prix, après le test de la série 6
+
+Décision d'Edgar le 24/10 : **plus aucun prix dans les créas de cette campagne**. La pub mène à
+une landing page avec réservation Cal.com directe, les tarifs sont présentés au RDV. De la
+série 6, seule `o-site-captivant-s` est retenue (**Retenue**, Edgar, 24/10, fichier gardé tel quel). Deux nouvelles créas, sans prix, aux idées
+distinctes de D, J, K, L, M, N, O, P, Q. DA fine de la série 5, posts seuls (stories codées,
+ni rendues ni contrôlées).
+
+- **Photos de personnes (R)** : banque d'images **Pexels** (licence Pexels : usage commercial
+  gratuit, attribution non obligatoire), copiées dans `assets/personnes/`. Gauche :
+  `pexels-5999828` ; droite : `pexels-10375885`. Écartées après essai : `5915296`, `6173674`.
+  Aucune image générée. Unsplash a bloqué la recherche automatique (contrôle anti-robot).
+- Planche de la série : `node _feed.mjs o-site-captivant-s r t` → `_planche-selection.png`.
+- `node build.mjs r s --post` rend des posts seuls, sans story.
+
+| Id | Fichier | Angle | Statut |
+|---|---|---|---|
+| r | `r-avant-apres-demandes` | Avant / après, idée d'Edgar : « Votre site internet devrait vous apporter des *demandes.* » Deux photos : à gauche une dirigeante agacée devant son téléphone, notification « Aucune nouvelle demande · Boîte de réception » ; à droite une personne contente devant son téléphone, notification « 12 nouvelles demandes · Reçues depuis votre site internet ». Bas : « Illustration. Le nombre de demandes dépend de chaque activité. » | **Retenue** (Edgar, 24/10). Post rendu, story codée, ni rendue ni contrôlée |
+| s | `s-nom-de-domaine` | Propriété de l'adresse : « Votre site internet, en ligne sur votre propre nom de *domaine.* » Fenêtre de navigateur en verre, barre d'adresse « votre-entreprise.fr » en avant, page en blocs gris. Légende de la fiche : « Le nom de domaine est à votre nom. » | Abandonnée (Edgar, 24/10) : détail rassurant, ne donne pas envie de cliquer. PNG et code gardés, inutilisés |
+| t | `t-appel-30-minutes` | Le rendez-vous, à la place de S : « Un appel gratuit de 30 minutes pour parler de votre *site.* » (corrigée, ex « … votre futur *site.* ») Carte en verre « Appel de 30 minutes · Votre activité, vos objectifs, votre site », une semaine (Lun à Ven, sans date) et six créneaux du Cal.com réel (9:30, 10:30, 11:00, 15:30, 16:30, 17:30), 10:30 mis en avant. Légende : « Vous choisissez le jour et l'heure. » Source : fiche offre, étape 1. La créa montre ce que la landing page propose (calendrier Cal.com) | **Retenue** (Edgar, 24/10), corrigée : créneaux réels, « gratuit » validé (les boutons de la LP disent « Réserver un appel gratuit »). Post rendu, story ni rendue ni contrôlée |
+
+Écarté volontairement : tout prix et tout délai, « garanti », toute période ou moyenne attachée
+au 12 (c'est une illustration, dite dans l'image), « nos clients », tout nom de personne ou
+d'entreprise, toute mention de formulaire, les étiquettes « Avant » / « Après » sur R, « le site
+vous appartient » sur S (vrai au dernier versement en 6 fois seulement, il faudrait une
+condition), tout vrai domaine ou hébergeur, toute promesse d'être trouvé sur Google. Sur T :
+« sans engagement », tout bouton « Réserver »
+ou « Confirmer », toute date réelle, le devis (une idée par créa).
+
+### Variantes d'accroche de o-S, r et t (24/10/2026)
+
+Demande d'Edgar : même visuel, 2 accroches de plus par créa retenue (`-v2`, `-v3`), chacune
+avec un autre bénéfice ou un autre point d'entrée. Code : objet `VARIANTES` de `build.mjs`.
+Planche : `node _planche-lignes.mjs <ligne1> <ligne2> <ligne3>` → `_planche-lignes.png`
+(une ligne par visuel). Posts seuls.
+
+| Id | Fichier | Accroche | Point d'entrée | Statut |
+|---|---|---|---|---|
+| o-s | `o-site-captivant-s` | Un site captivant, pensé pour que vos visiteurs vous *contactent.* | La promesse Kleak | Proposée |
+| o-s-v2 | `o-site-captivant-s-v2` | Quand un visiteur vous écrit depuis votre site, vous le recevez tout de *suite.* | La rapidité de réception | Proposée |
+| o-s-v3 | `o-site-captivant-s-v3` | Un site où vos visiteurs trouvent tout de suite comment vous *joindre.* | La facilité de contact | Proposée |
+| r | `r-avant-apres-demandes` | Votre site internet devrait vous apporter des *demandes.* | Ce qu'un site doit faire | Proposée |
+| r-v2 | `r-avant-apres-demandes-v2` | Votre site est en ligne, mais personne ne vous *contacte ?* | La douleur (photo de gauche) | Proposée |
+| r-v3 | `r-avant-apres-demandes-v3` | Un site captivant, qui convertit vos visiteurs en *demandes.* | La promesse Kleak, mots d'Edgar | Proposée |
+| t | `t-appel-30-minutes` | Un appel gratuit de 30 minutes pour parler de votre *site.* | L'appel gratuit | Proposée |
+| t-v2 | `t-appel-30-minutes-v2` | On prend 30 minutes pour comprendre votre activité et vos *objectifs.* | Ce qu'on fait pendant l'appel (fiche, étape 1) | Proposée |
+| t-v3 | `t-appel-30-minutes-v3` | Réservez 30 minutes avec nous, au moment qui vous *arrange.* | Le choix du moment ; légende changée en « Appel gratuit de 30 minutes, pour parler de votre site. » | Proposée |
+
+Légendes inchangées partout sauf t-v3 (l'ancienne répétait l'accroche).
+
 ## Série 6 (24/10/2026) : test « prix affiché ou non »
 
 Test décidé par Edgar le 24/10 : chaque créa existe en deux versions strictement identiques,
@@ -21,9 +71,9 @@ de la série 5, une idée par créa, marque petite en haut sur les trois.
 
 | Id | Fichier | Angle | Statut |
 |---|---|---|---|
-| o | `o-site-captivant-p` / `-s` | Promesse : « Un site captivant, pensé pour que vos visiteurs vous *contactent.* » Carte en verre « Nouveau message · Reçu depuis votre site internet », message en lignes grises. Légende de la fiche : « Chaque demande arrive directement dans votre boîte mail. » | Proposée |
-| p | `p-mentions-legales-p` / `-s` | Conformité : « Votre site internet, livré avec ses mentions légales et la conformité *RGPD.* » Page « Mentions légales » en papier (éditeur, hébergement, données personnelles, cookies, propriété intellectuelle), sans contenu | Proposée |
-| q | `q-planche-direction-p` / `-s` | Validation avant construction : « Vous validez le style de votre site avant qu'on le *construise.* » Planche de direction en papier (structure, couleurs, polices, photos, « Sur une seule page »), d'après l'étape 4 de la fiche | Proposée |
+| o | `o-site-captivant-p` / `-s` | Promesse : « Un site captivant, pensé pour que vos visiteurs vous *contactent.* » Carte en verre « Nouveau message · Reçu depuis votre site internet », message en lignes grises. Légende de la fiche : « Chaque demande arrive directement dans votre boîte mail. » | **S retenue** (Edgar, 24/10) : `o-site-captivant-s`, rien à refaire. P abandonnée, son PNG reste mais ne sert plus |
+| p | `p-mentions-legales-p` / `-s` | Conformité : « Votre site internet, livré avec ses mentions légales et la conformité *RGPD.* » Page « Mentions légales » en papier (éditeur, hébergement, données personnelles, cookies, propriété intellectuelle), sans contenu | Écartée (Edgar, 24/10) : plus aucun prix dans la campagne, idée non retenue. P et S abandonnées, PNG gardés mais inutilisés, code commenté |
+| q | `q-planche-direction-p` / `-s` | Validation avant construction : « Vous validez le style de votre site avant qu'on le *construise.* » Planche de direction en papier (structure, couleurs, polices, photos, « Sur une seule page »), d'après l'étape 4 de la fiche | Écartée (Edgar, 24/10) : plus aucun prix dans la campagne, idée non retenue. P et S abandonnées, PNG gardés mais inutilisés, code commenté |
 
 Écarté volontairement : tout argument mis à la place du prix en S (devis gratuit, délai),
 « 48 heures » pour la planche, tout nom, message, entreprise, domaine ou hébergeur inventé,
