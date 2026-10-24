@@ -6,7 +6,10 @@
 import { readdirSync, readFileSync, existsSync } from 'fs';
 import { chromium } from 'playwright';
 const dir = new URL('./rendus/story/', import.meta.url).pathname;
-const files = existsSync(dir) ? readdirSync(dir).filter((f) => f.endsWith('.png')) : [];
+// node _zones-story.mjs o-site-captivant-s r t -> ces stories seules (préfixes de nom).
+const prefixes = process.argv.slice(2);
+const files = (existsSync(dir) ? readdirSync(dir).filter((f) => f.endsWith('.png')) : [])
+  .filter((f) => !prefixes.length || prefixes.some((x) => f.startsWith(x.includes('-') ? x : `${x}-`)));
 if (!files.length) { console.error('Aucune story à contrôler.'); process.exit(1); }
 const src = (f) => `data:image/png;base64,${readFileSync(dir + f).toString('base64')}`;
 // Affichage à 360 px de large : 1920 px de haut deviennent 640, soit un facteur 1/3.

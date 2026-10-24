@@ -32,6 +32,21 @@ condition), tout vrai domaine ou hébergeur, toute promesse d'être trouvé sur 
 « sans engagement », tout bouton « Réserver »
 ou « Confirmer », toute date réelle, le devis (une idée par créa).
 
+### Finalisation des stories de o-S, r et t (24/10/2026)
+
+Retenues par Edgar pour la campagne sans prix : `o-site-captivant-s`, `r-avant-apres-demandes`
+(v1) et `t-appel-30-minutes` (corrigée). Story 9:16 rendue pour chacune (`node build.mjs o-s`,
+`r`, `t`), même accroche et même visuel que le post, composition déjà codée, rien recomposé.
+
+- Contrôle des zones : `node _zones-story.mjs o-site-captivant-s r t` (le script accepte
+  maintenant des préfixes). Rien sous la ligne des 400 px ni dans la bande des 250 px, pour les
+  trois. Dernier texte : légende de o à 1220 px, mention « Illustration » de r à 1420 px,
+  légende de t à 1360 px, toutes au-dessus de 1520 px.
+- Copiées dans `~/Downloads/` et déposées dans le hub (`POST /api/intake/creatives`), 201 pour
+  les trois, format 9:16, noms de base `o-site-captivant-s`, `r-avant-apres-demandes`,
+  `t-appel-30-minutes`.
+- Les variantes `-v2` / `-v3` n'ont pas de story.
+
 ### Variantes d'accroche de o-S, r et t (24/10/2026)
 
 Demande d'Edgar : même visuel, 2 accroches de plus par créa retenue (`-v2`, `-v3`), chacune

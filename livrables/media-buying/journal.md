@@ -17,7 +17,30 @@ Format fixe d'une entrée :
 - **Leçon** : ce qu'on retient, avec son niveau de preuve (concluant, tendance, pas concluant)
 ```
 
-## 24/10/2026, campagne landing page sans prix (o, r, t), test prévu, pas lancé
+## 24/10/2026, campagne landing page sans prix (o, r), test lancé
+
+- **Campagne** : publiée par Edgar dans le Gestionnaire le 24/10, créée à la main (le hub ne
+  crée pas de campagne Trafic). Objectif Trafic, optimisation « Vues de page de destination ».
+  Pubs `o-site-captivant-s` et `r-avant-apres-demandes` (v1), posts 4:5 et stories 9:16.
+  Destination https://kleakagency.fr/site-internet, paramètres d'URL
+  `ad_id={{ad.id}}&utm_source=facebook&utm_medium=paid&utm_campaign={{campaign.name}}&utm_content={{ad.name}}`.
+  **À confirmer à la première lecture** : nom exact et ids, 7 € par jour, date de fin à J+14
+  (07/11 si la diffusion part le 24/10), ciblage identique à J K D, statut (une lecture du hub
+  juste après la publication ne montre pas encore la campagne, sans doute en attente de
+  validation par Meta). Retargeting t pas lancé, prévu le 31/10 à 2 € par jour.
+- **Hub** : correctif du 24/10 en production. Canal et source `lp` ; `ad_id` et `ad_name` du
+  RDV transmis par la page à Cal.com, donc **RDV attribuables par pub** (la réserve « pas
+  attribuable » de l'entrée « test prévu » ne vaut plus, à vérifier sur le premier RDV) ;
+  campagnes Trafic comptées dans la dépense, les tableaux et Finance, sans alerte « sans lead ».
+- **Hypothèse** : inchangée (entrée « test prévu » ci-dessous), avec sa limite : pas un A/B
+  propre, une tendance au mieux.
+- **Chiffres** : aucun encore.
+- **Décision** : rien à modifier avant le point d'étape du 27/10 (J+3), sauf refus. Bilan
+  après la fin, le 08/11 (lecture du 24/10 au 07/11). Dates à décaler si la diffusion démarre
+  plus tard que le 24/10.
+- **Leçon** : à écrire au bilan.
+
+## 24/10/2026, campagne landing page sans prix (o, r, t), test prévu, lancé le 24/10
 
 - **Campagne** : `Kleak | LP sans prix | AAAA-MM-JJ`, décidée par Edgar le 24/10, **en parallèle
   de J K D** (choix d'Edgar, conséquence connue : deux campagnes se partagent le compte et se
@@ -72,6 +95,8 @@ Format fixe d'une entrée :
   lecture Meta « ok », aucun avertissement, aucune alerte ouverte.
 - **Décision** : rien dans le Gestionnaire tant que le canal `lp` n'est pas lu par le hub en
   production. Ensuite, Edgar crée la campagne à la main (le hub ne sait pas faire Trafic).
+- **Dates** (fixées au lancement du 24/10) : point d'étape le 27/10 (J+3), fin le 07/11 (J+14),
+  bilan le 08/11. Lancée le 24/10 avec stories 9:16 en plus des posts (entrée « test lancé »).
 - **Leçon** : à écrire au bilan.
 
 ## 24/10/2026, test J K D relancé en copie, test lancé

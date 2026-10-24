@@ -9,6 +9,14 @@
 
 ## 2026-10-24
 
+### Campagne landing page sans prix
+
+- **Question d'Edgar** : est-ce le prix affiché qui bloque les prospects ? Décision : une campagne sans aucun prix (pubs et page), tarifs présentés au RDV, **en parallèle de J K D** (choix d'Edgar, lecture séparée). Un A/B propre (mêmes visuels avec et sans prix) a été proposé puis abandonné : Edgar a retiré tous les prix des créas.
+- **Landing page `kleakagency.fr/site-internet`** publiée (`noindex`) : ancienne page brouillon refaite, menu retiré (le lien « Tarifs » faisait fuiter le prix), hero et comparatif à interrupteur tirés de la bibliothèque, réalisations de l'accueil, statistiques sans source et promesses trop fortes retirées, formules sans prix, FAQ, pied de page légal, Calendly remplacé par Cal.com.
+- **Créas** o, r, t (2 variantes d'accroche chacune en réserve), posts et stories, dans le hub. t sert au retargeting à partir du 31/10.
+- **Suivi** : composant `CalendrierLP` qui passe à Cal.com le canal `lp` et l'`ad_id` de la pub ; hub (branche `canal-lp` fusionnée, `supabase/canal-lp.sql` appliqué) : source et canal `lp`, pub d'origine sur le compte, campagnes Trafic comptées dans la dépense, les tableaux et Finance, sans alerte « sans lead ».
+- **Campagne publiée le 24/10** par Edgar, en objectif Trafic, créée à la main. **Campagne BTP abandonnée**, remplacée par celle-ci.
+
 ### Performance de kleakagency.fr
 
 - **Tâche de la to-do** « Améliorer la performance de kleakagency.fr », traitée selon la section 9 de la checklist. Quota PageSpeed épuisé, mesures Lighthouse en local (faussées tant que d'autres sessions tournent sur le Mac).
