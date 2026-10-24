@@ -9,6 +9,21 @@
 
 ## 2026-10-24
 
+### Performance de kleakagency.fr
+
+- **Tâche de la to-do** « Améliorer la performance de kleakagency.fr », traitée selon la section 9 de la checklist. Quota PageSpeed épuisé, mesures Lighthouse en local (faussées tant que d'autres sessions tournent sur le Mac).
+- **Accueil** : fondus retirés sur les cartes, titres et FAQ, et 3 textes qui restaient cachés jusqu'au JavaScript ; textes en Manrope, General Sans, Satoshi et Switzer passés en Inter (dont un style de texte d'ancien modèle sur téléphone) ; contraste du mot « Boost » et du lien du bandeau cookies (rangé dans le composant Footer 2) corrigé. Lighthouse mobile au calme 86-98 ; PageSpeed d'Edgar mobile 55-60 (LCP 6 s, TBT 530 ms), accessibilité 92, SEO et bonnes pratiques 100.
+- **`/tarifs` et `/creation-site-vitrine`** : l'accroche de `/creation-site-vitrine` était cachée par un fondu au chargement, corrigé ; tous les fondus retirés sauf les faisceaux décoratifs ; météores et particules masqués sur téléphone ; `/tarifs` passée de General Sans à Inter.
+- **Bloc de prix** : en « 6 fois », le montant mensuel prend la taille du prix en une fois et « pendant 6 mois, sans frais » passe dessous en petit (bug de taille signalé par Edgar).
+- **Décision d'Edgar** : le globe 3D en WebGL du bloc « Parlons de votre site » est gardé, alors qu'il coûte environ 1 s de calcul sur mobile. Le score mobile de l'accueil devrait rester autour de 55-70 sur PageSpeed.
+- Checklist section 9 complétée (polices réellement téléchargées, bandeau cookies dans un composant, script de la barre d'édition, coût du WebGL).
+
+### To-do et Bibliothèque refaites
+
+- **Bibliothèque** (direction « Galerie » retenue sur captures) : filtres dans une barre de verre, pastilles par type de section avec compteur, cartes aérées, « Copier le prompt » en bouton Kleak. En production le 24/10.
+- **To-do** : une première version en cartes (carte verte de résumé, cartes de verre par thème) a été mise en production puis **jugée trop « créée par l'IA »** par Edgar. Remplacée le jour même par une version **« tech »** (variante 3 parmi 3, dosage de couleur discret) : liste compacte monochrome, panneau de la tâche à droite, couleur par thème en petites touches, raccourcis clavier. À retenir pour le hub : préférer densité, traits fins et monochrome aux dégradés et cartes de verre sur les pages de travail.
+- **Incident** : la copie principale du hub était passée sur la branche `canal-lp` d'une autre session pendant la fusion ; la To-do a été fusionnée dans cette branche par erreur, puis refusionnée proprement sur `main` depuis une copie séparée. Règle ajoutée dans `CLAUDE.md`.
+
 ### Nouvelle DA du Hub Agence en production
 
 - **Tâche de la to-do** « Améliorer l'UI du pipeline : plus clair, plus tech, plus de couleur », élargie en séance à tout le hub. Choix faits par Edgar sur captures, en production le 24/10 (lot 2 de la refonte couleur terminé).

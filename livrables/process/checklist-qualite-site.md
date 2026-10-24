@@ -115,7 +115,7 @@
 - [ ] Langue du site en français (réglages du site, localisation) : `lang="fr"`
 - [ ] Plan payant et domaine personnalisé branché : retire le badge « Made in Framer », lève le blocage d'indexation (SEO de 69 à 100)
 - [ ] Indexation par les moteurs autorisée dans les réglages SEO du site
-- Barre d'édition (bouton « Edit ») : rien à faire. Selon l'aide Framer, sur un domaine personnalisé elle n'apparaît qu'aux propriétaires et collaborateurs ; sur l'adresse de test `.framer.app`, elle s'affiche pour tout le monde. Toujours mesurer sur le domaine final
+- Barre d'édition (bouton « Edit ») : rien à faire. Sur un domaine personnalisé, elle ne s'affiche qu'aux propriétaires et collaborateurs, mais son script de démarrage (`framer.com/edit/init.mjs` et quelques Ko de `app.framerstatic.com`) se charge pour tous les visiteurs (constaté sur kleakagency.fr le 24/10, poids faible). Sur l'adresse de test `.framer.app`, elle s'affiche pour tout le monde. Toujours mesurer sur le domaine final
 - [ ] Favicon et image de partage
 - [ ] Destination des formulaires (email du client, ou outil d'automatisation)
 - [ ] Remesure finale sur le domaine définitif, 3 passages mobile et bureau
@@ -127,7 +127,9 @@
 - [ ] Images importées à la bonne taille : 1920 px de large pour une photo pleine largeur, 1000 à 1200 px pour une carte ou une colonne. Jamais de source en 2400 px ou plus
 - [ ] Portraits recadrés à la source si la zone d'affichage est plus large que haute
 - [ ] **Une seule famille de titres, une seule graisse, sans italique** si possible. Chaque graisse ou italique est un fichier de police de plus (environ 100 Ko pour Cormorant)
-- [ ] Pas d'effet WebGL (shader) ni de vidéo en fond sur un site vitrine sauf demande explicite
+- [ ] Pas d'effet WebGL (shader) ni de vidéo en fond sur un site vitrine sauf demande explicite (un globe 3D en WebGL dans un bloc de bas de page coûte encore environ 1 s de calcul sur mobile, car il démarre au chargement : kleakagency.fr, 24/10)
+- [ ] **Vérifier les polices réellement téléchargées**, pas seulement celles posées sur les textes : dans le rapport (requêtes réseau, type Font), viser 4 ou 5 fichiers maximum. Sur un site parti d'un modèle, des polices arrivent par des chemins cachés : style de texte d'un ancien modèle introuvable dans les styles du projet, composant du pied de page, menu, bandeau cookies (kleakagency.fr, 24/10 : Manrope, General Sans, Satoshi, Switzer en plus d'Inter)
+- [ ] Le bandeau cookies peut être rangé dans un composant (pied de page) : c'est là qu'on règle sa couleur de lien, pas sur une page
 - [ ] Langue du site réglée sur le français dans les réglages Framer (`lang="fr"`)
 - [ ] Repères `header`, `nav`, `main`, `footer` posés (balise HTML des cadres)
 - [ ] Contraste des petits textes colorés vérifié : le laiton #B08D57 sur crème ne passe pas, utiliser une version plus foncée pour le texte

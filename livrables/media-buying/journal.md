@@ -17,6 +17,63 @@ Format fixe d'une entrée :
 - **Leçon** : ce qu'on retient, avec son niveau de preuve (concluant, tendance, pas concluant)
 ```
 
+## 24/10/2026, campagne landing page sans prix (o, r, t), test prévu, pas lancé
+
+- **Campagne** : `Kleak | LP sans prix | AAAA-MM-JJ`, décidée par Edgar le 24/10, **en parallèle
+  de J K D** (choix d'Edgar, conséquence connue : deux campagnes se partagent le compte et se
+  lisent séparément). Destination https://kleakagency.fr/site-internet (publiée le 24/10,
+  `noindex`), calendrier Cal.com intégré `metadata[canal]=lp`, pas de formulaire. **Le hub ne
+  peut pas la créer** : sa création force l'objectif Prospects et un formulaire instantané
+  (`buildCampaignPayload`, `OUTCOME_LEADS`, `destination_type: ON_AD`). Création à la main dans
+  le Gestionnaire, en pause. Objectif Trafic, optimisation « Vues de page de destination »
+  (pixel Kleak Pub), bouton « Réserver ». Ensemble acquisition : France, 25 à 65 ans et plus,
+  audience Advantage+ coupée, placements Advantage+ (comme J K D), 7 € par jour, fin à J+14,
+  2 pubs : `o-site-captivant-s` et `r-avant-apres-demandes` (v1, choisie par Edgar le 24/10).
+  Ensemble retargeting `t-appel-30-minutes` : **décalé au 31/10, 2 € par jour** (décision
+  d'Edgar du 24/10), audience d'engagement trop petite avant (J K D a touché de l'ordre de
+  400 personnes au 24/10). Audience : interactions avec la page Facebook et le compte Instagram
+  (publications et pubs, 365 jours), ouverture du formulaire J K D sans envoi, visiteurs de
+  `/site-internet` sur 30 jours (sous-comptés). Edgar crée l'audience dès maintenant et lance
+  t le 31/10 si Meta l'accepte, jusqu'à la fin de l'ensemble acquisition. Posts 4:5 seuls,
+  pas de story rendue. **Remplace la campagne BTP**, qui n'est pas lancée.
+- **Hypothèse** : sans prix affiché (pub et page) et avec réservation directe, le coût par RDV
+  réservé est plus bas que celui de J K D. Mesure : RDV `canal=lp` divisé par la dépense de la
+  campagne, face au coût par RDV de J K D. Critère de fin : J+14, ou 98 € dépensés sur
+  l'ensemble acquisition. Bilan le lendemain de la fin.
+- **Limite, écrite avant le lancement** : ce n'est pas un A/B propre. Par rapport à J K D,
+  trois choses changent en même temps : la destination (landing page au lieu du formulaire
+  instantané), les créas (o, r au lieu de D, J, K) et l'absence de prix, sur une période
+  qui se décale vers novembre. Un écart de coût par RDV sera une **tendance**, jamais la preuve
+  que le prix bloquait. Le formulaire instantané était déjà le premier suspect au bilan du
+  24/10 (0 lead pour 11 clics lien).
+- **Volume** : pour conclure sur le coût par RDV de la campagne, il faut `bilanMinLeads`
+  (10) RDV, soit au plus 9,80 € par RDV à 98 €. En dessous, tendance. Par pub, le RDV n'est
+  pas attribuable (Cal.com ne reçoit pas l'id de la pub) : on ne jugera o et r que sur CTR
+  lien, CPC et vues de page, à `bilanMinDepense` (50 €) par pub, que Meta n'atteindra pas
+  forcément sur les deux.
+- **Mesure, réserves connues** : le pixel ne se charge qu'après accord cookies, les vues de
+  page et les audiences de visiteurs sont sous-comptées ; aucun événement de réservation
+  n'existe sur la page. Dans le hub au 24/10, `canalReservation` ne connaît que `email`,
+  `whatsapp`, `site` : une réservation `canal=lp` devient `direct`, source `autre`, mélangée
+  aux autres réservations. Correctif décidé par Edgar le 24/10 (option A) : la session
+  principale ajoute le canal `lp` au hub, sur une branche. Ne pas lancer avant sa mise en
+  production.
+- **Budget** (lecture du 24/10, `depenseMois` 16,36 €, estimations si la LP démarre le
+  26/10) : octobre de l'ordre de 106 € (J K D environ 62 €, LP acquisition 42 €, t 2 € le
+  31/10), sous les 200 €. Pendant le chevauchement (26 au 30/10), 14 € par jour, le double du
+  rythme de 6,60 €. Novembre, sans BTP : LP acquisition 56 € (1er au 08/11) et t 16 € (2 € par
+  jour sur la même période), soit **72 €**, 128 € non engagés, à décider au bilan LP.
+- **Textes** : validés tels quels par Edgar le 24/10, 3 textes, 3 titres, 3 descriptions par
+  pub, offre `kleak`, aucun prix. Déposés le 24/10 : o `o-site-captivant-s` 201 (9 créés),
+  r `r-avant-apres-demandes` 201 (9 créés), t `t-appel-30-minutes` 201 (9 créés), aucun refus.
+  Seul avertissement : textes principaux de plus de 125 caractères (o 195 à 207, r 198 à 216,
+  t 172 et 175 ; le texte 1 de t fait 120). Plusieurs textes par pub : visuel 4:5 seul.
+- **Chiffres** : aucun, rien n'est diffusé. Lecture du 24/10 (période 23/10 au 24/10) :
+  lecture Meta « ok », aucun avertissement, aucune alerte ouverte.
+- **Décision** : rien dans le Gestionnaire tant que le canal `lp` n'est pas lu par le hub en
+  production. Ensuite, Edgar crée la campagne à la main (le hub ne sait pas faire Trafic).
+- **Leçon** : à écrire au bilan.
+
 ## 24/10/2026, test J K D relancé en copie, test lancé
 
 - **Campagne** : le 24/10 au matin, Edgar a mis en pause `Kleak | multi | 2026-10-22`
@@ -119,7 +176,12 @@ Format fixe d'une entrée :
   d'appel », à aligner si Edgar le veut avant leur lancement.
 - **Leçon** : aucune sur les performances. Le texte suit le parcours réel du jour de diffusion.
 
-## 22/10/2026, campagne focus BTP, test prévu : PRÉPARÉE, À LANCER APRÈS J K D
+## 22/10/2026, campagne focus BTP, test prévu : REMPLACÉE PAR LP SANS PRIX, NON LANCÉE
+
+> **24/10, décision d'Edgar** : la campagne BTP n'est pas lancée, la campagne « LP sans prix »
+> (entrée du 24/10) la remplace. `Kleak | TEST BTP | 2026-10-22` reste en pause. Les 92,40 €
+> prévus en novembre ne sont plus engagés. Les créas L, M, N et leurs textes restent dans le
+> hub, inutilisés.
 
 > Ne pas lancer avant le bilan du test J K D (lancement prévu vers le 25/10, 7 jours). Ne
 > remplace rien dans J K D. **Mise à jour du 22/10** : créas L (`l-demo-artisan`), M
