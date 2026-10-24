@@ -17,6 +17,7 @@ Les textes d'annonce (texte principal, titre, description) sont écrits par l'ag
 | `node build.mjs` | rend le **post** (1080x1350) de toutes les créas |
 | `node build.mjs <id>` | rend le post **et la story** (1080x1920) d'une créa (`a`, `b`…) |
 | `node _feed.mjs` | planche des posts à 420 px, la taille réelle dans le fil → `_planche-feed.png` |
+| `node _planche-test-prix.mjs o p q` | planche du test prix : versions P et S côte à côte à 420 px → `_planche-test-prix.png` |
 | `node _zones-story.mjs` | stories avec la zone recouverte par Meta → `_planche-story.png` |
 | `node _capture.mjs` | recapture kleakagency.fr et la démo (à relancer si elles changent) |
 

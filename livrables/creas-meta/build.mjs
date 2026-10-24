@@ -230,6 +230,48 @@ const marquePetite = (story) => `
 
 const etoiles = (px) => `<span style="color:#FFC531;letter-spacing:.06em;font-size:${px}px;">★★★★★</span>`;
 
+// --- Test « prix affiché ou non » (série 6, 24/10/2026) -----------------------
+// Décidé par Edgar le 24/10 : chaque créa existe en deux versions strictement
+// identiques, sauf le prix. Version P (`<id>-p`) avec la pastille prix, version S
+// (`<id>-s`) sans elle, sans rien mis à la place. Toutes mènent à la même landing
+// page avec réservation Cal.com, les tarifs sont présentés au RDV.
+// La pastille est le SEUL élément qui change : son texte et sa condition (« formule
+// One page ») sont dedans, donc rien d'autre n'est à retirer en S. Source : fiche
+// offre, One page 699 €, la formule la moins chère (d'où « dès »).
+const pastillePrix = (fmt, x, top) => {
+  const story = fmt.key === 'story';
+  return `
+  <div style="position:absolute;left:${x}px;top:${top}px;display:flex;align-items:center;gap:${story ? 22 : 20}px;
+    padding:${story ? '18px 34px 18px 30px' : '16px 30px 16px 26px'};border-radius:999px;
+    background:linear-gradient(165deg, rgba(255,255,255,.09), rgba(255,255,255,.02) 60%), rgba(16,17,23,.78);
+    border:1px solid rgba(255,255,255,.14);box-shadow:inset 0 1px 0 rgba(255,255,255,.08), 0 18px 40px rgba(0,0,0,.45);">
+    <span style="width:10px;height:10px;border-radius:50%;background:#3D6BFF;box-shadow:0 0 12px rgba(61,107,255,.8);"></span>
+    <span style="font-family:'Inter Tight',sans-serif;font-weight:600;letter-spacing:-.015em;font-size:${story ? 44 : 40}px;color:#F3F4F7;">Dès 699 €</span>
+    <span style="width:1px;height:${story ? 34 : 30}px;background:rgba(255,255,255,.18);"></span>
+    <span style="font-family:Manrope;font-weight:600;font-size:${story ? 27 : 25}px;color:rgba(255,255,255,.6);">Formule One page</span>
+  </div>`;
+};
+// Fabrique les deux versions d'une créa. `html(fmt, prix)` reçoit prix = true ou
+// false, et ne s'en sert QUE pour poser ou non pastillePrix().
+const testPrix = (id, slug, html) => ({
+  [`${id}-p`]: { key: `${id}-${slug}-p`, fonts: FONTS_FIN, html: (fmt) => html(fmt, true) },
+  [`${id}-s`]: { key: `${id}-${slug}-s`, fonts: FONTS_FIN, html: (fmt) => html(fmt, false) },
+});
+// Carte en verre mise en avant (bord ambre vers bleu), reprise de J et M.
+const VERRE_AVANT = `border:1.5px solid transparent;
+  background:linear-gradient(165deg, rgba(255,255,255,.07), rgba(255,255,255,.015) 55%) padding-box,
+    linear-gradient(#111218,#111218) padding-box,
+    linear-gradient(135deg, rgba(214,128,60,.85), rgba(255,255,255,.12) 45%, rgba(60,95,255,.95)) border-box;
+  box-shadow:0 30px 70px rgba(0,0,0,.55), -20px -10px 60px rgba(180,96,40,.13), 24px 26px 70px rgba(15,47,209,.28);`;
+// Papier (grain, plis), repris de K et N.
+const PAPIER = `background:
+    linear-gradient(180deg, transparent 32.8%, rgba(0,0,0,.05) 33.3%, rgba(255,255,255,.35) 33.8%, transparent 35%),
+    linear-gradient(180deg, transparent 65.8%, rgba(0,0,0,.05) 66.3%, rgba(255,255,255,.35) 66.8%, transparent 68%),
+    linear-gradient(115deg,#FAF7F0 0%,#EFEADF 55%,#E3DCCC 100%);
+  box-shadow:0 50px 90px rgba(0,0,0,.65), 0 12px 24px rgba(0,0,0,.35), inset 0 0 0 1px rgba(255,255,255,.5);`;
+const lignesGrises = (largeurs, h, gap, op = .1) => `<div style="display:flex;flex-direction:column;gap:${gap}px;">
+  ${largeurs.map((w) => `<div style="height:${h}px;width:${w}%;border-radius:4px;background:rgba(40,34,26,${op});"></div>`).join('')}</div>`;
+
 // ---------------------------------------------------------------------------
 // LES CRÉAS
 // ---------------------------------------------------------------------------
@@ -1095,6 +1137,182 @@ const CREAS = {
         Formule One page, paiement en une fois. Maintenance en option.</div>`;
     },
   },
+
+  // ---------------------------------------------------------------------------
+  // Série 6 (24/10/2026) : test « prix affiché ou non ». Trois créas, chacune en
+  // version P (pastille « Dès 699 € · Formule One page ») et S (sans la pastille,
+  // rien à la place). Accroche, objet, légende et positions sont les mêmes ; la
+  // pastille est posée sous l'objet, dans une zone qui reste vide en S. Aucune
+  // accroche ne dépend du prix. DA fine de la série 5. Pas de story à ce stade,
+  // mais chaque créa a ses positions story (rien sous y = 1520).
+  // ---------------------------------------------------------------------------
+
+  // O. La promesse de Kleak : un site captivant qui amène des contacts. Un seul objet :
+  // la notification d'un nouveau message reçu depuis le site, en carte de verre mise en
+  // avant, une seconde carte vide en retrait pour la profondeur.
+  // D'OÙ ÇA VIENT : promesse validée par Edgar le 22/10 (« un site captivant, pensé
+  // pour transformer vos visiteurs en clients ») ; fiche offre, « Formulaire de
+  // contact : chaque demande arrive directement dans votre boîte mail », recopié en
+  // légende.
+  // ÉCARTÉ VOLONTAIREMENT : tout nom, tout texte de message, toute entreprise (le
+  // message est fait de lignes grises, rien n'est prêté à un vrai client), tout nombre
+  // de demandes, les intitulés de champs (« Nom », « Message ») qui feraient croire que
+  // la pub mène à un formulaire, le délai.
+  ...testPrix('o', 'site-captivant', (fmt, prix) => {
+    const story = fmt.key === 'story';
+    const L = story
+      ? { marque: 220, titre: 330, titrePx: 70, fond: 680, carte: 730, legende: 1220, prix: 1340, x: 90, s: 1.18 }
+      : { marque: 110, titre: 210, titrePx: 62, fond: 500, carte: 548, legende: 1030, prix: 1150, x: 92, s: 1.14 };
+    const s = L.s;
+    const enveloppe = `<div style="flex:none;width:${66 * s}px;height:${66 * s}px;border-radius:${16 * s}px;
+      background:linear-gradient(160deg,#2F6BFF,${T.bleu});box-shadow:inset 0 1px 0 rgba(255,255,255,.3);
+      display:flex;align-items:center;justify-content:center;">
+      <svg width="${34 * s}" height="${34 * s}" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="M3.5 6.5 L12 13 L20.5 6.5"/></svg></div>`;
+    const barre = (w, op = .12) => `<div style="height:${14 * s}px;width:${w}%;border-radius:7px;background:rgba(255,255,255,${op});"></div>`;
+    return `
+    ${fondFin(fmt, fmt.W * .5, L.carte + 200)}
+    <div style="position:absolute;left:${L.x}px;top:${L.marque}px;">${marquePetite(story)}</div>
+    <div style="position:absolute;left:${L.x}px;right:${L.x + 30}px;top:${L.titre}px;${TITRE_FIN}
+      font-size:${L.titrePx}px;line-height:1.1;">Un site captivant, pensé pour que vos visiteurs vous ${italique('contactent.')}</div>
+
+    <div style="position:absolute;left:${L.x + 60}px;right:${L.x + 60}px;top:${L.fond}px;height:${200 * s}px;border-radius:26px;
+      background:linear-gradient(165deg, rgba(255,255,255,.06), rgba(255,255,255,.015) 50%), rgba(16,17,23,.6);
+      border:1px solid rgba(255,255,255,.07);transform:rotate(2deg);"></div>
+
+    <div style="position:absolute;left:${L.x}px;right:${L.x}px;top:${L.carte}px;border-radius:30px;
+      padding:${story ? '46px 50px 52px' : '42px 46px 48px'};${VERRE_AVANT} transform:rotate(-1.5deg);">
+      <div style="display:flex;align-items:center;gap:${22 * s}px;">
+        ${enveloppe}
+        <div style="flex:1;">
+          <div style="font-family:'Inter Tight';font-weight:600;letter-spacing:-.01em;font-size:${36 * s}px;color:#F3F4F7;">Nouveau message</div>
+          <div style="font-family:Manrope;font-weight:500;font-size:${24 * s}px;color:rgba(255,255,255,.55);margin-top:4px;">Reçu depuis votre site internet</div>
+        </div>
+        <div style="align-self:flex-start;font-family:Manrope;font-weight:600;font-size:${22 * s}px;color:rgba(255,255,255,.45);">à l'instant</div>
+      </div>
+      <div style="height:1px;background:rgba(255,255,255,.1);margin:${30 * s}px 0 ${30 * s}px;"></div>
+      <div style="display:flex;flex-direction:column;gap:${18 * s}px;">
+        ${barre(34, .2)}${barre(92)}${barre(86)}${barre(58)}
+      </div>
+    </div>
+
+    <div style="position:absolute;left:${L.x}px;right:${L.x}px;top:${L.legende}px;font-family:Manrope;
+      color:rgba(255,255,255,.62);font-size:${story ? 29 : 27}px;line-height:1.4;font-weight:500;">
+      Chaque demande arrive directement dans votre boîte mail.</div>
+    ${prix ? pastillePrix(fmt, L.x, L.prix) : ''}`;
+  }),
+
+  // P. La conformité, incluse. Un seul objet : la page « Mentions légales » du site,
+  // en papier (traitement de K et N), avec ses rubriques et des lignes grises.
+  // D'OÙ ÇA VIENT : fiche offre, One page, Essentiel et Pro : « Mentions légales,
+  // bandeau cookies et conformité RGPD ». Les rubriques du papier sont les rubriques
+  // habituelles d'une page de mentions légales, sans aucun contenu (lignes grises).
+  // ÉCARTÉ VOLONTAIREMENT : toute amende, toute menace (« vous risquez… »), tout nom
+  // d'entreprise, de domaine ou d'hébergeur, tout tampon (déjà sur K et N), le délai.
+  ...testPrix('p', 'mentions-legales', (fmt, prix) => {
+    const story = fmt.key === 'story';
+    const L = story
+      ? { marque: 220, titre: 330, titrePx: 70, papier: 640, papierW: 540, prix: 1380, x: 90 }
+      : { marque: 110, titre: 210, titrePx: 62, papier: 450, papierW: 500, prix: 1185, x: 92 };
+    const sc = L.papierW / 640;
+    const pointilles = `<div style="height:0;border-top:2px dotted rgba(40,34,26,.28);margin:${28 * sc}px 0 ${8 * sc}px;"></div>`;
+    const rubrique = (t, largeurs) => `
+      <div style="margin-top:${34 * sc}px;">
+        <div style="font-weight:700;font-size:${27 * sc}px;color:#1E1B16;margin-bottom:${16 * sc}px;">${t}</div>
+        ${lignesGrises(largeurs, 10 * sc, 13 * sc, .13)}
+      </div>`;
+    return `
+    ${fondFin(fmt, fmt.W * .5, L.papier + 420 * sc)}
+    <div style="position:absolute;left:${L.x}px;top:${L.marque}px;">${marquePetite(story)}</div>
+    <div style="position:absolute;left:${L.x}px;right:${L.x + 20}px;top:${L.titre}px;${TITRE_FIN}
+      font-size:${L.titrePx}px;line-height:1.1;">Votre site internet, livré avec ses mentions légales et la conformité ${italique('RGPD.')}</div>
+
+    <div style="position:absolute;left:${(fmt.W - L.papierW) / 2}px;top:${L.papier}px;width:${L.papierW}px;transform:rotate(-3deg);">
+      <div style="position:relative;border-radius:6px;padding:${54 * sc}px ${56 * sc}px ${56 * sc}px;aspect-ratio:1/1.32;${PAPIER}">
+        <div class="grain" style="position:absolute;inset:0;border-radius:6px;"></div>
+        <div style="position:relative;font-family:Manrope;">
+          <div style="font-family:'Instrument Serif',serif;font-style:italic;font-size:${54 * sc}px;color:#1E1B16;line-height:1;">Mentions légales</div>
+          ${pointilles}
+          ${rubrique('Éditeur du site', [86, 64])}
+          ${rubrique('Hébergement', [78, 52])}
+          ${rubrique('Données personnelles', [92, 88, 60])}
+          ${rubrique('Cookies', [84, 70, 46])}
+          ${rubrique('Propriété intellectuelle', [80, 52])}
+        </div>
+      </div>
+    </div>
+    ${prix ? pastillePrix(fmt, L.x, L.prix) : ''}`;
+  }),
+
+  // Q. On valide avant de construire. Un seul objet : la planche de direction, une
+  // feuille à l'horizontale avec ses quatre rubriques (structure, couleurs, polices,
+  // photos), sans contenu de client.
+  // D'OÙ ÇA VIENT : fiche offre, « Comment ça se passe », étape 4 : « Une planche de
+  // direction sous 48 heures : la structure de votre site, les couleurs, les polices
+  // et les photos retenues, sur une seule page. Vous validez ou vous corrigez avant
+  // qu'on construise quoi que ce soit. » Accroche tirée de la dernière phrase.
+  // ÉCARTÉ VOLONTAIREMENT : « 48 heures » (un délai de plus, une idée par créa), le
+  // nombre de retouches, toute photo réelle (les cases photo sont des aplats de
+  // couleur, pas des images d'un client), tout nom de police ou de client.
+  ...testPrix('q', 'planche-direction', (fmt, prix) => {
+    const story = fmt.key === 'story';
+    const L = story
+      ? { marque: 220, titre: 330, titrePx: 70, feuille: 640, feuilleW: 900, prix: 1340, x: 90 }
+      : { marque: 110, titre: 210, titrePx: 62, feuille: 450, feuilleW: 900, prix: 1150, x: 92 };
+    const sc = L.feuilleW / 880;
+    const libelle = (t) => `<div style="font-family:Manrope;font-weight:600;font-size:${20 * sc}px;color:#7A7266;margin-bottom:${14 * sc}px;">${t}</div>`;
+    const pastille = (c) => `<div style="width:${62 * sc}px;height:${62 * sc}px;border-radius:50%;background:${c};
+      box-shadow:inset 0 0 0 1px rgba(0,0,0,.08);"></div>`;
+    const bloc = (h, fond = 'rgba(40,34,26,.1)') => `<div style="height:${h * sc}px;border-radius:${5 * sc}px;background:${fond};"></div>`;
+    const photo = (a, b) => `<div style="flex:1;height:${118 * sc}px;border-radius:${8 * sc}px;background:linear-gradient(150deg,${a},${b});"></div>`;
+    return `
+    ${fondFin(fmt, fmt.W * .5, L.feuille + 290 * sc)}
+    <div style="position:absolute;left:${L.x}px;top:${L.marque}px;">${marquePetite(story)}</div>
+    <div style="position:absolute;left:${L.x}px;right:${L.x + 40}px;top:${L.titre}px;${TITRE_FIN}
+      font-size:${L.titrePx}px;line-height:1.1;">Vous validez le style de votre site avant qu'on le ${italique('construise.')}</div>
+
+    <div style="position:absolute;left:${(fmt.W - L.feuilleW) / 2}px;top:${L.feuille}px;width:${L.feuilleW}px;transform:rotate(-2deg);">
+      <div style="position:relative;border-radius:6px;padding:${40 * sc}px ${44 * sc}px ${44 * sc}px;${PAPIER}">
+        <div class="grain" style="position:absolute;inset:0;border-radius:6px;"></div>
+        <div style="position:relative;font-family:Manrope;color:#1E1B16;">
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <div style="font-family:'Instrument Serif',serif;font-style:italic;font-size:${48 * sc}px;line-height:1;">Planche de direction</div>
+            <div style="font-weight:600;font-size:${20 * sc}px;color:#7A7266;">Sur une seule page</div>
+          </div>
+          <div style="height:0;border-top:2px dotted rgba(40,34,26,.28);margin:${24 * sc}px 0 ${26 * sc}px;"></div>
+          <div style="display:grid;grid-template-columns:1fr 1.5fr;gap:${34 * sc}px ${40 * sc}px;">
+            <div style="grid-row:span 2;">
+              ${libelle('Structure')}
+              <div style="display:flex;flex-direction:column;gap:${10 * sc}px;padding:${14 * sc}px;border-radius:${8 * sc}px;
+                border:1.5px solid rgba(40,34,26,.16);">
+                ${bloc(16, 'rgba(40,34,26,.16)')}${bloc(92, 'rgba(15,47,209,.16)')}
+                <div style="display:flex;gap:${10 * sc}px;"><div style="flex:1">${bloc(54)}</div><div style="flex:1">${bloc(54)}</div><div style="flex:1">${bloc(54)}</div></div>
+                ${bloc(40)}${bloc(26, 'rgba(40,34,26,.16)')}
+              </div>
+            </div>
+            <div>
+              ${libelle('Couleurs')}
+              <div style="display:flex;gap:${14 * sc}px;">${pastille('#1F2A24')}${pastille('#7C8F72')}${pastille('#D9C7A7')}${pastille('#B5603A')}${pastille('#F4EFE6')}</div>
+            </div>
+            <div style="display:grid;grid-template-columns:auto 1fr;gap:${26 * sc}px;">
+              <div>
+                ${libelle('Polices')}
+                <div style="display:flex;align-items:baseline;gap:${16 * sc}px;line-height:1;">
+                  <span style="font-family:'Instrument Serif',serif;font-size:${74 * sc}px;">Aa</span>
+                  <span style="font-family:'Inter Tight';font-weight:600;font-size:${60 * sc}px;letter-spacing:-.02em;">Aa</span>
+                </div>
+              </div>
+              <div>
+                ${libelle('Photos')}
+                <div style="display:flex;gap:${10 * sc}px;">${photo('#C9B28F', '#8A6E4B')}${photo('#9DAE93', '#55684D')}${photo('#D8C9B4', '#A88B6A')}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    ${prix ? pastillePrix(fmt, L.x, L.prix) : ''}`;
+  }),
 
 };
 

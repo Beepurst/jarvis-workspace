@@ -17,6 +17,58 @@ Format fixe d'une entrée :
 - **Leçon** : ce qu'on retient, avec son niveau de preuve (concluant, tendance, pas concluant)
 ```
 
+## 24/10/2026, test J K D relancé en copie, test lancé
+
+- **Campagne** : le 24/10 au matin, Edgar a mis en pause `Kleak | multi | 2026-10-22`
+  (id 120251881595700751) et l'a dupliquée en `Kleak | multi | 2026-10-22 - Copie`
+  (id 120251909979950751, créée à 10 h 39), active. Même structure : ensemble
+  `Kleak | multi | 2026-10-22 | Prospection` (id 120251909979960751), 7 € par jour, fin le 30/10
+  à 23 h 59, 3 pubs `d-avant-apres-appeler` (120251909979980751), `j-avis-clients`
+  (120251909979940751), `k-devis-prix-fixe` (120251909979970751). Raison de la duplication non
+  précisée par Edgar.
+- **Hypothèse** : inchangée (CPL du compte face à `cplCible` 5 €). La copie repart en phase
+  d'apprentissage. Le budget du test se compte sur les deux campagnes : 13,31 € dépensés sur
+  l'originale, critère de fin à 49 € au total ou le 30/10.
+- **Chiffres** (lecture Meta du 24/10 vers 13 h 40, copie seule) : 1,77 €, 49 impressions,
+  **1 lead** (`j-avis-clients`, Instagram, à 13 h 17). Premier lead du test, et premier lead
+  rattaché à une pub dans le CRM. Profil : budget « moins de 700 € », a déjà un site. Chaîne
+  complète vérifiée : hub en 17 s, push « Nouveau lead », invitation Brevo délivrée, push
+  « Envoyer le WhatsApp » à 13 h 36. Le lead s'est désinscrit des emails 22 s après la
+  réception (bouton de Gmail), relances annulées par le hub.
+- **Décision** : rien de plus. Point d'étape du 26/10 maintenu, en additionnant les deux campagnes.
+- **Leçon** : pas concluant sur les performances. Le formulaire enregistre bien un envoi réel (frein
+  « formulaire » du bilan du matin écarté pour ce lead). Côté hub, l'`ad_id` du Sheet arrivait avec
+  le préfixe `ag:` et ne se rattachait à aucune pub : corrigé et en production le 24/10. Une
+  désinscription en 22 s est un seul cas, à surveiller sur les leads suivants.
+
+## 24/10/2026, test J K D à J+1, bilan (anticipé, à la demande d'Edgar)
+
+- **Campagne** : `Kleak | multi | 2026-10-22` (id 120251881595700751), 1 ensemble, 3 pubs
+  `d-avant-apres-appeler`, `j-avis-clients`, `k-devis-prix-fixe`. Active depuis le 23/10 vers
+  12 h, fin prévue le 30/10.
+- **Hypothèse** : inchangée (remesurer le CPL du compte face à `cplCible` 5 €). Critère de fin :
+  49 € dépensés ou 30/10. **Non atteint** : 13,31 € dépensés, soit 27 % du test et 6,7 % de
+  `budgetMensuel`.
+- **Chiffres** (lecture du 24/10, période 23/10 au 24/10, 24/10 partiel ; lecture Meta « ok »,
+  aucun avertissement, aucune alerte ouverte) : dépense 13,31 € (10,12 € le 23/10 pour une
+  demi-journée, 3,19 € le 24/10 au moment de la lecture), 296 impressions, couverture 285,
+  fréquence 1,04, CPM 44,97 €, 13 clics dont 11 clics lien, CTR 3,72 %, CPC 1,02 €,
+  **0 lead Meta**, CPL indisponible, 0 RDV, coût par RDV indisponible, CA et ROAS indisponibles.
+  Par pub : D 6,40 €, 93 impr., 4 clics lien, CPM 68,82 €, 0 lead ; J 4,45 €, 117 impr.,
+  6 clics lien, CPM 38,03 €, 0 lead ; K 2,46 €, 86 impr., 1 clic lien, CPM 28,60 €, 0 lead.
+  CRM : 1 lead non rattaché (budget « non renseigné »), probablement le lead de test du 23/10,
+  à confirmer par Edgar. Elements : un seul texte, titre, description par pub, rien à comparer.
+- **Décision** : ne rien changer à la diffusion avant le point d'étape du 26/10 (J+3), aucune pub
+  à 15 € sans lead (D la plus proche, 6,40 €). Hors diffusion : Edgar vérifie que le formulaire
+  enregistre bien un envoi (test réel sur mobile, puis contrôle dans l'Espace prospects de Meta
+  et dans le CRM), relève les ouvertures du formulaire dans le Gestionnaire, et identifie le lead
+  non rattaché.
+- **Leçon** : pas concluant. 0 lead sur 11 clics lien est le seul signal à surveiller
+  (formulaire), mais 11 clics ne suffisent pas à juger un taux d'envoi. Si à 49 € (de l'ordre de
+  45 clics lien au CPC actuel, estimation) il n'y a toujours aucun lead, le frein est le
+  formulaire ou sa technique, pas la créa : condition 2 de l'entrée BTP du 22/10, on corrige le
+  formulaire avant tout nouveau lancement.
+
 ## 23/10/2026, test J K D, test lancé
 
 - **Campagne** (vérifiée dans Meta le 23/10 à 12 h) : `Kleak | multi | 2026-10-22`, ensemble

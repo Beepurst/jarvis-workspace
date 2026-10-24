@@ -59,8 +59,7 @@ Tout ce qui est dans Essentiel, et en plus :
 | Option | Ce que ça fait | Prix |
 |---|---|---|
 | **Automatisation des demandes** | Chaque demande du formulaire est enregistrée dans un tableau de suivi, vous êtes alerté, et le prospect reçoit une réponse automatique immédiate | + 400 € |
-| **Page supplémentaire** | Une page de plus, dans le même style | + 200 € |
-| **Rédaction des textes** | Écriture des textes de vos pages à partir d'un entretien | Sur devis |
+| **Page supplémentaire** | Une page de plus, dans le même style, par exemple une page de campagne pour vos publicités | + 200 € |
 
 ---
 

@@ -3,6 +3,33 @@
 > Tenu par l'agent `createur-creas`. Le plus récent en haut. On écrit ce qui a été écarté et
 > pourquoi, pas seulement ce qui a été retenu, pour ne pas refaire le même arbitrage.
 
+## Série 6 (24/10/2026) : test « prix affiché ou non »
+
+Test décidé par Edgar le 24/10 : chaque créa existe en deux versions strictement identiques,
+sauf le prix. Version P (`<id>-p`) avec la pastille « Dès 699 € · Formule One page », version S
+(`<id>-s`) sans elle, rien mis à la place. Toutes les pubs mènent à la même landing page avec
+réservation Cal.com, les tarifs sont présentés au RDV. Accroches indépendantes du prix. DA fine
+de la série 5, une idée par créa, marque petite en haut sur les trois.
+
+- Code : `testPrix(id, slug, html)` fabrique les deux entrées ; `pastillePrix()` est le seul
+  élément conditionné par `prix`. La condition (« Formule One page ») est dans la pastille, donc
+  S n'a rien d'autre à retirer. Contrôle par différence d'image : P et S ne diffèrent que dans
+  le rectangle de la pastille (plus un bruit d'anticrénelage de 6 px sur O, sans contenu).
+- Planche dédiée : `node _planche-test-prix.mjs o p q` → `_planche-test-prix.png` (une ligne
+  par créa, P à gauche, S à droite, à 420 px).
+- Stories codées, ni rendues ni contrôlées.
+
+| Id | Fichier | Angle | Statut |
+|---|---|---|---|
+| o | `o-site-captivant-p` / `-s` | Promesse : « Un site captivant, pensé pour que vos visiteurs vous *contactent.* » Carte en verre « Nouveau message · Reçu depuis votre site internet », message en lignes grises. Légende de la fiche : « Chaque demande arrive directement dans votre boîte mail. » | Proposée |
+| p | `p-mentions-legales-p` / `-s` | Conformité : « Votre site internet, livré avec ses mentions légales et la conformité *RGPD.* » Page « Mentions légales » en papier (éditeur, hébergement, données personnelles, cookies, propriété intellectuelle), sans contenu | Proposée |
+| q | `q-planche-direction-p` / `-s` | Validation avant construction : « Vous validez le style de votre site avant qu'on le *construise.* » Planche de direction en papier (structure, couleurs, polices, photos, « Sur une seule page »), d'après l'étape 4 de la fiche | Proposée |
+
+Écarté volontairement : tout argument mis à la place du prix en S (devis gratuit, délai),
+« 48 heures » pour la planche, tout nom, message, entreprise, domaine ou hébergeur inventé,
+les intitulés de champs de formulaire sur O (la destination est un calendrier), toute menace
+ou amende sur P, tout tampon (déjà sur K et N), « pour PME et artisans ».
+
 ## Série BTP (22/10/2026) : artisans du bâtiment, One page
 
 Commande de `media-buyer` (`livrables/media-buying/commande-creas-btp.md`), campagne

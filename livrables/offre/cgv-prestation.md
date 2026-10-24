@@ -1,6 +1,6 @@
 # CGV de prestation, Kleak Agency
 
-> **Validées par Edgar le 22/10/2026**, relecture par un juriste conseillée avant le premier client. Le texte à partir de « Conditions générales de vente » se colle dans Réglages, section Devis, champ CGV, et part en annexe de chaque devis.
+> **Validées par Edgar le 22/10/2026, textes rédigés avec l'IA ajoutés le 24/10**, relecture par un juriste conseillée avant le premier client. Le texte à partir de « Conditions générales de vente » se colle dans Réglages, section Devis, champ CGV, et part en annexe de chaque devis.
 >
 > Choix confirmés le 22/10 :
 > 1. Suspension du site en cas d'impayé : 15 jours après l'échéance, après une relance écrite.
@@ -21,11 +21,11 @@ Ces conditions s'appliquent à toute prestation de création de site et de maint
 
 La prestation comprend ce qui est écrit dans le devis : la formule choisie, les options, le délai de livraison et le nombre de séries de retouches.
 
-Ne sont pas compris, sauf mention dans le devis : boutique en ligne, espace client, prise de rendez-vous en ligne, traduction, rédaction des textes, photos professionnelles. Toute demande hors du devis fait l'objet d'un nouveau devis, avant d'être réalisée.
+Ne sont pas compris, sauf mention dans le devis : boutique en ligne, espace client, prise de rendez-vous en ligne, traduction, photos professionnelles. Toute demande hors du devis fait l'objet d'un nouveau devis, avant d'être réalisée.
 
 ## 2. Vos contenus
 
-Vous fournissez les contenus du site : textes, photos, logo, informations sur votre entreprise. Vous garantissez avoir le droit de les utiliser. Kleak n'est pas responsable d'un contenu que vous avez fourni.
+Vous fournissez les contenus du site : photos, logo, informations sur votre entreprise. Pour les textes, vous pouvez nous fournir les vôtres, ou nous les rédigeons à partir de vos réponses au questionnaire, avec l'aide d'outils d'intelligence artificielle. Dans les deux cas, vous les relisez et les validez avant la mise en ligne. Vous garantissez avoir le droit d'utiliser les contenus que vous fournissez. Kleak n'est pas responsable d'un contenu que vous avez fourni.
 
 Le délai de livraison démarre à la réception du questionnaire complet, de vos contenus et du premier paiement.
 

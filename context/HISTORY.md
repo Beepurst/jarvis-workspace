@@ -9,11 +9,38 @@
 
 ## 2026-10-24
 
+### Nouvelle DA du Hub Agence en production
+
+- **Tâche de la to-do** « Améliorer l'UI du pipeline : plus clair, plus tech, plus de couleur », élargie en séance à tout le hub. Choix faits par Edgar sur captures, en production le 24/10 (lot 2 de la refonte couleur terminé).
+- **Pipeline** : bandeau de chiffres (en cours, entrés ce mois, RDV à venir, devis en attente, clients signés), cartes « À traiter » et « Prochain RDV », colonnes teintées à la couleur de l'étape (direction A retenue parmi 4).
+- **Couleur** : rouge et bleu des cartes jugés fades, remplacés par un **vert émeraude** façon Shopify, sur l'accueil aussi. Le rouge reste pour les vraies alertes.
+- **Fiche client refaite** (maquette V2 « Cockpit » retenue) : frise du parcours, prochaine action en vert, contact, tuiles budget, site, origine, payé, historique en frise.
+- **Liquid glass** : version G2 retenue, **sans fond coloré** ; étendu à toutes les cartes du hub.
+- **Boutons** : repris de kleakagency.fr (bleu Kleak, halo intérieur, écrin).
+- **Tout le hub** : Finance (objectif en carte verte, tuiles), relevés Ads et SEO sur dégradé vert, graphiques en vert.
+
 ### Bilan mensuel du Suivi avis : maquette faite
 
 - **Maquette d'une page** dans `livrables/process/bilan-avis/` : modèle HTML à objet unique `BILAN`, export PDF A4 et PNG, exemple fictif Garnier Plomberie. Résumé (nouveaux avis, appels depuis la fiche, demandes venues du site), avis (note, total, réponses, 6 mois, extraits), fiche Google, site (visites, demandes, Search Console), rappel de demande d'avis, limites de mesure en pied de page.
 - **Décision** : bilan rempli à la main au premier client sur le pack, automatisation à 2 ou 3 clients. Le déroulé n8n (le 5 du mois, brouillon Gmail validé par Edgar), les sources exactes et les accès sont écrits dans le README ; restent à choisir l'hébergement de n8n, le rendu PDF, et n8n ou le hub.
 - **Décision** : GA4 et Search Console installés au démarrage du Suivi avis sur un One page ou un Essentiel (la mesure n'est promise qu'en Pro). Note interne de l'offre mise à jour.
+
+### Page tarifs publiée sur kleakagency.fr
+
+- **Blocage Framer levé** : le workspace du site (compte IONOS) demandait de réactiver l'abonnement des éditeurs. Edgar a retiré `kleakagency@gmail.com` des éditeurs, le projet s'ouvre de nouveau dans l'outil `@framer/agent`.
+- **Page `/tarifs` publiée** (structure validée par Edgar, `livrables/site-kleak/page-tarifs.md`) : cartes de prix, tableau comparatif, options, maintenance, Suivi avis, paiement en une fois ou en 6 fois avec exemple chiffré, ce qui n'est pas compris, FAQ prix. « Tarifs » ajouté au menu et au pied de page, lien « Voir le détail des tarifs » sur l'accueil et `/creation-site-vitrine`.
+- **FAQ de `/creation-site-vitrine` corrigée** : la maintenance s'ajoute aux versements en 6 fois (elle était dite « comprise »).
+- **FAQ sur les textes alignée** (accueil et `/creation-site-vitrine`, publiée) : le client envoie logo et photos, les textes sont les siens ou écrits par Kleak à partir du questionnaire, relus avant la mise en ligne.
+
+### Recette du module devis, mise en page refaite
+
+- **PDF en erreur en production** : les polices de pdfkit n'étaient pas embarquées par Vercel ; corrigé dans `next.config.ts`.
+- **Mise en page refaite** sur le modèle d'un ancien devis Shine d'Edgar : logo, numéro et dates en tête, émetteur à gauche et client à droite, titre « Création de votre site internet », tableau à en-tête beige, totaux encadrés, échéancier, maintenance à part, police Inter. Le devis Essentiel tient sur une page.
+- **Email du devis** en HTML (Gmail coupait les lignes du texte brut), « Préparer l'email » ouvre le brouillon dans le bon compte ; expéditeur `contact@kleakagency.fr` par un alias Gmail (SMTP IONOS), réglé par Edgar.
+- **Facture Stripe** : le pied posé par le hub n'avait pas l'identité du vendeur ; ajout de « Edgar Blomme EI (Kleak Agency), adresse, SIRET ».
+- **Réglages devis** : identité, numérotation `DEV-` à partir de 1001, CGV, email du devis, relances J+3 et J+7, message WhatsApp, validés par Edgar.
+- **Décisions d'Edgar** : la maintenance reste obligatoire en 6 fois ; les textes du site peuvent être rédigés par Kleak avec l'IA (CGV articles 1 et 2 mis à jour), l'option « Rédaction des textes » est retirée de la fiche offre.
+- **Recette** : résumé du RDV, devis, brouillon, signature, vente, client Stripe et facture d'acompte en brouillon validés ; données de test supprimées, aucune facture finalisée. Reste à voir sur le premier client : l'expéditeur, la transcription Cal Video, le numéro de facture et le 6 fois.
 
 ## 2026-10-23
 
