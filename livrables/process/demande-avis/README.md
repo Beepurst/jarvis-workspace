@@ -63,7 +63,7 @@ Avec le site, dans le message de livraison : le PDF, le PNG et les messages adap
 
 ## Dans le Suivi avis
 
-- Le kit est le même. S'y ajoute le **rappel mensuel** au client (« pensez à demander un avis à vos clients du mois »), qui sera envoyé par n8n avec le bilan.
+- Le kit est le même. S'y ajoute le **rappel mensuel** au client (« pensez à demander un avis à vos clients du mois »), envoyé avec le bilan mensuel (`livrables/process/bilan-avis/`).
 - Chaque nouvel avis reçoit une réponse rédigée par l'IA et validée par Edgar.
 
 ## Règles (Google et fiche offre)

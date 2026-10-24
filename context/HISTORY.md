@@ -7,6 +7,14 @@
 
 ---
 
+## 2026-10-24
+
+### Bilan mensuel du Suivi avis : maquette faite
+
+- **Maquette d'une page** dans `livrables/process/bilan-avis/` : modèle HTML à objet unique `BILAN`, export PDF A4 et PNG, exemple fictif Garnier Plomberie. Résumé (nouveaux avis, appels depuis la fiche, demandes venues du site), avis (note, total, réponses, 6 mois, extraits), fiche Google, site (visites, demandes, Search Console), rappel de demande d'avis, limites de mesure en pied de page.
+- **Décision** : bilan rempli à la main au premier client sur le pack, automatisation à 2 ou 3 clients. Le déroulé n8n (le 5 du mois, brouillon Gmail validé par Edgar), les sources exactes et les accès sont écrits dans le README ; restent à choisir l'hébergement de n8n, le rendu PDF, et n8n ou le hub.
+- **Décision** : GA4 et Search Console installés au démarrage du Suivi avis sur un One page ou un Essentiel (la mesure n'est promise qu'en Pro). Note interne de l'offre mise à jour.
+
 ## 2026-10-23
 
 ### Module devis et Suivi avis en production dans le hub

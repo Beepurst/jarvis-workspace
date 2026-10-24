@@ -33,18 +33,19 @@ Point de départ mesuré : 4 à 5 journées de 8 h par site Framer (32 à 40 h),
 
 Deuxième niveau de suivi, proposé **dès la signature**, en face de la maintenance. Il tourne autour de deux promesses, et de deux seulement : **plus d'avis Google, tous répondus**, et **rien à faire pour le client**. La position sur Maps et les appels venus du site figurent dans le bilan comme preuves, jamais dans une pub ni dans un contrat.
 
-- **Contenu** : maintenance Essentiel et Pro, demande d'avis (message type, QR code, rappel mensuel), réponse à tous les avis (rédigée par l'IA, validée par Edgar), 2 à 4 publications par mois sur la fiche Google, bilan mensuel d'une page (prévu par n8n à partir de GA4, Search Console et de la fiche).
+- **Contenu** : maintenance Essentiel et Pro, demande d'avis (message type, QR code, rappel mensuel), réponse à tous les avis (rédigée par l'IA, validée par Edgar), 2 à 4 publications par mois sur la fiche Google, bilan mensuel d'une page (maquette `livrables/process/bilan-avis/`, à partir de la fiche, de GA4 et de Search Console).
 - **Prix : 190 €/mois**, dans le bas de ce que facturent les agences pour maintenance et gestion de fiche réunies (environ 180 à 250 € HT, recherche du 22/10 sur des pages d'agences, « à partir de », pas une grille de marché). À revoir à 220 ou 250 € pour les nouveaux clients après 3 à 5 bilans à montrer.
 - **Démarrage** : à la mise en ligne en paiement en une fois ; **le mois qui suit le dernier versement** en paiement en 6 fois (la maintenance tourne pendant les versements, pour éviter environ 356 €/mois sur un Essentiel).
 - **Avant-goût offert** : message de demande d'avis et QR code remis à chaque livraison, toutes formules, environ 20 minutes par client avec le kit `livrables/process/demande-avis/` (estimation du 23/10, à mesurer au premier client).
 - **One page** : la fiche Google n'est pas optimisée à la création. Mon hypothèse : prévoir environ 1 h de remise en état de la fiche au démarrage du pack, sans la facturer à part.
+- **Mesure au démarrage** (24/10) : la mesure GA4 n'est promise qu'en Pro. Sur un One page ou un Essentiel, GA4 (page `/merci`, clics téléphone et WhatsApp) et Search Console sont installés au démarrage du pack, sans facturation à part. Mon estimation : 30 à 45 minutes par site, à mesurer.
 - **Règles** : avis demandés à tous les clients, sans contrepartie ; jamais d'avis rédigé à la place de quelqu'un ; accès gestionnaire à la fiche du client demandé dès la signature. À écrire dans les CGV.
 - **Écartés pour l'instant** : les articles SEO automatisés (risque de contenu de masse, aucune preuve sur le blog de Kleak, relecture intenable à 10 clients) et la plateforme façon Orbikal (à partir de 5 clients sur le pack).
 - **Effet sur l'objectif** : 10 clients sur le pack font 1 900 €/mois de récurrent pour environ 10 à 15 h par mois.
 
 À faire :
 - ~~demander l'accès à l'API Google Business Profile~~ : demande de Kleak refusée le 22/10 (critères non remplis). **On passe par le projet Google Cloud d'Orbikal**, où l'API et l'écran d'autorisation sont validés (vérifié par Edgar le 22/10). Le Suivi avis dépend donc de ce projet : il ne faut ni le supprimer ni le laisser expirer, même si Orbikal reste en pause ;
-- construire le bilan mensuel dans n8n ;
+- bilan mensuel : ~~maquette~~ faite le 24/10 (`livrables/process/bilan-avis/`). **Rempli à la main au premier client** (environ 20 à 30 minutes, estimation), automatisé à 2 ou 3 clients sur le pack. Avant de construire : choisir où tourne n8n, comment rendre le PDF, et n8n ou le hub (pour et contre dans le README du dossier) ;
 - ~~ajouter le Suivi avis au catalogue du hub (`src/lib/offre.ts`) avec le départ décalé après le 6e versement~~ : en production le 23/10 ;
 - mettre le Suivi avis dans le script de RDV.
 
