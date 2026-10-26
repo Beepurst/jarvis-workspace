@@ -17,6 +17,50 @@ Format fixe d'une entrée :
 - **Leçon** : ce qu'on retient, avec son niveau de preuve (concluant, tendance, pas concluant)
 ```
 
+## 26/10/2026, campagne « Kleak | Métiers | 2026-10-26 » (v, w, x), test lancé
+
+- **Campagne** : `Kleak | Métiers | 2026-10-26`, lancée par Edgar depuis le hub. **Objectif Prospects** (formulaire instantané), pas Trafic comme proposé dans l'entrée « test prévu » ci-dessous : Meta optimise sur le formulaire, et la LP Trafic avait fait 98 vues pour 0 RDV. Pubs `v-metier-atelier`, `w-metier-barbier`, `x-appel-bulle`, 7 € par jour. Date de fin : à confirmer par Edgar.
+- **Textes** : un seul texte, titre et description par pub (le hub écarte le visuel story dès qu'il y a plusieurs textes). Les 33 autres variantes ont été supprimées du hub. Gardés : texte 1, titre 1 et la description « Appel gratuit de 30 minutes » de chaque pub ; « Noté 4,8/5 sur Google » retiré (pas de note Google affichée sur le site, décision d'Edgar).
+- **Bouton** : « En savoir plus » (le hub ne propose que S'inscrire, En savoir plus, Obtenir un devis).
+- **En parallèle** : la campagne Trafic `Kleak | LP sans prix` pointe sur `https://kleakagency.fr/votre-site` depuis le 26/10 (paramètres d'URL inchangés). La comparaison avec `/site-internet` s'arrête ; o et r sont des créas sombres sur une page claire, la lecture ne donnera qu'une tendance.
+
+## 26/10/2026, campagne LP claire `/votre-site` (v, w, x), test prévu
+
+- **Campagne** : à créer à la main par Edgar dans le Gestionnaire (le hub ne crée pas de
+  Trafic), nom proposé `Kleak | LP claire | AAAA-MM-JJ`. Objectif Trafic, optimisation « Vues de
+  page de destination » (pixel Kleak Pub), bouton « Réserver ». Un ensemble : France, 25 à 65
+  ans et plus, audience Advantage+ coupée, placements Advantage+ (comme J K D et LP sans prix).
+  3 pubs, série 8 « métiers » : `v-metier-atelier`, `w-metier-barbier`, `x-appel-bulle`, posts
+  4:5 (stories codées, ni rendues ni contrôlées au 26/10). Destination
+  https://kleakagency.fr/votre-site (noindex, sans prix, Cal.com `canal=lp` avec l'`ad_id`),
+  paramètres d'URL `ad_id={{ad.id}}&utm_source=facebook&utm_medium=paid&utm_campaign={{campaign.name}}&utm_content={{ad.name}}`.
+  7 € par jour, date de fin de l'ensemble à J+14.
+- **Hypothèse** : des créas de métier sans écran, vers une page claire, amènent des RDV
+  `canal=lp`. Mesure : coût par RDV de la campagne (RDV `canal=lp` dont l'`ad_id` est une pub
+  v, w ou x), lu face à celui de LP sans prix. Critère de fin : J+14 ou 98 € dépensés. Pour
+  conclure, `bilanMinLeads` (10) RDV, soit au plus 9,80 € par RDV : sinon tendance. Par pub,
+  `bilanMinDepense` (50 €) ne sera pas atteint sur les trois (Meta a mis 96 % de LP sans prix
+  sur r). Pas un A/B : page, créas et période changent ensemble face à LP sans prix.
+- **Budget** (estimation, `depenseMois` 48,42 € au 25/10, lancement supposé le 27/10) :
+  octobre de l'ordre de 162 € (déjà dépensé 48 €, J + o + r formulaire 35 € jusqu'au 30/10,
+  LP sans prix 42 €, LP claire 35 €, t 2 € le 31/10). Novembre de l'ordre de 126 € (LP sans
+  prix 49 € jusqu'au 07/11, t 14 €, LP claire 63 € jusqu'au 09/11). Sous 200 € les deux mois,
+  mais 21 € par jour pendant le chevauchement, trois fois le rythme de 6,60 €.
+- **Textes** : offre `kleak`, aucun prix, 4 textes, 5 titres, 5 descriptions par pub, déposés
+  le 26/10 : v 201 (14 créés), w 201 (14 créés), x 201 (14 créés), aucun refus. Seul
+  avertissement : 9 textes sur 12 entre 146 et 165 caractères (le texte 1 de chaque pub fait
+  106 à 112). Pas encore relus par Edgar : à valider avant la diffusion.
+- **Points ouverts pour Edgar** : la page dit « On s'occupe de tout : les textes… » et « On
+  rédige les textes, c'est inclus », alors que `fiche-offre.md` dit « Les contenus sont fournis
+  par vous (textes, photos, logo) » ; « 5 ans d'expérience » et les avis Eva Cophy, Keyleena
+  Nadeau, Céline Mestre ne sont ni dans la fiche ni dans la table `avis` du hub. Aucun des
+  textes déposés ne les reprend. Vérifier bandeau cookies et pixel sur `/votre-site` avant la
+  diffusion (leçon de `/site-internet`).
+- **Chiffres** : aucun. Lecture du 01/10 au 25/10 : lecture Meta « ok », aucun avertissement,
+  aucune alerte ouverte.
+- **Décision** : Edgar crée la campagne. Rien à modifier pendant 3 jours, sauf refus.
+- **Leçon** : à écrire au bilan.
+
 ## 26/10/2026, placements de la campagne LP sans prix, bilan
 
 - **Campagne** : `Kleak | LP sans prix | 2026-10-26` (id 120251914869350751, Trafic), ensemble

@@ -3,6 +3,85 @@
 > Tenu par l'agent `createur-creas`. Le plus récent en haut. On écrit ce qui a été écarté et
 > pourquoi, pas seulement ce qui a été retenu, pour ne pas refaire le même arbitrage.
 
+## Série 8 bis (26/10/2026) : x, y, z, autres angles et autres mises en page
+
+Retour d'Edgar sur la série 8 : v et w retenues, u écartée. Il veut 3 créas complètement
+différentes de u, v, w : autres angles, autres mises en page, plus de « photo + phrase sur fond
+crème ». Même cadre (patrons au travail, bénéfice concret, aucun écran, aucun prix, ni « PME »,
+ni « TPE », ni « artisans »). Posts rendus, stories codées, ni rendues ni contrôlées.
+
+- **Photos Pexels** (licence Pexels : usage commercial gratuit, attribution non obligatoire),
+  téléchargées par le CDN `images.pexels.com/photos/<id>/pexels-photo-<id>.jpeg`, copiées dans
+  `assets/personnes/`. Identifiants trouvés à partir des séances déjà connues (landing page et R),
+  la recherche Pexels étant bloquée. Y et Z viennent des mêmes séances que les photos de la
+  landing page (chef 17655298, fleuriste 5409710), avec d'autres images : pub et page se
+  ressemblent. X vient de la même séance que la photo de droite de R (même personne).
+- Planche : `node _feed.mjs x y z` → `_planche-selection.png`. La planche complète
+  (`node _feed.mjs`, 28 posts) plante désormais (page Chromium fermée, image trop lourde) : à
+  découper ou à alléger.
+
+| Id | Fichier | Angle | Statut |
+|---|---|---|---|
+| x | `x-appel-bulle` | L'appel qui arrive grâce au site. Photo plein cadre d'une patronne de café au téléphone, qui rit (Pexels 10375889), bulle blanche : « Bonjour, j'ai vu votre site internet, je voudrais un *renseignement.* » Ligne du bas : « Kleak Agency · Création de sites internet », mention « Illustration » | **Retenue** (Edgar, 26/10). Post et story rendus, story contrôlée, déposés dans le hub |
+| y | `y-portrait-chef` | La personne derrière l'entreprise. Post coupé en deux : portrait d'un chef de face à gauche (Pexels 17655302), aplat bleu Kleak à droite : « Sur votre site, vos clients voient qui les attend avant de *venir.* » Story : photo en haut, aplat en bas | Écartée (Edgar, 26/10) |
+| z | `z-carnet-fleuriste` | Les demandes arrivent sans interrompre le travail. Photo plein cadre d'une fleuriste qui lit son carnet (Pexels 5409734), texte blanc en bas sur dégradé sombre : « Vos clients vous écrivent depuis votre site. Vous répondez quand vous avez un *moment.* » Source : fiche, « chaque demande arrive directement dans votre boîte mail » | Écartée (Edgar, 26/10) |
+
+Écarté volontairement : toute demande précise dans la bulle de X (devis, réservation) qui
+exclurait des métiers, tout nom, toute interface d'appel, l'écran de l'ordinateur de la photo X
+(recadré, seul un bord du dos reste à droite), les noms de métier dans les accroches, tout délai
+de réponse et la réponse automatique sur Z (option payante).
+
+### Finalisation de v, w et x (26/10/2026)
+
+Retenues par Edgar : `v-metier-atelier`, `w-metier-barbier` (série 8) et `x-appel-bulle`
+(série 8 bis). Y et Z écartées : code commenté, PNG gardés. Story 9:16 rendue pour chacune
+(`node build.mjs v w x`), composition déjà codée, rien recomposé. Seule retouche : une ombre
+portée légère sous « Photo d'illustration » de V et sous la ligne de marque de X, pour qu'elles
+restent lisibles sur la photo (posts et stories).
+
+- Contrôle des zones : `node _zones-story.mjs v w x`. Rien sous la ligne des 400 px ni dans la
+  bande des 250 px. Dernier texte : mention de V à 1450 px, mention de W à 1440 px, ligne de
+  marque de X à 1380 px. Sous la ligne, il n'y a que de la photo (V, X) ou du fond (W).
+- Posts revérifiés sur `node _feed.mjs v w x`.
+- **Dépôt dans le hub** (`POST /api/intake/creatives`, méthode du README) : les PNG font entre
+  5,4 et 8,5 Mo (photos plein cadre et grain), au-dessus de la limite de 4 Mo. Déposés en
+  **JPEG qualité 92, mêmes dimensions** (2160x2700 et 2160x3840), copies dans `~/Downloads/`
+  (`<nom>-post.jpg`, `<nom>-story.jpg`). 201 pour les six, noms de base `v-metier-atelier`,
+  `w-metier-barbier`, `x-appel-bulle`, formats 4:5 et 9:16. Les PNG de `rendus/` restent la
+  source.
+
+## Série 8 (26/10/2026) : moins tech, plus orientée PME, DA claire
+
+Tâche de la to-do d'Edgar (Prospection) : « Nouvelles créas moins tech, plus orientées PME ».
+Des gens au travail dans leur métier, une phrase, rien d'autre : aucun écran, aucune interface,
+aucun mockup, aucune carte en verre. **DA claire** (fond crème `#F7F4EE` vers `#F1ECE3`, grain
+léger, encre `#17181D`, un mot en Instrument Serif italique bleu Kleak), pensée pour la future
+landing page en thème clair. Briques dans `build.mjs` : `fondClair`, `TITRE_CLAIR`,
+`italiqueBleu`, `marqueClaire`, `photoCarte`, `mentionPhoto`, `JPG`. L'orientation PME passe
+par les photos, jamais par les mots. Mention « Photo d'illustration » sur les trois, pour qu'on
+ne prenne pas ces personnes pour des clients Kleak. Posts rendus, stories codées, ni rendues ni
+contrôlées.
+
+- **Photos** : la recherche Pexels est bloquée en automatique (403, contrôle anti-robot), et les
+  aperçus rawpixel sont filigranés. Source retenue : photos **Unsplash d'avant 2017, licence
+  CC0**, hébergées sur Wikimedia Commons (licence vérifiée sur chaque page Commons), copiées dans
+  `assets/personnes/` (réduites à 3000 px de large) :
+  - U : `unsplash-MhOoD_h90ks.jpg`, Joanna Boj, https://commons.wikimedia.org/wiki/File:Cook_in_a_caf%C3%A9_(Unsplash).jpg
+  - V : `unsplash-iXV0i4Wo4yc.jpg`, Igor Ovsyannykov, https://commons.wikimedia.org/wiki/File:Craft_Workshop_(Unsplash).jpg
+  - W : `unsplash-m4Pd_e-4zKs.jpg`, Phùng Hải, https://commons.wikimedia.org/wiki/File:Head_shaved_by_barber_(Unsplash).jpg
+- Planche de la série : `node _feed.mjs u v w` → `_planche-selection.png`.
+
+| Id | Fichier | Angle | Statut |
+|---|---|---|---|
+| u | `u-metier-cafe` | Restauration, des clients qui viennent : « Pendant que vous travaillez, votre site donne envie de venir vous *voir.* » Photo en carte arrondie : un cuisinier de dos derrière le comptoir d'un café | Écartée (Edgar, 26/10), motif non précisé. Code commenté, PNG gardé mais inutilisé |
+| v | `v-metier-atelier` | Artisan, des appels : « Un site qui montre votre travail, pour que vos clients vous *appellent.* » Photo à fond perdu sur le bas : les mains d'un menuisier qui trace sur une planche | **Retenue** (Edgar, 26/10). Post et story rendus, story contrôlée, déposés dans le hub |
+| w | `w-metier-barbier` | Service de proximité, tout au même endroit : « Un site où vos clients trouvent vos services, vos avis et votre *numéro.* » Photo en tirage (bord blanc, ombre, légère rotation) : un barbier au travail. Rubriques reprises de la fiche (One page : présentation, services, avis, zone, contact) | **Retenue** (Edgar, 26/10). Post et story rendus, story contrôlée, déposés dans le hub |
+
+Écarté volontairement : « PME », « TPE », « artisans », « restaurant », « chantier » dans les
+accroches ; tout prix, délai ou chiffre ; « horaires » et « prix » sur W (pas dans la liste de la
+fiche) ; toute promesse d'être trouvé sur Google ; toute réservation en ligne (hors offre) ;
+« savoir-faire » (sonne publicité).
+
 ## Série 7 (24/10/2026) : sans prix, après le test de la série 6
 
 Décision d'Edgar le 24/10 : **plus aucun prix dans les créas de cette campagne**. La pub mène à

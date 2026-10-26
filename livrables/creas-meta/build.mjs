@@ -272,6 +272,28 @@ const PAPIER = `background:
 const lignesGrises = (largeurs, h, gap, op = .1) => `<div style="display:flex;flex-direction:column;gap:${gap}px;">
   ${largeurs.map((w) => `<div style="height:${h}px;width:${w}%;border-radius:4px;background:rgba(40,34,26,${op});"></div>`).join('')}</div>`;
 
+// --- Briques de la DA claire « métiers » (série 8, 26/10/2026) -------------------
+// Pour une landing page en thème clair : fond crème chaud, encre presque noire, un mot
+// en Instrument Serif italique bleu Kleak. Mêmes polices que la DA fine (FONTS_FIN).
+const JPG = (f) => `data:image/jpeg;base64,${b64(f)}`;
+const TITRE_CLAIR = `font-family:'Inter Tight',sans-serif;font-weight:600;letter-spacing:-.022em;color:#17181D;`;
+const italiqueBleu = (mot) => `<span style="font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;letter-spacing:0;font-size:1.1em;color:${T.bleu};">${mot}</span>`;
+const fondClair = (fmt) => `${STYLE_FIN}
+  <div style="position:absolute;inset:0;background:
+    radial-gradient(${fmt.W * .9}px ${fmt.W * .55}px at 92% 0%, rgba(15,47,209,.06), transparent 70%),
+    linear-gradient(180deg,#F7F4EE 0%,#F1ECE3 100%);"></div>
+  <div class="grain" style="position:absolute;inset:0;opacity:.55;"></div>`;
+const marqueClaire = (story) => `
+  <div style="display:flex;align-items:center;gap:14px;font-family:Manrope;font-weight:600;
+    font-size:${story ? 24 : 22}px;color:rgba(23,24,29,.72);">${icone(story ? 44 : 40)}Kleak Agency</div>`;
+const photoCarte = (fmt, f, x, top, w, h, pos, taille = 'cover') => `
+  <div style="position:absolute;left:${x}px;top:${top}px;width:${w}px;height:${h}px;border-radius:28px;overflow:hidden;
+    box-shadow:0 30px 60px rgba(60,44,24,.18), 0 6px 14px rgba(60,44,24,.1);">
+    <div style="position:absolute;inset:0;background:url(${JPG(f)}) ${pos} / ${taille} no-repeat;"></div>
+  </div>`;
+const mentionPhoto = (x, top, story) => `<div style="position:absolute;left:${x}px;top:${top}px;font-family:Manrope;
+  font-weight:500;font-size:${story ? 22 : 20}px;color:rgba(23,24,29,.45);">Photo d'illustration</div>`;
+
 // ---------------------------------------------------------------------------
 // LES CRÉAS
 // ---------------------------------------------------------------------------
@@ -1517,6 +1539,221 @@ const CREAS = {
     },
   },
 
+  // ---------------------------------------------------------------------------
+  // Série 8 (26/10/2026) : « moins tech, plus orientée PME ». Commande de la to-do
+  // d'Edgar. Des gens au travail dans leur métier, une phrase, rien d'autre : aucun
+  // écran, aucune interface, aucun mockup, aucune carte en verre. DA claire (fond
+  // crème), pensée pour une landing page en thème clair. L'orientation PME passe par
+  // les photos, jamais par les mots (ni « PME », ni « TPE », ni « artisans »).
+  // Photos : Unsplash d'avant 2017, sous licence CC0, récupérées sur Wikimedia
+  // Commons (fichiers « (Unsplash) », licence vérifiée sur la page Commons), copiées
+  // dans assets/personnes/. Mention « Photo d'illustration » sur chaque créa, pour
+  // qu'on ne prenne pas ces personnes pour des clients Kleak.
+  // Aucun prix (décision du 26/10), aucun délai, aucun chiffre.
+  // ---------------------------------------------------------------------------
+
+  /* ÉCARTÉE (Edgar, 26/10) : U non retenue, v et w gardées. PNG gardé mais inutilisé.
+  // U. Restauration. Bénéfice : des clients qui viennent. Photo : un cuisinier au
+  // travail derrière le comptoir d'un café (Joanna Boj, Unsplash MhOoD_h90ks, CC0 via
+  // Commons « Cook in a café (Unsplash).jpg »). Photo en carte arrondie sous l'accroche.
+  // ÉCARTÉ VOLONTAIREMENT : « en cuisine » ou « restaurant » dans l'accroche (le métier
+  // est dans la photo), toute promesse d'être trouvé sur Google, toute réservation en
+  // ligne (hors offre).
+  u: {
+    key: 'u-metier-cafe',
+    fonts: FONTS_FIN,
+    html: (fmt) => {
+      const story = fmt.key === 'story';
+      const L = story
+        ? { marque: 200, titre: 300, titrePx: 70, photo: 640, photoH: 760, mention: 1430, x: 84, pos: '22% 45%', taille: 'auto 125%' }
+        : { marque: 92, titre: 186, titrePx: 62, photo: 460, photoH: 760, mention: 1252, x: 72, pos: '24% 42%', taille: 'auto 128%' };
+      return `
+      ${fondClair(fmt)}
+      <div style="position:absolute;left:${L.x + 10}px;top:${L.marque}px;">${marqueClaire(story)}</div>
+      <div style="position:absolute;left:${L.x + 10}px;right:${L.x + 40}px;top:${L.titre}px;${TITRE_CLAIR}
+        font-size:${L.titrePx}px;line-height:1.1;">Pendant que vous travaillez, votre site donne envie de venir vous ${italiqueBleu('voir.')}</div>
+      ${photoCarte(fmt, 'assets/personnes/unsplash-MhOoD_h90ks.jpg', L.x, L.photo, fmt.W - 2 * L.x, L.photoH, L.pos, L.taille)}
+      ${mentionPhoto(L.x + 10, L.mention, story)}`;
+    },
+  },
+
+  */
+  // RETENUE (Edgar, 26/10).
+  // V. Artisan. Bénéfice : des appels. Photo : les mains d'un menuisier qui travaille
+  // une planche (Igor Ovsyannykov, Unsplash iXV0i4Wo4yc, CC0 via Commons « Craft
+  // Workshop (Unsplash).jpg »). Photo à fond perdu sur le bas de la créa.
+  // ÉCARTÉ VOLONTAIREMENT : « artisan », « chantier », « savoir-faire » (le métier est
+  // dans la photo, et « savoir-faire » sonne publicité), tout nombre d'appels.
+  v: {
+    key: 'v-metier-atelier',
+    fonts: FONTS_FIN,
+    html: (fmt) => {
+      const story = fmt.key === 'story';
+      const L = story
+        ? { marque: 200, titre: 300, titrePx: 70, photo: 640, mention: 1450, x: 90, pos: '45% 55%' }
+        : { marque: 92, titre: 186, titrePx: 62, photo: 470, mention: 1290, x: 82, pos: '45% 60%' };
+      // La photo descend jusqu'en bas, y compris sur la story : sous la ligne des 400 px
+      // il n'y a que de l'image, la mention reste au-dessus (1450 < 1520).
+      return `
+      ${fondClair(fmt)}
+      <div style="position:absolute;left:${L.x}px;top:${L.marque}px;">${marqueClaire(story)}</div>
+      <div style="position:absolute;left:${L.x}px;right:${L.x + 40}px;top:${L.titre}px;${TITRE_CLAIR}
+        font-size:${L.titrePx}px;line-height:1.1;">Un site qui montre votre travail, pour que vos clients vous ${italiqueBleu('appellent.')}</div>
+      <div style="position:absolute;left:0;right:0;top:${L.photo}px;bottom:0;overflow:hidden;">
+        <div style="position:absolute;inset:0;background:url(${JPG('assets/personnes/unsplash-iXV0i4Wo4yc.jpg')}) ${L.pos} / cover no-repeat;"></div>
+        <div style="position:absolute;inset:0;background:linear-gradient(180deg, transparent 70%, rgba(10,10,12,.4) 100%);"></div>
+      </div>
+      <div style="position:absolute;left:${L.x}px;top:${L.mention}px;font-family:Manrope;font-weight:500;
+        font-size:${story ? 22 : 20}px;color:rgba(255,255,255,.85);text-shadow:0 1px 8px rgba(0,0,0,.6);">Photo d'illustration</div>`;
+    },
+  },
+
+  // RETENUE (Edgar, 26/10).
+  // W. Commerce de service. Bénéfice : les clients trouvent ce qu'ils cherchent et
+  // vous joignent. Photo : un barbier au travail (Phùng Hải, Unsplash m4Pd_e-4zKs, CC0
+  // via Commons « Head shaved by barber (Unsplash).jpg »), présentée en tirage photo
+  // (bord blanc, ombre, légère rotation), seul objet de la créa.
+  // D'OÙ ÇA VIENT : fiche offre, One page, « 1 page qui réunit tout : présentation,
+  // services, avis, zone d'intervention, contact ». L'accroche reprend trois de ces
+  // rubriques.
+  // ÉCARTÉ VOLONTAIREMENT : horaires et prix dans l'accroche (pas dans la liste de la
+  // fiche), « coiffeur » ou « salon », la note Google (une idée par créa).
+  w: {
+    key: 'w-metier-barbier',
+    fonts: FONTS_FIN,
+    html: (fmt) => {
+      const story = fmt.key === 'story';
+      const L = story
+        ? { marque: 200, titre: 300, titrePx: 70, tirage: 700, tirageW: 860, imgH: 620, mention: 1440, x: 90, pos: '40% 40%' }
+        : { marque: 92, titre: 186, titrePx: 62, tirage: 470, tirageW: 860, imgH: 640, mention: 1262, x: 82, pos: '40% 40%' };
+      const bord = 22;
+      return `
+      ${fondClair(fmt)}
+      <div style="position:absolute;left:${L.x}px;top:${L.marque}px;">${marqueClaire(story)}</div>
+      <div style="position:absolute;left:${L.x}px;right:${L.x + 40}px;top:${L.titre}px;${TITRE_CLAIR}
+        font-size:${L.titrePx}px;line-height:1.1;">Un site où vos clients trouvent vos services, vos avis et votre ${italiqueBleu('numéro.')}</div>
+      <div style="position:absolute;left:${(fmt.W - L.tirageW) / 2}px;top:${L.tirage}px;width:${L.tirageW}px;
+        padding:${bord}px;background:#FDFCF9;border-radius:6px;transform:rotate(-2.2deg);
+        box-shadow:0 40px 70px rgba(60,44,24,.22), 0 8px 18px rgba(60,44,24,.14), inset 0 0 0 1px rgba(0,0,0,.04);">
+        <div style="height:${L.imgH}px;border-radius:2px;background:url(${JPG('assets/personnes/unsplash-m4Pd_e-4zKs.jpg')}) ${L.pos} / cover no-repeat;"></div>
+      </div>
+      ${mentionPhoto(L.x, L.mention, story)}`;
+    },
+  },
+
+  // ---------------------------------------------------------------------------
+  // Série 8 bis (26/10/2026) : après le retour d'Edgar (v et w retenues, u écartée),
+  // 3 créas complètement différentes de u, v, w : autres angles, autres mises en page,
+  // plus de « photo + phrase sur fond crème ». Même cadre : patrons au travail, bénéfice
+  // concret, aucun écran, aucun prix, ni « PME », ni « TPE », ni « artisans ».
+  // Photos Pexels (licence Pexels : usage commercial gratuit, attribution non
+  // obligatoire), téléchargées par le CDN images.pexels.com, copiées dans
+  // assets/personnes/. Les séances de Y et Z sont celles des photos de la landing page
+  // (chef 17655298, fleuriste 5409710), avec d'autres images : la pub et la page se
+  // ressemblent.
+  // ---------------------------------------------------------------------------
+
+  // RETENUE (Edgar, 26/10), post et story déposés dans le hub.
+  // X. L'appel qui arrive grâce au site. Photo plein cadre d'une patronne de café au
+  // téléphone, qui rit (Pexels 10375889, même séance que la photo de droite de R), et
+  // une bulle blanche avec ce que dit la personne au bout du fil. La bulle est
+  // l'accroche. Ligne de marque en bas : on comprend que c'est une agence de sites.
+  // ÉCARTÉ VOLONTAIREMENT : toute demande précise (devis, réservation) qui exclurait
+  // des métiers, tout nom, toute interface d'appel (écran, bouton décrocher), l'écran
+  // de l'ordinateur (seul le dos est dans la photo, recadré à gauche).
+  x: {
+    key: 'x-appel-bulle',
+    fonts: FONTS_FIN,
+    html: (fmt) => {
+      const story = fmt.key === 'story';
+      const L = story
+        ? { bulle: 250, bulleW: 820, bullePx: 60, marque: 1380, x: 90, pos: '22% 46%', taille: 'auto 112%' }
+        : { bulle: 110, bulleW: 830, bullePx: 56, marque: 1210, x: 80, pos: '8% 52%', taille: '132% auto' };
+      return `
+      <div style="position:absolute;inset:0;background:url(${JPG('assets/personnes/pexels-10375889.jpg')}) ${L.pos} / ${L.taille} no-repeat;"></div>
+      <div style="position:absolute;inset:0;background:linear-gradient(180deg, rgba(8,9,12,.18) 0%, transparent 35%, transparent 70%, rgba(8,9,12,.7) 100%);"></div>
+      <div style="position:absolute;left:${L.x}px;top:${L.bulle}px;width:${L.bulleW}px;">
+        <div style="position:relative;background:#FFFFFF;border-radius:${story ? 46 : 42}px;padding:${story ? '44px 50px 48px' : '40px 46px 44px'};
+          box-shadow:0 30px 60px rgba(0,0,0,.28);">
+          <div style="${TITRE_CLAIR} font-size:${L.bullePx}px;line-height:1.12;">« Bonjour, j'ai vu votre site internet, je voudrais un ${italiqueBleu('renseignement.')} »</div>
+          <svg style="position:absolute;left:120px;bottom:-34px;" width="70" height="40" viewBox="0 0 70 40"><path d="M0 0 H70 L18 40 Z" fill="#FFFFFF"/></svg>
+        </div>
+      </div>
+      <div style="position:absolute;left:${L.x}px;right:${L.x}px;top:${L.marque}px;display:flex;align-items:center;justify-content:space-between;text-shadow:0 1px 10px rgba(0,0,0,.55);">
+        <div style="display:flex;align-items:center;gap:16px;font-family:Manrope;font-weight:600;font-size:${story ? 28 : 26}px;color:#fff;">
+          ${icone(story ? 54 : 50)}<span>Kleak Agency <span style="color:rgba(255,255,255,.7);font-weight:500;">· Création de sites internet</span></span></div>
+        <div style="font-family:Manrope;font-weight:500;font-size:${story ? 20 : 18}px;color:rgba(255,255,255,.6);">Illustration</div>
+      </div>`;
+    },
+  },
+
+  /* ÉCARTÉES (Edgar, 26/10) : Y et Z non retenues, motif non précisé. PNG gardés mais inutilisés.
+  // Y. La personne derrière l'entreprise. Mise en page coupée en deux : à gauche, le
+  // portrait d'un chef de face (Pexels 17655302, séance de la photo chef de la landing
+  // page) ; à droite, un aplat bleu Kleak avec l'accroche en blanc. Bénéfice : des
+  // clients qui viennent en sachant qui les reçoit.
+  // ÉCARTÉ VOLONTAIREMENT : « cuisine », « restaurant », « food truck » (le métier est
+  // dans la photo), toute promesse de confiance chiffrée, tout avis.
+  y: {
+    key: 'y-portrait-chef',
+    fonts: FONTS_FIN,
+    html: (fmt) => {
+      const story = fmt.key === 'story';
+      const L = story
+        ? { split: 1080, photoH: 900, marque: 980, titre: 1080, titrePx: 66, mention: 1440, x: 80 }
+        : { split: 520, marque: 92, titre: 470, titrePx: 60, mention: 1262, x: 572 };
+      // Post : photo à gauche (520 px), aplat à droite. Story : photo en haut, aplat en bas
+      // (une colonne de 540 px serait trop étroite pour l'accroche à cette taille).
+      const photo = story
+        ? `<div style="position:absolute;left:0;top:0;width:1080px;height:${L.photoH}px;background:url(${JPG('assets/personnes/pexels-17655302.jpg')}) 46% 30% / cover no-repeat;"></div>`
+        : `<div style="position:absolute;left:0;top:0;width:${L.split}px;height:${fmt.H}px;background:url(${JPG('assets/personnes/pexels-17655302.jpg')}) 46% 30% / auto 118% no-repeat;"></div>`;
+      const fond = story
+        ? `<div style="position:absolute;left:0;right:0;top:${L.photoH}px;bottom:0;background:linear-gradient(170deg,${T.bleu} 0%,#0A23A8 100%);"></div>`
+        : `<div style="position:absolute;left:${L.split}px;right:0;top:0;bottom:0;background:linear-gradient(170deg,${T.bleu} 0%,#0A23A8 100%);"></div>`;
+      return `
+      ${photo}${fond}
+      <div style="position:absolute;left:${L.x}px;top:${L.marque}px;display:flex;align-items:center;gap:14px;font-family:Manrope;
+        font-weight:600;font-size:${story ? 24 : 22}px;color:rgba(255,255,255,.85);">
+        <div style="width:${story ? 44 : 40}px;height:${story ? 44 : 40}px;border-radius:10px;background:#fff;display:flex;align-items:center;justify-content:center;">
+          <span style="font-family:'Inter Tight';font-weight:600;color:${T.bleu};font-size:${story ? 26 : 24}px;">K</span></div>Kleak Agency</div>
+      <div style="position:absolute;left:${L.x}px;right:${story ? 80 : 60}px;top:${L.titre}px;font-family:'Inter Tight',sans-serif;font-weight:600;
+        letter-spacing:-.022em;color:#fff;font-size:${L.titrePx}px;line-height:1.1;">
+        Sur votre site, vos clients voient qui les attend avant de ${italique('venir.')}</div>
+      <div style="position:absolute;left:${L.x}px;top:${L.mention}px;font-family:Manrope;font-weight:500;
+        font-size:${story ? 22 : 20}px;color:rgba(255,255,255,.6);">Photo d'illustration</div>`;
+    },
+  },
+
+  // Z. Les demandes arrivent sans interrompre le travail. Photo plein cadre d'une
+  // fleuriste qui lit son carnet à sa table de travail (Pexels 5409734, séance de la
+  // photo fleuriste de la landing page), accroche en blanc dans le tiers bas, sur un
+  // dégradé sombre, comme une couverture de magazine.
+  // D'OÙ ÇA VIENT : fiche offre, « Formulaire de contact : chaque demande arrive
+  // directement dans votre boîte mail ».
+  // ÉCARTÉ VOLONTAIREMENT : « fleuriste », « boutique » dans l'accroche, tout délai de
+  // réponse, toute réponse automatique (option payante, pas dans les formules).
+  z: {
+    key: 'z-carnet-fleuriste',
+    fonts: FONTS_FIN,
+    html: (fmt) => {
+      const story = fmt.key === 'story';
+      const L = story
+        ? { marque: 200, titre: 1090, titrePx: 68, mention: 1450, x: 90, pos: '72% 50%' }
+        : { marque: 80, titre: 900, titrePx: 60, mention: 1262, x: 80, pos: '74% 50%' };
+      return `
+      <div style="position:absolute;inset:0;background:url(${JPG('assets/personnes/pexels-5409734.jpg')}) ${L.pos} / cover no-repeat;"></div>
+      <div style="position:absolute;inset:0;background:linear-gradient(180deg, rgba(10,9,8,.35) 0%, transparent 18%, transparent ${story ? 45 : 48}%, rgba(10,9,8,.78) ${story ? 70 : 78}%, rgba(10,9,8,.86) 100%);"></div>
+      <div style="position:absolute;left:${L.x}px;top:${L.marque}px;display:flex;align-items:center;gap:14px;font-family:Manrope;font-weight:600;
+        font-size:${story ? 24 : 22}px;color:rgba(255,255,255,.9);">${icone(story ? 44 : 40)}Kleak Agency</div>
+      <div style="position:absolute;left:${L.x}px;right:${L.x + 30}px;top:${L.titre}px;font-family:'Inter Tight',sans-serif;font-weight:600;
+        letter-spacing:-.022em;color:#fff;font-size:${L.titrePx}px;line-height:1.1;">
+        Vos clients vous écrivent depuis votre site. Vous répondez quand vous avez un ${italique('moment.')}</div>
+      <div style="position:absolute;left:${L.x}px;top:${L.mention}px;font-family:Manrope;font-weight:500;
+        font-size:${story ? 22 : 20}px;color:rgba(255,255,255,.6);">Photo d'illustration</div>`;
+    },
+  },
+
+  */
 };
 
 // --- Variantes d'accroche (24/10/2026) -----------------------------------------

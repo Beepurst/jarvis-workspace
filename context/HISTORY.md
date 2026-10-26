@@ -9,6 +9,14 @@
 
 ## 2026-10-26
 
+### Landing page claire `/votre-site` et campagne « Kleak | Métiers »
+
+- **Créas** (tâche de la to-do « moins tech, plus orientées PME ») : série 8 en photos de métier sur fond crème, sans écran ni prix, jamais « PME » dans l'accroche. Retenues : **v** (menuisier), **w** (barbier), **x** (bulle « Bonjour, j'ai vu votre site internet… ») ; u, y, z écartées. Posts et stories dans le hub (en JPEG, les PNG dépassent 4 Mo).
+- **Landing page claire `/votre-site`** construite dans Framer d'après une maquette HTML validée puis des sections de la bibliothèque choisies par Edgar : hero ciel avec mot « Kleak » lié au défilement, grille de 5 cartes à mini-interfaces et photo centrale, étapes en escalier, comparatif avec interrupteur (testé en ligne), FAQ numérotée, calendrier Cal.com `canal=lp`. Retours d'Edgar intégrés : bulles des étapes jugées « typées IA » retirées, boutons alignés sur ceux de l'accueil (bleu Kleak, taille Small), texte « Un site qui vous amène des clients, quel que soit votre métier ». Publiée par Edgar.
+- **Campagne « Kleak | Métiers | 2026-10-26 »** lancée par Edgar : Prospects (formulaire instantané), v w x, 7 € par jour, un seul texte par pub pour garder le visuel story, bouton « En savoir plus ». Choix Prospects plutôt que Trafic : Meta optimise sur le formulaire, la LP Trafic avait fait 98 vues pour 0 RDV.
+- **Campagne Trafic « LP sans prix »** : destination passée de `/site-internet` à `/votre-site` par Edgar.
+- Reste : RDV de test de bout en bout depuis `/votre-site` ; date de fin de « Métiers » à confirmer.
+
 ### Landing page testée avec le trafic des pubs, affichage mobile corrigé
 
 - **Test de bout en bout** : `/site-internet` ouverte en iPhone émulé avec des paramètres de pub factices, faux créneau réservé dans Cal.com. Le hub a créé le compte avec source et canal `lp`, `ad_id` et `ad_name` corrects. Ensuite, réservation annulée dans Cal.com, compte, événements et réceptions supprimés dans Supabase.
