@@ -9,6 +9,11 @@
 
 ## 2026-10-26
 
+### Article SEO de la semaine publié
+
+- **« Prix d'un site vitrine pour une PME : ce qu'il faut payer »** (`/blog/prix-site-vitrine-pme`, requête « prix site vitrine », « prix site vitrine pme » absente des suggestions) écrit par `redacteur-seo`, validé par Edgar et publié dans la collection Framer « Articles » le 26/10. 5 articles en ligne. Le chiffre de La Fabrique du Net (médiane 6 000 € pour une PME, 1 312 projets) n'a pas pu être lu sur la page (403) : gardé par décision d'Edgar.
+- **Rédaction des textes incluse** ajoutée à l'article et à `livrables/offre/fiche-offre.md` (« contenus fournis par vous » remplacé : textes rédigés par Kleak ou repris de ceux du client, logo et photos fournis par le client), alignée sur la décision du 24/10.
+
 ### Landing page claire `/votre-site` et campagne « Kleak | Métiers »
 
 - **Créas** (tâche de la to-do « moins tech, plus orientées PME ») : série 8 en photos de métier sur fond crème, sans écran ni prix, jamais « PME » dans l'accroche. Retenues : **v** (menuisier), **w** (barbier), **x** (bulle « Bonjour, j'ai vu votre site internet… ») ; u, y, z écartées. Posts et stories dans le hub (en JPEG, les PNG dépassent 4 Mo).

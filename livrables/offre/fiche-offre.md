@@ -111,7 +111,7 @@ Les avis sont demandés à tous vos clients, sans remise ni cadeau en échange, 
 
 1. **Un appel de 30 minutes** pour comprendre votre activité et vos objectifs.
 2. **Un devis** à prix fixe, valable 30 jours.
-3. **À la signature** : acompte de 50 % (ou premier versement si vous payez en 6 fois), et vous recevez un questionnaire en ligne (15 minutes). Vous y décrivez vos goûts (ambiance, couleurs, styles d'écriture, sites que vous aimez) et vous y déposez vos contenus (logo, photos, textes).
+3. **À la signature** : acompte de 50 % (ou premier versement si vous payez en 6 fois), et vous recevez un questionnaire en ligne (15 minutes). Vous y décrivez vos goûts (ambiance, couleurs, styles d'écriture, sites que vous aimez) et vous y déposez vos contenus (logo, photos, et vos textes si vous en avez déjà).
 4. **Une planche de direction** sous 48 heures : la structure de votre site, les couleurs, les polices et les photos retenues, sur une seule page. Vous validez ou vous corrigez avant qu'on construise quoi que ce soit.
 5. **Formule Pro** : nous construisons d'abord le haut de votre page d'accueil, sur ordinateur et sur téléphone. Vous validez le style sur du vrai, puis nous réalisons le reste.
 6. **Votre site complet** à la date annoncée, à consulter directement sur votre téléphone, puis les retouches prévues dans votre formule.
@@ -123,7 +123,7 @@ Le délai de livraison démarre à la réception du questionnaire complet et du 
 
 ## Bon à savoir
 
-- **Les contenus sont fournis par vous** (textes, photos, logo). Le délai démarre à leur réception.
+- **Les textes sont rédigés par nous**, à partir de vos réponses au questionnaire, ou repris des vôtres si vous les avez déjà. **Le logo et les photos sont fournis par vous.** Le délai démarre à leur réception.
 - **Ce qui n'est pas compris** : boutique en ligne, espace client, prise de rendez-vous en ligne, traduction, photos professionnelles, et toute demande hors de la formule choisie. Tout cela reste possible, sur devis.
 - **L'hébergement est compris dans la maintenance.** Sans maintenance, le site est mis en ligne sur votre propre compte, dont l'abonnement est réglé par vous (nous vous indiquons le montant dans le devis).
 - **Le nom de domaine** est à votre nom.

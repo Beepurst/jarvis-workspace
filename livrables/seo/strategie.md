@@ -89,8 +89,11 @@ n'est connu avant publication**, et l'agent n'en cite jamais un.
 - Statuts d'un article dans `sujets.md` : `à écrire` → `à relire` → `validé` → `publié`.
 - L'agent rédige, Edgar relit dans la conversation. Rien n'est publié sans sa validation.
 - **Publication** : par la session principale de Claude Code, avec la skill `framer`, dans la
-  collection Blog du CMS Framer de kleakagency.fr. Débloquée le 22/10 (IONOS réglé). À la première publication, relever les
-  champs de la collection Blog et les noter ici.
+  collection **« Articles »** du CMS Framer de kleakagency.fr (projet « Kleak Agency New »), pages
+  `/blog` et `/blog/<slug>`. Champs : Titre (= `titre_seo`, la page affiche « Titre | Kleak Agency »),
+  Date, Catégorie (Prix, Paiement, Choisir son site), Image (photo libre de droits en 16:9),
+  Description (= `description`, sert de meta description), Temps de lecture (minutes), Contenu
+  (HTML sans le titre H1, tableaux dans `<figure>`). Puis publier le site et vérifier la page en ligne.
 
 ## Mesure
 
