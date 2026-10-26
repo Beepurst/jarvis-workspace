@@ -9,6 +9,12 @@
 
 ## 2026-10-26
 
+### Landing page testée avec le trafic des pubs, affichage mobile corrigé
+
+- **Test de bout en bout** : `/site-internet` ouverte en iPhone émulé avec des paramètres de pub factices, faux créneau réservé dans Cal.com. Le hub a créé le compte avec source et canal `lp`, `ad_id` et `ad_name` corrects. Ensuite, réservation annulée dans Cal.com, compte, événements et réceptions supprimés dans Supabase.
+- **Défaut trouvé** : en mobile, la section « réalisations » faisait 1280 px de large, la page était dézoomée à 47 % sur téléphone (et débordait aussi sur tablette). C'était le cas depuis la mise en ligne de la LP le 24/10. Largeur passée à 100 %, marges du titre réduites, décor de « services » recalé d'1 px ; publié, contrôlé en ligne (iPhone et iPad à 100 %).
+- **Hub** : le téléphone saisi dans Cal.com et la campagne (`utm_campaign`) n'étaient pas gardés sur le compte créé par une réservation, donc pas de rappel WhatsApp du RDV pour les leads de la LP. Corrigé (branche `lp-telephone`, fusionnée par Edgar), en production le 26/10.
+
 ### Bilan des pubs à J+3, plus aucun prix affiché
 
 - **Bilan** (hub, Meta, GA4) : 45,87 € sur J K D (originale et copie) et la LP sans prix, 1 lead (J, budget sous 700 €, désinscrit en 22 s), 0 RDV. Le frein est après le clic : 30 clics lien pour 1 lead sur le formulaire, 98 vues de `/site-internet` pour 0 RDV. J K D diffusée à 100 % en Stories (CPM 35 à 69 €), la LP surtout en Reels Instagram. Rien ne prouve que le prix bloque, la LP sans aucun prix faisant 0 RDV.
