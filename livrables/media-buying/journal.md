@@ -17,6 +17,94 @@ Format fixe d'une entrée :
 - **Leçon** : ce qu'on retient, avec son niveau de preuve (concluant, tendance, pas concluant)
 ```
 
+## 26/10/2026, placements de la campagne LP sans prix, bilan
+
+- **Campagne** : `Kleak | LP sans prix | 2026-10-26` (id 120251914869350751, Trafic), ensemble
+  `Kleak | LP sans prix | Acquisition` optimisé sur `LANDING_PAGE_VIEWS`, placements Advantage+,
+  pubs `o-site-captivant-s` et `r-avant-apres-demandes`.
+- **Hypothèse** : vérifier qu'Audience Network et Messenger ne mangent pas le budget, et que les
+  clics à 0,13 € deviennent bien des vues de la page.
+- **Chiffres** (API Meta, du 24/10 au 26/10 en fin de journée) : 13,09 €, 2 390 impressions,
+  107 clics sur le lien à 0,12 €, **99 vues de la page de destination (93 % des clics)**.
+  Instagram Reels 11,65 € (89 %), 97 clics, 90 vues ; Facebook Reels 0,65 € ; Facebook
+  in-stream 0,28 € ; Facebook fil 0,16 €, 0 clic ; **Audience Network 0,14 € (1 %), 109
+  impressions, 0 clic** ; **Messenger 0 €, aucune diffusion**. Mobile 13,08 €, ordinateur
+  0,01 €. Par pub : r 12,60 € (105 clics, 97 vues), o 0,49 € (2 clics, 2 vues). RDV `canal=lp` :
+  à lire au bilan.
+- **Décision** : rien dans le Gestionnaire. Exclure Audience Network modifierait le ciblage
+  (risque de relancer l'apprentissage) pour 0,14 €. À revoir si Audience Network dépasse 5 % de
+  la dépense.
+- **Leçon** : placements sains, presque tout le trafic arrive sur la page (concluant sur 107
+  clics). Meta concentre 96 % du budget sur r en Reels Instagram : le test mesure r, pas o
+  contre r (constat). Le critère reste le coût par RDV `canal=lp`.
+
+## 26/10/2026, textes formulaire de o et r pour la campagne J K D, dépôt
+
+- **Campagne** : `Kleak | multi | 2026-10-22 - Copie` (formulaire instantané), où Edgar ajoute
+  `o-site-captivant-s` et `r-avant-apres-demandes` à côté de `j-avis-clients` (J + o + r).
+- **Textes** : version formulaire, offre `kleak`, aucun prix, fin de texte calquée sur J
+  (« Remplissez le formulaire et vous recevez tout de suite un email pour choisir votre
+  créneau d'appel »). 3 textes, 3 titres, 3 descriptions par pub. Déposés le 26/10 :
+  o 201 (4 créés, 5 déjà là), r 201 (4 créés, 5 déjà là), aucun refus. Avertissement seul :
+  textes principaux de plus de 125 caractères (o 221 à 240, r 236 à 251). Les titres et les
+  descriptions « Votre activité, vos objectifs », « Choisissez votre créneau » existaient déjà
+  (dépôt LP du 24/10) ; nouveau : « Noté 4,8/5 sur Google ». Dans le hub, o et r gardent aussi
+  leurs textes LP (« Réservez un appel gratuit… ») : à ne pas utiliser sur le formulaire.
+- **Décision** : Edgar colle ces textes dans o et r de la campagne formulaire.
+- **Leçon** : aucune, dépôt.
+
+## 26/10/2026, J K D et LP sans prix à J+3, bilan
+
+- **Campagnes** :
+  - `Kleak | multi | 2026-10-22` (id 120251881595700751, en pause depuis le 24/10) et sa copie
+    `Kleak | multi | 2026-10-22 - Copie` (id 120251909979950751, active), formulaire
+    instantané, pubs `d-avant-apres-appeler`, `j-avis-clients`, `k-devis-prix-fixe`.
+  - Campagne LP sans prix (Trafic, `/site-internet`), pubs `o-site-captivant-s`,
+    `r-avant-apres-demandes`.
+- **Hypothèse** : J K D, CPL du compte face à `cplCible` 5 € (fin à 49 € ou au 30/10). LP,
+  coût par RDV sans prix face à J K D (fin le 07/11). Ni l'une ni l'autre atteinte.
+- **Chiffres** (lecture hub du 22/10 au 26/10, lecture Meta « ok », aucun avertissement,
+  aucune alerte ouverte ; relevés par la session principale, une relecture du même jour donne
+  46,08 € au total, écart de diffusion en cours de journée) :
+  - Total 45,87 €.
+  - J K D originale (en pause) : 13,31 €, 11 clics lien, 0 lead.
+  - J K D copie : 19,67 €, 19 clics lien, 1 lead (`j-avis-clients`, budget « moins de 700 € »,
+    désinscrit des emails en 22 s).
+  - LP sans prix : 12,89 €, 106 clics lien, 98 vues de page de destination selon Meta, 0 RDV.
+  - Par pub, deux campagnes J K D additionnées : J 15,24 € et 1 lead, K 11,12 € et 0,
+    D 6,62 € et 0. CPM J K D de 35 à 69 €, CTR de 3,4 à 3,7 %. CPL du compte : 1 lead pour
+    32,98 €. RDV 0, coût par RDV indisponible.
+  - Placements (Graph API, insights par placement) : J K D diffusée à 100 % en Stories
+    Facebook et Instagram, alors que les placements de l'ensemble sont automatiques et que les
+    créas ont des règles feed et story correctes. LP : 85 % en Reels Instagram (96 clics),
+    CPC 0,12 €, un peu d'Audience Network.
+- **Diagnostic** : le frein est après le clic, pas l'accroche. 30 clics lien pour 1 lead sur
+  le formulaire, 98 vues de page pour 0 RDV sur la LP. Rien ne prouve que le prix bloque : la
+  seule pub sans prix de J K D (J) a fait le seul lead, mais la LP sans aucun prix fait 0 RDV.
+  Aucune pub n'a atteint le volume minimum (10 leads ou 50 €).
+  - Défauts trouvés sur `/site-internet` : pas de bandeau cookies, donc GA4 à 0 session
+    (consentement impossible) ; ancien pixel 1414385413320328 en code de page, chargé sans
+    consentement. Bandeau ajouté et publié le 26/10 par la session principale. Les vues de
+    page et les RDV de la LP avant le 26/10 se lisent donc avec cette réserve.
+  - Ancien formulaire de l'agence : mêmes deux questions qu'aujourd'hui (site existant,
+    budget). Le formulaire n'est pas ce qui a changé par rapport à l'ancien compte.
+- **Décision** (Edgar, 26/10) :
+  - plus aucun prix dans les pubs, le prix est présenté en RDV comme avant ;
+  - K et D (prix dans l'image) mises en pause, o et r ajoutées à la campagne formulaire à côté
+    de J (J + o + r) ;
+  - la campagne LP continue (pas de pause), avec le bandeau cookies en place ;
+  - l'ancien pixel 1414385413320328 est à retirer à la main par Edgar dans les réglages de la
+    page ;
+  - site : titre du hero de l'accueil passé à « Votre site internet en ligne en 5 jours »,
+    titre et description Google de l'accueil sans prix, `/tarifs` reste en ligne.
+- **Leçon** : **pas concluant** sur les performances (aucune pub au volume minimum, 1 lead,
+  0 RDV). **Tendance faible** : l'accroche prend (CTR lien de 3,4 à 3,7 % sur J K D, CPC
+  0,12 € sur la LP), la perte se fait après le clic. Le prix comme frein n'est ni prouvé ni
+  écarté : la décision « sans prix » est un choix d'Edgar, pas une donnée du compte. La
+  duplication du 24/10 a relancé l'apprentissage, et l'ajout de o et r avec la pause de K et D
+  le relance encore : les chiffres d'avant et d'après le 26/10 ne se comparent pas directement.
+  La diffusion 100 % Stories de J K D est à surveiller sur la nouvelle composition.
+
 ## 24/10/2026, campagne landing page sans prix (o, r), test lancé
 
 - **Campagne** : publiée par Edgar dans le Gestionnaire le 24/10, créée à la main (le hub ne

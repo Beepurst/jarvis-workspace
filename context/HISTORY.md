@@ -7,6 +7,18 @@
 
 ---
 
+## 2026-10-26
+
+### Bilan des pubs à J+3, plus aucun prix affiché
+
+- **Bilan** (hub, Meta, GA4) : 45,87 € sur J K D (originale et copie) et la LP sans prix, 1 lead (J, budget sous 700 €, désinscrit en 22 s), 0 RDV. Le frein est après le clic : 30 clics lien pour 1 lead sur le formulaire, 98 vues de `/site-internet` pour 0 RDV. J K D diffusée à 100 % en Stories (CPM 35 à 69 €), la LP surtout en Reels Instagram. Rien ne prouve que le prix bloque, la LP sans aucun prix faisant 0 RDV.
+- **Décision d'Edgar** : plus de prix dans les pubs, présenté en RDV comme avant. K et D en pause, o et r passées dans la campagne formulaire à côté de J (textes par `media-buyer`). La LP n'est pas mise en pause.
+- **Site** : titre du hero de l'accueil « Votre site internet en ligne en 5 jours », titre et description Google sans prix, publiés. `/tarifs` reste.
+- **`/site-internet`** : pas de bandeau cookies, donc GA4 à 0 visite ; bandeau de l'accueil ajouté et publié. L'ancien pixel `1414385413320328` (code de page, chargé sans consentement) retiré par Edgar et vérifié en ligne.
+- **Campagne formulaire** : bug du hub trouvé, la règle du visuel 4:5 ne nomme aucun placement, Meta excluait donc les fils Facebook et Instagram (J K D à 100 % en Stories depuis le 23/10). o et r recréées avec la bonne règle ; J à corriger dans le Gestionnaire ; J corrigée par Edgar ; **correction du hub en production le 26/10** (règle des fils nommée, test ajouté), à confirmer à la prochaine création réelle depuis le hub.
+- **Campagne LP** : 13,17 €, 99 vues, 0 RDV, 50 % des vues chez les 65 ans et plus, 87 % en Reels Instagram, r a pris 96 % du budget. Âge passé à 22-55 ans par Edgar.
+- L'ancien formulaire de l'agence posait les deux mêmes questions qu'aujourd'hui (site existant, budget).
+
 ## 2026-10-24
 
 ### Campagne landing page sans prix
