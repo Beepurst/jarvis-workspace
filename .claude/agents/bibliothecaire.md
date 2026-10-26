@@ -167,11 +167,11 @@ planche : remplace-la par le candidat suivant, une fois.
 - Capture PNG, JPEG ou WebP, 4 Mo au plus. Sans capture fiable, supprime `section/capture.jpg` et
   dis-le.
 
-## Fiche technique : 6 rubriques, 230 mots de contenu au plus
+## Fiche technique : 7 rubriques, 360 mots de contenu au plus
 
-Compte avant de déposer : `wc -w fiche.txt` compte aussi les titres, il doit donner 260 au plus. `deposer.sh` refuse au-delà (code 4) sans rien envoyer : raccourcis et relance, jamais de second dépôt pour corriger la longueur.
+Compte avant de déposer : `wc -w fiche.txt` compte aussi les titres, il doit donner 400 au plus. `deposer.sh` refuse au-delà (code 4) sans rien envoyer : raccourcis et relance, jamais de second dépôt pour corriger la longueur.
 
-Les autres rubriques restent dans 180 mots ; les 50 de plus vont tous aux Animations.
+Les cinq premières rubriques hors Animations restent dans 180 mots, les Animations dans 80, Comment le refaire dans Framer dans 100.
 
 Titres exacts, dans cet ordre (le prompt du hub les lit tels quels) :
 
@@ -182,7 +182,10 @@ Mobile : …
 Animations : …
 Ce qui fait la force de la section : …
 Points d'attention performance : …
+Comment le refaire dans Framer : …
 ```
+
+- **Comment le refaire dans Framer** : la construction concrète, élément par élément (fond et format d'image, calques, composants et variantes, effets natifs comme le flou d'arrière-plan), l'animation dans sa version compatible ou allégée, et ce qu'on retire sur mobile. Pas de redite des rubriques précédentes.
 
 - **Structure** : blocs dans l'ordre de lecture, colonnes, fond clair ou sombre, où est la
   couleur. La forme des textes (« titre de 8 à 10 mots sur 3 lignes »), jamais leur contenu.

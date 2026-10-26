@@ -13,7 +13,7 @@ set -a; . ./.env; set +a
 HUB_URL="${HUB_URL_ESSAI:-$HUB_URL}"
 CAPTURE="$D/section/capture.jpg"
 [ -f "$D/fiche.txt" ] || { echo "fiche.txt manquant dans $D" >&2; exit 1; }
-MOTS=$(wc -w < "$D/fiche.txt" | tr -d ' '); [ "$MOTS" -le 260 ] || { echo "fiche.txt trop longue : $MOTS mots (260 au plus, titres compris), raccourcis avant de deposer" >&2; exit 4; }
+MOTS=$(wc -w < "$D/fiche.txt" | tr -d ' '); [ "$MOTS" -le 400 ] || { echo "fiche.txt trop longue : $MOTS mots (400 au plus, titres compris), raccourcis avant de deposer" >&2; exit 4; }
 [ -f "$CH" ] || { echo "$CH introuvable" >&2; exit 1; }
 champ() { python3 -c 'import json,sys;v=json.load(open(sys.argv[1])).get(sys.argv[2]);print("" if v is None else (", ".join(v) if isinstance(v,list) else v))' "$CH" "$1"; }
 ARGS=(-sS -o "$D/depot.json" -w "%{http_code}" -H "x-kleak-secret: $BIBLIO_AGENT_SECRET"
