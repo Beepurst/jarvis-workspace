@@ -9,6 +9,11 @@
 
 ## 2026-10-26
 
+### `/votre-site` testée de bout en bout, Cal.com sur l'adresse IONOS
+
+- **Test de réservation** depuis `/votre-site` en iPhone émulé, avec des paramètres de pub factices : page à 390 px sans débordement, calendrier qui reçoit `canal=lp`, `ad_id`, `ad_name` et `utm_*`, compte créé dans le hub en source et canal `lp` avec pub, campagne, téléphone et horaire du RDV. Réservation annulée par l'API Cal.com (annulation reçue par le hub), compte et réceptions supprimés dans Supabase.
+- **Compte Cal.com passé de `kleakagency@gmail.com` à `contact@kleakagency.fr`** par Edgar : second test validé (hôte affiché `contact@kleakagency.fr`, réservation et annulation reçues par le hub), emails reçus dans la boîte IONOS, workflows J-1 et H-1 vérifiés par Edgar. Le hub ne dépend pas de cette adresse.
+
 ### Article SEO de la semaine publié
 
 - **« Prix d'un site vitrine pour une PME : ce qu'il faut payer »** (`/blog/prix-site-vitrine-pme`, requête « prix site vitrine », « prix site vitrine pme » absente des suggestions) écrit par `redacteur-seo`, validé par Edgar et publié dans la collection Framer « Articles » le 26/10. 5 articles en ligne. Le chiffre de La Fabrique du Net (médiane 6 000 € pour une PME, 1 312 projets) n'a pas pu être lu sur la page (403) : gardé par décision d'Edgar.
