@@ -50,6 +50,31 @@ function realisation({ client, metier, desktop, mobile }) {
     ${signe()}`];
 }
 
+// ---------- Gabarit 1 bis : réalisation en carrousel (demande d'Edgar du 28/10 sur s8) ----------
+// Couverture = le gabarit réalisation. Puis une spécificité du site par page : nom du client en
+// petit, phrase en gras (60 px), une phrase d'explication (32 px), et la section réelle du site en
+// capture (coins 10 px, ombre douce). Les captures de sections viennent de _capture-sections.mjs,
+// prix retirés. `visuel` reçoit la page et rend le bloc data-bloc="visuel" entre y = 600 et 1160.
+function realisationCarrousel(r, pages) {
+  const total = pages.length + 1;
+  const imgs = realisation(r);
+  imgs[0] += pagination(1, total);
+  pages.forEach((p, i) => {
+    imgs.push(head(CREME) + `
+    <div style="position:absolute;left:80px;top:90px;font-size:26px;font-weight:500;color:${GRIS};">${esc(r.client)}</div>
+    <div data-bloc="titre" style="position:absolute;left:80px;right:100px;top:150px;font-size:60px;line-height:1.2;font-weight:600;letter-spacing:-.01em;">${p.titre}</div>
+    <div data-bloc="explication" style="position:absolute;left:80px;right:140px;top:${p.hautExplication ?? 380}px;font-size:32px;line-height:1.5;font-weight:500;color:${TEXTE};">${p.explication}</div>
+    ${p.visuel()}
+    ${signe()}${pagination(i + 2, total)}`);
+  });
+  return imgs;
+}
+const OMBRE = 'box-shadow:0 2px 6px rgba(0,0,0,.08),0 20px 50px rgba(0,0,0,.10);';
+// Capture recadrée : `x` et `y` en fraction de l'image source, `zoom` > 1 pour agrandir.
+const section = (f, { top = 620, h = 520, zoom = 1, x = 0, y = 0 } = {}) =>
+  `<div data-bloc="visuel" style="position:absolute;left:80px;right:80px;top:${top}px;height:${h}px;border-radius:10px;overflow:hidden;background:#fff;${OMBRE}">
+    <img src="${capture(f)}" style="position:absolute;left:${-x * 920 * zoom}px;top:0;width:${920 * zoom}px;transform:translateY(${-y * 100}%);"></div>`;
+
 // ---------- Gabarit 2 : avis client (une image) ----------
 // La carte reprend exactement celle de kleakagency.fr. Texte mot pour mot, fautes évidentes seules corrigées.
 function avis({ prenom, nom, entreprise, photo, texte }) {
@@ -233,7 +258,20 @@ export const POSTS = {
   's5-avis-laura': { type: 'avis', images: () => avis(AVIS.laura) },
   's6-realisation-macalyster': { type: 'realisation', images: () => realisation(REALISATIONS.macalyster) },
   's7-avis-aurore': { type: 'avis', images: () => avis(AVIS.aurore) },
-  's8-realisation-frenchies': { type: 'realisation', images: () => realisation(REALISATIONS.frenchies) },
+  // Corrigé le 28/10 à la demande d'Edgar : carrousel qui présente le site et ses spécificités.
+  // Tout ce qui est dit se vérifie sur frenchiesinmaldives.com (relevé le 28/10).
+  's8-realisation-frenchies': { type: 'realisation', images: () => realisationCarrousel(REALISATIONS.frenchies, [
+    { titre: 'Les deux séjours sont présentés côte à côte.', explication: 'Hébergement, repas, activités incluses : les deux cartes suivent le même ordre.',
+      visuel: () => section('frenchies-sejours.png', { h: 500, zoom: 1.25 }) },
+    { titre: 'Le bouton Réserver ouvre WhatsApp.', explication: 'Le message est déjà écrit avec le séjour choisi. Le voyageur n’a plus qu’à l’envoyer.',
+      visuel: () => `
+    <div data-bloc="visuel" style="position:absolute;left:80px;top:640px;width:420px;height:410px;border-radius:10px;overflow:hidden;${OMBRE}">
+      <img src="${capture('frenchies-reserver-mobile.png')}" style="width:420px;display:block;"></div>
+    <div style="position:absolute;left:560px;top:660px;width:440px;font-size:22px;font-weight:600;color:${GRIS_CLAIR};">Message reçu sur WhatsApp</div>
+    <div style="position:absolute;left:560px;top:706px;width:440px;padding:28px 30px;border-radius:18px 18px 18px 4px;background:#fff;border:2px solid ${TRAIT};font-size:27px;line-height:1.45;font-weight:500;color:${NOIR};">Bonjour, je viens du site Frenchies in Maldives et je souhaite réserver le séjour 7&nbsp;jours. Quelles sont les prochaines dates disponibles&nbsp;?</div>` },
+    { titre: 'Les questions d’avant le départ ont leur réponse.', explication: 'Logement, repas, papiers d’entrée, coutumes de l’île : la FAQ de la page d’accueil y répond.',
+      visuel: () => section('frenchies-faq.png', { h: 480, zoom: 1.5, x: 0.333 }) },
+  ]) },
   's9-conseil-accueil': { type: 'conseil', images: () => conseil({
     couverture: 'Ce qu’un visiteur doit pouvoir lire sur votre page&nbsp;d’accueil.',
     pages: [

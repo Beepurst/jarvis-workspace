@@ -136,7 +136,9 @@ if (pb.length) stop(`texte de ${id} refusé : ${pb.join(', ')}.`);
 
 const fichiers = imagesRendues(id);
 if (!fichiers.length) stop(`aucune image dans rendus/${id}/ : lancer d'abord node build.mjs ${id}.`);
-if (ligne.type === 'conseil' ? fichiers.length < 2 || fichiers.length > 10 : fichiers.length !== 1) {
+// Réalisation : une image ou un carrousel (demande d'Edgar du 28/10). Avis : une image.
+if (ligne.type === 'conseil' ? fichiers.length < 2 || fichiers.length > 10
+  : ligne.type === 'realisation' ? fichiers.length < 1 || fichiers.length > 10 : fichiers.length !== 1) {
   stop(`${fichiers.length} image(s) pour un post de type ${ligne.type}.`);
 }
 const contenus = fichiers.map((f) => {

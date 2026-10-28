@@ -26,7 +26,7 @@ Ordre du tableau = ordre de publication. La grille Instagram l'affiche à l'enve
 | s7-avis-aurore | avis | 2026-11-07 12:30 | déposé | 3d862a01-4480-4b2d-9713-c100ca4633e0 | Merci Aurore pour ce retour sur le site de Frenchies in Maldives. |
 | s6-realisation-macalyster | realisation | 2026-11-10 12:30 | déposé | f1c813e6-db81-4d45-baec-6428ecc3be60 | Le site de Mac Alyster, marque parisienne de sacs et de bagages. Les nouveautés et les précommandes sont en tête de la page d'accueil. |
 | s5-avis-laura | avis | 2026-11-12 12:30 | déposé | 6cfab692-f2a1-4b25-ac2a-6c6c278d8c01 | Merci Laura pour ce retour. |
-| s8-realisation-frenchies | realisation | 2026-11-14 12:30 | déposé | 60fc9572-f81a-472e-bd78-f8adcd07929d | Le site de Frenchies in Maldives, voyages en petit groupe sur une île locale des Maldives, en français. Les séjours, les activités et les offres se trouvent depuis le menu. |
+| s8-realisation-frenchies | realisation | 2026-11-14 12:30 | corrigé | 60fc9572-f81a-472e-bd78-f8adcd07929d | Le site de Frenchies in Maldives, voyages en petit groupe sur une île locale des Maldives, en français. Sur la page d'accueil, les deux séjours sont présentés côte à côte et le bouton Réserver ouvre WhatsApp avec un message déjà écrit. La FAQ répond aux questions qu'on se pose avant de partir. |
 | s9-conseil-accueil | conseil | 2026-11-17 12:30 | déposé | 6f015cba-835b-4fca-b46d-f94b34a67d67 | Relisez votre page d'accueil avec ces points en tête. |
 
 Ordre en diagonale : dans la grille à 3 colonnes (le dernier en haut à gauche), les lignes sont s9 s8 s7 / s6 s5 s4 / s3 s2 s1, soit C R A / R A C / A C R. Aucune colonne n'empile le même type, et jamais deux types identiques de suite.
@@ -37,7 +37,7 @@ Ordre en diagonale : dans la grille à 3 colonnes (le dernier en haut à gauche)
 
 Pour ne pas se répéter. À tenir à jour à chaque dépôt.
 
-- **Réalisations** : Accueil Sénior Assistance (s1) ; Mac Alyster (s6) ; Frenchies in Maldives (s8). Mega Content : jamais en réalisation.
+- **Réalisations** : Accueil Sénior Assistance (s1) ; Mac Alyster (s6) ; Frenchies in Maldives (s8, en carrousel de 4 images depuis la correction du 28/10 : séjours côte à côte, réservation par WhatsApp, FAQ). Mega Content : jamais en réalisation.
 - **Avis** : Méliné Grelet, Mac Alyster (s3) ; Aurore Melis, Frenchies in Maldives (5e, id s7) ; Laura Dias, Mega Content (7e, id s5). Après s7, les trois avis réels ont tous été montrés : un nouvel avis ne vient que d'un vrai client.
 - **Sujets de conseils** : le site sur téléphone (numéro visible, texte lisible, page rapide en 4G) (s2) ; la fiche Google (horaires, réponses aux avis, lien vers le site) (s4) ; la page d'accueil (ce que vous faites, où vous intervenez, le contact dans le menu) (s9).
 - **Sujets en réserve** (sans chiffre inventé) : mentions légales et bandeau cookies ; les photos du site (vraies photos plutôt que banque d'images) ; le formulaire de contact (le tester soi-même, savoir où arrivent les messages) ; le nom de domaine et l'adresse email à son nom.
