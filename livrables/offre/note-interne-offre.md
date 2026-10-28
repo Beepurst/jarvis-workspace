@@ -75,4 +75,4 @@ Les sites sont hébergés sur le compte Framer de Kleak, plan Basic par site (10
 - Le nom de l'agence, l'email et le téléphone (champs entre crochets).
 - Le prix de la page supplémentaire (200 €) : proposé, pas encore discuté.
 - CGV de prestation à rédiger : périmètre, Suivi avis (règles sur les avis, accès à la fiche, départ après le 6e versement), retouches, propriété (site à Kleak jusqu'au paiement complet), paiement en 6 fois et suspension en cas d'impayé, retards de contenus, résiliation de la maintenance (sans engagement, préavis de 2 mois, décision du 21/10), transfert du site à l'arrêt de la maintenance.
-- Mention « TVA non applicable, article 293 B du CGI » valable tant que le CA reste sous le seuil de franchise (à vérifier).
+- Mention « TVA non applicable, article 293 B du CGI » valable tant que le CA annuel de l'EI reste sous le seuil de franchise : 37 500 € pour les services en 2026, seuil majoré 41 250 € (à confirmer sur impots.gouv.fr).

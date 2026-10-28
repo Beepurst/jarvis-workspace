@@ -17,6 +17,65 @@ Format fixe d'une entrée :
 - **Leçon** : ce qu'on retient, avec son niveau de preuve (concluant, tendance, pas concluant)
 ```
 
+## 27/10/2026, J K D à 49 €, LP à J+3, o sans diffusion, bilan
+
+- **Campagnes** :
+  - `Kleak | multi | 2026-10-22` (id 120251881595700751, en pause depuis le 24/10) et
+    `Kleak | multi | 2026-10-22 - Copie` (id 120251909979950751, formulaire, fin le 30/10) :
+    J K D jusqu'au 26/10, puis J + o + r (K en pause le 26/10, 0 € le 27/10 ; D 0 € depuis le
+    25/10).
+  - `Kleak | LP sans prix | 2026-10-26` (id 120251914869350751, Trafic) : o et r,
+    `/site-internet` les 24 et 25/10, `/votre-site` depuis le 26/10.
+  - `Kleak | Métiers | 2026-10-26` (id 120251945013110751, formulaire) : v, w, x, à J+1.
+- **Hypothèse** : J K D, CPL du compte face à `cplCible` 5 €, fin à 49 € ou le 30/10. LP, coût
+  par RDV `canal=lp`, fin à J+14 (07/11) ou 98 €. Métiers, pas encore lisible.
+- **Chiffres** (lecture hub du 22/10 au 27/10, le 27/10 jusqu'à 13 h ; lecture Meta « ok »,
+  aucun avertissement, aucune alerte ouverte ; `depenseMois` 71,95 €) :
+  - Test J K D, deux campagnes : **46,17 €** (94 % des 49 €), 1 171 impressions, 35 clics lien,
+    CTR lien 2,99 %, CPC lien 1,32 €, CPM 39,43 €, **1 lead** (J, 24/10, budget « moins de
+    700 € », désinscrit en 22 s, toujours « nouveau lead »), CPL 46,17 €, 0 RDV, coût par RDV
+    indisponible. Par pub : J 16,91 €, 525 impr., 19 clics lien, 1 lead ; K 11,14 €, 253 impr.,
+    9 clics lien, 0 lead ; D 6,62 €, 114 impr., 5 clics lien, 0 lead ; r (formulaire, depuis le
+    26/10) 10,53 €, 243 impr., 2 clics lien, CTR 0,82 %, CPC 3,51 €, 0 lead ; o (formulaire)
+    0,97 €, 36 impr., 0 clic, 0 lead. Depuis le 26/10 (J + o + r) : 15,68 €, 8 clics lien,
+    0 lead.
+  - LP sans prix : 20,78 €, 3 728 impr., 173 clics lien, CTR 4,64 %, CPC 0,12 €, CPM 5,57 €,
+    0 RDV. `/site-internet` (24 et 25/10) : 10,94 €, 88 clics lien. `/votre-site` (26 et 27/10) :
+    9,84 €, 85 clics lien. r 19,90 € (96 %), 168 clics ; o 0,88 €, 409 impr., 5 clics, CPM 2,15 €.
+  - Métiers : 5,00 €, 211 impr., 2 clics lien, CTR 0,95 %, CPM 23,70 €, 0 lead (x 4,12 €,
+    w 0,47 €, v 0,41 €).
+  - GA4 `/votre-site`, 26/10 seulement (27/10 pas encore traité) : 53 sessions venues de
+    Facebook pour 74 clics lien Meta le même jour (72 %, sous-compté par le consentement),
+    9 sessions engagées (17 %). 43 des 53 sont en « referral » (m.facebook.com 35, durée
+    moyenne 3 s, 1 engagée ; facebook.com 8) et 10 seulement en `facebook / paid` : les
+    paramètres UTM n'arrivent pas sur la plupart des visites. `/site-internet` : 0 session
+    Facebook (pas de bandeau avant le 26/10).
+  - Réservations : Cal.com, aucune réservation réelle `canal=lp` depuis le 23/10 (3 réservations
+    de test du 26/10, annulées) ; CRM, aucun compte de source `lp`. Taux de conversion de la
+    page : 0 sur 173 clics lien.
+  - Indisponible : vues de page de destination Meta depuis le 26/10, ventilation par placement
+    (pas lue par le hub, l'agent n'appelle pas l'API Meta), ouvertures du formulaire.
+- **Diagnostic** : J K D a tourné en Stories seules du 23 au 26/10 : le test mesure J K D en
+  Stories, pas en placements automatiques, et la copie du 24/10 garde les anciennes règles (le
+  correctif `regleFils` du 26/10 ne s'applique qu'aux campagnes créées après). L'accroche prend
+  en Stories (CTR lien de J K D 3,70 %), la perte est après le clic : 35 clics lien pour 1 lead.
+  r ne prend pas dans le formulaire (CTR 0,82 % contre 5,06 % en Trafic) : même créa, autre
+  objectif et autres placements, constat sur 243 impressions. o ne reçoit presque rien dans
+  les deux campagnes (1,85 € en 4 jours) : Meta met la dépense sur r dès les premiers clics.
+- **Décision recommandée** (à confirmer par Edgar) : 1. mettre en pause la campagne
+  `Kleak | multi | 2026-10-22 - Copie` une fois 49 € atteints au total des deux campagnes
+  (dans la journée du 27/10) : critère de fin du test atteint, et elle double la campagne
+  Métiers sur le même formulaire et la même audience ; 2. LP et Métiers : rien à changer ;
+  3. vérifier les paramètres d'URL des deux pubs LP après le passage à `/votre-site` ; 4. relever
+  dans le Gestionnaire les vues de page de destination depuis le 26/10 et la ventilation par
+  placement de Métiers et de la copie ; 5. o : vérifier son statut de diffusion, ne rien couper.
+- **Leçon** : **pas concluant** au sens de `regles.md` (aucune pub à 10 leads ni 50 €), mais
+  **tendance nette** sur le test J K D : 1 lead pour 46 € au lieu de la dizaine attendue à 5 €,
+  la perte se fait entre le clic et l'envoi du formulaire, en Stories. LP : **pas concluant**
+  (0 RDV pour 20,78 €, il faut 10 RDV), **tendance faible** : le trafic des Reels est bon
+  marché mais peu engagé (17 % de sessions engagées le 26/10). Un élément peu diffusé (o) n'est
+  pas perdant, il n'a pas été essayé.
+
 ## 26/10/2026, campagne « Kleak | Métiers | 2026-10-26 » (v, w, x), test lancé
 
 - **Campagne** : `Kleak | Métiers | 2026-10-26`, lancée par Edgar depuis le hub. **Objectif Prospects** (formulaire instantané), pas Trafic comme proposé dans l'entrée « test prévu » ci-dessous : Meta optimise sur le formulaire, et la LP Trafic avait fait 98 vues pour 0 RDV. Pubs `v-metier-atelier`, `w-metier-barbier`, `x-appel-bulle`, 7 € par jour. Date de fin : à confirmer par Edgar.

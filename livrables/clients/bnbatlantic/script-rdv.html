@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Script RDV BnbAtlantic</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  @page { size: A4; margin: 16mm 16mm 16mm 16mm; }
+  * { box-sizing: border-box; }
+  body { font-family: Inter, sans-serif; color: #16181d; font-size: 10.2pt; line-height: 1.5; margin: 0; }
+  h1 { font-size: 19pt; margin: 0 0 2px; letter-spacing: -0.01em; }
+  .sous { color: #5b616e; margin: 0 0 14px; }
+  .fiche { display: grid; grid-template-columns: 1fr 1fr; gap: 4px 18px; background: #f4f5f7; border-radius: 10px; padding: 10px 14px; margin-bottom: 14px; font-size: 9.4pt; }
+  .fiche b { color: #5b616e; font-weight: 500; }
+  h2 { font-size: 12pt; margin: 16px 0 6px; display: flex; align-items: baseline; gap: 8px; break-after: avoid; }
+  h2 .t { font-size: 8.5pt; font-weight: 600; color: #0F2FD1; background: #e8ecfd; border-radius: 99px; padding: 1px 8px; }
+  .dire { border-left: 3px solid #0F2FD1; padding: 4px 0 4px 12px; margin: 6px 0; break-inside: avoid; }
+  .dire p { margin: 0 0 4px; }
+  .note { color: #5b616e; font-size: 9.2pt; margin: 4px 0; }
+  ul, ol { margin: 4px 0 6px; padding-left: 18px; }
+  li { margin: 2px 0; }
+  .alerte { background: #fff6e5; border: 1px solid #f1d49a; border-radius: 10px; padding: 8px 12px; margin: 8px 0; break-inside: avoid; font-size: 9.6pt; }
+  table { width: 100%; border-collapse: collapse; font-size: 9.4pt; margin: 6px 0; break-inside: avoid; }
+  th, td { text-align: left; padding: 5px 8px; border-bottom: 1px solid #e3e5e9; vertical-align: top; }
+  th { background: #f4f5f7; font-weight: 600; }
+  .etapes { counter-reset: e; list-style: none; padding: 0; }
+  .etapes li { counter-increment: e; position: relative; padding-left: 26px; margin: 5px 0; }
+  .etapes li::before { content: counter(e); position: absolute; left: 0; top: 1px; width: 18px; height: 18px; border-radius: 50%; background: #0F2FD1; color: #fff; font-size: 8pt; font-weight: 600; display: flex; align-items: center; justify-content: center; }
+  .saut { break-before: page; }
+  .coche li { list-style: "☐  "; }
+</style>
+</head>
+<body>
+
+<h1>Appel découverte : BnbAtlantic</h1>
+<p class="sous">Mercredi 28 octobre 2026, 15h, 30 minutes · Cal Video</p>
+
+<div class="fiche">
+  <div><b>Contact</b> Patrick Gaillard</div>
+  <div><b>Téléphone</b> 07 52 95 26 41</div>
+  <div><b>Site</b> bnbatlantic.com (WordPress)</div>
+  <div><b>Budget déclaré</b> moins de 700 €</div>
+  <div><b>Origine</b> pub Meta « avant / après », formulaire du 27/10</div>
+  <div><b>Visio</b> app.cal.com/video/2zLu5rQKnEo7LrQdePYMkB</div>
+</div>
+
+<p class="note"><b>Ce qu'il faut avoir en tête :</b> BnbAtlantic est un annuaire de chambres d'hôtes sans commission. Il vend aux propriétaires une fiche (190 à 690 € HT) puis un abonnement annuel (79 à 199 € HT). Le site a 33 pages et 21 articles de guides par région, et peu d'hébergements en ligne (surtout « Chez Germaine »). Deux publics : les voyageurs et les hôtes à recruter.</p>
+
+<h2>1. Ouverture <span class="t">2 min</span></h2>
+<div class="dire">
+  <p>« Bonjour Patrick, Edgar de Kleak Agency. Merci d'avoir pris le temps. »</p>
+  <p>« J'ai regardé bnbatlantic.com avant l'appel. Je vous propose de commencer par vous : ce que vous faites, ce qui coince avec le site aujourd'hui. Ensuite je vous dis ce que je ferais et combien ça coûte. Ça vous va ? »</p>
+</div>
+
+<h2>2. Comprendre son activité <span class="t">10 min</span></h2>
+<p class="note">Le laisser parler. Noter ses mots exacts, ils serviront pour le devis et les textes.</p>
+<ul>
+  <li>« Qu'est-ce qui vous a fait cliquer sur la pub ? »</li>
+  <li>« Qu'est-ce qui ne va pas avec le site actuel, selon vous ? »</li>
+  <li>« Combien d'hôtes sont inscrits aujourd'hui ? Combien paient ? »</li>
+  <li>« Ils vous trouvent comment : Google, Facebook, vous les démarchez ? »</li>
+  <li>« Ce qui compte le plus pour vous en ce moment : plus d'hôtes inscrits, ou plus de voyageurs ? »</li>
+  <li>« Qui a fait le site ? Vous le modifiez vous-même ? »</li>
+  <li>« Les articles par région, ils vous amènent du monde ? Vous tenez à les garder ? »</li>
+</ul>
+
+<h2>3. Cadrer le projet <span class="t">5 min</span></h2>
+<ul>
+  <li>« Si on refait quelque chose, c'est quoi la page la plus importante pour vous ? »</li>
+  <li>« Le budget de moins de 700 €, c'est une limite ferme ? »</li>
+  <li>« Vous avez un logo, des photos des hébergements ? »</li>
+  <li>« Vous le voulez pour quand ? »</li>
+  <li>« Qui gère votre nom de domaine ? Vous avez accès au compte, et à l'administration du WordPress ? » <span class="note">(sans accès DNS, pas de mise en ligne)</span></li>
+</ul>
+
+<div class="alerte">
+  <b>Ce qui ne rentre pas dans 700 € :</b> refaire les 33 pages et les 21 articles sur Framer, un annuaire où les hôtes gèrent leur fiche, la réservation ou le paiement en ligne. Si c'est ce qu'il veut, le dire franchement : c'est un autre projet, sur devis, et une migration ratée lui ferait perdre son référencement.
+</div>
+
+<h2>4. Ce que je propose <span class="t">5 min</span></h2>
+<p class="note">Selon ses réponses. Cas le plus probable : il veut plus d'hôtes inscrits.</p>
+<div class="dire">
+  <p>« Vu votre budget, je ne vous conseille pas de tout refaire. Vos articles travaillent pour vous sur Google, on n'y touche pas. »</p>
+  <p>« Ce que je ferais : une page dédiée aux propriétaires, qui explique clairement pourquoi s'inscrire chez vous plutôt que sur Airbnb ou Booking, avec vos tarifs, des avis d'hôtes et un formulaire d'inscription. C'est cette page que vous mettez dans vos pubs et vos messages aux propriétaires. »</p>
+  <p>« C'est notre formule One page : 699 €, livrée en 5 jours ouvrés. Ou en 6 fois, 116,50 € par mois. »</p>
+</div>
+
+<table>
+  <tr><th>Formule</th><th>Prix</th><th>En 6 fois</th><th>Délai</th><th>Maintenance</th></tr>
+  <tr><td>One page</td><td>699 €</td><td>6 × 116,50 €</td><td>5 jours ouvrés</td><td>49 €/mois</td></tr>
+  <tr><td>Essentiel (3 pages)</td><td>999 €</td><td>6 × 166,50 €</td><td>7 jours ouvrés</td><td>90 €/mois</td></tr>
+  <tr><td>Pro (5 pages)</td><td>1 800 €</td><td>6 × 300 €</td><td>10 jours ouvrés</td><td>90 €/mois</td></tr>
+</table>
+<p class="note">Options : page supplémentaire 200 €, automatisation des demandes 400 € (chaque inscription d'hôte enregistrée, alerte, réponse automatique). En 6 fois, la maintenance est obligatoire et le site lui appartient au dernier versement. Sans engagement, préavis de 2 mois. TVA non applicable.</p>
+
+<div class="saut"></div>
+
+<h2>5. Expliquer comment ça se passe <span class="t">5 min</span></h2>
+<div class="dire">
+  <p>« Ça se passe en 7 étapes, et vous savez toujours où on en est. »</p>
+</div>
+<ol class="etapes">
+  <li><b>Cet appel</b>, pour comprendre votre activité et ce que le site doit vous apporter.</li>
+  <li><b>Un devis à prix fixe</b>, valable 30 jours. Pas de surprise ensuite.</li>
+  <li><b>À la signature</b>, vous payez 50 % (ou le premier versement en 6 fois) et vous recevez un questionnaire en ligne, environ 15 minutes. Vous y dites ce que vous aimez (ambiance, couleurs, sites qui vous plaisent) et vous déposez votre logo et vos photos.</li>
+  <li><b>Sous 48 heures, une planche de direction</b> : la structure, les couleurs, les polices et les photos, sur une seule page. Vous validez ou vous corrigez avant qu'on construise quoi que ce soit.</li>
+  <li><b>On écrit les textes</b> à partir de vos réponses, puis on construit le site.</li>
+  <li><b>Le site complet arrive à la date annoncée.</b> Vous le regardez sur votre téléphone, puis on fait la série de retouches prévue.</li>
+  <li><b>Mise en ligne</b> sur votre nom de domaine au paiement du solde. Le site vous appartient. En 6 fois, il est mis en ligne à la livraison et vous appartient au dernier versement.</li>
+</ol>
+<p class="note">Le délai démarre quand on a reçu le questionnaire complet et le premier paiement. Logo et photos fournis par lui, textes écrits par nous. Mentions légales, cookies et RGPD inclus. À la livraison : message de demande d'avis et QR code offerts.</p>
+
+<h2>6. Objections probables</h2>
+<table>
+  <tr><th style="width:34%">Il dit</th><th>Tu réponds</th></tr>
+  <tr><td>« Je voulais refaire tout le site. »</td><td>« C'est faisable, mais pas dans ce budget, et vos articles risquent de perdre leur place sur Google. On commence par la page qui vous rapporte des hôtes, et on voit la suite quand elle a fait ses preuves. »</td></tr>
+  <tr><td>« C'est trop cher. »</td><td>« Il y a le paiement en 6 fois, 116,50 € par mois. Deux hôtes inscrits au pack de base et la page est remboursée. »</td></tr>
+  <tr><td>« Je peux le faire moi-même sur WordPress. »</td><td>« Bien sûr. Ce que vous payez, c'est une page pensée pour convaincre un propriétaire, les textes écrits pour vous, et la livraison en 5 jours. »</td></tr>
+  <tr><td>« Pourquoi pas WordPress ? »</td><td>« On travaille sur Framer : c'est plus rapide à charger et plus simple à modifier. La page vit à côté de votre WordPress, sur inscription.bnbatlantic.com. Votre site et vos articles ne bougent pas. »</td></tr>
+  <tr><td>« Ce ne sera pas la même adresse ? »</td><td>« C'est toujours votre nom de domaine, inscription.bnbatlantic.com, et le bouton "Rejoignez-nous" de votre site y mène. L'ancienne page redirige vers la nouvelle, aucun lien ne casse. »</td></tr>
+  <tr><td>« Je vais réfléchir. »</td><td>« Pas de souci. Je vous envoie le devis aujourd'hui, il est valable 30 jours. Je vous rappelle quand pour en parler ? » Fixer une date.</td></tr>
+</table>
+
+<h2>7. Conclure <span class="t">3 min</span></h2>
+<div class="dire">
+  <p>« Je vous envoie le devis aujourd'hui par email, avec les conditions. Si ça vous va, vous signez en ligne et vous recevez tout de suite le questionnaire. »</p>
+  <p>« Vous préférez payer en une fois ou en 6 fois ? »</p>
+</div>
+<p class="note"><b>Seulement si le courant est passé :</b> « Vos hôtes ont souvent besoin d'un site à eux. Si vous m'en recommandez un qui signe, vous touchez 15 % du prix du site, 105 € à 270 € selon la formule. »</p>
+
+<h2>Après l'appel</h2>
+<ul class="coche">
+  <li>Importer la transcription Cal Video dans le hub, vérifier le résumé et les points d'attention</li>
+  <li>Écrire le périmètre noir sur blanc dans le devis : une page, le WordPress n'est pas touché</li>
+  <li>Choisir le client Stripe sur la vente, envoyer le devis le jour même</li>
+  <li>Fixer la prochaine action sur la fiche (date de relance)</li>
+</ul>
+
+</body>
+</html>

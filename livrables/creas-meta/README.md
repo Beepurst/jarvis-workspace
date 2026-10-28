@@ -55,8 +55,13 @@ Les PNG sortent en @2x (2160 px de large) pour un texte net. Playwright 1.61.1, 
   et tout chiffre de résultat non mesuré.
 - Avis : seulement des avis réels. Texte connu : Laura Dias (Mega Content), « Un super
   prestataire pour nous ! Toujours réactif, ils ont su répondre à nos demandes sans aucun
-  souci ». Méliné Grelet et Aurore Melis sont réels, mais leur texte n'est pas connu : ne pas
-  les citer tant qu'Edgar ne l'a pas fourni. La note **4,8/5 sur Google** est réelle.
+  souci ». Méliné Grelet (Mac Alyster) : « Cela fait quelques mois que nous travaillons avec
+  l'équipe Kleak. Nous apprécions leur professionnalisme, leur réactivité, leur capacité
+  d'adaptation. » Aurore Melis (Frenchies in Maldives) : « Nous sommes très satisfaits du site
+  réalisé, tant sur le fond que sur son fonctionnement. L'outil est solide, fluide, et surtout
+  parfaitement adapté à nos objectifs en termes de SEO et SEA, ce qui est un vrai atout pour
+  notre visibilité. » (textes et photos relevés sur kleakagency.fr le 27/10, repris dans
+  `AVIS` de `livrables/posts-organiques/build.mjs`). La note **4,8/5 sur Google** est réelle.
 - La démo Atelier Hauteville garde visible la mention « entreprise fictive » (elle est dans le
   bandeau du site, ne pas la recadrer).
 - Le ton : vouvoiement, une idée par créa, pas de figure de style ni de chute, pas de rythme

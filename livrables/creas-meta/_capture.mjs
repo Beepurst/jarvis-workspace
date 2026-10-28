@@ -9,6 +9,13 @@ const shots = [
   { name: 'demo-v1-mobile', url: 'https://massive-account-916652.framer.app/atelier-hauteville', w: 390, h: 844 },
   // Vraie réalisation Kleak (Framer, crédit Kleak en pied de page), montrée dans la créa D.
   { name: 'asa-mobile', url: 'https://accueilseniorassistance.com/', w: 390, h: 844 },
+  { name: 'asa-desktop', url: 'https://accueilseniorassistance.com/', w: 1440, h: 900 },
+  // Réalisations Kleak montrées dans les posts organiques (s6, s8), confirmées par Edgar le 28/10.
+  { name: 'macalyster-desktop', url: 'https://macalyster.com/', w: 1440, h: 900 },
+  { name: 'macalyster-mobile', url: 'https://macalyster.com/', w: 390, h: 844 },
+  // La vidéo d'accueil de Frenchies met plusieurs secondes à sortir du gris.
+  { name: 'frenchies-desktop', url: 'https://www.frenchiesinmaldives.com/', w: 1440, h: 900, attente: 9000 },
+  { name: 'frenchies-mobile', url: 'https://www.frenchiesinmaldives.com/', w: 390, h: 844, attente: 9000 },
   // Démo Garnier Plomberie V2 (entreprise fictive, bandeau visible), montrée dans la créa L (série BTP, 22/10).
   { name: 'garnier-v2-mobile', url: 'https://massive-account-916652.framer.app/garnier-v2', w: 390, h: 844 },
 ];
@@ -20,13 +27,14 @@ const choix = filtre.length ? shots.filter((s) => filtre.includes(s.name)) : sho
 for (const s of choix) {
   const p = await b.newPage({ viewport: { width: s.w, height: s.h }, deviceScaleFactor: 2 });
   await p.goto(s.url, { waitUntil: 'networkidle', timeout: 60000 });
-  await p.waitForTimeout(2500);
+  await p.waitForTimeout(s.attente ?? 2500);
   // Le badge « Made in Framer », le crayon d'édition et le bandeau cookies ne font pas partie du site livré.
   await p.addStyleTag({ content: '#__framer-badge-container,#__framer-editorbar,#__framer-editorbar-button,[id^="__framer-editorbar"]{display:none!important}' });
   await p.evaluate(() => {
-    // « Paramètres Cookies » (démo) ou « Paramètres des Cookies » (Accueil Sénior Assistance) :
+    // « Paramètres Cookies » (démo), « Paramètres des Cookies » (Accueil Sénior Assistance),
+    // « Consentement aux cookies » et popup newsletter (Mac Alyster, Shopify) :
     // on retire le bloc en position fixe qui le porte, sinon le bloc lui-même.
-    const re = /^Paramètres (des )?Cookies/i;
+    const re = /^(Paramètres (des )?Cookies|Consentement aux cookies|Signup for our newsletter)/i;
     for (const el of document.querySelectorAll('div,section,aside')) {
       if (!el.isConnected || !el.innerText || !re.test(el.innerText.trim())) continue;
       let cible = el;
@@ -34,6 +42,12 @@ for (const s of choix) {
         if (getComputedStyle(a).position === 'fixed') { cible = a; break; }
       }
       cible.remove();
+    }
+    // Voile sombre laissé par une fenêtre retirée (Shopify).
+    document.documentElement.style.overflow = 'auto';
+    for (const el of document.querySelectorAll('body *')) {
+      const s = getComputedStyle(el);
+      if (s.position === 'fixed' && !el.innerText?.trim() && parseFloat(s.opacity) > 0 && el.offsetWidth >= innerWidth && el.offsetHeight >= innerHeight && s.backgroundColor !== 'rgba(0, 0, 0, 0)') el.remove();
     }
   });
   await p.waitForTimeout(300);

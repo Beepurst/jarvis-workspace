@@ -7,7 +7,23 @@
 
 ---
 
+## 2026-10-28
+
+### Posts organiques Instagram et Facebook en production
+
+- **Système de posts organiques** construit pour un besoin d'Edgar (« je n'ai pas le temps de créer les visuels ») et un but : la crédibilité auprès des prospects venus des pubs. Trois types validés sur essais : réalisation (captures du site sur fond crème), avis client (carte bleu foncé du site), conseil en carrousel. Règle absolue : rien qui fasse « IA ».
+- **Agent `createur-posts`** (`.claude/agents/`) : rend les JPEG 1080×1350 (`livrables/posts-organiques/build.mjs`), tient le plan éditorial et dépose dans le hub (`deposer.mjs`). Il ne publie jamais.
+- **Rubrique Posts du hub** (branche `posts-organiques`, spec et plan du 27/10, fusionnée en production le 28/10) : À venir et Publiés, validation en un clic, À corriger avec commentaire pour l'agent, grille Instagram, publication Instagram et Facebook au passage du Sheet (un post par jour au plus, échecs « incertains » jamais relancés seuls). Passée à la nouvelle DA du hub à la demande d'Edgar (bandeau de chiffres, cartes vertes, couleur par type, panneau en verre). SQL `supabase/posts.sql` exécuté par Edgar.
+- **Meta** : app « Kleak Hub » complétée par Forqan (cas d'usage Page et Instagram), nouveau jeton d'utilisateur système `HUB_META_POSTS_ACCESS_TOKEN` (publication page et Instagram, sans expiration), vérifié : page Kleak reliée à `kleak_agency`. Variables posées dans Vercel avec `POSTS_AGENT_SECRET`. Recommandation : qu'Edgar soit administrateur de l'app, tous les jetons Meta du hub en dépendent.
+- **Série de 9 posts déposée**, du 29/10 au 17/11, mardi, jeudi et samedi à 12 h 30, tous « à valider ». Réalisations confirmées : Accueil Sénior Assistance, Mac Alyster, Frenchies in Maldives ; Mega Content écarté des réalisations. Avis d'Aurore et de Laura échangés pour espacer avis et réalisation d'un même client.
+- **À faire** : Edgar valide les posts dans le hub ; première vraie publication jeudi 29/10 vers 12 h 30 (ASA), à vérifier sur Instagram et Facebook.
+
 ## 2026-10-26
+
+### Orbikal sans abonné payant, seuil de TVA relevé
+
+- **Orbikal : aucun abonné payant** dans Stripe (vérifié par Edgar). La mise en pause n'a ni client à prévenir ni facturation à arrêter. Le projet Google Cloud reste gardé pour le Suivi avis.
+- **Franchise en base de TVA** : 37 500 € de CA annuel pour les services en 2026, seuil majoré 41 250 € (sources en ligne, à confirmer sur impots.gouv.fr). L'objectif de 2 000 € nets par mois reste dessous : la mention « article 293 B du CGI » des devis et factures est valable. Le seuil compte tout le CA de l'EI.
 
 ### `/votre-site` testée de bout en bout, Cal.com sur l'adresse IONOS
 
