@@ -3,6 +3,48 @@
 > Tenu par l'agent `createur-creas`. Le plus récent en haut. On écrit ce qui a été écarté et
 > pourquoi, pas seulement ce qui a été retenu, pour ne pas refaire le même arbitrage.
 
+## Série 9 (29/10/2026) : 3e pub de la campagne Relance, avec J et r
+
+Commande de la session principale : une seule campagne `Kleak | Relance`, Prospects, formulaire
+instantané, 10 € par jour, aucun prix (journal media-buying du 29/10). J (preuve) et r (avant /
+après) sont gardées : la série fournit la 3e pub, sur des angles qui ne recoupent ni l'une ni
+l'autre. DA fine de la série 5, comme J et r. Ligne d'appel commune en bas, écrite pour un
+formulaire instantané : « Appel découverte gratuit : laissez vos coordonnées, on vous
+recontacte. » Lettres simples épuisées, d'où `aa`, `ab`, `ac`. Posts rendus
+(`node build.mjs aa ab ac --post`), stories codées, ni rendues ni contrôlées. Planche avec J et
+r pour juger le mélange : `node _feed.mjs j-avis r-avant-apres-demandes-post aa ab ac` →
+`_planche-selection.png`.
+
+| Id | Fichier | Angle | Statut |
+|---|---|---|---|
+| aa | `aa-livre-5-jours` | Le délai : « Votre site internet livré en 5 jours ouvrés, une fois vos contenus *reçus.* » Carte en verre « Livraison de votre site », cinq jours en barres, le 5e « Livré ». Condition mot pour mot : « Formule One page. Livraison en 5 jours ouvrés après réception de vos contenus et du premier paiement. » | **Retenue** (Edgar, 29/10). Post et story rendus, story contrôlée. Non déposée dans le hub |
+| ab | `ab-telephone-realisation` | Un vrai site sur téléphone : « Votre site, aussi soigné sur un téléphone que sur un *ordinateur.* » Téléphone incliné qui déborde en bas à droite, capture d'Accueil Sénior Assistance, légende « Réalisation Kleak · Accueil Sénior Assistance ». Source : « Affichage soigné sur mobile, tablette et ordinateur » | **Retenue** (Edgar, 29/10). Post et story rendus, story contrôlée. Non déposée dans le hub |
+| ac | `ac-on-ecrit-les-textes` | Ce que vous faites, ce qu'on fait : « Vous nous parlez de votre activité, on écrit les textes de votre *site.* » Carte « Vous » en retrait (questionnaire de 15 minutes, logo, photos), carte « Nous » en avant (textes, mise en page, mentions légales, mise en ligne) | **Retenue** (Edgar, 29/10). Post et story rendus, story contrôlée. Non déposée dans le hub |
+
+Écarté volontairement : tout prix ; « en ligne en 5 jours » (la fiche dit livraison, la mise en
+ligne suit le solde) et tout jour nommé (« lundi, vendredi » serait faux en jours ouvrés) ; toute
+part de visiteurs sur mobile ; Mac Alyster (site qui n'est pas de Kleak) et Frenchies (capture
+délavée) ; « on s'occupe de tout » (logo et photos viennent du client) ; « réserver » ou tout
+calendrier (la pub mène à un formulaire, pas à une page).
+
+### Finalisation de aa, ab et ac (29/10/2026)
+
+Edgar garde les trois. Seule retouche, sur AB : la capture d'Accueil Sénior Assistance coupait
+« l'accompag nement » en plein mot (l'animation lettre par lettre de Framer met chaque mot dans
+un span en `nowrap`, sauf celui-ci, en `white-space:unset`). Nouvelle capture
+`_captures/asa-mobile-ab.png` (`node _capture.mjs asa-mobile-ab`, ce mot remis en `nowrap` à la
+capture), utilisée par AB seule (`ASA_MOBILE_AB`). `asa-mobile.png` est inchangée, D n'est pas
+touchée. Les fautes de frappe du site du client (« besoins,dans », « l' aide ») restent : c'est
+son texte.
+
+- Rendu : `node build.mjs aa ab ac`, 6 fichiers écrits. Compositions story déjà codées, rien
+  recomposé.
+- Contrôle des zones : `node _zones-story.mjs aa ab ac`. Rien sous la ligne des 400 px ni dans
+  la bande des 250 px. Dernier texte : ligne d'appel de AA vers 1370 px, de AB vers 1290 px, de AC
+  vers 1390 px. Sous la ligne, il n'y a que le bas du téléphone de AB (capture du site) ou le fond.
+- Posts revérifiés : `node _feed.mjs j-avis r-avant-apres-demandes-post aa ab ac`.
+- Pas de dépôt dans le hub (consigne du 29/10). Textes d'annonce à demander à `media-buyer`.
+
 ## Série 8 bis (26/10/2026) : x, y, z, autres angles et autres mises en page
 
 Retour d'Edgar sur la série 8 : v et w retenues, u écartée. Il veut 3 créas complètement

@@ -38,6 +38,8 @@ const DEMO_DESKTOP = IMG('_captures/demo-v2-desktop.png');
 const DEMO_MOBILE_V2 = IMG('_captures/demo-v2-mobile.png');
 // Vraie réalisation Kleak : https://accueilseniorassistance.com/ (capture du 18/10/2026).
 const ASA_MOBILE = IMG('_captures/asa-mobile.png');
+// Même page, recapturée le 29/10 pour AB sans la coupure « l'accompag nement » (voir _capture.mjs).
+const ASA_MOBILE_AB = IMG('_captures/asa-mobile-ab.png');
 
 // Couleurs relevées sur kleakagency.fr (styles Framer du site), pas choisies ici.
 const T = {
@@ -1754,6 +1756,172 @@ const CREAS = {
   },
 
   */
+
+  // ---------------------------------------------------------------------------
+  // Série 9 (29/10/2026) : la 3e pub de la campagne `Kleak | Relance`, formulaire
+  // instantané, 10 € par jour (journal media-buying du 29/10). Elle tourne avec J (avis
+  // clients) et r (avant / après) : trois angles qui ne recoupent ni la preuve ni
+  // l'avant / après. DA fine de la série 5 (fond sombre, verre, un mot en italique),
+  // comme J et r, pour que les trois pubs se tiennent. AUCUN prix. Ligne d'appel commune
+  // en bas, écrite pour un formulaire instantané : on laisse ses coordonnées, on est
+  // recontacté (email immédiat puis WhatsApp, voir CLAUDE.md), pas de réservation sur une
+  // page. « Gratuit » validé par Edgar le 24/10 pour l'appel (créa t).
+  // ---------------------------------------------------------------------------
+  // AA. Le délai. Un seul objet : une carte en verre « Livraison de votre site », cinq
+  // jours en barres, le cinquième en bleu. La condition est dans l'accroche et recopiée
+  // mot pour mot en bas.
+  // D'OÙ ÇA VIENT : fiche offre, One page : « Livraison en 5 jours ouvrés après
+  // réception de vos contenus et du premier paiement ».
+  // ÉCARTÉ VOLONTAIREMENT : « en ligne en 5 jours » (la fiche dit « livraison » ; la mise
+  // en ligne suit le paiement du solde), tout jour de la semaine nommé (« lundi,
+  // vendredi » serait faux en jours ouvrés), le prix, les délais de l'Essentiel et du
+  // Pro, la planche sous 48 heures (une idée par créa).
+  aa: {
+    key: 'aa-livre-5-jours',
+    fonts: FONTS_FIN,
+    html: (fmt) => {
+      const story = fmt.key === 'story';
+      const L = story
+        ? { marque: 220, titre: 330, titrePx: 70, carte: 760, condition: 1250, appel: 1370, x: 90, s: 1.1 }
+        : { marque: 110, titre: 210, titrePx: 62, carte: 560, condition: 1010, appel: 1150, x: 92, s: 1 };
+      const s = L.s;
+      const jour = (n) => {
+        const fin = n === 5;
+        return `<div style="flex:1;display:flex;flex-direction:column;gap:${14 * s}px;">
+          <div style="height:${fin ? 70 : 54}px;margin-top:${fin ? 0 : 16}px;border-radius:${14 * s}px;
+            ${fin ? `background:linear-gradient(160deg,#2F6BFF,${T.bleu});box-shadow:0 12px 30px rgba(15,47,209,.45), inset 0 1px 0 rgba(255,255,255,.3);
+              display:flex;align-items:center;justify-content:center;`
+              : `background:rgba(255,255,255,${.05 + n * .025});border:1px solid rgba(255,255,255,.08);`}">
+            ${fin ? `<svg width="${30 * s}" height="${30 * s}" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 L10 17.5 L19 7.5"/></svg>` : ''}
+          </div>
+          <div style="text-align:center;font-family:Manrope;font-weight:600;font-size:${22 * s}px;
+            color:${fin ? '#F3F4F7' : 'rgba(255,255,255,.45)'};">${fin ? 'Livré' : `Jour ${n}`}</div>
+        </div>`;
+      };
+      return `
+      ${fondFin(fmt, fmt.W * .5, L.carte + 200)}
+      <div style="position:absolute;left:${L.x}px;top:${L.marque}px;">${marquePetite(story)}</div>
+      <div style="position:absolute;left:${L.x}px;right:${L.x + 30}px;top:${L.titre}px;${TITRE_FIN}
+        font-size:${L.titrePx}px;line-height:1.1;">Votre site internet livré en 5 jours ouvrés, une fois vos contenus ${italique('reçus.')}</div>
+
+      <div style="position:absolute;left:${L.x + 50}px;right:${L.x + 50}px;top:${L.carte - 40}px;height:${200 * s}px;border-radius:26px;
+        background:linear-gradient(165deg, rgba(255,255,255,.05), rgba(255,255,255,.012) 50%), rgba(16,17,23,.6);
+        border:1px solid rgba(255,255,255,.07);transform:rotate(2deg);"></div>
+
+      <div style="position:absolute;left:${L.x}px;right:${L.x}px;top:${L.carte}px;border-radius:30px;
+        padding:${40 * s}px ${44 * s}px ${40 * s}px;${VERRE_AVANT} transform:rotate(-1.2deg);">
+        <div style="display:flex;align-items:center;gap:${20 * s}px;">
+          ${icone(64 * s)}
+          <div>
+            <div style="font-family:'Inter Tight';font-weight:600;letter-spacing:-.01em;font-size:${36 * s}px;color:#F3F4F7;">Livraison de votre site</div>
+            <div style="font-family:Manrope;font-weight:500;font-size:${24 * s}px;color:rgba(255,255,255,.55);margin-top:4px;">5 jours ouvrés</div>
+          </div>
+        </div>
+        <div style="height:1px;background:rgba(255,255,255,.1);margin:${32 * s}px 0 ${30 * s}px;"></div>
+        <div style="display:flex;gap:${14 * s}px;align-items:flex-start;">${[1, 2, 3, 4, 5].map(jour).join('')}</div>
+      </div>
+
+      <div style="position:absolute;left:${L.x}px;right:${L.x}px;top:${L.condition}px;font-family:Manrope;
+        color:rgba(255,255,255,.5);font-size:${story ? 23 : 21}px;line-height:1.45;font-weight:500;">
+        Formule One page. Livraison en 5 jours ouvrés après réception de vos contenus et du premier paiement.</div>
+      <div style="position:absolute;left:${L.x}px;right:${L.x}px;top:${L.appel}px;font-family:Manrope;
+        color:rgba(255,255,255,.72);font-size:${story ? 29 : 27}px;line-height:1.4;font-weight:600;">
+        Appel découverte gratuit : laissez vos coordonnées, on vous recontacte.</div>`;
+    },
+  },
+
+  // RETENUES (Edgar, 29/10) : aa, ab et ac, post et story.
+  // AB. Un vrai site Kleak, en situation sur téléphone. Le téléphone déborde en bas à
+  // droite, la légende et la ligne d'appel sont à gauche, en colonne.
+  // D'OÙ ÇA VIENT : fiche offre, « Affichage soigné sur mobile, tablette et ordinateur »
+  // (toutes les formules). Capture `_captures/asa-mobile.png` : Accueil Sénior
+  // Assistance, vraie réalisation Kleak (crédit Kleak en pied de page), déjà montrée
+  // sur D avec la légende « Réalisation Kleak ». Retouche d'Edgar (29/10) : capture
+  // refaite (`asa-mobile-ab.png`) sans la coupure de mot « l'accompag nement ».
+  // ÉCARTÉ VOLONTAIREMENT : toute part de visiteurs sur mobile (aucune source), tout
+  // propos ou résultat prêté au client, la démo fictive (une vraie réalisation se
+  // suffit), Mac Alyster (boutique, site qui n'est pas de Kleak), Frenchies (capture
+  // délavée à l'écran).
+  ab: {
+    key: 'ab-telephone-realisation',
+    fonts: FONTS_FIN,
+    html: (fmt) => {
+      const story = fmt.key === 'story';
+      const L = story
+        ? { marque: 220, titre: 330, titrePx: 70, tel: 720, telX: 520, telW: 470, legende: 1150, appel: 1290, colW: 380, x: 90 }
+        : { marque: 110, titre: 210, titrePx: 62, tel: 500, telX: 560, telW: 430, legende: 930, appel: 1090, colW: 400, x: 92 };
+      return `
+      ${fondFin(fmt, L.telX + L.telW / 2, L.tel + 300)}
+      <div style="position:absolute;left:${L.x}px;top:${L.marque}px;">${marquePetite(story)}</div>
+      <div style="position:absolute;left:${L.x}px;right:${L.x + 30}px;top:${L.titre}px;${TITRE_FIN}
+        font-size:${L.titrePx}px;line-height:1.1;">Votre site, aussi soigné sur un téléphone que sur un ${italique('ordinateur.')}</div>
+
+      <div style="position:absolute;left:${L.telX}px;top:${L.tel}px;transform:rotate(-4deg);transform-origin:top left;">
+        ${telephone(L.telW, ASA_MOBILE_AB, '#ffffff')}
+      </div>
+
+      <div style="position:absolute;left:${L.x}px;width:${L.colW}px;top:${L.legende}px;font-family:Manrope;font-weight:500;
+        font-size:${story ? 26 : 24}px;line-height:1.4;color:rgba(255,255,255,.55);">
+        <span style="color:#F3F4F7;font-weight:700;">Réalisation Kleak</span><br>Accueil Sénior Assistance</div>
+      <div style="position:absolute;left:${L.x}px;width:${L.colW}px;top:${L.appel}px;font-family:Manrope;
+        color:rgba(255,255,255,.72);font-size:${story ? 29 : 27}px;line-height:1.4;font-weight:600;">
+        Appel découverte gratuit : laissez vos coordonnées, on vous recontacte.</div>`;
+    },
+  },
+
+  // AC. Ce que vous faites, ce que nous faisons (la piste « on s'occupe de tout »,
+  // ramenée à ce qui est vrai). Deux cartes en verre : « Vous » en retrait, « Nous » en
+  // avant, une ligne par tâche.
+  // D'OÙ ÇA VIENT : fiche offre, « Bon à savoir » : « Les textes sont rédigés par nous, à
+  // partir de vos réponses au questionnaire » et « Le logo et les photos sont fournis par
+  // vous » ; étape 3 : « un questionnaire en ligne (15 minutes) » ; formules : mise en
+  // page, « Mentions légales, bandeau cookies et conformité RGPD », « Mise en ligne sur
+  // votre nom de domaine ».
+  // ÉCARTÉ VOLONTAIREMENT : « on s'occupe de tout » et « vous n'avez rien à faire » (le
+  // logo et les photos viennent du client), les photos professionnelles (hors offre),
+  // la maintenance, le délai, le prix.
+  ac: {
+    key: 'ac-on-ecrit-les-textes',
+    fonts: FONTS_FIN,
+    html: (fmt) => {
+      const story = fmt.key === 'story';
+      const L = story
+        ? { marque: 220, titre: 330, titrePx: 70, vous: 640, nous: 860, appel: 1390, x: 90, s: 1.1 }
+        : { marque: 110, titre: 210, titrePx: 62, vous: 460, nous: 650, appel: 1170, x: 92, s: 1 };
+      const s = L.s;
+      const coche = `<span style="flex:none;width:${34 * s}px;height:${34 * s}px;border-radius:50%;background:linear-gradient(160deg,#2F6BFF,${T.bleu});
+        display:flex;align-items:center;justify-content:center;box-shadow:inset 0 1px 0 rgba(255,255,255,.3);">
+        <svg width="${18 * s}" height="${18 * s}" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 L10 17.5 L19 7.5"/></svg></span>`;
+      const ligne = (t) => `<div style="display:flex;align-items:center;gap:${18 * s}px;font-family:'Inter Tight';font-weight:500;
+        letter-spacing:-.01em;font-size:${33 * s}px;color:#F3F4F7;">${coche}${t}</div>`;
+      const libelle = (t, op) => `<div style="font-family:Manrope;font-weight:700;font-size:${22 * s}px;letter-spacing:.02em;color:rgba(255,255,255,${op});">${t}</div>`;
+      return `
+      ${fondFin(fmt, fmt.W * .5, L.nous + 220)}
+      <div style="position:absolute;left:${L.x}px;top:${L.marque}px;">${marquePetite(story)}</div>
+      <div style="position:absolute;left:${L.x}px;right:${L.x + 30}px;top:${L.titre}px;${TITRE_FIN}
+        font-size:${L.titrePx}px;line-height:1.1;">Vous nous parlez de votre activité, on écrit les textes de votre ${italique('site.')}</div>
+
+      <div style="position:absolute;left:${L.x + 40}px;right:${L.x + 40}px;top:${L.vous}px;border-radius:26px;padding:${28 * s}px ${36 * s}px ${70 * s}px;
+        background:linear-gradient(165deg, rgba(255,255,255,.07), rgba(255,255,255,.02) 50%), rgba(16,17,23,.72);
+        border:1px solid rgba(255,255,255,.09);box-shadow:inset 0 1px 0 rgba(255,255,255,.06);transform:rotate(1.6deg);">
+        ${libelle('Vous', .5)}
+        <div style="font-family:Manrope;font-weight:500;font-size:${27 * s}px;line-height:1.4;color:rgba(255,255,255,.7);margin-top:${8 * s}px;">
+          Un questionnaire de 15 minutes, votre logo et vos photos</div>
+      </div>
+
+      <div style="position:absolute;left:${L.x}px;right:${L.x}px;top:${L.nous}px;border-radius:30px;
+        padding:${36 * s}px ${44 * s}px ${42 * s}px;${VERRE_AVANT} transform:rotate(-1.2deg);">
+        ${libelle('Nous', .62)}
+        <div style="display:flex;flex-direction:column;gap:${24 * s}px;margin-top:${24 * s}px;">
+          ${ligne('Les textes')}${ligne('La mise en page')}${ligne('Les mentions légales')}${ligne('La mise en ligne')}
+        </div>
+      </div>
+
+      <div style="position:absolute;left:${L.x}px;right:${L.x}px;top:${L.appel}px;font-family:Manrope;
+        color:rgba(255,255,255,.72);font-size:${story ? 29 : 27}px;line-height:1.4;font-weight:600;">
+        Appel découverte gratuit : laissez vos coordonnées, on vous recontacte.</div>`;
+    },
+  },
 };
 
 // --- Variantes d'accroche (24/10/2026) -----------------------------------------

@@ -259,3 +259,9 @@ citent les noms, pas les chiffres.
 - 21/10/2026 : section 8, le seuil des budgets déclarés qui comptent comme un mauvais signe passe
   de « sous 999 € » à « sous 699 € » (décision d'Edgar, arrivée du One page à 699 €). Ce n'est
   pas une donnée du compte.
+- 29/10/2026 : `budgetMensuel` à 300 € (10 € par jour) à partir de novembre, décision d'Edgar.
+  Une seule campagne active sur le compte à la fois (octobre : 5 campagnes en parallèle, 2 leads
+  pour 100 €). Formulaire en « plus de volume », questions inchangées (site existant, budget, nom
+  de l'entreprise). Campagne de relance à 5 pubs par décision d'Edgar, exception à la section 6
+  (3 pubs au plus), qui reste la règle par défaut. Section 1 et 5 à relire avec ce budget. Le repère « ancien compte » ne vient pas de
+  « Kleak Pub », qui n'avait aucun lead avant octobre 2026 (journal du 29/10).

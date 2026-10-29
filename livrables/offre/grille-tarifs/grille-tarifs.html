@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Kleak Agency, tarifs</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  @page { size: A4; margin: 0; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  :root { --encre: #111; --doux: #5b5b5b; --trait: #e4e2dc; --fond: #f6f5f1; --bleu: #0F2FD1; }
+  body { font-family: Inter, sans-serif; color: var(--encre); font-size: 10pt; line-height: 1.45; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .page { width: 210mm; height: 297mm; padding: 16mm 15mm 14mm; position: relative; page-break-after: always; overflow: hidden; }
+  .page:last-child { page-break-after: auto; }
+  header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6mm; }
+  .marque { display: flex; align-items: center; gap: 3mm; font-weight: 600; font-size: 11pt; }
+  .marque img { width: 9mm; height: 9mm; border-radius: 2mm; }
+  .contact { font-size: 8.5pt; color: var(--doux); text-align: right; }
+  h1 { font-size: 22pt; font-weight: 700; letter-spacing: -0.02em; line-height: 1.15; }
+  .chapeau { color: var(--doux); margin: 2mm 0 6mm; max-width: 150mm; }
+  h2 { font-size: 12.5pt; font-weight: 600; margin: 0 0 3.5mm; letter-spacing: -0.01em; }
+  .bloc { margin-bottom: 6mm; }
+
+  .formules { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4mm; }
+  .formule { border: 1px solid var(--trait); border-radius: 3mm; padding: 5mm 4.5mm; }
+  .formule.pro { border: 1.5px solid var(--bleu); }
+  .nom { font-weight: 600; font-size: 11pt; }
+  .pour { color: var(--doux); font-size: 8.5pt; min-height: 9mm; margin-top: 0.5mm; }
+  .prix { font-size: 20pt; font-weight: 700; letter-spacing: -0.02em; margin-top: 3mm; }
+  .six { font-size: 8.5pt; color: var(--doux); margin-bottom: 3.5mm; }
+  .formule ul { list-style: none; border-top: 1px solid var(--trait); padding-top: 3mm; }
+  .formule li { font-size: 8.6pt; padding: 0.55mm 0 0.55mm 4mm; position: relative; }
+  .formule li::before { content: ""; position: absolute; left: 0; top: 2.3mm; width: 1.6mm; height: 1.6mm; border-radius: 50%; background: var(--encre); }
+  .formule.pro li::before { background: var(--bleu); }
+  .formule li.plus { font-weight: 600; padding-left: 0; }
+  .formule li.plus::before { display: none; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 9pt; }
+  th, td { text-align: left; padding: 2mm 3mm; border-bottom: 1px solid var(--trait); vertical-align: top; }
+  th { font-weight: 600; font-size: 8.5pt; color: var(--doux); background: var(--fond); }
+  td.montant, th.montant { text-align: right; white-space: nowrap; font-weight: 600; }
+  th.montant { font-weight: 600; }
+
+  .encart { background: var(--fond); border-radius: 3mm; padding: 5mm; }
+  .encart p + p { margin-top: 2mm; }
+  .encart .titre { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 2.5mm; }
+  .encart .titre strong { font-size: 11.5pt; }
+  .encart .titre span { font-weight: 700; font-size: 13pt; }
+  .encart ul { margin: 2mm 0 0 4.5mm; }
+  .encart li { font-size: 9pt; margin: 1mm 0; }
+  .paiement { color: var(--encre) !important; margin-top: 0 !important; }
+  .note { font-size: 8.3pt; color: var(--doux); margin-top: 2.5mm; }
+
+  .deux { display: grid; grid-template-columns: 1fr 1fr; gap: 6mm; }
+  ol.etapes { list-style: none; counter-reset: e; }
+  ol.etapes li { counter-increment: e; position: relative; padding: 0 0 2.6mm 8mm; font-size: 8.9pt; }
+  ol.etapes li::before { content: counter(e); position: absolute; left: 0; top: 0; width: 5.2mm; height: 5.2mm; border-radius: 50%; background: var(--encre); color: #fff; font-size: 7.5pt; font-weight: 600; display: flex; align-items: center; justify-content: center; }
+  ul.savoir { list-style: none; }
+  ul.savoir li { font-size: 8.9pt; padding: 0 0 2.4mm; }
+
+  footer { position: absolute; left: 15mm; right: 15mm; bottom: 10mm; display: flex; justify-content: space-between; font-size: 8pt; color: var(--doux); border-top: 1px solid var(--trait); padding-top: 3mm; }
+</style>
+</head>
+<body>
+
+<section class="page">
+  <header>
+    <div class="marque"><img src="logo.png" alt="">Kleak Agency</div>
+    <div class="contact">contact@kleakagency.fr<br>06 95 11 58 14 · kleakagency.fr</div>
+  </header>
+
+  <h1>Tarifs 2026</h1>
+  <p class="chapeau">Un site clair, rapide, lisible sur mobile, conforme à la loi, pensé pour que vos visiteurs vous contactent. Prix fixe, délai annoncé, textes rédigés par nous.</p>
+
+  <div class="bloc">
+    <h2>Les formules</h2>
+    <div class="formules">
+      <div class="formule">
+        <div class="nom">One page</div>
+        <div class="pour">Une adresse en ligne propre, où l'on vous trouve et vous contacte.</div>
+        <div class="prix">699 €</div>
+        <div class="six">ou 6 × 116,50 €</div>
+        <ul>
+          <li><b>1 page</b> : présentation, services, avis, zone, contact</li>
+          <li>Adapté à vos couleurs et à votre logo</li>
+          <li>Mobile, tablette et ordinateur</li>
+          <li>Formulaire de contact vers votre boîte mail</li>
+          <li>Référencement de base</li>
+          <li>Mentions légales, cookies, RGPD</li>
+          <li>Mise en ligne sur votre domaine</li>
+          <li>1 série de retouches</li>
+          <li><b>Livré en 5 jours ouvrés</b></li>
+        </ul>
+      </div>
+      <div class="formule">
+        <div class="nom">Essentiel</div>
+        <div class="pour">Être présent en ligne, proprement, sans y passer des semaines.</div>
+        <div class="prix">999 €</div>
+        <div class="six">ou 6 × 166,50 €</div>
+        <ul>
+          <li><b>3 pages</b> : Accueil, Services, Contact</li>
+          <li>Adapté à vos couleurs et à votre logo</li>
+          <li>Mobile, tablette et ordinateur</li>
+          <li>Formulaire de contact vers votre boîte mail</li>
+          <li>Référencement de base</li>
+          <li><b>Fiche Google optimisée</b></li>
+          <li>Mentions légales, cookies, RGPD</li>
+          <li>Mise en ligne sur votre domaine</li>
+          <li>1 série de retouches</li>
+          <li><b>Livré en 7 jours ouvrés</b></li>
+        </ul>
+      </div>
+      <div class="formule pro">
+        <div class="nom">Pro</div>
+        <div class="pour">Un site qui travaille pour vous et montre ce qu'il rapporte.</div>
+        <div class="prix">1 800 €</div>
+        <div class="six">ou 6 × 300 €</div>
+        <ul>
+          <li class="plus">Tout l'Essentiel, et en plus :</li>
+          <li><b>5 pages</b> (Réalisations, À propos…)</li>
+          <li>Design personnalisé à votre image</li>
+          <li>Référencement local « métier + ville »</li>
+          <li>Mesure de l'audience et des demandes reçues</li>
+          <li>Haut de page validé avant la suite</li>
+          <li>2 séries de retouches</li>
+          <li>Prise en main de 30 minutes</li>
+          <li><b>Livré en 10 jours ouvrés</b></li>
+        </ul>
+      </div>
+    </div>
+    <p class="note">Délais comptés à partir de la réception du questionnaire complet et du premier paiement. Le One page peut passer à l'Essentiel plus tard, en payant seulement la différence.</p>
+  </div>
+
+  <div class="bloc">
+    <h2>Options</h2>
+    <table>
+      <tr><th>Option</th><th>Ce que ça fait</th><th class="montant">Prix</th></tr>
+      <tr><td><b>Automatisation des demandes</b></td><td>Chaque demande est enregistrée dans un tableau de suivi, vous êtes alerté, le prospect reçoit une réponse immédiate</td><td class="montant">+ 400 €</td></tr>
+      <tr><td><b>Page supplémentaire</b></td><td>Une page de plus dans le même style, par exemple pour une campagne de publicité</td><td class="montant">+ 200 €</td></tr>
+    </table>
+  </div>
+
+  <div class="bloc">
+    <p class="note paiement"><b>Paiement en une fois</b> : 50 % à la signature, 50 % avant la mise en ligne. <b>En 6 fois sans frais</b> : premier versement à la signature, puis prélèvement mensuel, maintenance obligatoire, site à vous au dernier versement.</p>
+  </div>
+
+  <footer><span>TVA non applicable, article 293 B du CGI. Les prix indiqués sont les prix que vous payez.</span><span>1 / 2</span></footer>
+</section>
+
+<section class="page">
+  <header>
+    <div class="marque"><img src="logo.png" alt="">Kleak Agency</div>
+    <div class="contact">contact@kleakagency.fr<br>06 95 11 58 14 · kleakagency.fr</div>
+  </header>
+
+  <div class="bloc">
+    <h2>Après la mise en ligne</h2>
+    <table>
+      <tr><th></th><th class="montant">Maintenance One page<br>49 € / mois</th><th class="montant">Maintenance Essentiel et Pro<br>90 € / mois</th></tr>
+      <tr><td>Hébergement du site</td><td class="montant">Inclus</td><td class="montant">Inclus</td></tr>
+      <tr><td>Mises à jour techniques et surveillance</td><td class="montant">Oui</td><td class="montant">Oui</td></tr>
+      <tr><td>Petites modifications (texte, photo, horaire)</td><td class="montant">15 min / mois</td><td class="montant">30 min / mois</td></tr>
+      <tr><td>Rapport mensuel</td><td class="montant">Visiteurs, demandes</td><td class="montant">Visiteurs, sources, demandes</td></tr>
+    </table>
+    <p class="note">Sans engagement de durée, préavis de 2 mois. À l'arrêt, nous transférons le site sur votre propre compte.</p>
+  </div>
+
+  <div class="bloc encart">
+    <div class="titre"><strong>Suivi avis</strong><span>190 € / mois</span></div>
+    <p>À la place de la maintenance, pour toutes les formules. Vous récoltez plus d'avis Google, ils reçoivent tous une réponse, et vous n'avez rien à gérer.</p>
+    <ul>
+      <li>Tout ce que comprend la maintenance Essentiel et Pro</li>
+      <li>Demande d'avis prête à l'emploi : message à envoyer, QR code à imprimer, rappel chaque mois</li>
+      <li>Réponse à tous vos avis, positifs comme négatifs, en votre nom</li>
+      <li>2 à 4 publications par mois sur votre fiche Google, à partir de vos photos</li>
+      <li>Un bilan mensuel d'une page : avis reçus, note moyenne, visites, demandes, appels depuis la fiche</li>
+    </ul>
+    <p class="note">Sans engagement, préavis de 2 mois. En paiement en 6 fois, il démarre le mois qui suit le dernier versement. Avis demandés à tous vos clients, sans contrepartie, comme l'exige Google. À chaque livraison, le message de demande d'avis et le QR code vous sont offerts.</p>
+  </div>
+
+  <div class="deux bloc">
+    <div>
+      <h2>Comment ça se passe</h2>
+      <ol class="etapes">
+        <li><b>Appel de 30 minutes</b> pour comprendre votre activité.</li>
+        <li><b>Devis à prix fixe</b>, valable 30 jours.</li>
+        <li><b>Signature</b> : premier paiement et questionnaire en ligne de 15 minutes (goûts, logo, photos, vos textes si vous en avez).</li>
+        <li><b>Planche de direction sous 48 h</b> : structure, couleurs, polices et photos, à valider avant de construire.</li>
+        <li><b>Votre site complet</b> à la date annoncée, puis les retouches prévues.</li>
+        <li><b>Mise en ligne</b> au paiement du solde, et le site vous appartient.</li>
+      </ol>
+    </div>
+    <div>
+      <h2>Bon à savoir</h2>
+      <ul class="savoir">
+        <li><b>Les textes sont rédigés par nous</b>, à partir du questionnaire, ou repris des vôtres. Le logo et les photos sont fournis par vous.</li>
+        <li><b>Non compris</b> : boutique en ligne, espace client, prise de rendez-vous en ligne, traduction, photos professionnelles. Possible sur devis.</li>
+        <li><b>L'hébergement est compris dans la maintenance.</b> Sans maintenance, le site est mis en ligne sur votre propre compte, à votre charge.</li>
+        <li><b>Le nom de domaine</b> est à votre nom.</li>
+      </ul>
+    </div>
+  </div>
+
+  <footer><span>Kleak Agency · contact@kleakagency.fr · 06 95 11 58 14</span><span>2 / 2</span></footer>
+</section>
+
+</body>
+</html>

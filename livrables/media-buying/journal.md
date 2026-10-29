@@ -17,6 +17,101 @@ Format fixe d'une entrée :
 - **Leçon** : ce qu'on retient, avec son niveau de preuve (concluant, tendance, pas concluant)
 ```
 
+## 29/10/2026, relance sur le réglage de l'ancien compte, test prévu
+
+- **Constat** (API Meta, lecture seule, 29/10) : « Kleak Pub » (créé le 21/03/2025) n'a dépensé
+  que 269,95 € en tout et n'a **jamais produit de lead avant octobre 2026** : 2025, c'est 150 €
+  de notoriété et 25 € optimisés sur les clics. Le repère « 2 € par lead, 4 à 5 leads par jour »
+  vient d'un ancien compte auquel Edgar n'a plus accès. Réglage de l'époque, selon Edgar :
+  10 € par jour, une campagne formulaire, visuels créatifs, aucun prix.
+- **Octobre 2026** : 100,51 € sur 5 campagnes en 7 jours, 2 leads (budget « moins de 700 € »),
+  0 RDV. Formulaire : CPM 25 à 80 €, environ 35 clics lien par lead. LP sans prix : 257 vues de
+  page, 0 RDV. Formulaire actuel « plus d'intention » (`is_optimized_for_quality`), 3 questions
+  personnalisées dont « Nom de l'entreprise » en texte libre ; celui de 2025 était en volume,
+  champs préremplis seulement. Le hub force `advantage_audience: 0`.
+- **Différences avec l'ancien réglage** : budget dispersé et apprentissage relancé sans cesse,
+  formulaire alourdi, ciblage resserré. Visuels et absence de prix identiques à avant.
+- **Décision** (Edgar, 29/10) : pause de `LP sans prix` et `Métiers`, retargeting t du 31/10
+  abandonné. Une seule campagne `Kleak | Relance | <date>` : Prospects, nouveau formulaire
+  « plus de volume » (site existant, budget, champs préremplis), un ensemble, **10 € par jour**,
+  France 18 à 65 ans et plus, audience Advantage+ activée (à basculer dans le Gestionnaire après
+  la création depuis le hub), placements Advantage+. `budgetMensuel` passe à 300 € à partir de
+  novembre.
+- **Mises à jour du 29/10** : formulaire créé `Kleak | Appel découverte | 2026-10-29 | volume`
+  (id 1468473338492942), « plus de volume », **les 3 questions gardées** à l'identique, dont
+  « Nom de l'entreprise » (décision d'Edgar : filtre les particuliers, lu par le hub) ; branché au
+  même Sheet, lead de test arrivé dans le hub puis supprimé. `LP sans prix` et `Métiers` en
+  pause. **5 pubs** (décision d'Edgar, au-delà des 3 de `regles.md` section 6, conséquence
+  connue : Meta concentrera la dépense sur 1 ou 2) : `j-avis-clients` (note Google 4,8/5 gardée
+  dans l'image), `r-avant-apres-demandes`, et la série 9 `aa-livre-5-jours`,
+  `ab-telephone-realisation`, `ac-on-ecrit-les-textes`. Une pub peu diffusée n'est pas perdante.
+- **Textes** (validés par Edgar, déposés le 29/10, offre `kleak`, aucun prix) : un texte, un
+  titre, une description par pub, pour que le hub envoie le post et la story. Seconde phrase
+  commune : « Laissez vos coordonnées, on vous recontacte pour un appel découverte gratuit. »,
+  description commune « Appel découverte gratuit ». Retours : J 201 (2 créés, 1 déjà là),
+  r 201 (2 créés, 1 déjà là), aa 201 (3 créés), ab 201 (3 créés), ac 201 (3 créés), aucun
+  refus. Seul avertissement : les 5 textes dépassent 125 caractères (155 à 174), seule la
+  première phrase s'affiche avant « Voir plus ».
+  - **J, à cocher** : texte « Avant de nous confier votre site internet, lisez ce qu'en disent
+    nos clients. Laissez vos coordonnées… » (155), titre « Parlons de votre site internet »,
+    description « Appel découverte gratuit ». **Ne pas cocher** le texte du 22/10 (« Remplissez
+    le formulaire et vous recevez tout de suite un email… ») ni « Noté 4,8/5 sur Google ».
+  - **r, à cocher** : texte « Nous créons des sites captivants, pensés pour que vos visiteurs
+    vous contactent. Laissez vos coordonnées… » (158), titre « Un site pensé pour recevoir des
+    demandes », description « Appel découverte gratuit ». **Ne pas cocher** les 6 textes des
+    24 et 26/10 (« Réservez un appel… », « Remplissez le formulaire… »), les titres « Appel
+    gratuit de 30 minutes » et « Parlons de votre site internet », ni les descriptions
+    « Réservation en ligne », « Choisissez votre créneau », « Votre activité, vos objectifs »,
+    « Noté 4,8/5 sur Google ».
+  - **aa** : « Votre site internet livré en 5 jours ouvrés, une fois vos contenus et le premier
+    paiement reçus. Laissez vos coordonnées… » (174), titre « Votre site livré en 5 jours
+    ouvrés ». **ab** : « Le site d'Accueil Sénior Assistance, réalisé par Kleak, tel qu'il
+    s'affiche sur un téléphone. Laissez vos coordonnées… » (171), titre « Affichage soigné sur
+    mobile ». **ac** : « Les textes de votre site sont rédigés par nous, à partir d'un
+    questionnaire de 15 minutes. Laissez vos coordonnées… » (168), titre « On écrit les textes
+    de votre site ». Seuls éléments de ces pubs dans le hub.
+- **Critère** : rien modifié pendant 5 jours. 30 € sans lead : problème technique (formulaire,
+  suivi), pas les pubs. À 50 € : CPL ≤ 10 € on continue, au-dessus on change de créas.
+- **Leçon** : **tendance**, pas une preuve. Le marché a pu renchérir depuis un an.
+
+## 28/10/2026, retargeting t (appel gratuit de 30 minutes), test prévu
+
+- **Campagne** : `Kleak | Retargeting | 2026-10-31`, à créer à la main par Edgar dans le
+  Gestionnaire (Trafic, le hub ne le sait pas). Fiche complète :
+  `livrables/media-buying/campagne-retargeting-2026-10-31.md`. Optimisation « Vues de page de
+  destination » (pixel Kleak Pub), un ensemble `Kleak | Retargeting | Engagés 365 j`, 2 € par
+  jour du 31/10 00 h 00 au 07/11 23 h 59 (16 € au plus, décision d'Edgar du 24/10 : jusqu'à la
+  fin de l'ensemble acquisition). Audience incluse `Kleak | Engagés 365 j`, exclue
+  `Kleak | Formulaire envoyé 90 j` (à créer si absente), France, 25 à 65 ans et plus,
+  **audience Advantage+ coupée**, placements Advantage+. Une pub `t-appel-30-minutes`, post 4:5
+  et story 9:16, bouton « Réserver », destination https://kleakagency.fr/votre-site, paramètres
+  d'URL `ad_id={{ad.id}}&utm_source=facebook&utm_medium=paid&utm_campaign={{campaign.name}}&utm_content={{ad.name}}`.
+  Aucune audience n'exclut les personnes qui ont déjà réservé (pas d'événement pixel à la
+  réservation). Acquisition en cours non modifiée (pas d'exclusion ajoutée, pour ne pas
+  relancer son apprentissage).
+- **Hypothèse** : des personnes qui ont déjà interagi avec Kleak réservent un appel depuis
+  `/votre-site` à un coût par RDV plus bas que le trafic froid de `LP sans prix`. Mesure : RDV
+  `canal=lp` dont l'`ad_id` est la pub t, divisés par la dépense, face à LP sans prix sur la
+  même période. Critère de fin : 07/11. Point de contrôle le 03/11 (dépense, placements),
+  bilan le 08/11 avec LP sans prix. Option laissée à Edgar : fin au 13/11 (28 €).
+- **Volume** : 16 € contre `bilanMinDepense` 50 € ; 10 RDV demanderaient 1,60 € par RDV. **Ne
+  pourra rien conclure**, tendance au mieux. Fréquence au-dessus de `frequenceMax` attendue sur
+  une petite audience, sans valeur de fatigue tant que le CTR lien tient.
+- **Textes** : offre `kleak`, aucun prix, 4 textes (141 à 150 caractères), 4 titres, 4
+  descriptions, l'ouverture change, la dernière phrase reste. Déposés le 28/10 :
+  `t-appel-30-minutes` 201, 6 créés (4 textes, « Réservez votre appel gratuit », « Devis
+  valable 30 jours »), 6 déjà là, aucun refus. Seul avertissement : les 4 textes dépassent 125
+  caractères. Les 3 textes du 24/10 (trafic froid) restent dans le hub, à ne pas cocher. Pas
+  encore relus par Edgar.
+- **Chiffres** : aucun. Lecture du 22/10 au 28/10 (28/10 partiel) : lecture Meta « ok », aucun
+  avertissement, aucune alerte ouverte, `depenseMois` 87,96 €. Vu en passant : la campagne
+  copie J K D est à 34,46 € (47,77 € avec l'originale, critère des 49 € presque atteint) avec
+  2 leads, J et r, tous deux budget « moins de 700 € », et 1 RDV (r) ; LP sans prix 26,48 €,
+  218 clics lien, 0 RDV ; Métiers 13,71 €, 0 lead. Rien de concluant, à reprendre au bilan.
+- **Décision** : Edgar crée la campagne le 31/10 si l'audience est prête. Rien à modifier
+  pendant la diffusion, sauf refus.
+- **Leçon** : à écrire au bilan.
+
 ## 27/10/2026, J K D à 49 €, LP à J+3, o sans diffusion, bilan
 
 - **Campagnes** :

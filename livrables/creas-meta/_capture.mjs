@@ -9,6 +9,12 @@ const shots = [
   { name: 'demo-v1-mobile', url: 'https://massive-account-916652.framer.app/atelier-hauteville', w: 390, h: 844 },
   // Vraie réalisation Kleak (Framer, crédit Kleak en pied de page), montrée dans la créa D.
   { name: 'asa-mobile', url: 'https://accueilseniorassistance.com/', w: 390, h: 844 },
+  // Pour AB (29/10) : même page, sans la coupure « l'accompag nement » du texte du hero
+  // (l'animation lettre par lettre de Framer met chaque mot dans un span en nowrap, sauf
+  // celui-ci, en « white-space:unset », qui se coupe donc en plein mot). On remet ce mot
+  // en nowrap à la capture. asa-mobile reste tel quel pour D, déjà validée.
+  { name: 'asa-mobile-ab', url: 'https://accueilseniorassistance.com/', w: 390, h: 844,
+    css: 'p.framer-text > span{white-space:nowrap!important}' },
   { name: 'asa-desktop', url: 'https://accueilseniorassistance.com/', w: 1440, h: 900 },
   // Réalisations Kleak montrées dans les posts organiques (s6, s8), confirmées par Edgar le 28/10.
   { name: 'macalyster-desktop', url: 'https://macalyster.com/', w: 1440, h: 900 },
@@ -50,6 +56,7 @@ for (const s of choix) {
       if (s.position === 'fixed' && !el.innerText?.trim() && parseFloat(s.opacity) > 0 && el.offsetWidth >= innerWidth && el.offsetHeight >= innerHeight && s.backgroundColor !== 'rgba(0, 0, 0, 0)') el.remove();
     }
   });
+  if (s.css) await p.addStyleTag({ content: s.css });
   await p.waitForTimeout(300);
   await p.screenshot({ path: `_captures/${s.name}.png` });
   await p.close(); n++; console.log(s.name);

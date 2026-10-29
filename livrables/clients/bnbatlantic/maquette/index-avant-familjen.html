@@ -1,0 +1,597 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BnbAtlantic · Inscrire mon hébergement (maquette)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --fond: #F3EEE4;
+    --carte: #FFFFFF;
+    --sombre: #0E2140;
+    --sombre-2: #16305A;
+    --accent: #F4B73B;
+    --texte: #0E2140;
+    --texte-2: rgba(14, 33, 64, .66);
+    --clair-2: rgba(255, 255, 255, .7);
+    --vert: #2F8F5B;
+    --rayon: 20px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { font-family: Inter, sans-serif; background: var(--fond); color: var(--texte); font-size: 16px; line-height: 1.5; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+  img { display: block; max-width: 100%; }
+  a { color: inherit; text-decoration: none; }
+  .serif { font-family: "Instrument Serif", serif; font-weight: 400; }
+  .conteneur { max-width: 1320px; margin: 0 auto; padding: 0 60px; }
+  section { padding: 112px 0; scroll-margin-top: 20px; }
+  .etiquette { font-size: 13px; color: var(--texte-2); display: inline-flex; align-items: center; gap: 8px; margin-bottom: 18px; }
+  .etiquette::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--accent); }
+  h1, h2 { font-family: "Instrument Serif", serif; font-weight: 400; letter-spacing: -0.035em; line-height: 1.02; }
+  h1 { font-size: clamp(44px, 6.4vw, 92px); letter-spacing: -0.025em; }
+  h2 { font-size: clamp(36px, 4.6vw, 64px); }
+  h2 em, h1 em { font-style: italic; }
+  .entete { display: grid; grid-template-columns: 1.2fr 1fr; gap: 40px; align-items: end; margin-bottom: 56px; }
+  .entete p { color: var(--texte-2); max-width: 440px; justify-self: end; }
+
+  /* Boutons */
+  .btn { display: inline-flex; align-items: center; gap: 14px; height: 48px; padding: 4px 4px 4px 22px; border-radius: 99px; font-size: 14.5px; font-weight: 500; background: var(--accent); color: var(--sombre); border: 0; cursor: pointer; transition: transform .25s; white-space: nowrap; }
+  .btn .rond { width: 40px; height: 40px; border-radius: 50%; background: var(--sombre); color: #fff; display: grid; place-items: center; overflow: hidden; }
+  .btn .rond svg { transition: transform .35s cubic-bezier(.2,.8,.2,1); }
+  .btn:hover .rond svg { transform: translateX(3px); }
+  .btn.sombre { background: var(--sombre); color: #fff; }
+  .btn.sombre .rond { background: var(--accent); color: var(--sombre); }
+  .btn.ligne { background: transparent; color: #fff; border: 1px solid rgba(255,255,255,.4); padding: 0 22px; }
+
+  /* Bandeau maquette */
+  .maquette { position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%); white-space: nowrap; z-index: 60; background: rgba(14,33,64,.9); color: #fff; font-size: 12px; padding: 7px 12px; border-radius: 99px; backdrop-filter: blur(8px); }
+
+  /* Navigation */
+  nav { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 50; width: min(1200px, calc(100% - 32px)); display: flex; align-items: center; justify-content: space-between; padding: 8px 8px 8px 16px; border-radius: 99px; background: rgba(255,255,255,.14); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border: 1px solid rgba(255,255,255,.22); transition: background .3s, border-color .3s; }
+  nav.plein { background: rgba(243,238,228,.88); border-color: rgba(14,33,64,.08); }
+  nav .marque { display: flex; align-items: center; gap: 10px; font-weight: 600; color: #fff; transition: color .3s; }
+  nav.plein .marque { color: var(--sombre); }
+  nav .marque img { width: 34px; height: 34px; border-radius: 9px; }
+  nav .liens { display: flex; gap: 28px; font-size: 14px; color: rgba(255,255,255,.85); transition: color .3s; }
+  nav.plein .liens { color: var(--texte-2); }
+  nav .liens a:hover { color: #fff; }
+  nav.plein .liens a:hover { color: var(--sombre); }
+  nav .btn { height: 42px; }
+  nav .btn .rond { width: 34px; height: 34px; }
+
+  /* Accroche */
+  .accroche { padding: 10px; height: 100svh; min-height: 680px; }
+  .accroche .bloc { position: relative; height: 100%; border-radius: 24px; overflow: hidden; color: #fff; display: flex; align-items: flex-end; }
+  .accroche .bloc > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; animation: zoom 18s ease-out forwards; }
+  @keyframes zoom { from { transform: scale(1.08); } to { transform: scale(1); } }
+  .accroche .bloc::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(14,33,64,.35) 0%, rgba(14,33,64,.05) 32%, rgba(14,33,64,.88) 100%), linear-gradient(270deg, rgba(14,33,64,.35), transparent 50%); }
+  .accroche .contenu { position: relative; z-index: 2; width: 100%; padding: 0 50px 46px; display: grid; grid-template-columns: 1.4fr 1fr; gap: 40px; align-items: end; }
+  .accroche h1 { max-width: 820px; }
+  .accroche .droite p { color: rgba(255,255,255,.85); font-size: 17px; margin-bottom: 24px; max-width: 430px; }
+  .accroche .boutons { display: flex; gap: 10px; flex-wrap: wrap; }
+  .garanties { display: flex; gap: 22px; flex-wrap: wrap; margin-top: 26px; font-size: 13.5px; color: rgba(255,255,255,.88); }
+  .garanties span { display: inline-flex; align-items: center; gap: 7px; }
+  .garanties svg { color: var(--accent); }
+  .carte-flottante { position: absolute; z-index: 3; top: 120px; right: 50px; width: 270px; background: rgba(255,255,255,.92); color: var(--sombre); border-radius: 18px; padding: 8px; backdrop-filter: blur(10px); box-shadow: 0 20px 50px rgba(0,0,0,.18); }
+  .carte-flottante img { border-radius: 12px; height: 140px; width: 100%; object-fit: cover; }
+  .carte-flottante .info { padding: 10px 8px 6px; font-size: 13px; }
+  .carte-flottante .info b { font-size: 14.5px; display: block; }
+  .carte-flottante .ligne-prix { display: flex; justify-content: space-between; align-items: center; margin-top: 8px; color: var(--texte-2); }
+  .pastille { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 500; background: #E6F3EC; color: var(--vert); border-radius: 99px; padding: 3px 9px; }
+
+  /* Bento */
+  .bento { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+  .case { background: var(--carte); border-radius: var(--rayon); padding: 8px; display: flex; flex-direction: column; transition: transform .35s cubic-bezier(.2,.8,.2,1); }
+  .case:hover { transform: translateY(-4px); }
+  .case .ecran { position: relative; height: 270px; border-radius: 14px; background: #F6F3EC; overflow: hidden; }
+  .case .texte { padding: 20px 16px 16px; }
+  .case h3 { font-family: "Instrument Serif", serif; font-weight: 400; font-size: 30px; letter-spacing: -0.02em; line-height: 1.1; margin-bottom: 8px; }
+  .case p { color: var(--texte-2); font-size: 15px; }
+
+  /* Mini-interface 1 : la fiche se compose */
+  .fiche { position: absolute; left: 50%; top: 50%; width: 250px; transform: translate(-50%, -50%); background: #fff; border-radius: 14px; padding: 7px; box-shadow: 0 14px 40px rgba(14,33,64,.12); }
+  .fiche .photo { height: 112px; border-radius: 9px; overflow: hidden; }
+  .fiche .photo img { width: 100%; height: 100%; object-fit: cover; }
+  .fiche .l { height: 9px; border-radius: 5px; background: #EDE8DD; margin: 9px 6px 0; }
+  .fiche .titre-f { font-size: 14px; font-weight: 600; margin: 10px 6px 0; min-height: 21px; white-space: nowrap; overflow: hidden; }
+  .fiche .titre-f span { display: inline-block; overflow: hidden; vertical-align: bottom; width: 0; white-space: nowrap; border-right: 2px solid var(--sombre); }
+  .fiche .bas { display: flex; justify-content: space-between; align-items: center; margin: 10px 6px 4px; font-size: 12px; color: var(--texte-2); }
+  .etoiles { color: var(--accent); letter-spacing: 1px; }
+  .actif .fiche .photo { animation: photo 7s infinite; }
+  .actif .fiche .titre-f span { animation: tape 7s steps(24) infinite, curseur .7s step-end infinite; }
+  .actif .fiche .l { animation: ligne 7s infinite; transform-origin: left; }
+  .actif .fiche .l:nth-of-type(2) { animation-delay: .15s; }
+  .actif .fiche .bas { animation: apparait 7s infinite; }
+  @keyframes photo { 0% { opacity: 0; transform: scale(.94); } 8%, 92% { opacity: 1; transform: none; } 100% { opacity: 0; } }
+  @keyframes tape { 0%, 12% { width: 0; } 38%, 92% { width: 196px; } 100% { width: 0; } }
+  @keyframes curseur { 50% { border-color: transparent; } }
+  @keyframes ligne { 0%, 40% { transform: scaleX(0); } 52%, 92% { transform: scaleX(1); } 100% { transform: scaleX(0); } }
+  @keyframes apparait { 0%, 55% { opacity: 0; transform: translateY(6px); } 64%, 92% { opacity: 1; transform: none; } 100% { opacity: 0; } }
+
+  /* Mini-interface 2 : recherche Google */
+  .google { position: absolute; inset: 22px 18px; }
+  .google .barre { display: flex; align-items: center; gap: 10px; background: #fff; border-radius: 99px; padding: 11px 16px; font-size: 13.5px; box-shadow: 0 6px 20px rgba(14,33,64,.08); }
+  .google .barre .req { overflow: hidden; white-space: nowrap; width: 0; border-right: 2px solid var(--sombre); }
+  .google .res { background: #fff; border-radius: 12px; padding: 12px 14px; margin-top: 10px; font-size: 12px; opacity: 0; }
+  .google .res .url { color: var(--texte-2); font-size: 11px; }
+  .google .res b { color: #1a4fc4; font-weight: 500; font-size: 14px; display: block; margin: 2px 0; }
+  .google .res.nous { box-shadow: 0 0 0 2px var(--accent); }
+  .google .res.autre { filter: grayscale(1); opacity: 0; }
+  .actif .google .req { animation: tapeG 8s steps(30) infinite, curseur .7s step-end infinite; }
+  .actif .google .res.nous { animation: res 8s infinite; }
+  .actif .google .res.autre { animation: resAutre 8s infinite; }
+  @keyframes tapeG { 0%, 6% { width: 0; } 34%, 94% { width: 196px; } 100% { width: 0; } }
+  @keyframes res { 0%, 40% { opacity: 0; transform: translateY(10px); } 48%, 94% { opacity: 1; transform: none; } 100% { opacity: 0; } }
+  @keyframes resAutre { 0%, 46% { opacity: 0; transform: translateY(10px); } 54%, 94% { opacity: .55; transform: none; } 100% { opacity: 0; } }
+
+  /* Mini-interface 3 : messages qui arrivent */
+  .messages { position: absolute; inset: 20px 18px; display: flex; flex-direction: column; justify-content: flex-end; gap: 8px; }
+  .bulle { max-width: 84%; padding: 10px 13px; border-radius: 16px; font-size: 13px; line-height: 1.4; opacity: 0; }
+  .bulle.eux { background: #fff; border-bottom-left-radius: 5px; box-shadow: 0 4px 14px rgba(14,33,64,.06); }
+  .bulle.nous { align-self: flex-end; background: var(--sombre); color: #fff; border-bottom-right-radius: 5px; }
+  .bulle small { display: block; font-size: 11px; opacity: .6; margin-bottom: 2px; }
+  .messages .recu { align-self: center; opacity: 0; }
+  .actif .bulle:nth-child(1) { animation: bulle 9s infinite; }
+  .actif .bulle:nth-child(2) { animation: bulle 9s infinite; animation-delay: .0s; animation-name: bulle2; }
+  .actif .bulle:nth-child(3) { animation-name: bulle3; animation-duration: 9s; animation-iteration-count: infinite; }
+  .actif .messages .recu { animation: bulle4 9s infinite; }
+  @keyframes bulle { 0%, 4% { opacity: 0; transform: translateY(12px) scale(.96); } 10%, 92% { opacity: 1; transform: none; } 100% { opacity: 0; } }
+  @keyframes bulle2 { 0%, 24% { opacity: 0; transform: translateY(12px) scale(.96); } 30%, 92% { opacity: 1; transform: none; } 100% { opacity: 0; } }
+  @keyframes bulle3 { 0%, 44% { opacity: 0; transform: translateY(12px) scale(.96); } 50%, 92% { opacity: 1; transform: none; } 100% { opacity: 0; } }
+  @keyframes bulle4 { 0%, 62% { opacity: 0; transform: scale(.9); } 68%, 92% { opacity: 1; transform: none; } 100% { opacity: 0; } }
+
+  /* Calculateur */
+  .sombre-section { background: var(--sombre); color: #fff; border-radius: 28px; margin: 0 10px; }
+  .sombre-section .etiquette, .sombre-section .entete p { color: var(--clair-2); }
+  .calcul { display: grid; grid-template-columns: 1fr 1.1fr; gap: 18px; }
+  .reglages, .resultat { background: var(--sombre-2); border-radius: var(--rayon); padding: 34px; }
+  .reglage { margin-bottom: 30px; }
+  .reglage:last-child { margin-bottom: 0; }
+  .reglage .haut { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 14px; font-size: 15px; color: var(--clair-2); }
+  .reglage .haut output { font-family: "Instrument Serif", serif; font-size: 34px; color: #fff; letter-spacing: -0.02em; }
+  input[type=range] { -webkit-appearance: none; appearance: none; width: 100%; height: 6px; border-radius: 6px; background: linear-gradient(90deg, var(--accent) var(--p, 50%), rgba(255,255,255,.14) var(--p, 50%)); outline: none; }
+  input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 24px; height: 24px; border-radius: 50%; background: #fff; border: 5px solid var(--accent); cursor: grab; }
+  input[type=range]::-moz-range-thumb { width: 16px; height: 16px; border-radius: 50%; background: #fff; border: 5px solid var(--accent); cursor: grab; }
+  .reglage .note { font-size: 12px; color: rgba(255,255,255,.5); margin-top: 8px; }
+  .resultat { display: flex; flex-direction: column; justify-content: space-between; gap: 28px; }
+  .resultat .grand { font-family: "Instrument Serif", serif; font-size: clamp(64px, 8vw, 116px); letter-spacing: -0.04em; line-height: .95; color: var(--accent); }
+  .resultat .sous { color: var(--clair-2); margin-top: 10px; }
+  .barres { display: grid; gap: 14px; }
+  .barre-l { font-size: 13.5px; color: var(--clair-2); display: flex; justify-content: space-between; margin-bottom: 6px; }
+  .barre-l b { color: #fff; font-weight: 500; }
+  .piste { height: 12px; border-radius: 12px; background: rgba(255,255,255,.08); overflow: hidden; }
+  .piste i { display: block; height: 100%; border-radius: 12px; transition: width .5s cubic-bezier(.2,.8,.2,1); }
+  .piste.plateforme i { background: rgba(255,255,255,.35); }
+  .piste.direct i { background: var(--accent); }
+
+  /* Étapes */
+  .etapes { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; align-items: stretch; }
+  .etapes .photo { border-radius: var(--rayon); overflow: hidden; position: relative; min-height: 520px; }
+  .etapes .photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform .6s; }
+  .etapes .photo:hover img { transform: scale(1.03); }
+  .etapes .photo .tag { position: absolute; top: 16px; left: 16px; background: rgba(255,255,255,.75); backdrop-filter: blur(8px); font-size: 12px; padding: 5px 11px; border-radius: 99px; }
+  .liste-etapes { display: grid; gap: 12px; }
+  .etape { background: var(--carte); border-radius: var(--rayon); padding: 26px 28px; display: grid; grid-template-columns: 56px 1fr; gap: 18px; align-items: start; }
+  .etape .num { font-family: "Instrument Serif", serif; font-size: 44px; line-height: 1; color: var(--accent); }
+  .etape h3 { font-size: 18px; font-weight: 600; letter-spacing: -0.01em; margin-bottom: 4px; }
+  .etape p { color: var(--texte-2); font-size: 15px; }
+
+  /* Témoignage */
+  .temoin { position: relative; border-radius: 28px; overflow: hidden; margin: 0 10px; color: #fff; padding: 140px 0; }
+  .temoin > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .temoin::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(14,33,64,.92) 0%, rgba(14,33,64,.65) 55%, rgba(14,33,64,.25) 100%); }
+  .temoin .conteneur { position: relative; z-index: 2; }
+  .temoin blockquote { font-family: "Instrument Serif", serif; font-size: clamp(32px, 3.8vw, 54px); line-height: 1.12; letter-spacing: -0.02em; max-width: 860px; }
+  .temoin .auteur { display: flex; align-items: center; gap: 14px; margin-top: 34px; }
+  .temoin .auteur img { width: 52px; height: 52px; border-radius: 50%; object-fit: cover; border: 2px solid rgba(255,255,255,.6); }
+  .temoin .auteur span { color: var(--clair-2); font-size: 14px; }
+
+  /* Tarifs */
+  .tarifs { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; }
+  .tarif { background: var(--carte); border-radius: var(--rayon); padding: 26px 22px; display: flex; flex-direction: column; transition: transform .35s cubic-bezier(.2,.8,.2,1); }
+  .tarif:hover { transform: translateY(-4px); }
+  .tarif .type { font-size: 14px; color: var(--texte-2); margin-bottom: 18px; }
+  .tarif .prix { font-family: "Instrument Serif", serif; font-size: 52px; line-height: 1; letter-spacing: -0.03em; }
+  .tarif .prix small { font-size: 18px; color: var(--texte-2); }
+  .tarif .periode { font-size: 12.5px; color: var(--texte-2); margin: 6px 0 20px; }
+  .tarif ul { list-style: none; display: grid; gap: 8px; font-size: 14px; margin-bottom: 22px; flex: 1; }
+  .tarif li { display: flex; gap: 8px; }
+  .tarif li::before { content: "✓"; color: var(--vert); font-weight: 600; }
+  .tarif .ensuite { font-size: 12.5px; color: var(--texte-2); border-top: 1px solid #EEE9DF; padding-top: 14px; }
+  .tarif.mis { background: var(--sombre); color: #fff; }
+  .tarif.mis .type, .tarif.mis .periode, .tarif.mis .ensuite, .tarif.mis .prix small { color: var(--clair-2); }
+  .tarif.mis .ensuite { border-color: rgba(255,255,255,.12); }
+  .tarif.mis li::before { color: var(--accent); }
+  .tarif .badge { align-self: flex-start; font-size: 11.5px; font-weight: 600; background: var(--accent); color: var(--sombre); border-radius: 99px; padding: 3px 10px; margin-bottom: 14px; }
+  .tarifs-note { margin-top: 22px; font-size: 14px; color: var(--texte-2); }
+
+  /* FAQ */
+  .faq { display: grid; grid-template-columns: 1fr 1.4fr; gap: 60px; }
+  .questions { display: grid; gap: 10px; }
+  details { background: var(--carte); border-radius: 16px; padding: 0 24px; }
+  summary { list-style: none; cursor: pointer; padding: 22px 0; font-weight: 500; font-size: 17px; display: flex; justify-content: space-between; gap: 20px; align-items: center; }
+  summary::-webkit-details-marker { display: none; }
+  summary .plus { width: 30px; height: 30px; border-radius: 50%; background: var(--fond); display: grid; place-items: center; flex: none; transition: transform .3s, background .3s; }
+  details[open] summary .plus { transform: rotate(45deg); background: var(--accent); }
+  details p { color: var(--texte-2); padding-bottom: 22px; max-width: 620px; }
+
+  /* Appel final et formulaire */
+  .final { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+  .final h2 { color: #fff; }
+  .final .gauche p { color: var(--clair-2); margin: 22px 0 0; max-width: 460px; }
+  form { background: #fff; color: var(--sombre); border-radius: var(--rayon); padding: 30px; display: grid; gap: 12px; }
+  form .deux { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  label { font-size: 13px; color: var(--texte-2); display: grid; gap: 6px; }
+  form input, form select { font: inherit; font-size: 15px; padding: 13px 14px; border-radius: 12px; border: 1px solid #E6E0D4; background: #FBF9F5; color: var(--sombre); outline: none; transition: border-color .2s; }
+  form input:focus, form select:focus { border-color: var(--sombre); }
+  form .btn { justify-content: space-between; margin-top: 6px; }
+  form .petit { font-size: 12px; color: var(--texte-2); }
+  footer { padding: 90px 0 30px; }
+  footer .nom { font-family: "Instrument Serif", serif; font-size: clamp(64px, 15vw, 230px); letter-spacing: -0.05em; line-height: .85; color: rgba(255,255,255,.95); margin-top: 90px; }
+  footer .liens-pied { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 16px; font-size: 13px; color: var(--clair-2); border-top: 1px solid rgba(255,255,255,.12); padding-top: 22px; margin-top: 26px; }
+  footer .liens-pied div { display: flex; gap: 22px; flex-wrap: wrap; }
+
+  /* Entrées au défilement : titre + un bloc fort par section */
+  .monte { opacity: 0; transform: translateY(24px); transition: opacity .7s ease, transform .7s cubic-bezier(.2,.8,.2,1); }
+  .monte.vu { opacity: 1; transform: none; }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+    .monte { opacity: 1; transform: none; }
+    .fiche .titre-f span, .google .barre .req { width: auto !important; border: 0; }
+    .google .res, .bulle, .messages .recu, .fiche .bas { opacity: 1 !important; }
+  }
+
+  @media (max-width: 1100px) {
+    .tarifs { grid-template-columns: repeat(3, 1fr); }
+    .carte-flottante { display: none; }
+  }
+  @media (max-width: 860px) {
+    .conteneur { padding: 0 20px; }
+    section { padding: 64px 0; }
+    nav .liens { display: none; }
+    nav .btn span.txt { display: none; }
+    nav .btn { padding-left: 4px; }
+    .accroche { height: auto; min-height: 92svh; padding: 8px; }
+    .accroche .bloc { min-height: calc(92svh - 16px); }
+    .accroche .contenu { grid-template-columns: 1fr; padding: 0 20px 28px; gap: 18px; }
+    .accroche .droite p { font-size: 15.5px; }
+    .entete, .calcul, .etapes, .faq, .final { grid-template-columns: 1fr; }
+    .entete { gap: 16px; margin-bottom: 36px; }
+    .entete p { justify-self: start; }
+    .bento { grid-template-columns: 1fr; }
+    .tarifs { grid-template-columns: 1fr 1fr; }
+    .etapes .photo { min-height: 300px; }
+    .reglages, .resultat { padding: 24px; }
+    .temoin { padding: 80px 0; }
+    .faq { gap: 24px; }
+    form .deux { grid-template-columns: 1fr; }
+    .sombre-section, .temoin { margin: 0 8px; border-radius: 22px; }
+  }
+  @media (max-width: 520px) {
+    .tarifs { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="maquette">Maquette Kleak Agency · document de travail</div>
+
+<nav id="nav">
+  <a href="#" class="marque"><img src="img/logo.png" alt="">BnbAtlantic</a>
+  <div class="liens">
+    <a href="#avantages">Ce qu'on fait</a>
+    <a href="#calcul">Sans commission</a>
+    <a href="#tarifs">Tarifs</a>
+    <a href="#faq">Questions</a>
+  </div>
+  <a href="#inscription" class="btn"><span class="txt">Inscrire mon hébergement</span><span class="rond"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
+</nav>
+
+<!-- Accroche -->
+<header class="accroche">
+  <div class="bloc">
+    <img src="img/lourdes.jpg" alt="Lourdes, le château fort et les Pyrénées">
+    <div class="carte-flottante">
+      <img src="img/maison.jpg" alt="">
+      <div class="info">
+        <b>Chez Germaine</b>
+        Lourdes · chambre d'hôtes
+        <div class="ligne-prix"><span class="etoiles">★★★★★</span><span class="pastille">0 % de commission</span></div>
+      </div>
+    </div>
+    <div class="contenu">
+      <h1>Louez vos chambres d'hôtes en direct, <em>sans commission.</em></h1>
+      <div class="droite">
+        <p>BnbAtlantic présente votre maison aux voyageurs qui cherchent un vrai accueil. Ils vous contactent directement et vous gardez le prix de chaque nuit.</p>
+        <div class="boutons">
+          <a href="#inscription" class="btn">Inscrire mon hébergement<span class="rond"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
+          <a href="#tarifs" class="btn ligne">Voir les tarifs</a>
+        </div>
+        <div class="garanties">
+          <span><svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M3 8.5l3 3 7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Aucune commission</span>
+          <span><svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M3 8.5l3 3 7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Fiche rédigée pour vous</span>
+          <span><svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M3 8.5l3 3 7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Contact direct</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- Ce qu'on fait pour vous -->
+<section id="avantages">
+  <div class="conteneur">
+    <div class="entete monte">
+      <div>
+        <div class="etiquette">Ce qu'on fait pour vous</div>
+        <h2>Vous accueillez.<br>On s'occupe <em>du reste.</em></h2>
+      </div>
+      <p>Pas de logiciel à apprendre ni d'annonce à écrire. On rédige votre fiche, on la fait connaître, et les demandes arrivent chez vous.</p>
+    </div>
+    <div class="bento monte">
+      <div class="case">
+        <div class="ecran">
+          <div class="fiche">
+            <div class="photo"><img src="img/chambre.jpg" alt=""></div>
+            <div class="titre-f"><span>Chez Germaine, Lourdes</span></div>
+            <div class="l"></div>
+            <div class="l" style="width:62%"></div>
+            <div class="bas"><span class="etoiles">★★★★★</span><span>à partir de 65 € la nuit</span></div>
+          </div>
+        </div>
+        <div class="texte">
+          <h3>Votre fiche, écrite pour vous</h3>
+          <p>Photos, description, équipements, accès : on rédige tout à partir d'un simple échange avec vous.</p>
+        </div>
+      </div>
+      <div class="case">
+        <div class="ecran">
+          <div class="google">
+            <div class="barre"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="5" stroke="currentColor" stroke-width="1.6"/><path d="M11 11l3 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg><span class="req">chambre d'hôtes lourdes</span></div>
+            <div class="res nous"><span class="url">bnbatlantic.com › lourdes</span><b>Chez Germaine, chambre d'hôtes à Lourdes</b>Accueil chaleureux à deux pas du sanctuaire. Contact direct avec l'hôte…</div>
+            <div class="res autre"><span class="url">plateforme.com › lourdes</span><b>Hébergements à Lourdes</b>1 240 logements disponibles…</div>
+          </div>
+        </div>
+        <div class="texte">
+          <h3>Trouvée sur Google</h3>
+          <p>Votre fiche et un article sur votre région sont pensés pour les recherches des voyageurs.</p>
+        </div>
+      </div>
+      <div class="case">
+        <div class="ecran">
+          <div class="messages">
+            <div class="bulle eux"><small>Claire, Bordeaux</small>Bonjour Germaine, auriez-vous une chambre du 14 au 16 novembre ?</div>
+            <div class="bulle nous">Bonjour Claire, oui, la chambre bleue est libre. Petit-déjeuner compris.</div>
+            <div class="bulle eux"><small>Claire, Bordeaux</small>Parfait, je réserve !</div>
+            <div class="recu"><span class="pastille">✓ Réservé en direct · 0 € de commission</span></div>
+          </div>
+        </div>
+        <div class="texte">
+          <h3>Les voyageurs vous écrivent</h3>
+          <p>Pas d'intermédiaire : vous échangez avec eux, vous fixez vos prix et vos conditions.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Calculateur -->
+<section id="calcul" class="sombre-section">
+  <div class="conteneur">
+    <div class="entete monte">
+      <div>
+        <div class="etiquette">Sans commission</div>
+        <h2>Ce que vous gardez <em>chaque année.</em></h2>
+      </div>
+      <p>Faites glisser les curseurs avec vos chiffres. La différence reste chez vous, pas chez une plateforme.</p>
+    </div>
+    <div class="calcul monte">
+      <div class="reglages">
+        <div class="reglage">
+          <div class="haut"><span>Prix d'une nuit</span><output id="o-prix">70 €</output></div>
+          <input type="range" id="prix" min="40" max="250" step="5" value="70">
+        </div>
+        <div class="reglage">
+          <div class="haut"><span>Nuits louées par an</span><output id="o-nuits">120</output></div>
+          <input type="range" id="nuits" min="10" max="300" step="5" value="120">
+        </div>
+        <div class="reglage">
+          <div class="haut"><span>Commission d'une plateforme</span><output id="o-com">15 %</output></div>
+          <input type="range" id="com" min="3" max="25" step="1" value="15">
+          <div class="note">Réglez le taux de votre plateforme actuelle.</div>
+        </div>
+      </div>
+      <div class="resultat">
+        <div>
+          <div class="grand" id="gain">1 260 €</div>
+          <div class="sous">gardés par an en louant en direct</div>
+        </div>
+        <div class="barres">
+          <div>
+            <div class="barre-l"><span>Via une plateforme</span><b id="b-plat">7 140 €</b></div>
+            <div class="piste plateforme"><i id="p-plat" style="width:85%"></i></div>
+          </div>
+          <div>
+            <div class="barre-l"><span>En direct avec BnbAtlantic</span><b id="b-dir">8 400 €</b></div>
+            <div class="piste direct"><i id="p-dir" style="width:100%"></i></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Comment ça marche -->
+<section>
+  <div class="conteneur">
+    <div class="entete monte">
+      <div>
+        <div class="etiquette">Comment ça marche</div>
+        <h2>En ligne en <em>trois étapes.</em></h2>
+      </div>
+      <p>Vous n'avez rien à installer. Une demande, un échange, et votre maison est visible.</p>
+    </div>
+    <div class="etapes">
+      <div class="photo monte"><img src="img/petit-dej.jpg" alt="Petit-déjeuner servi chez Germaine"><span class="tag">Le petit-déjeuner chez Germaine</span></div>
+      <div class="liste-etapes">
+        <div class="etape"><div class="num">1</div><div><h3>Vous nous présentez votre maison</h3><p>Remplissez le formulaire en deux minutes. On vous rappelle pour faire connaissance.</p></div></div>
+        <div class="etape"><div class="num">2</div><div><h3>On rédige et on publie votre fiche</h3><p>Description, photos, référencement et un article court sur votre ville ou votre région.</p></div></div>
+        <div class="etape"><div class="num">3</div><div><h3>Les voyageurs vous contactent</h3><p>Par téléphone ou par email, directement. Vous réservez comme vous en avez l'habitude.</p></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Témoignage -->
+<section class="temoin">
+  <img src="img/maison.jpg" alt="La maison de Germaine à Lourdes">
+  <div class="conteneur">
+    <blockquote class="monte">« Grâce à BnbAtlantic, je peux accueillir mes voyageurs directement, sans commission, et gérer mes réservations facilement. »</blockquote>
+    <div class="auteur"><img src="img/chambre.jpg" alt=""><div><b>Germaine</b><br><span>Propriétaire à Lourdes</span></div></div>
+  </div>
+</section>
+
+<!-- Tarifs -->
+<section id="tarifs">
+  <div class="conteneur">
+    <div class="entete monte">
+      <div>
+        <div class="etiquette">Tarifs</div>
+        <h2>Un prix à la création, <em>puis presque rien.</em></h2>
+      </div>
+      <p>Vous payez une fois la création de votre fiche. À partir de la deuxième année, un petit abonnement la garde à jour.</p>
+    </div>
+    <div class="tarifs monte">
+      <div class="tarif">
+        <div class="type">Chambre simple</div>
+        <div class="prix">190<small> €</small></div>
+        <div class="periode">la première année</div>
+        <ul><li>Fiche complète</li><li>Référencement</li><li>Article court</li></ul>
+        <div class="ensuite">Puis 79 € par an</div>
+      </div>
+      <div class="tarif">
+        <div class="type">Studio ou T1</div>
+        <div class="prix">290<small> €</small></div>
+        <div class="periode">la première année</div>
+        <ul><li>Fiche complète</li><li>Référencement</li><li>Article</li><li>Support</li></ul>
+        <div class="ensuite">Puis 99 € par an</div>
+      </div>
+      <div class="tarif mis">
+        <span class="badge">Le plus choisi</span>
+        <div class="type">Appartement T2 ou T3</div>
+        <div class="prix">390<small> €</small></div>
+        <div class="periode">la première année</div>
+        <ul><li>Fiche complète</li><li>Référencement</li><li>Article</li><li>Options visuelles</li></ul>
+        <div class="ensuite">Puis 129 € par an</div>
+      </div>
+      <div class="tarif">
+        <div class="type">Maison ou villa</div>
+        <div class="prix">490<small> €</small></div>
+        <div class="periode">la première année</div>
+        <ul><li>Fiche complète</li><li>Référencement</li><li>Article</li><li>Interview vidéo</li></ul>
+        <div class="ensuite">Puis 149 € par an</div>
+      </div>
+      <div class="tarif">
+        <div class="type">Prestige</div>
+        <div class="prix"><small>dès </small>690<small> €</small></div>
+        <div class="periode">la première année</div>
+        <ul><li>Tout le reste</li><li>Vidéo et shooting</li><li>Stratégie sur mesure</li></ul>
+        <div class="ensuite">Puis dès 199 € par an</div>
+      </div>
+    </div>
+    <p class="tarifs-note">En option : shooting photo, traduction de la fiche en anglais, allemand ou espagnol, mise en avant sur la page d'accueil.</p>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq" style="padding-top:0">
+  <div class="conteneur faq">
+    <div class="monte">
+      <div class="etiquette">Questions</div>
+      <h2>Ce qu'on nous <em>demande souvent.</em></h2>
+    </div>
+    <div class="questions">
+      <details open><summary>Vous prenez vraiment zéro commission ?<span class="plus">+</span></summary><p>Oui. Vous payez la création de votre fiche, puis un abonnement annuel à partir de la deuxième année. Le prix des nuits reste entièrement à vous.</p></details>
+      <details><summary>Je suis déjà sur Airbnb ou Booking, je dois partir ?<span class="plus">+</span></summary><p>Non. BnbAtlantic s'ajoute à ce que vous faites déjà. Vous gardez vos autres annonces et vous recevez en plus des demandes en direct.</p></details>
+      <details><summary>Comment les voyageurs réservent-ils ?<span class="plus">+</span></summary><p>Ils vous contactent par téléphone ou par email depuis votre fiche. Vous fixez vos prix, vos dates et vos conditions, comme vous le faites aujourd'hui.</p></details>
+      <details><summary>Je n'ai pas de belles photos, c'est un problème ?<span class="plus">+</span></summary><p>Envoyez-nous ce que vous avez, on vous dira quoi garder. Un shooting photo professionnel est aussi proposé en option.</p></details>
+      <details><summary>Dans quelles régions êtes-vous présents ?<span class="plus">+</span></summary><p>Partout en France, avec un accent sur la côte atlantique : Bretagne, Pays de la Loire, Nouvelle-Aquitaine et Occitanie.</p></details>
+    </div>
+  </div>
+</section>
+
+<!-- Appel final -->
+<div class="sombre-section" style="margin-bottom:10px">
+  <section id="inscription">
+    <div class="conteneur final">
+      <div class="gauche monte">
+        <div class="etiquette">Inscription</div>
+        <h2>Présentez-nous <em>votre maison.</em></h2>
+        <p>Deux minutes pour remplir le formulaire. On vous rappelle sous 48 heures pour en parler, sans engagement.</p>
+      </div>
+      <form onsubmit="event.preventDefault(); this.querySelector('.btn').firstChild.textContent = 'Merci, on vous rappelle sous 48 h ';">
+        <div class="deux">
+          <label>Prénom et nom<input type="text" placeholder="Germaine Dupont"></label>
+          <label>Téléphone<input type="tel" placeholder="06 12 34 56 78"></label>
+        </div>
+        <label>Email<input type="email" placeholder="vous@exemple.fr"></label>
+        <div class="deux">
+          <label>Type d'hébergement<select><option>Chambre d'hôtes</option><option>Studio ou T1</option><option>Appartement T2 ou T3</option><option>Maison ou villa</option><option>Prestige</option></select></label>
+          <label>Ville<input type="text" placeholder="Lourdes"></label>
+        </div>
+        <button class="btn sombre" type="submit">Être rappelé<span class="rond"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
+        <div class="petit">Vos informations servent uniquement à vous recontacter. Voir la politique de confidentialité.</div>
+      </form>
+    </div>
+  </section>
+  <footer>
+    <div class="conteneur">
+      <div class="nom">BnbAtlantic</div>
+      <div class="liens-pied">
+        <span>© 2026 BnbAtlantic · Chambres d'hôtes sans commission</span>
+        <div><a href="#">Hébergements</a><a href="#">Mentions légales</a><a href="#">Confidentialité</a><a href="#">CGV</a></div>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<script>
+  // Navigation : passe en clair une fois l'accroche dépassée
+  const nav = document.getElementById('nav');
+  const accroche = document.querySelector('.accroche');
+  new IntersectionObserver(([e]) => nav.classList.toggle('plein', !e.isIntersecting), { rootMargin: '-80px 0px 0px 0px' }).observe(accroche);
+
+  // Entrées au défilement
+  const vu = new IntersectionObserver((es) => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('vu'); vu.unobserve(e.target); } }), { threshold: .15 });
+  document.querySelectorAll('.monte').forEach(el => vu.observe(el));
+
+  // Mini-interfaces : animées seulement à l'écran
+  const anim = new IntersectionObserver((es) => es.forEach(e => e.target.classList.toggle('actif', e.isIntersecting)), { threshold: .2 });
+  document.querySelectorAll('.case').forEach(el => anim.observe(el));
+
+  // Calculateur
+  const euros = n => Math.round(n).toLocaleString('fr-FR').replace(/ /g, ' ') + ' €';
+  const champs = ['prix', 'nuits', 'com'].map(id => document.getElementById(id));
+  let affiche = 0;
+  function calcule() {
+    const [prix, nuits, com] = champs.map(c => +c.value);
+    champs.forEach(c => c.style.setProperty('--p', ((c.value - c.min) / (c.max - c.min) * 100) + '%'));
+    document.getElementById('o-prix').textContent = prix + ' €';
+    document.getElementById('o-nuits').textContent = nuits;
+    document.getElementById('o-com').textContent = com + ' %';
+    const direct = prix * nuits, plat = direct * (1 - com / 100), gain = direct - plat;
+    document.getElementById('b-dir').textContent = euros(direct);
+    document.getElementById('b-plat').textContent = euros(plat);
+    document.getElementById('p-plat').style.width = (100 - com) + '%';
+    // Le grand chiffre défile jusqu'à sa nouvelle valeur
+    const depart = affiche, debut = performance.now();
+    const pas = t => { const k = Math.min((t - debut) / 450, 1); affiche = depart + (gain - depart) * (1 - Math.pow(1 - k, 3)); document.getElementById('gain').textContent = euros(affiche); if (k < 1) requestAnimationFrame(pas); };
+    requestAnimationFrame(pas);
+  }
+  champs.forEach(c => c.addEventListener('input', calcule));
+  calcule();
+</script>
+</body>
+</html>
