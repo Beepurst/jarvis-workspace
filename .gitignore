@@ -79,3 +79,6 @@ livrables/hub-agence-*/
 
 # Créas Meta : HTML intermédiaire, régénéré à chaque rendu
 livrables/creas-meta/html/
+
+# Dossiers de travail de l agent maquette-prospect (captures, textes et images des prospects)
+livrables/clients/prospects/

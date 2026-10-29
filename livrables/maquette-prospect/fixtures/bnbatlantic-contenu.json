@@ -1,0 +1,67 @@
+{
+  "pour": "Patrick Gaillard, BnbAtlantic",
+  "titre": "Une page pour inscrire\nplus de propriétaires",
+  "cible": "un propriétaire",
+  "marche": [
+    "Un argument fort et simple : zéro commission sur les nuits.",
+    "Vos guides par région (Bretagne, Occitanie, Corse…) qui travaillent pour vous sur Google.",
+    "Votre parole de fondateur, et l'avis de Germaine à Lourdes."
+  ],
+  "neTouchePas": [
+    "Votre WordPress, vos pages et vos articles restent en place.",
+    "Votre référencement n'est pas mis en jeu.",
+    "Le bouton « Rejoignez-nous » de votre site mène simplement à la nouvelle page."
+  ],
+  "freins": [
+    { "titre": "Le message est éclaté sur trois pages.", "detail": "« Pourquoi rejoindre BnbAtlantic », « Tarifs professionnels » et « Publiez votre hébergement gratuitement ». Le propriétaire doit reconstituer l'offre lui-même." },
+    { "titre": "Il ne sait pas ce qu'il va payer.", "detail": "Une page annonce 6 mois gratuits, une autre 3 mois gratuits renouvelables, une troisième une création de 190 € à 690 €. Il lui faut une seule réponse, claire." },
+    { "titre": "Le formulaire est long.", "detail": "14 champs, dont l'adresse du logement et 5 champs pour un parrain. Pour un premier contact, nom, téléphone, ville et type d'hébergement suffisent : le reste se dit au téléphone." },
+    { "titre": "Rien ne chiffre ce qu'il gagne.", "detail": "« Zéro commission » reste abstrait. Montrer combien un propriétaire garde sur une année avec ses propres chiffres, c'est ce qui le décide." }
+  ],
+  "legendeMobile": "La page d'inscription actuelle, sur téléphone.",
+  "page": "propriétaires",
+  "nomOffre": "La page propriétaires",
+  "chapeau": "Une seule page, dédiée aux propriétaires, à l'adresse **inscription.bnbatlantic.com**. Elle réunit tout ce qu'il faut pour décider, et c'est elle que vous mettez dans vos publicités et vos messages aux hôtes. Voici la première version que j'ai préparée.",
+  "captures": [
+    { "selecteur": "#calcul", "legende": "Le calculateur : le propriétaire voit ce qu'il garde chaque année." },
+    { "selecteur": "#avantages", "legende": "ce que vous faites pour l'hôte, en trois cartes animées." }
+  ],
+  "legendeAccroche": "Le haut de la page : la promesse en une phrase, le bouton d'inscription, et Chez Germaine en exemple.",
+  "contenuPage": [
+    "L'accroche et le bouton d'inscription",
+    "Ce que se disent les propriétaires",
+    "Ce que BnbAtlantic fait pour eux",
+    "Le calculateur de ce qu'ils gardent",
+    "Les 5 étapes jusqu'aux réservations",
+    "L'avis de Germaine",
+    "Vos tarifs, clairs, sur une seule grille",
+    "Les questions fréquentes",
+    "Un formulaire court, 6 champs",
+    "Lisible sur téléphone, mentions légales incluses"
+  ],
+  "inclus": [
+    "Textes rédigés pour vous",
+    "Formulaire relié à votre boîte mail",
+    "Sur votre nom de domaine",
+    "Une série de retouches"
+  ],
+  "explicationsOptions": {
+    "Automatisation des demandes": "Chaque demande de propriétaire enregistrée dans un tableau, une alerte pour vous, une réponse automatique pour lui.",
+    "Page supplémentaire": "Par exemple une page voyageurs, dans le même style."
+  },
+  "chapeauPrix": "Un prix fixe, connu d'avance. Les textes sont écrits par nous, à partir de ce que vous nous dites.",
+  "deroule": [
+    "Notre échange du 29 octobre : c'est fait.",
+    "Vous signez le devis joint, à prix fixe, valable 30 jours.",
+    "À la signature, un questionnaire en ligne d'environ 15 minutes : vos goûts, vos photos.",
+    "Sous 48 heures, une planche de direction à valider avant de construire.",
+    "La page complète, que vous regardez sur votre téléphone, puis les retouches.",
+    "Mise en ligne sur inscription.bnbatlantic.com."
+  ],
+  "aCaler": [
+    { "titre": "L'objectif", "detail": "Inscrire vos premiers propriétaires, aux côtés de Germaine." },
+    { "titre": "Votre site", "detail": "Votre WordPress et vos articles restent en place, la page s'ajoute à côté." },
+    { "titre": "Le nom de domaine", "detail": "Il est chez IONOS et vous y avez accès : on crée ensemble l'adresse inscription.bnbatlantic.com." },
+    { "titre": "À préciser dans le questionnaire", "detail": "L'offre affichée aux propriétaires (gratuite pour commencer ou payante) et vos photos." }
+  ]
+}
