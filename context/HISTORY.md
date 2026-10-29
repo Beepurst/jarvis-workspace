@@ -9,6 +9,13 @@
 
 ## 2026-10-29
 
+### RDV Cal.com non rattaché : le hub retrouve désormais le lead par téléphone
+
+- **Constat** : Goncalves Manuel (lead du formulaire Meta, 23 h 09) a réservé à 23 h 13 avec un autre email et le même téléphone. Le hub cherchait le compte par identifiant et par email seulement. Il n'a pas pu créer de compte (téléphone déjà pris) et a classé la réservation en « compte introuvable », sans nouvel essai possible.
+- **Correctif en production** (`cf2a608`) : à défaut d'identifiant et d'email, le compte est cherché par téléphone normalisé (unique en base).
+- **Réservation rejouée** : compte passé en « RDV pris », RDV le 30/10 à 15 h 30, email du formulaire conservé.
+- **Reprise automatique en production** (`0a596bf`) : au passage du Sheet, les réceptions Cal.com en erreur des 7 derniers jours sont retentées (10 par passage), sans nouvelle notification « RDV non rattaché ».
+
 ### Meta Ads : relance sur le réglage de l'ancien compte
 
 - **Constat** : en octobre, 100 € pour 2 leads et 0 RDV. « Kleak Pub » n'est pas le compte qui faisait 4 à 5 leads par jour (aucun lead avant octobre 2026). Différences avec l'ancien réglage : budget dispersé sur 5 campagnes, formulaire « plus d'intention », audience resserrée.
