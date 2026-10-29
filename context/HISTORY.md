@@ -7,6 +7,26 @@
 
 ---
 
+## 2026-10-29
+
+### Meta Ads : relance sur le réglage de l'ancien compte
+
+- **Constat** : en octobre, 100 € pour 2 leads et 0 RDV. « Kleak Pub » n'est pas le compte qui faisait 4 à 5 leads par jour (aucun lead avant octobre 2026). Différences avec l'ancien réglage : budget dispersé sur 5 campagnes, formulaire « plus d'intention », audience resserrée.
+- **Décisions d'Edgar** : `LP sans prix` et `Métiers` en pause, retargeting abandonné ; budget à 300 € par mois ; nouveau formulaire « plus de volume » (questions inchangées, branché au même Sheet) ; une campagne `Kleak | Relance | 2026-10-29`, 10 € par jour, Advantage+ activée, 18 à 65 ans et plus, 5 pubs (J, r, aa, ab, ac), note Google gardée sur J ; message WhatsApp inchangé.
+- **Série 9 de créas** (aa délai, ab réalisation sur téléphone, ac on écrit les textes) faite, importée dans le hub, textes déposés.
+- **Défaut du hub** : les règles de placement du hub laissent encore les placements fil sans image valable aux yeux du Gestionnaire (corrigé à la main pub par pub le 29/10). Correction du hub en production le 29/10 (une étiquette par règle), à confirmer à la prochaine création de campagne.
+- **Campagne Relance active le 29/10 au soir.** Point vers le 01/11 (30 €), bilan vers le 03/11 (50 €).
+
+### Proposition prospect jointe au devis, construite
+
+- **Décision d'Edgar** : la proposition faite à la main pour BnbAtlantic (Patrick Gaillard) devient la norme. Elle part **après le RDV, dans le même email que le devis**, en **3 pages** (le constat sur le site, ce que je propose avec la maquette, prix, délai et déroulé). Edgar la relit sur la fiche avant l'envoi. Sans site exploitable, la version se fait sans captures du site. Une page dédiée (inscription, landing page) est maquettée en local, sans remplacer la maquette publique d'accueil.
+- **Où vit quoi** : l'agent `maquette-prospect` (mode PROPOSITION) écrit les textes, fait les captures et rend le PDF avec Playwright. Il refuse un document qui ne fait pas 3 pages, un texte coupé ou un montant absent du devis, du site et du RDV. Le hub fournit les prix du devis, stocke le PDF, le fait valider et le joint au brouillon Gmail de « Préparer l'email ». Le PDF est signalé périmé si le devis change, et un bouton « Refaire le brouillon » existe.
+- **Email avec proposition** : texte repris de celui envoyé à Patrick, avec les variables du devis (formule, prix, paiement, délai). Réglage `message_email_proposition`.
+- **En production le 29/10** (fusion `d5524d4`, déployée avec `9c00008`). Spec et plan dans `docs/superpowers/` du hub, SQL `supabase/proposition-prospect.sql` exécuté par Edgar.
+- **Recette de bout en bout** sur un compte de test (site kleakagency.fr, devis One page en 6 fois, RDV collé). L'agent a produit la proposition seul : 3 pages, prix du devis, PageSpeed mesuré. Résultats : refus du brouillon avant validation, correction lue par l'agent, redépôt repassé « à valider », brouillon Gmail depuis `contact@kleakagency.fr` avec le devis puis la proposition, « Refaire le brouillon » qui ne laisse qu'un brouillon, devis modifié qui bloque. Tout a été supprimé ensuite, numérotation remise à DEV-1002.
+- **Corrigé à la recette** : le pied de la page 3 affiche la mention TVA du devis (il affichait « EI »). La doc de l'agent précise le bandeau `class="maquette"` et l'en-tête fixe en premier `<nav>`.
+- **Reste** : commiter les scripts de l'agent (`livrables/maquette-prospect/proposition-*`, définition de l'agent) avec `/commit`. Points mineurs : le bas de la page 3 est un peu vide sans options, et `controler.mjs` donne deux avertissements contraires à ses règles (animation de l'accroche, Inter du prospect).
+
 ## 2026-10-28
 
 ### Posts organiques Instagram et Facebook en production

@@ -29,11 +29,11 @@ import { execFileSync } from "node:child_process";
 import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { join, resolve } from "node:path";
 import {
-  DOSSIER_PROSPECTS,
   ErreurSortie,
   appelHub,
   defiler,
   domaineDe,
+  dossierProspect,
   lancer,
   lancerNavigateur,
   messageRefus,
@@ -520,11 +520,7 @@ async function principal() {
     }
   }
   const domaine = domaineDe(compte.site_url);
-  let dossier = args.sortie ? resolve(args.sortie) : join(DOSSIER_PROSPECTS, (args.essai ? "essai-" : "") + (slug(compte.entreprise || compte.nom) || slug(domaine)));
-  if (!args.sortie && compte.id && existsSync(join(dossier, "compte.json"))) {
-    const ancien = JSON.parse(readFileSync(join(dossier, "compte.json"), "utf8"));
-    if (ancien.compte?.id && ancien.compte.id !== compte.id) dossier = `${dossier}-${compte.id.slice(0, 8)}`;
-  }
+  const dossier = args.sortie ? resolve(args.sortie) : dossierProspect(compte, args.essai ? "essai-" : "");
   const existait = existsSync(dossier);
   const site = join(dossier, "site");
   const dossierImages = join(site, "images");

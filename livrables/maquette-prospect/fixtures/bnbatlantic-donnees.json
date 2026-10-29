@@ -1,11 +1,12 @@
 {
   "compte": { "id": "00000000-0000-0000-0000-000000000000", "nom": "Patrick Gaillard", "entreprise": "BnbAtlantic" },
-  "devis": { "id": "11111111-1111-1111-1111-111111111111", "numero": null, "statut": "brouillon", "formule": "page", "client": {} },
+  "devis": { "id": "11111111-1111-1111-1111-111111111111", "numero": null, "statut": "brouillon", "formule": "one_page", "client": {} },
   "prix": {
     "empreinte": "essai",
-    "formule": "La page",
+    "formule": "One page",
     "prixSite": "699 €",
-    "sixFois": { "premier": "116,50 €", "suivant": "116,50 €" },
+    "total": "1 299 €",
+    "sixFois": { "premier": "216,50 €", "suivant": "216,50 €" },
     "delaiJoursOuvres": 5,
     "retouches": 1,
     "suivi": { "libelle": "Maintenance mensuelle", "parMois": "49 €", "preavisMois": 2, "obligatoireSixFois": true },
@@ -13,14 +14,14 @@
       { "libelle": "Automatisation des demandes", "prix": "400 €" },
       { "libelle": "Page supplémentaire", "prix": "200 €" }
     ],
-    "montantsAutorises": ["699 €", "116,50 €", "49 €", "400 €", "200 €"]
+    "montantsAutorises": ["699 €", "1 299 €", "216,50 €", "49 €", "400 €", "200 €"]
   },
   "rdv": null,
   "avertissements": [],
   "maquette": null,
   "emetteur": {
     "nom": "Edgar",
-    "mention": "TVA non applicable, article 293 B du CGI. Le détail est dans le devis joint.",
+    "mention": "EI",
     "adresse": "",
     "siret": "",
     "email": "contact@kleakagency.fr",

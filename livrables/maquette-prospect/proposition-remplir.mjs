@@ -5,6 +5,7 @@
 //   {{#x}}…{{/x}} bloc répété (liste), ou affiché une fois (objet, texte non vide) ; {{^x}}…{{/x}} si vide
 // Fonction pure : aucun accès disque ni réseau. Les prix ne viennent que des données du hub.
 
+const SUIVI_AVIS_LIBELLE = "Suivi avis";
 const ECHAPPEMENTS = { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" };
 
 export function echapper(texte) {
@@ -21,12 +22,11 @@ export function riche(texte) {
 // ---------- moteur ----------
 
 function chercher(pile, nom) {
-  if (nom === ".") return pile[pile.length - 1];
-  for (let i = pile.length - 1; i >= 0; i--) {
-    const c = pile[i];
-    if (c !== null && typeof c === "object" && !Array.isArray(c) && nom in c) return c[nom];
-  }
-  return undefined;
+  const haut = pile[pile.length - 1];
+  if (nom === ".") return haut;
+  // Dans un élément de liste ou un bloc, seuls ses propres champs comptent : un champ manquant reste vide.
+  if (pile.length > 1) return haut !== null && typeof haut === "object" && !Array.isArray(haut) ? haut[nom] : undefined;
+  return haut?.[nom];
 }
 
 const vide = (v) => v === undefined || v === null || v === false || v === "" || (Array.isArray(v) && v.length === 0);
@@ -115,7 +115,7 @@ export function construireVue(contenu, donnees, images = {}) {
 
   const lignesPrix = [];
   if (prix.suivi) {
-    const maintenance = prix.suivi.libelle === "Maintenance mensuelle";
+    const maintenance = prix.suivi.libelle !== SUIVI_AVIS_LIBELLE;
     const preavis = `Sans engagement, préavis de ${prix.suivi.preavisMois} mois.`;
     lignesPrix.push({
       titre: prix.suivi.libelle,
@@ -124,10 +124,14 @@ export function construireVue(contenu, donnees, images = {}) {
     });
   }
   for (const o of prix.options ?? []) {
-    lignesPrix.push({ titre: `En option : ${o.libelle}`, detail: contenu.explicationsOptions?.[o.libelle] ?? "", montant: `+ ${o.prix}` });
+    // Options et lignes libres font partie du total du devis. « + » seulement pour un montant positif (une remise garde son signe).
+    const negatif = /^[-\u2212]/.test(String(o.prix).trim());
+    lignesPrix.push({ titre: `Inclus au devis : ${o.libelle}`, detail: contenu.explicationsOptions?.[o.libelle] ?? "", montant: negatif ? o.prix : `+ ${o.prix}` });
   }
 
   const six = texteSixFois(prix);
+  // Une page seule (one_page) se « livre » au féminin ; tout autre devis est un site.
+  const unePage = donnees.devis?.formule === "one_page";
   return {
     entreprise,
     pour: contenu.pour,
@@ -148,14 +152,18 @@ export function construireVue(contenu, donnees, images = {}) {
     chapeauPrix: contenu.chapeauPrix,
     nomOffre: contenu.nomOffre || prix.formule,
     prixSite: prix.prixSite,
-    sixFois: six ? { texte: six } : null,
-    inclus: [`Livrée en ${prix.delaiJoursOuvres} jours ouvrés après réception des contenus et du premier paiement`, ...liste(contenu.inclus)],
+    totalDevis: prix.options?.length && prix.total ? { texte: `Total du devis : ${prix.total}` } : null,
+    sixFois: six ? { texte: six, objet: unePage ? "la page" : "le site" } : null,
+    inclus: [`${unePage ? "Livrée" : "Livré"} en ${prix.delaiJoursOuvres} jours ouvrés après réception des contenus et du premier paiement`, ...liste(contenu.inclus)],
     lignesPrix,
     deroule: liste(contenu.deroule),
-    aCaler: contenu.aCaler ?? [],
-    mention: emetteur.mention || "",
+    aCaler: (contenu.aCaler ?? []).map((x) => ({ ...x, titre: String(x.titre ?? "").replace(/\.$/, "") })),
+    mention: `${MENTION_TVA}.`,
   };
 }
+
+/** Même mention que les devis du hub (`MENTION_TVA`, src/lib/devis/contenu.ts) ; `emetteur.mention` est la forme juridique (EI). */
+const MENTION_TVA = "TVA non applicable, article 293 B du CGI";
 
 /** Gabarit HTML + contenu rédigé + données du hub + chemins d'images (mobile, accroche, capture1, capture2, ou null) -> HTML. */
 export function remplirGabarit(gabaritHtml, contenu, donnees, images = {}) {

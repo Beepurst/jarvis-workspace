@@ -271,3 +271,14 @@ export function domaineDe(url) {
     return null;
   }
 }
+
+/** Dossier d'un prospect : slug de l'entreprise (sinon du nom, sinon du domaine du site), suffixé par l'id si un autre compte l'occupe déjà. */
+export function dossierProspect(compte, prefixe = "") {
+  let dossier = join(DOSSIER_PROSPECTS, prefixe + (slug(compte.entreprise || compte.nom) || slug(domaineDe(compte.site_url) || "")));
+  const fichier = join(dossier, "compte.json");
+  if (compte.id && existsSync(fichier)) {
+    const ancien = JSON.parse(readFileSync(fichier, "utf8"));
+    if (ancien.compte?.id && ancien.compte.id !== compte.id) dossier = `${dossier}-${compte.id.slice(0, 8)}`;
+  }
+  return dossier;
+}
