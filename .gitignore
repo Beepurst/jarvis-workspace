@@ -82,3 +82,6 @@ livrables/creas-meta/html/
 
 # Dossiers de travail de l agent maquette-prospect (captures, textes et images des prospects)
 livrables/clients/prospects/
+
+# Réglages Claude Code personnels
+.claude/settings.local.json
